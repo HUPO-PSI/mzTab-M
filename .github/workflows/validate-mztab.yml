@@ -42,7 +42,9 @@ jobs:
         echo "Validation completed successfully!"
         
     - name: Validate all mzTab files
+      shell: bash {0}
       run: |
+        set +e
         echo "Validating all .mztab and .json files in the repository..."
         
         # Count files
