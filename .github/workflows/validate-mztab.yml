@@ -61,14 +61,17 @@ jobs:
             if java -jar "jmztabm-cli-1.0.6.jar" -c "$file" -l Info; then
               echo "✓ $file - PASSED validation"
               ((success_count++))
+              echo "DEBUG: success_count is now $success_count"
             else
               exit_code=$?
               if [ $exit_code -eq 1 ]; then
                 echo "✗ $file - FAILED validation (contains validation errors)"
                 ((failed_count++))
+                echo "DEBUG: failed_count is now $failed_count"
               else
                 echo "✗ $file - CLI ERROR (exit code: $exit_code)"
                 ((cli_error_count++))
+                echo "DEBUG: cli_error_count is now $cli_error_count"
               fi
             fi
             echo "---"
@@ -85,14 +88,17 @@ jobs:
               if java -jar "jmztabm-cli-1.0.6.jar" -c "$file" --fromJson -l Info; then
                 echo "✓ $file - PASSED validation"
                 ((success_count++))
+                echo "DEBUG: success_count is now $success_count"
               else
                 exit_code=$?
                 if [ $exit_code -eq 1 ]; then
                   echo "✗ $file - FAILED validation (contains validation errors)"
                   ((failed_count++))
+                  echo "DEBUG: failed_count is now $failed_count"
                 else
                   echo "✗ $file - CLI ERROR (exit code: $exit_code)"
                   ((cli_error_count++))
+                  echo "DEBUG: cli_error_count is now $cli_error_count"
                 fi
               fi
             else
@@ -103,6 +109,23 @@ jobs:
         fi
         
         echo "=== Validation Summary ==="
+        
+        # Debug: Print variable values before arithmetic
+        echo "DEBUG: Before summary calculations:"
+        echo "DEBUG: success_count='$success_count'"
+        echo "DEBUG: failed_count='$failed_count'"
+        echo "DEBUG: cli_error_count='$cli_error_count'"
+        
+        # Ensure variables are properly initialized for arithmetic
+        : ${success_count:=0}
+        : ${failed_count:=0}
+        : ${cli_error_count:=0}
+        
+        echo "DEBUG: After initialization:"
+        echo "DEBUG: success_count='$success_count'"
+        echo "DEBUG: failed_count='$failed_count'"
+        echo "DEBUG: cli_error_count='$cli_error_count'"
+        
         total_processed=$((success_count + failed_count + cli_error_count))
         echo "Total files processed: $total_processed"
         echo "Successful validations: $success_count"
