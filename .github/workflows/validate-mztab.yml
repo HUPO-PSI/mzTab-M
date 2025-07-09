@@ -30,14 +30,12 @@ jobs:
         echo "Downloading jmzTab-m CLI version ${VERSION}..."
         wget -q "${CLI_URL}" -O jmztabm-cli-${VERSION}.jar
         
-        CLI_JAR="jmztabm-cli-${VERSION}.jar"
-        echo "Downloaded CLI jar: ${CLI_JAR}"
-        echo "CLI_JAR=${CLI_JAR}" >> $GITHUB_ENV
+        echo "Downloaded CLI jar: jmztabm-cli-${VERSION}.jar"
 
     - name: Validate MTBLS263.mztab
       run: |
         echo "Validating examples/MTBLS263.mztab with Info level logging..."
-        java -jar "${CLI_JAR}" -c examples/MTBLS263.mztab -l Info
+        java -jar "jmztabm-cli-1.0.6.jar" -c examples/MTBLS263.mztab -l Info
         
         echo "Validation completed successfully!"
         
@@ -60,7 +58,7 @@ jobs:
           echo "=== Validating .mztab files ==="
           while IFS= read -r -d '' file; do
             echo "Validating: $file"
-            if java -jar "${CLI_JAR}" -c "$file" -l Info; then
+            if java -jar "jmztabm-cli-1.0.6.jar" -c "$file" -l Info; then
               echo "✓ $file - PASSED validation"
               ((success_count++))
             else
@@ -84,7 +82,7 @@ jobs:
             # Check if file contains mzTab-M JSON structure
             if grep -q '"mzTab"' "$file" 2>/dev/null; then
               echo "Validating mzTab-M JSON: $file"
-              if java -jar "${CLI_JAR}" -c "$file" --fromJson -l Info; then
+              if java -jar "jmztabm-cli-1.0.6.jar" -c "$file" --fromJson -l Info; then
                 echo "✓ $file - PASSED validation"
                 ((success_count++))
               else
