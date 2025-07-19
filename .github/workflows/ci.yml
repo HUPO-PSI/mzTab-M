@@ -1,0 +1,48 @@
+name: Spec Build Workflow
+# This workflow triggers on direct pushes to main or PRs
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+env:
+  DOC_IN: "${{ github.workspace }}/specification_documents"
+  # referencing $DOC_IN did not want to work, maybe there is a better way
+  DOC_OUT: "${{ github.workspace }}/specification_documents/output"
+  DOC_FILE: 'mzTab_format_specification_2_1-M_release.adoc'
+
+jobs:
+  build-spec:
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      matrix:
+        os:
+          - ubuntu-22.04
+    steps:
+      - name: Set Build timestamp
+        run: |
+          echo "BUILD_DATE=$(date -u)" >> $GITHUB_ENV 
+      - uses: actions/checkout@v2
+      - run: sudo apt-get update -qq
+      - run: sudo apt-get install -y pandoc
+      - run: mkdir -p output
+      - run: 'docker pull asciidoctor/docker-asciidoctor:1'
+      - name: Build spec doc outputs
+        run: |
+          ./build-docs.sh -i "$DOC_IN" -o "$DOC_OUT" -c "$GITHUB_SHA" -d "$BUILD_DATE" -f "$DOC_FILE"
+        shell: bash
+      - run: mkdir output/2_1-metabolomics-release
+      - run: cp -v -R $DOC_OUT/* output/2_1-metabolomics-release
+      - run: mkdir -p output/2_1-metabolomics-release/img
+      - run: cp -v -R $DOC_OUT/img/* output/1_0-metabolomics-release/img
+      - run: cp -v -R docs/* output/
+      - name: Archive document build output
+        uses: actions/upload-artifact@v3
+        with:
+          name: output artefacts
+          path: |
+            output/2_1-metabolomics-release/*.pdf
+            output/2_1-metabolomics-release/*.html
+            output/2_1-metabolomics-release/*.docx

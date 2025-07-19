@@ -1,0 +1,10 @@
+name: Spec Doc Release Workflow
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-spec-workflow:
+    uses: HUPO-PSI/mzTab-M/.github/workflows/ci.yml@main
+  test-examples-workflow:
+    uses: HUPO-PSI/mzTab-M/.github/workflows/validate.yml@main
