@@ -2,9 +2,15 @@ name: Validate mzTab-M Files
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+    paths:
+      - 'examples/**'
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
+    paths:
+      - 'examples/**'
   workflow_dispatch:
 
 jobs:

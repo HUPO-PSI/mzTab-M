@@ -19,12 +19,12 @@ jobs:
     strategy:
       matrix:
         os:
-          - ubuntu-22.04
+          - ubuntu-24.04
     steps:
       - name: Set Build timestamp
         run: |
           echo "BUILD_DATE=$(date -u)" >> $GITHUB_ENV 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt-get update -qq
       - run: sudo apt-get install -y pandoc
       - run: mkdir -p output
@@ -39,7 +39,7 @@ jobs:
       - run: cp -v -R $DOC_OUT/img/* output/1_0-metabolomics-release/img
       - run: cp -v -R docs/* output/
       - name: Archive document build output
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: output artefacts
           path: |
