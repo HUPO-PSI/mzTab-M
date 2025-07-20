@@ -11,7 +11,7 @@ env:
   DOC_IN: "${{ github.workspace }}/specification_documents"
   # referencing $DOC_IN did not want to work, maybe there is a better way
   DOC_OUT: "${{ github.workspace }}/specification_documents/output"
-  DOC_FILE: 'mzTab_format_specification_2_1-M_release.adoc'
+  DOC_FILE: 'mzTab_format_specification_2_1-M.adoc'
 
 jobs:
   build-spec:
@@ -36,7 +36,7 @@ jobs:
       - run: mkdir output/2_1-metabolomics-release
       - run: cp -v -R $DOC_OUT/* output/2_1-metabolomics-release
       - run: mkdir -p output/2_1-metabolomics-release/img
-      - run: cp -v -R $DOC_OUT/img/* output/1_0-metabolomics-release/img
+      - run: cp -v -R $DOC_OUT/img/* output/2_1-metabolomics-release/img
       - run: cp -v -R docs/* output/
       - name: Archive document build output
         uses: actions/upload-artifact@v4
