@@ -5,13 +5,13 @@
 [![mzTab-M 2.0 Example File Validation Workflow](https://github.com/HUPO-PSI/mzTab-M/actions/workflows/validate-mztab.yml/badge.svg)](https://github.com/HUPO-PSI/mzTab-M/actions/workflows/validate-mztab.yml)
 
 ## General
-mzTab has been designed to act as a lightweight, tab-delimited file format for mass spec-derived omics data. It was originally designed for proteomics with limited support for metabolomics (version 1.0). The metabolomics aspects have been further refined and extended in the mzTab-M 2.0 release.
+mzTab has been designed to act as a lightweight, tab-delimited file format for mass spec-derived omics data. It was originally designed for proteomics with limited support for metabolomics (version 1.0). The metabolomics aspects have been further refined and extended in the mzTab-M 2.0 release. With version 2.1, we intend to expand the format, to modularize it and support FAIR data use cases and integrate better with tools.
 
 **From mzTab-M 2.1 onwards, we have split the development from the [original GitHub repository](https://github.com/HUPO-PSI/mzTab), where both mzTab and mzTab-M were maintained together. The current repository is being used for mzTab-M 2.1.X and future versions.**
 
-One of the main target audiences for this format is researchers outside of metabolomics, such as systems biologists. It should be easy to parse and only contain the minimal information required to evaluate the results of an experiment. One of the goals of this file format is that it, for example, should be possible for a biologist to open such a file in Excel and still be able to "see" the data. 
+One of the main target audiences for this format are bioinformaticians, but also researchers outside of metabolomics, such as systems biologists. It should be easy to parse and only contain the minimal information required to evaluate the results of an experiment. One of the goals of this file format is that it, for example, should be possible for a biologist to open such a file in Excel and still be able to "see" the data. However, the volume and complexity of mass spectrometry data are increasing with new methods and technologies.
 
-The aim of the format is to present the results of an experiment in a computationally accessible overview. The aim is to provide detailed evidence for these results, but necessarily the complete process leading to those results. Both of these functions are established through links to more detailed representations in other formats.
+The aim of the format is to present the results of an experiment in a computationally accessible overview. The aim is to provide detailed evidence for these results, but necessarily the complete process leading to those results. Both of these functions are established through links to more detailed representations in other formats. For version 2.1.0, we intend to expand the format so that it can capture the necessary information to create submissions to repositories like MetaboLights or Metabolomics Workbench. 
 
 **If you are interested in joining our working group, [please sign up for our mailing list](https://lists.cebitec.uni-bielefeld.de/mailman3/postorius/lists/mztabm.cebitec.uni-bielefeld.de/)**
 
