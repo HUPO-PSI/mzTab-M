@@ -196,9 +196,11 @@ are automatically validated using GitHub Actions on every push and pull request.
 
 ### Validation Workflow
 
-The validation workflow: 1. Downloads the latest stable jmzTab-m CLI validator
-2. Validates all `.mztab` files in the repository 3. Reports validation results
-with Info-level logging
+The validation workflow:
+
+1. Downloads the latest stable jmzTab-m CLI validator 
+2. Validates all `.mztab` files in the repository 
+3. Reports validation results with Info-level logging
 
 The workflow uses the command mentioned in issue #4:
 
