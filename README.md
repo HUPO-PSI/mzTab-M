@@ -68,7 +68,7 @@ list](https://lists.cebitec.uni-bielefeld.de/mailman3/postorius/lists/mztabm.ceb
 -   **Reference Implementation & Validator**:\
     [jmzTab-m (Java)](https://github.com/lifs-tools/jmzTab-m) to read, write and
     validate **mzTab-M 2.X.+**)\
-    [jmzTab-m BioConda Package](https://bioconda.github.io/recipes/jmztab-m/README.html)
+    [jmzTab-m BioConda Package (and Docker container)](https://bioconda.github.io/recipes/jmztab-m/README.html)
 
 -   **CI Validation Workflow**:\
     [GitHub Actions YAML](.github/workflows/validate-mztab.yml), using the
