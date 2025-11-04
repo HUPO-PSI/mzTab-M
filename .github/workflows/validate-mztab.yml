@@ -1,4 +1,4 @@
-name: Validate mzTab-M Files
+name: Validate mzTab-M Files version 2.0.0
 
 on:
   push:
@@ -45,7 +45,14 @@ jobs:
         echo "Validating examples/MTBLS263.mztab with Info level logging..."
         java -jar "${CLI_JAR}" -c examples/MTBLS263.mztab -l Info
         
-        echo "Validation completed successfully!"
+        echo "Validation MTBLS263 completed successfully!"
+
+    - name: Validate lipidomics-example.mztab
+      run: |
+        echo "Validating examples/lipidomics-example.mztab with Info level logging..."
+        java -jar "${CLI_JAR}" -c examples/lipidomics-example.mztab -l Info
+        
+        echo "Validation lipidomics-example completed successfully!"    
         
     - name: Validate all mzTab files
       run: |
