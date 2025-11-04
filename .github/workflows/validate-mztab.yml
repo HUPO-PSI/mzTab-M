@@ -18,14 +18,14 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
       
-    - name: Set up Java
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
       
   LoadCodeBase:
     runs-on: ubuntu-latest
@@ -35,9 +35,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Print Java version from setup
-        run: echo "Using Java version ${{ needs.setup.outputs.java_version }}"
+        run: echo "Using Java 17"
 
       - name: Download jmzTab-m CLI
+        id: download_cli
         run: |
           VERSION="1.0.6"
           CLI_URL="https://repo1.maven.org/maven2/de/isas/mztab/jmztabm-cli/${VERSION}/jmztabm-cli-${VERSION}.jar"
@@ -45,9 +46,9 @@ jobs:
           echo "Downloading jmzTab-m CLI version ${VERSION}..."
           wget -q "${CLI_URL}" -O jmztabm-cli-${VERSION}.jar
 
-          CLI_JAR="jmztabm-cli-${VERSION}.jar"
-          echo "Downloaded CLI jar: ${CLI_JAR}"
-          echo "CLI_JAR=${CLI_JAR}" >> $GITHUB_ENV
+          echo "Downloaded jmzTab-m CLI jar: jmztabm-cli-${VERSION}.jar"
+          echo "cli_version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "CLI_JAR=jmztabm-cli-${VERSION}.jar" >> $GITHUB_ENV
           
       - name: Upload CLI jar as artifact
         uses: actions/upload-artifact@v4
@@ -74,8 +75,9 @@ jobs:
       - name: Validate MTBLS263.mztab
         run: |
           echo "Validating examples/MTBLS263.mztab with Info level logging..."
-          java -jar "${CLI_JAR}" -c examples/MTBLS263.mztab -l Info
-        
+          # Get the JAR name dynamically from the env if needed
+          CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
+          java -jar "$CLI_JAR" -c examples/MTBLS263.mztab -l Info
           echo "Validation MTBLS263 completed successfully!"
 
   LipidomicsValidation:
