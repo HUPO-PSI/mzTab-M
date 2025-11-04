@@ -72,19 +72,31 @@ jobs:
       - name: Verify CLI jar
         run: ls -lh
         
-      - name: Validate MTBLS263.mztab
+      - name: Validate Metabolights-example
         run: |
           echo "Validating examples/MTBLS263.mztab with Info level logging..."
           # Get the JAR name dynamically from the env if needed
           CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
           java -jar "$CLI_JAR" -c examples/MTBLS263.mztab -l Info
-          echo "Validation MTBLS263 completed successfully!"
+          echo "Validation Metabolights-example completed successfully!"
 
   LipidomicsValidation:
     runs-on: ubuntu-latest
     needs: LoadCodeBase
     steps:
-      - name: Validate lipidomics-example.mztab
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download CLI jar
+        uses: actions/download-artifact@v4
+        with:
+          name: jmztab-cli
+          path: .
+
+      - name: Verify CLI jar
+        run: ls -lh
+        
+      - name: Validate lipidomics-example
         run: |
          echo "Validating examples/lipidomics-example.mztab with Info level logging..."
          java -jar "${CLI_JAR}" -c examples/lipidomics-example.mztab -l Info
