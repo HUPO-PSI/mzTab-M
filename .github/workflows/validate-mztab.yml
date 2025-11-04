@@ -47,13 +47,12 @@ jobs:
           wget -q "${CLI_URL}" -O jmztabm-cli-${VERSION}.jar
 
           echo "Downloaded jmzTab-m CLI jar: jmztabm-cli-${VERSION}.jar"
-          echo "cli_version=${VERSION}" >> $GITHUB_OUTPUT
-          
+
       - name: Upload CLI jar as artifact
         uses: actions/upload-artifact@v4
         with:
           name: jmztab-cli
-          path: jmztabm-cli-${{ steps.download_cli.outputs.cli_version }}.jar
+          path: jmztabm-cli-*.jar
           
   MetabolightsValidation:
     runs-on: ubuntu-latest
@@ -74,7 +73,9 @@ jobs:
       - name: Validate Metabolights-example
         run: |
           echo "Validating examples/MTBLS263.mztab with Info level logging..."
-          java -jar "${{ needs.LoadCodeBase.outputs.cli_jar }}" -c examples/MTBLS263.mztab -l Info
+          CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
+          echo "Using CLI jar: $CLI_JAR"
+          java -jar "$CLI_JAR" -c examples/MTBLS263.mztab -l Info
           echo "Validation Metabolights-example completed successfully!"
 
   LipidomicsValidation:
@@ -96,8 +97,11 @@ jobs:
       - name: Validate lipidomics-example
         run: |
           echo "Validating examples/lipidomics-example.mztab with Info level logging..."
-          java -jar "${{ needs.LoadCodeBase.outputs.cli_jar }}" -c examples/lipidomics-example.mztab -l Info
+          CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
+          echo "Using CLI jar: $CLI_JAR"
+          java -jar "$CLI_JAR" -c examples/lipidomics-example.mztab -l Info
           echo "Validation lipidomics-example completed successfully!"
+
          
     #- name: Validate all mzTab files
     #  run: |
