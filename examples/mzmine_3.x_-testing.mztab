@@ -262,3 +262,5 @@ MTD	database[1]-prefix	mzmdb
 MTD	database[1]-uri	https://mzmine.github.io/
 MTD	database[1]-version	4.7.34
 MTD	id_confidence_measure[1]	[MS, MS_1003303, spectral similarity, ]
+
+SMH	SML_ID	SMF_ID_REFS	database_identifier	chemical_formula	smiles	inchi	chemical_name	uri	theoretical_neutral_mass	adduct_ions	reliability	best_id_confidence_measure	best_id_confidence_value	abundance_assay[1]	abundance_assay[2]	abundance_assay[3]	abundance_assay[4]	abundance_assay[5]	abundance_assay[6]	abundance_assay[7]	abundance_study_variable[1]	abundance_study_variable[2]	abundance_study_variable[3]	abundance_study_variable[4]	abundance_study_variable[5]	abundance_study_variable[6]	abundance_study_variable[7]	abundance_variation_study_variable[1]	abundance_variation_study_variable[2]	abundance_variation_study_variable[3]	abundance_variation_study_variable[4]	abundance_variation_study_variable[5]	abundance_variation_study_variable[6]	abundance_variation_study_variable[7]
