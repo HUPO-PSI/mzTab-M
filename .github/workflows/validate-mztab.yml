@@ -90,7 +90,7 @@ jobs:
             fi
           done
 
-  LipidomicsValidation:
+  ManualFilesValidation:
     runs-on: ubuntu-latest
     needs: LoadCodeBase
     steps:
@@ -106,13 +106,25 @@ jobs:
       - name: Verify CLI jar
         run: ls -lh
         
-      - name: Validate lipidomics-example
+      - name: Validate multiple 'manual*' files
         run: |
-          echo "Validating examples/lipidomics-example.mztab with Info level logging..."
           CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
           echo "Using CLI jar: $CLI_JAR"
-          java -jar "$CLI_JAR" -c examples/lipidomics-example.mztab -l Info
-          echo "Validation lipidomics-example completed successfully!"
+
+          # Check if any files match the pattern
+          FILES=(examples/manual*)
+          if [ ! -e "${FILES[0]}" ]; then
+            echo "No files found matching 'examples/manual*'. Failing the job."
+            exit 1
+          fi
+          
+          for file in examples/manual*; do
+            if [ -f "$file" ]; then
+              echo "Validating $file..."
+              java -jar "$CLI_JAR" -c "$file" -l Info
+              echo "Validation of $file completed!"
+            fi
+          done
 
   MS-DIALValidation:
     runs-on: ubuntu-latest
@@ -134,8 +146,51 @@ jobs:
         run: |
           CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
           echo "Using CLI jar: $CLI_JAR"
+
+          # Check if any files match the pattern
+          FILES=(examples/msdial*)
+          if [ ! -e "${FILES[0]}" ]; then
+            echo "No files found matching 'examples/msdial*'. Failing the job."
+            exit 1
+          fi
         
           for file in examples/msdial*; do
+            if [ -f "$file" ]; then
+              echo "Validating $file..."
+              java -jar "$CLI_JAR" -c "$file" -l Info
+              echo "Validation of $file completed!"
+            fi
+          done
+
+  MZMINEValidation:
+    runs-on: ubuntu-latest
+    needs: LoadCodeBase
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download CLI jar
+        uses: actions/download-artifact@v4
+        with:
+          name: jmztab-cli
+          path: .
+
+      - name: Verify CLI jar
+        run: ls -lh
+
+      - name: Validate multiple 'mzmine*' files
+        run: |
+          CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
+          echo "Using CLI jar: $CLI_JAR"
+
+          # Check if any files match the pattern
+          FILES=(examples/mzmine*)
+          if [ ! -e "${FILES[0]}" ]; then
+            echo "No files found matching 'examples/mzmine*'. Failing the job."
+            exit 1
+          fi
+        
+          for file in examples/mzmine*; do
             if [ -f "$file" ]; then
               echo "Validating $file..."
               java -jar "$CLI_JAR" -c "$file" -l Info
