@@ -190,7 +190,7 @@ The repository includes example mzTab-M files in the `examples/` directory that
 are automatically validated using GitHub Actions on every push and pull request.
 
 If you had a new mztab-M example please follow the following naming convention: 
-*softwareName_0.1.2_databaseID.mzTab*
+*softwareName_0.1.2_databaseID_optionalComment.mzTab*
 
 ### Example Files
 
