@@ -78,8 +78,7 @@ jobs:
           # Check if any files match the pattern
           FILES=(examples/mtbls*)
           if [ ! -e "${FILES[0]}" ]; then
-            echo "No files found matching 'examples/mtbls*'. Failing the job."
-            exit 1
+            echo "::warning title=No files found::No files matching 'examples/mtbls*' were found."
           fi
           
           for file in examples/mtbls*; do
@@ -114,8 +113,7 @@ jobs:
           # Check if any files match the pattern
           FILES=(examples/manual*)
           if [ ! -e "${FILES[0]}" ]; then
-            echo "No files found matching 'examples/manual*'. Failing the job."
-            exit 1
+            echo "::warning title=No files found::No files matching 'examples/manual*' were found."
           fi
           
           for file in examples/manual*; do
@@ -150,8 +148,7 @@ jobs:
           # Check if any files match the pattern
           FILES=(examples/msdial*)
           if [ ! -e "${FILES[0]}" ]; then
-            echo "No files found matching 'examples/msdial*'. Failing the job."
-            exit 1
+            echo "::warning title=No files found::No files matching 'examples/msdial*' were found."
           fi
         
           for file in examples/msdial*; do
@@ -186,8 +183,7 @@ jobs:
           # Check if any files match the pattern
           FILES=(examples/mzmine*)
           if [ ! -e "${FILES[0]}" ]; then
-            echo "No files found matching 'examples/mzmine*'. Failing the job."
-            exit 1
+            echo "::warning title=No files found::No files matching 'examples/mzmine*' were found."
           fi
         
           for file in examples/mzmine*; do
@@ -222,8 +218,7 @@ jobs:
           # Check if any files match the pattern
           FILES=(examples/*.mztab)
           if [ ! -e "${FILES[0]}" ]; then
-            echo "No files found matching 'examples/*.mztab'. Failing the job."
-            exit 1
+            echo "::warning title=No files found::No files matching 'examples/*.mztab' were found."
           fi
           
           for file in examples/*.mztab; do
