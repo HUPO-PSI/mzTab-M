@@ -123,7 +123,7 @@ jobs:
           CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
           echo "Using CLI jar: $CLI_JAR"
         
-          for file in examples/abcde*; do
+          for file in examples/msdial*; do
             if [ -f "$file" ]; then
               echo "Validating $file..."
               java -jar "$CLI_JAR" -c "$file" -l Info
