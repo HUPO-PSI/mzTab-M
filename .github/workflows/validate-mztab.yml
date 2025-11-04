@@ -74,7 +74,14 @@ jobs:
         run: |
           CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
           echo "Using CLI jar: $CLI_JAR"
-        
+
+          # Check if any files match the pattern
+          FILES=(examples/mtbls*)
+          if [ ! -e "${FILES[0]}" ]; then
+            echo "No files found matching 'examples/mtbls*'. Failing the job."
+            exit 1
+          fi
+          
           for file in examples/mtbls*; do
             if [ -f "$file" ]; then
               echo "Validating $file..."
