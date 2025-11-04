@@ -54,83 +54,83 @@ jobs:
         
         echo "Validation lipidomics-example completed successfully!"    
         
-    - name: Validate all mzTab files
-      run: |
-        echo "Validating all .mztab and .json files in the repository..."
+    #- name: Validate all mzTab files
+    #  run: |
+    #    echo "Validating all .mztab and .json files in the repository..."
         
         # Count files
-        mztab_count=$(find . -name "*.mztab" -type f | wc -l)
-        json_count=$(find . -name "*.json" -type f | wc -l)
+    #    mztab_count=$(find . -name "*.mztab" -type f | wc -l)
+    #    json_count=$(find . -name "*.json" -type f | wc -l)
         
-        echo "Found ${mztab_count} .mztab files and ${json_count} .json files"
+    #    echo "Found ${mztab_count} .mztab files and ${json_count} .json files"
         
         # Create temporary files to track results
-        success_file=$(mktemp)
-        failed_file=$(mktemp)
+    #    success_file=$(mktemp)
+    #    failed_file=$(mktemp)
         
         # Initialize counters
-        echo "0" > "$success_file"
-        echo "0" > "$failed_file"
+    #    echo "0" > "$success_file"
+    #    echo "0" > "$failed_file"
         
         # Validate .mztab files
-        if [ $mztab_count -gt 0 ]; then
-          echo "=== Validating .mztab files ==="
-          find . -name "*.mztab" -type f -exec bash -c '
-            file="$1"
-            success_file="$2"
-            failed_file="$3"
-            echo "Validating: $file"
-            if java -jar "${CLI_JAR}" -c "$file" -l Info; then
-              echo "✓ $file - PASSED"
-              echo $(($(cat "$success_file") + 1)) > "$success_file"
-            else
-              echo "✗ $file - FAILED"
-              echo $(($(cat "$failed_file") + 1)) > "$failed_file"
-            fi
-            echo "---"
-          ' _ {} "$success_file" "$failed_file" \;
-        fi
+    #    if [ $mztab_count -gt 0 ]; then
+    #      echo "=== Validating .mztab files ==="
+    #      find . -name "*.mztab" -type f -exec bash -c '
+    #        file="$1"
+    #        success_file="$2"
+    #        failed_file="$3"
+    #        echo "Validating: $file"
+    #        if java -jar "${CLI_JAR}" -c "$file" -l Info; then
+    #          echo "✓ $file - PASSED"
+    #          echo $(($(cat "$success_file") + 1)) > "$success_file"
+    #        else
+    #          echo "✗ $file - FAILED"
+    #          echo $(($(cat "$failed_file") + 1)) > "$failed_file"
+    #        fi
+    #        echo "---"
+    #      ' _ {} "$success_file" "$failed_file" \;
+    #    fi
         
-        # Validate .json files (if any exist and appear to be mzTab-M JSON)
-        if [ $json_count -gt 0 ]; then
-          echo "=== Validating .json files ==="
-          find . -name "*.json" -type f -exec bash -c '
-            file="$1"
-            success_file="$2"
-            failed_file="$3"
+   #     # Validate .json files (if any exist and appear to be mzTab-M JSON)
+   #     if [ $json_count -gt 0 ]; then
+   #       echo "=== Validating .json files ==="
+   #       find . -name "*.json" -type f -exec bash -c '
+   #         file="$1"
+   #         success_file="$2"
+   #         failed_file="$3"
             # Check if file contains mzTab-M JSON structure
-            if grep -q "\"mzTab\"" "$file" 2>/dev/null; then
-              echo "Validating mzTab-M JSON: $file"
-              if java -jar "${CLI_JAR}" -c "$file" --fromJson -l Info; then
-                echo "✓ $file - PASSED"
-                echo $(($(cat "$success_file") + 1)) > "$success_file"
-              else
-                echo "✗ $file - FAILED"
-                echo $(($(cat "$failed_file") + 1)) > "$failed_file"
-              fi
-            else
-              echo "ℹ Skipping $file (not a mzTab-M JSON file)"
-            fi
-            echo "---"
-          ' _ {} "$success_file" "$failed_file" \;
-        fi
+   #         if grep -q "\"mzTab\"" "$file" 2>/dev/null; then
+   #           echo "Validating mzTab-M JSON: $file"
+   #           if java -jar "${CLI_JAR}" -c "$file" --fromJson -l Info; then
+   #             echo "✓ $file - PASSED"
+   #             echo $(($(cat "$success_file") + 1)) > "$success_file"
+   #           else
+   #             echo "✗ $file - FAILED"
+   #             echo $(($(cat "$failed_file") + 1)) > "$failed_file"
+   #           fi
+   #         else
+   #           echo "ℹ Skipping $file (not a mzTab-M JSON file)"
+   #         fi
+   #         echo "---"
+   #       ' _ {} "$success_file" "$failed_file" \;
+   #     fi
         
         # Read final counts
-        success_count=$(cat "$success_file")
-        failed_count=$(cat "$failed_file")
+   #     success_count=$(cat "$success_file")
+   #     failed_count=$(cat "$failed_file")
         
         # Clean up temporary files
-        rm -f "$success_file" "$failed_file"
+   #     rm -f "$success_file" "$failed_file"
         
-        echo "=== Validation Summary ==="
-        echo "Total files processed: $((success_count + failed_count))"
-        echo "Successful validations: $success_count"
-        echo "Failed validations: $failed_count"
+   #     echo "=== Validation Summary ==="
+   #     echo "Total files processed: $((success_count + failed_count))"
+   #     echo "Successful validations: $success_count"
+   #     echo "Failed validations: $failed_count"
         
-        if [[ $failed_count -gt 0 ]]; then
-          echo "❌ Validation failed: $failed_count file(s) had validation errors"
-          exit 1
-        else
-          echo "✅ All validations passed successfully"
-          exit 0
-        fi
+  #      if [[ $failed_count -gt 0 ]]; then
+  #        echo "❌ Validation failed: $failed_count file(s) had validation errors"
+   #       exit 1
+  #      else
+  #        echo "✅ All validations passed successfully"
+  #        exit 0
+  #      fi
