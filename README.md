@@ -189,6 +189,9 @@ deployed in different formats to the mzTab-M documentation website.
 The repository includes example mzTab-M files in the `examples/` directory that
 are automatically validated using GitHub Actions on every push and pull request.
 
+If you had a new mztab-M example please follow the following naming convention: 
+*softwareName_0.1.2_databaseID.mzTab*
+
 ### Example Files
 
 -   `examples/MTBLS263.mztab` - A metabolomics dataset example
