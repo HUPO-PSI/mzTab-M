@@ -70,13 +70,18 @@ jobs:
       - name: Verify CLI jar
         run: ls -lh
         
-      - name: Validate Metabolights-example
+      - name: Validate multiple 'mtbls*' files
         run: |
-          echo "Validating examples/MTBLS263.mztab with Info level logging..."
           CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
           echo "Using CLI jar: $CLI_JAR"
-          java -jar "$CLI_JAR" -c examples/MTBLS263.mztab -l Info
-          echo "Validation Metabolights-example completed successfully!"
+        
+          for file in examples/mtbls*; do
+            if [ -f "$file" ]; then
+              echo "Validating $file..."
+              java -jar "$CLI_JAR" -c "$file" -l Info
+              echo "Validation of $file completed!"
+            fi
+          done
 
   LipidomicsValidation:
     runs-on: ubuntu-latest
