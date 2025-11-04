@@ -75,3 +75,5 @@ MTD	database[1]-uri	null
 MTD	small_molecule-quantification_unit	[MS, MS:1002887, Progenesis QI normalised abundance, ]
 MTD	small_molecule_feature-quantification_unit	[MS, MS:1002887, Progenesis QI normalised abundance, ]
 MTD	id_confidence_measure[1]	[MS,MS:1002889,Progenesis MetaScope Score,]
+
+SMH	SML_ID	SMF_ID_REFS	chemical_name	database_identifier	chemical_formula	smiles	inchi	uri	theoretical_neutral_mass	adduct_ions	reliability	best_id_confidence_measure	best_id_confidence_value	abundance_assay[1]	abundance_study_variable[1]	abundance_variation_study_variable[1]	opt_global_lipid_category	opt_global_lipid_species	opt_global_lipid_best_id_level
