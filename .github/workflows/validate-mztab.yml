@@ -48,21 +48,29 @@ jobs:
           CLI_JAR="jmztabm-cli-${VERSION}.jar"
           echo "Downloaded CLI jar: ${CLI_JAR}"
           echo "CLI_JAR=${CLI_JAR}" >> $GITHUB_ENV
+          
+  MetabolightsValidation:
+    runs-on: ubuntu-latest
+    needs: LoadCodeBase
+    steps:
+      - name: Validate MTBLS263.mztab
+        run: |
+          echo "Validating examples/MTBLS263.mztab with Info level logging..."
+          java -jar "${CLI_JAR}" -c examples/MTBLS263.mztab -l Info
+        
+          echo "Validation MTBLS263 completed successfully!"
 
-   # - name: Validate MTBLS263.mztab
-   #   run: |
-   #     echo "Validating examples/MTBLS263.mztab with Info level logging..."
-   #     java -jar "${CLI_JAR}" -c examples/MTBLS263.mztab -l Info
+  LipidomicsValidation:
+    runs-on: ubuntu-latest
+    needs: LoadCodeBase
+    steps:
+      - name: Validate lipidomics-example.mztab
+        run: |
+         echo "Validating examples/lipidomics-example.mztab with Info level logging..."
+         java -jar "${CLI_JAR}" -c examples/lipidomics-example.mztab -l Info
         
-   #     echo "Validation MTBLS263 completed successfully!"
-
-   # - name: Validate lipidomics-example.mztab
-   #   run: |
-   #     echo "Validating examples/lipidomics-example.mztab with Info level logging..."
-   #     java -jar "${CLI_JAR}" -c examples/lipidomics-example.mztab -l Info
-        
-   #    echo "Validation lipidomics-example completed successfully!"    
-        
+         echo "Validation lipidomics-example completed successfully!"  
+         
     #- name: Validate all mzTab files
     #  run: |
     #    echo "Validating all .mztab and .json files in the repository..."
