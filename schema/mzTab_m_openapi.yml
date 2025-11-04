@@ -1225,7 +1225,6 @@ components:
       required:
         - smf_id
         - exp_mass_to_charge
-        - charge
       properties:
         prefix:
           type: string

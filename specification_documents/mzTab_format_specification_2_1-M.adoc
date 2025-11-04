@@ -1873,9 +1873,9 @@ SMF 1 … 1234.5 …
 
 [cols=",",]
 |===========================================
-|*Description* |The feature’s charge value using positive integers both for positive and negative polarity modes.
+|*Description* |The feature’s charge value using positive integers both for positive and negative polarity modes. Is nullable in the SMF table but if identification is precised the charge is expected to expected to be known.
 |*Type* |Integer
-|*Is Nullable:* |*FALSE*
+|*Is Nullable:* |*TRUE*
 |*Example* a|
 ....
 SFH SMF_ID … charge …
