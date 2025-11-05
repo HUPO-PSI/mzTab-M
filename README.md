@@ -5,7 +5,7 @@
 [![mzTab-M 2.0 Spec Build
 Workflow](https://github.com/HUPO-PSI/mzTab-M/actions/workflows/ci.yml/badge.svg)](https://github.com/HUPO-PSI/mzTab-M/actions/workflows/ci.yml)
 [![mzTab-M 2.0 Example File Validation
-Workflow](https://github.com/HUPO-PSI/mzTab-M/actions/workflows/validate-mztab.yml/badge.svg)](https://github.com/HUPO-PSI/mzTab-M/actions/workflows/validate-mztab.yml)
+Workflow](https://github.com/HUPO-PSI/mzTab-M/actions/workflows/validate-mztab-stable.yml/badge.svg)](https://github.com/HUPO-PSI/mzTab-M/blob/main/.github/workflows/validate-mztab-stable.yml)
 
 --------------------------------------------------------------------------------
 
