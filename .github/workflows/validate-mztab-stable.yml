@@ -1,4 +1,4 @@
-name: Validate v2.0.0 for stable jmzTab-m CLI code 
+name: Validate v2.0.0 for stable code 
 
 on:
   push:
