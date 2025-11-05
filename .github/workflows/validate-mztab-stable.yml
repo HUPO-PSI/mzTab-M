@@ -57,11 +57,17 @@ jobs:
       fail-fast: false
       matrix:
         validation:
-          - name: 'Metabolights'
-            pattern: 'mtbls*'
+          - name: 'LDA'
+            pattern: 'lda*'
             extra_args: ''
           - name: 'Manual'
             pattern: 'manual*'
+            extra_args: ''
+          - name: 'Metabolights'
+            pattern: 'mtbls*'
+            extra_args: ''
+          - name: 'MetaboScape'
+            pattern: 'metaboscape*'
             extra_args: ''
           - name: 'MS-DIAL'
             pattern: 'msdial*'
@@ -107,6 +113,14 @@ jobs:
 
           for file in "${FILES[@]}"; do
             if [ -f "$file" ]; then
+              BASENAME=$(basename "$file")
+
+              # Check for uppercase letters in the filename
+              if [[ "$BASENAME" =~ [A-Z] ]]; then
+                echo "::error title=Invalid filename::$file contains uppercase letters. Filenames and extentions must be lowercase."
+                continue
+              fi
+            
               echo "Validating $file..."
               java -jar "$CLI_JAR" -c "$file" ${{ matrix.validation.extra_args }} -l Info
               EXIT_CODE=$?
