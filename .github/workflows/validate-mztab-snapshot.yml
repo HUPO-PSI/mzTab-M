@@ -1,4 +1,4 @@
-name: Validate v2.0.0 for snapshot jmzTab-m CLI code
+name: Validate v2.0.0 for snapshot code
 
 on:
   push:
