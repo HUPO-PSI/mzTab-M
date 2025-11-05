@@ -150,102 +150,6 @@ MTD	study_variable[8]	2017-11-03T23:15:49
 MTD	study_variable[8]-description	2017-11-03T23:15:49
 MTD	study_variable[8]-average_function	[MS, MS:1002883, mean, ]
 MTD	study_variable[8]-assay_refs	assay[6]
-MTD	study_variable[9]	2017-11-03T18:32:30
-MTD	study_variable[9]-description	2017-11-03T18:32:30
-MTD	study_variable[9]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[9]-assay_refs	assay[12]
-MTD	study_variable[10]	2017-11-03T21:22:31
-MTD	study_variable[10]-description	2017-11-03T21:22:31
-MTD	study_variable[10]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[10]-assay_refs	assay[4]
-MTD	study_variable[11]	2017-11-03T20:44:43
-MTD	study_variable[11]-description	2017-11-03T20:44:43
-MTD	study_variable[11]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[11]-assay_refs	assay[3]
-MTD	study_variable[12]	qc
-MTD	study_variable[12]-description	qc
-MTD	study_variable[12]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[12]-assay_refs	assay[13]|assay[14]|assay[15]|assay[16]|assay[17]|assay[18]
-MTD	study_variable[13]	QC
-MTD	study_variable[13]-description	QC
-MTD	study_variable[13]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[13]-assay_refs	assay[13]|assay[14]|assay[15]|assay[16]|assay[17]|assay[18]
-MTD	study_variable[14]	2017-11-03T18:41:57
-MTD	study_variable[14]-description	2017-11-03T18:41:57
-MTD	study_variable[14]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[14]-assay_refs	assay[14]
-MTD	study_variable[15]	2017-11-03T22:09:44
-MTD	study_variable[15]-description	2017-11-03T22:09:44
-MTD	study_variable[15]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[15]-assay_refs	assay[16]
-MTD	study_variable[16]	Pseudomonas aeruginosa
-MTD	study_variable[16]-description	Pseudomonas aeruginosa
-MTD	study_variable[16]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[16]-assay_refs	assay[1]|assay[2]|assay[3]|assay[4]|assay[5]|assay[6]|assay[7]|assay[8]|assay[9]|assay[10]|assay[11]|assay[12]
-MTD	study_variable[17]	2017-11-04T01:09:08
-MTD	study_variable[17]-description	2017-11-04T01:09:08
-MTD	study_variable[17]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[17]-assay_refs	assay[18]
-MTD	study_variable[18]	2017-11-03T22:00:17
-MTD	study_variable[18]-description	2017-11-03T22:00:17
-MTD	study_variable[18]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[18]-assay_refs	assay[5]
-MTD	study_variable[19]	2017-11-03T16:58:01
-MTD	study_variable[19]-description	2017-11-03T16:58:01
-MTD	study_variable[19]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[19]-assay_refs	assay[13]
-MTD	study_variable[20]	2017-11-03T23:44:11
-MTD	study_variable[20]-description	2017-11-03T23:44:11
-MTD	study_variable[20]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[20]-assay_refs	assay[2]
-MTD	study_variable[21]	2017-11-03T19:19:45
-MTD	study_variable[21]-description	2017-11-03T19:19:45
-MTD	study_variable[21]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[21]-assay_refs	assay[19]
-MTD	study_variable[22]	sample
-MTD	study_variable[22]-description	sample
-MTD	study_variable[22]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[22]-assay_refs	assay[1]|assay[2]|assay[3]|assay[4]|assay[5]|assay[6]|assay[7]|assay[8]|assay[9]|assay[10]|assay[11]|assay[12]
-MTD	study_variable[23]	2017-11-03T17:45:14
-MTD	study_variable[23]-description	2017-11-03T17:45:14
-MTD	study_variable[23]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[23]-assay_refs	assay[20]
-MTD	study_variable[24]	PA14
-MTD	study_variable[24]-description	PA14
-MTD	study_variable[24]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[24]-assay_refs	assay[7]|assay[8]|assay[9]|assay[10]|assay[11]|assay[12]
-MTD	study_variable[25]	2017-11-03T23:34:41
-MTD	study_variable[25]-description	2017-11-03T23:34:41
-MTD	study_variable[25]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[25]-assay_refs	assay[8]
-MTD	study_variable[26]	nd
-MTD	study_variable[26]-description	nd
-MTD	study_variable[26]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[26]-assay_refs	assay[13]|assay[14]|assay[15]|assay[16]|assay[17]|assay[18]|assay[19]|assay[20]|assay[21]|assay[22]|assay[23]
-MTD	study_variable[27]	2017-11-03T18:13:39
-MTD	study_variable[27]-description	2017-11-03T18:13:39
-MTD	study_variable[27]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[27]-assay_refs	assay[7]
-MTD	study_variable[28]	2017-11-03T20:16:24
-MTD	study_variable[28]-description	2017-11-03T20:16:24
-MTD	study_variable[28]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[28]-assay_refs	assay[11]
-MTD	study_variable[29]	2017-11-03T19:57:29
-MTD	study_variable[29]-description	2017-11-03T19:57:29
-MTD	study_variable[29]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[29]-assay_refs	assay[22]
-MTD	study_variable[30]	2017-11-03T22:19:10
-MTD	study_variable[30]-description	2017-11-03T22:19:10
-MTD	study_variable[30]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[30]-assay_refs	assay[9]
-MTD	study_variable[31]	2017-11-03T20:25:50
-MTD	study_variable[31]-description	2017-11-03T20:25:50
-MTD	study_variable[31]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[31]-assay_refs	assay[15]
-MTD	study_variable[32]	2017-11-03T21:13:01
-MTD	study_variable[32]-description	2017-11-03T21:13:01
-MTD	study_variable[32]-average_function	[MS, MS:1002883, mean, ]
-MTD	study_variable[32]-assay_refs	assay[23]
 MTD	cv[1]-label	MS
 MTD	cv[1]-uri	https://raw.githubusercontent.com/HUPO-PSI/psi-ms-CV/master/psi-ms.obo
 MTD	cv[1]-version	4.1.108
@@ -263,4 +167,5 @@ MTD	database[1]-uri	https://mzmine.github.io/
 MTD	database[1]-version	4.7.34
 MTD	id_confidence_measure[1]	[MS, MS_1003303, spectral similarity, ]
 
-SMH	SML_ID	SMF_ID_REFS	database_identifier	chemical_formula	smiles	inchi	chemical_name	uri	theoretical_neutral_mass	adduct_ions	reliability	best_id_confidence_measure	best_id_confidence_value	abundance_assay[1]	abundance_assay[2]	abundance_assay[3]	abundance_assay[4]	abundance_assay[5]	abundance_assay[6]	abundance_assay[7]	abundance_study_variable[1]	abundance_study_variable[2]	abundance_study_variable[3]	abundance_study_variable[4]	abundance_study_variable[5]	abundance_study_variable[6]	abundance_study_variable[7]	abundance_variation_study_variable[1]	abundance_variation_study_variable[2]	abundance_variation_study_variable[3]	abundance_variation_study_variable[4]	abundance_variation_study_variable[5]	abundance_variation_study_variable[6]	abundance_variation_study_variable[7]
+SMH	SML_ID	SMF_ID_REFS	database_identifier	chemical_formula	smiles	inchi	chemical_name	uri	theoretical_neutral_mass	adduct_ions	reliability	best_id_confidence_measure	best_id_confidence_value	abundance_assay[1]	abundance_assay[2]	abundance_assay[3]	abundance_assay[4]	abundance_assay[5]	abundance_assay[6]	abundance_assay[7]	abundance_study_variable[1]	abundance_study_variable[2]	abundance_study_variable[3]	abundance_study_variable[4]	abundance_study_variable[5]	abundance_study_variable[6]	abundance_study_variable[7]	abundance_variation_study_variable[1]	abundance_variation_study_variable[2]	abundance_variation_study_variable[3]	abundance_variation_study_variable[4]	abundance_variation_study_variable[5]	abundance_variation_study_variable[6]	abundance_variation_study_variable[7] abundance_study_variable[8]
+
