@@ -1,4 +1,4 @@
-name: Validate v2.0.0 for snapshot code
+name: Validate v2.0.0 Snapshot
 
 on:
   push:
@@ -13,8 +13,13 @@ on:
       - 'examples/**'
   workflow_dispatch:
 
+env:
+  JAVA_VERSION: '17'
+  JAVA_DISTRIBUTION: 'temurin'
+  CLI_VERSION: '1.0.7'
+
 jobs:
-  setup:
+  validate:
     runs-on: ubuntu-latest
     
     steps:
@@ -24,35 +29,39 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
       
-  LoadCodeBase:
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Print Java version from setup
-        run: echo "Using Java 17"
-
       - name: Download jmzTab-m CLI
         id: download_cli
         run: |
-          VERSION="1.0.7" ##to be updated for new releases with grep
-          ##To be updated to snapshot releases (on GitHub?)
+          VERSION="${{ env.CLI_VERSION }}"
+          
+          # TODO: Update to use snapshot releases from GitHub Releases
+          # Current URL is temporary and should be replaced with a stable release URL
           CLI_URL="https://github-registry-files.githubusercontent.com/107954666/4e61ab80-ba27-11f0-84ab-60ae2c403849?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20251105%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20251105T115446Z&X-Amz-Expires=300&X-Amz-Signature=c26a0dbaa10b7355552203ccb98dbff342e2e3029d3f0b8a84daa19bb08434a2&X-Amz-SignedHeaders=host&response-content-disposition=filename%3Djmztabm-cli-1.0.7-20251105.090420-43-bin.zip&response-content-type=application%2Foctet-stream"
-
+          CLI_FILE="jmztabm-cli-${VERSION}.jar"
+          
           echo "Downloading jmzTab-m CLI version ${VERSION}..."
-          ##Name might need cleaning up, since it's a bin file
-          wget -q "${CLI_URL}" -O jmztabm-cli-${VERSION}.jar
+          wget -q "${CLI_URL}" -O "${CLI_FILE}"
+          
+          if [ -f "${CLI_FILE}" ]; then
+            echo "Successfully downloaded: ${CLI_FILE}"
+            echo "cli_file=${CLI_FILE}" >> $GITHUB_OUTPUT
+          else
+            echo "Error: Failed to download CLI"
+            exit 1
+          fi
 
-          echo "Downloaded jmzTab-m CLI jar: jmztabm-cli-${VERSION}.jar"
-
-      - name: Upload CLI jar as artifact
+      - name: Verify CLI download
+        run: |
+          CLI_FILE="${{ steps.download_cli.outputs.cli_file }}"
+          ls -lh "${CLI_FILE}"
+          file "${CLI_FILE}"
+      
+      - name: Upload CLI artifact
         uses: actions/upload-artifact@v4
         with:
-          name: jmztab-cli
+          name: jmztabm-cli-${{ env.CLI_VERSION }}
           path: jmztabm-cli-*.jar
-          
+          retention-days: 30
