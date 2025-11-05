@@ -225,25 +225,40 @@ jobs:
       - name: Verify CLI jar
         run: ls -lh
         
-      - name: Validate all files
+      - name: Validate all '*.mztab' files
         run: |
+          set +e  # Don't exit immediately on error
           CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
           echo "Using CLI jar: $CLI_JAR"
 
           # Check if any files match the pattern
           FILES=(examples/*.mztab)
           if [ ! -e "${FILES[0]}" ]; then
-            echo "::warning title=No files found::No files matching 'examples/*.mztab' were found."
+            echo "::warning title=No files found::No files matching 'examples/.*mztab' were found."
           fi
-          
-          for file in examples/*.mztab; do
+
+          FAIL_COUNT=0
+
+          for file in "${FILES[@]}"; do
             if [ -f "$file" ]; then
               echo "Validating $file..."
               java -jar "$CLI_JAR" -c "$file" -l Info
-              echo "Validation of $file completed!"
+              EXIT_CODE=$?
+              if [ $EXIT_CODE -ne 0 ]; then
+                echo "::error title=Validation failed::$file failed validation with exit code $EXIT_CODE"
+                FAIL_COUNT=$((FAIL_COUNT + 1))
+              else
+                echo "Validation of $file completed successfully!"
+              fi
             fi
           done
 
+          echo "Number of failed validations: $FAIL_COUNT"
+            if [ $FAIL_COUNT -ne 0 ]; then
+              echo "::error title=Validation summary::$FAIL_COUNT file(s) failed validation."
+              exit 1
+            fi      
+      
   AllJSONFilesValidation:
     runs-on: ubuntu-latest
     needs: LoadCodeBase
