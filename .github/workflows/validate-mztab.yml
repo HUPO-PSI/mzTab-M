@@ -292,7 +292,7 @@ jobs:
           for file in "${FILES[@]}"; do
             if [ -f "$file" ]; then
               echo "Validating $file..."
-              java -jar "$CLI_JAR" -c "$file" -l Info
+              java -jar "$CLI_JAR" -c "$file" --fromJson -l Info
               EXIT_CODE=$?
               if [ $EXIT_CODE -ne 0 ]; then
                 echo "::error title=Validation failed::$file failed validation with exit code $EXIT_CODE"
