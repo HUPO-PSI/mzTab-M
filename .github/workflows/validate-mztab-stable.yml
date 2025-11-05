@@ -103,12 +103,6 @@ jobs:
           CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
           echo "Using CLI jar: $CLI_JAR"
 
-          # Check if any files match the pattern
-          FILES=(${{ env.EXAMPLES_DIR }}/${{ matrix.validation.pattern }})
-          if [ ! -e "${FILES[0]}" ]; then
-            echo "::warning title=No files found::No files matching '${{ env.EXAMPLES_DIR }}/${{ matrix.validation.pattern }}' were found."
-          fi
-
           FAIL_COUNT=0
 
           for file in "${FILES[@]}"; do
