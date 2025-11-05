@@ -1,0 +1,126 @@
+name: Validate v2.0.0 Stable
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'examples/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'examples/**'
+  workflow_dispatch:
+
+env:
+  JAVA_VERSION: '17'
+  JAVA_DISTRIBUTION: 'temurin'
+  CLI_VERSION: '1.0.6'
+  EXAMPLES_DIR: 'examples'
+
+jobs:
+  setup-and-download:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+      
+      - name: Download jmzTab-m CLI
+        run: |
+          VERSION="${{ env.CLI_VERSION }}"
+          CLI_URL="https://repo1.maven.org/maven2/de/isas/mztab/jmztabm-cli/${VERSION}/jmztabm-cli-${VERSION}.jar"
+          CLI_FILE="jmztabm-cli-${VERSION}.jar"
+          
+          echo "Downloading jmzTab-m CLI version ${VERSION}..."
+          wget -q "${CLI_URL}" -O "${CLI_FILE}"
+          
+          echo "Downloaded jmzTab-m CLI jar: ${CLI_FILE}"
+
+      - name: Upload CLI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jmztab-cli
+          path: jmztabm-cli-*.jar
+
+  validate:
+    runs-on: ubuntu-latest
+    needs: setup-and-download
+    strategy:
+      fail-fast: false
+      matrix:
+        validation:
+          - name: 'Metabolights'
+            pattern: 'mtbls*'
+            extra_args: ''
+          - name: 'Manual'
+            pattern: 'manual*'
+            extra_args: ''
+          - name: 'MS-DIAL'
+            pattern: 'msdial*'
+            extra_args: ''
+          - name: 'MZmine'
+            pattern: 'mzmine*'
+            extra_args: ''
+          - name: 'MZTAB'
+            pattern: '*.mztab'
+            extra_args: ''
+          - name: 'JSON'
+            pattern: '*.json'
+            extra_args: '--fromJson'
+    
+    name: Validate ${{ matrix.validation.name }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download CLI artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: jmztab-cli
+          path: .
+
+      - name: Verify CLI jar
+        run: ls -lh
+
+      - name: Validate ${{ matrix.validation.name }} files
+        run: |
+          set +e  # Don't exit immediately on error
+          CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
+          echo "Using CLI jar: $CLI_JAR"
+
+          # Check if any files match the pattern
+          FILES=(${{ env.EXAMPLES_DIR }}/${{ matrix.validation.pattern }})
+          if [ ! -e "${FILES[0]}" ]; then
+            echo "::warning title=No files found::No files matching '${{ env.EXAMPLES_DIR }}/${{ matrix.validation.pattern }}' were found."
+          fi
+
+          FAIL_COUNT=0
+
+          for file in "${FILES[@]}"; do
+            if [ -f "$file" ]; then
+              echo "Validating $file..."
+              java -jar "$CLI_JAR" -c "$file" ${{ matrix.validation.extra_args }} -l Info
+              EXIT_CODE=$?
+              if [ $EXIT_CODE -ne 0 ]; then
+                echo "::error title=Validation failed::$file failed validation with exit code $EXIT_CODE"
+                FAIL_COUNT=$((FAIL_COUNT + 1))
+              else
+                echo "Validation of $file completed successfully!"
+              fi
+            fi
+          done
+
+          echo "Number of failed validations: $FAIL_COUNT"
+          if [ $FAIL_COUNT -ne 0 ]; then
+            echo "::error title=Validation summary::$FAIL_COUNT file(s) failed validation."
+            exit 1
+          fi

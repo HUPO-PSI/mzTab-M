@@ -1,5 +1,5 @@
 name: Spec Build Workflow
-# This workflow triggers on direct pushes to main or PRs
+
 on:
   push:
     branches:
@@ -7,42 +7,55 @@ on:
   pull_request:
     branches:
       - main
+
 env:
   DOC_IN: "${{ github.workspace }}/specification_documents"
-  # referencing $DOC_IN did not want to work, maybe there is a better way
   DOC_OUT: "${{ github.workspace }}/specification_documents/output"
   DOC_FILE: 'mzTab_format_specification_2_1-M.adoc'
+  RELEASE_DIR: '2_1-metabolomics-release'
 
 jobs:
   build-spec:
-    runs-on: '${{ matrix.os }}'
-    strategy:
-      matrix:
-        os:
-          - ubuntu-24.04
+    runs-on: ubuntu-24.04
+    
     steps:
-      - name: Set Build timestamp
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set build timestamp
+        run: echo "BUILD_DATE=$(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_ENV
+      
+      - name: Install dependencies
         run: |
-          echo "BUILD_DATE=$(date -u)" >> $GITHUB_ENV 
-      - uses: actions/checkout@v4
-      - run: sudo apt-get update -qq
-      - run: sudo apt-get install -y pandoc
-      - run: mkdir -p output
-      - run: 'docker pull asciidoctor/docker-asciidoctor:1'
-      - name: Build spec doc outputs
+          sudo apt-get update -qq
+          sudo apt-get install -y pandoc
+      
+      - name: Pull Asciidoctor Docker image
+        run: docker pull asciidoctor/docker-asciidoctor:1
+      
+      - name: Build specification documents
         run: |
-          ./build-docs.sh -i "$DOC_IN" -o "$DOC_OUT" -c "$GITHUB_SHA" -d "$BUILD_DATE" -f "$DOC_FILE"
+          ./build-docs.sh \
+            -i "$DOC_IN" \
+            -o "$DOC_OUT" \
+            -c "$GITHUB_SHA" \
+            -d "$BUILD_DATE" \
+            -f "$DOC_FILE"
         shell: bash
-      - run: mkdir output/2_1-metabolomics-release
-      - run: cp -v -R $DOC_OUT/* output/2_1-metabolomics-release
-      - run: mkdir -p output/2_1-metabolomics-release/img
-      - run: cp -v -R $DOC_OUT/img/* output/2_1-metabolomics-release/img
-      - run: cp -v -R docs/* output/
-      - name: Archive document build output
+      
+      - name: Prepare output directory
+        run: |
+          mkdir -p output/$RELEASE_DIR/img
+          cp -v -R $DOC_OUT/* output/$RELEASE_DIR/
+          cp -v -R $DOC_OUT/img/* output/$RELEASE_DIR/img/
+          cp -v -R docs/* output/
+      
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: output artefacts
+          name: specification-documents
           path: |
-            output/2_1-metabolomics-release/*.pdf
-            output/2_1-metabolomics-release/*.html
-            output/2_1-metabolomics-release/*.docx
+            output/${{ env.RELEASE_DIR }}/*.pdf
+            output/${{ env.RELEASE_DIR }}/*.html
+            output/${{ env.RELEASE_DIR }}/*.docx
+          retention-days: 90
