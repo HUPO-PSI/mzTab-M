@@ -133,8 +133,8 @@ jobs:
             pattern: "examples/masster*"
             extra_args: ""
           - name: MetaboScape
-            pattern: "examples/MetaboScape*"
-            extra_args: ""
+            pattern: "examples/MetaboScape*.json"
+            extra_args: "--fromJson"
           - name: MS-DIAL
             pattern: "examples/msdial*"
             extra_args: ""
@@ -142,8 +142,11 @@ jobs:
             pattern: "examples/mzmine*"
             extra_args: ""
           - name: progenesis
-            pattern: "examples/progenesis*"
-            extra_args: ""
+            pattern: "examples/progenesis*.json"
+            extra_args: "--fromJson"
+          - name: xcms
+            pattern: "examples/xcms*"
+            extra_args: ""            
           - name: allMZTAB
             pattern: "examples/*.mztab"
             extra_args: ""
