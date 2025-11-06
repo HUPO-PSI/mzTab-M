@@ -14,28 +14,27 @@ on:
   workflow_dispatch:
 
 env:
-  JAVA_VERSION: '17'
+  JAVA_VERSION: '21'
   JAVA_DISTRIBUTION: 'temurin'
-  CLI_VERSION: '1.0.7'
 
 jobs:
   setup:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
-      
+
   LoadCodeBase:
     runs-on: ubuntu-latest
     needs: setup
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -43,22 +42,77 @@ jobs:
       - name: Print Java version from setup
         run: echo "Using Java ${{ env.JAVA_VERSION }}"
 
-      - name: Download jmzTab-m CLI
+      - name: Download jmzTab-m CLI (Snapshot)
         id: download_cli
         run: |
-          VERSION="${{ env.CLI_VERSION }}"
-          # TODO: Update for new releases with grep
-          # TODO: Update to snapshot releases (on GitHub?)
-          CLI_URL="https://github-registry-files.githubusercontent.com/107954666/4e61ab80-ba27-11f0-84ab-60ae2c403849?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20251105%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20251105T115446Z&X-Amz-Expires=300&X-Amz-Signature=c26a0dbaa10b7355552203ccb98dbff342e2e3029d3f0b8a84daa19bb08434a2&X-Amz-SignedHeaders=host&response-content-disposition=filename%3Djmztabm-cli-1.0.7-20251105.090420-43-bin.zip&response-content-type=application%2Foctet-stream"
-          
-          echo "Downloading jmzTab-m CLI version ${VERSION}..."
-          # Note: Downloading as .jar despite bin.zip filename
-          wget -q "${CLI_URL}" -O jmztabm-cli-${VERSION}.jar
-          
-          echo "Downloaded jmzTab-m CLI jar: jmztabm-cli-${VERSION}.jar"
+          # This is the correct artifact ID
+          ARTIFACT_ID="jmztabm-cli"
+          VERSION_BASE="1.0.7-SNAPSHOT"
+
+          # 1. Download the metadata file from the correct path
+          METADATA_URL="https://m.lifs-tools.org/artifactory/libs-snapshot/org/lifs-tools/${ARTIFACT_ID}/${VERSION_BASE}/maven-metadata.xml"
+
+          echo "Downloading metadata from ${METADATA_URL}..."
+          wget --no-check-certificate -q "${METADATA_URL}" -O "maven-metadata.xml"
+
+          if [ ! -s "maven-metadata.xml" ]; then
+            echo "::error::Could not download maven-metadata.xml. Check URL: ${METADATA_URL}"
+            exit 1
+          fi
+
+          # 2. Parse the metadata to find the full version string for the main .jar file
+          # We need the <snapshotVersion> block that has <extension>jar</extension>
+          # and does *not* have a <classifier> tag.
+          echo "Parsing metadata..."
+          LITERAL_VERSION=$(awk '
+            /<snapshotVersion>/ { in_block=1; has_classifier=0; extension_is_jar=0; value="" }
+            /<\/snapshotVersion>/ {
+              if (in_block && !has_classifier && extension_is_jar) {
+                print value
+              }
+              in_block=0
+            }
+            /<classifier>/ { if (in_block) has_classifier=1 }
+            /<extension>jar<\/extension>/ { if (in_block) extension_is_jar=1 }
+            /<value>/ {
+              if (in_block) {
+                match($0, /<value>(.*)<\/value>/, arr);
+                value=arr[1]
+              }
+            }
+            ' maven-metadata.xml)
+
+          if [ -z "$LITERAL_VERSION" ]; then
+            echo "::error::Could not parse snapshot version from maven-metadata.xml. File contents:"
+            cat maven-metadata.xml
+            exit 1
+          fi
+
+          echo "Found literal version: ${LITERAL_VERSION}"
+
+          # 3. Construct the full file name and URL
+          FILE_NAME="${ARTIFACT_ID}-${LITERAL_VERSION}.jar"
+          CLI_URL="https://m.lifs-tools.org/artifactory/libs-snapshot/org/lifs-tools/${ARTIFACT_ID}/${VERSION_BASE}/${FILE_NAME}"
+
+          # 4. Download the actual file
+          echo "Downloading final artifact: ${CLI_URL}"
+          wget --no-check-certificate -q "${CLI_URL}" -O "${FILE_NAME}"
+
+          # 5. Check and create symlink for upload
+          if [ ! -s "${FILE_NAME}" ]; then
+            echo "::error::Download failed or file is empty. Check URL: ${CLI_URL}"
+            exit 1
+          fi
+
+          echo "Download complete. Verifying file:"
+          ls -lh "${FILE_NAME}"
+
+          # Create a symlink with a predictable name for the upload wildcard
+          ln -s "${FILE_NAME}" jmztabm-cli-snapshot-latest.jar
 
       - name: Upload CLI jar as artifact
         uses: actions/upload-artifact@v4
         with:
           name: jmztab-cli
-          path: jmztabm-cli-*.jar
+          # This path will now pick up the symlinked file
+          path: jmztabm-cli-snapshot-latest.jar
