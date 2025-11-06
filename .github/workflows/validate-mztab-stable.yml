@@ -318,10 +318,9 @@ jobs:
             fi
           done
           echo "Number of failed validations: $FAIL_COUNT"
-            if [ $FAIL_COUNT -ne 0 ]; then
-              echo "::error title=Validation summary::$FAIL_COUNT file(s) failed validation."
-              exit 1
-            fi
-            echo "::error title=Validation summary::$FAIL_COUNT file(s) failed validation."
-            exit 1
+          if [ $FAIL_COUNT -ne 0 ]; then
+             echo "::error title=Validation summary::$FAIL_COUNT file(s) failed validation."
+             exit 1
+          else
+             echo "All JSON files validated successfully."
           fi
