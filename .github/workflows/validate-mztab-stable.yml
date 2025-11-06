@@ -79,6 +79,9 @@ jobs:
           - name: progenesis
             pattern: "examples/progenesis*.json"
             extra_args: "--fromJson"
+          - name: xcms
+            pattern: "examples/xcms*"
+            extra_args: ""            
           - name: allMZTAB
             pattern: "examples/*.mztab"
             extra_args: ""
