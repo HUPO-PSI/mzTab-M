@@ -118,6 +118,9 @@ jobs:
                   echo "::warning title=Validator Info in $file::$line"
                   INFO_COUNT=$((INFO_COUNT + 1))
                 done < <(grep "\[Info-" "$OUTPUT")
+              else
+              # Only show output if there were no info warnings
+                cat "$OUTPUT"
               fi
 
               # Print full output for debugging
