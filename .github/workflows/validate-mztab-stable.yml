@@ -123,9 +123,6 @@ jobs:
                 cat "$OUTPUT"
               fi
 
-              # Print full output for debugging
-              cat "$OUTPUT"
-
               if [ $EXIT_CODE -ne 0 ]; then
                 echo "::error title=Validation failed::$file failed validation with exit code $EXIT_CODE"
                 FAIL_COUNT=$((FAIL_COUNT + 1))
