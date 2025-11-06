@@ -1,37 +1,4 @@
-name: Validate v2.0.0 Snapshot
-
-on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'examples/**'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'examples/**'
-  workflow_dispatch:
-
-env:
-  JAVA_VERSION: '17'
-  JAVA_DISTRIBUTION: 'temurin'
-
-jobs:
-  setup:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-
-  LoadCodeBase:
+LoadCodeBase:
     runs-on: ubuntu-latest
     needs: setup
 
@@ -45,21 +12,48 @@ jobs:
       - name: Download jmzTab-m CLI (Snapshot)
         id: download_cli
         run: |
-          echo "Downloading jmzTab-m CLI 1.0.7-SNAPSHOT using Maven..."
+          echo "Downloading jmzTab-m CLI 1.0.7-SNAPSHOT bundle using Maven..."
 
-          # Use the new Maven command to download the jar directly
+          # The error 'Could not find artifact' for the JAR suggests
+          # we need to download the full distribution bundle (bin.zip)
+          # and extract the JAR from it. We specify ':zip:bin' as the artifact type.
+
           mvn org.apache.maven.plugins:maven-dependency-plugin:3.7.1:copy \
             -DrepoUrl=https://m.lifs-tools.org/artifactory/libs-snapshot \
-            -Dartifact=org.lifs-tools:jmztabm-cli:1.0.7-SNAPSHOT:jar \
+            -Dartifact=org.lifs-tools:jmztabm-cli:1.0.7-SNAPSHOT:zip:bin \
             -DoutputDirectory=.
 
-          echo "Download complete. Verifying file:"
-          # The downloaded file will be named e.g., jmztabm-cli-1.0.7-SNAPSHOT.jar
-          ls -lh jmztabm-cli-*.jar
+          echo "Download complete. Verifying and extracting file:"
+          ls -lh *.zip
+
+          # Unzip the bundle
+          ZIP_FILE=$(ls jmztabm-cli-*-bin.zip)
+          UNZIP_DIR="jmztabm-cli-bundle"
+          mkdir -p "${UNZIP_DIR}"
+          unzip -q "${ZIP_FILE}" -d "${UNZIP_DIR}"
+
+          echo "Bundle extracted. Searching for standalone JAR..."
+
+          # Find the actual JAR file within the bundle
+          # It might be in a 'lib' folder or the root of the unzipped dir
+          CLI_JAR=$(find "${UNZIP_DIR}" -name "jmztabm-cli-*.jar" | head -n 1)
+
+          if [ -f "$CLI_JAR" ]; then
+            echo "Found CLI JAR: $CLI_JAR"
+            # Move it to the current directory to be uploaded
+            mv "$CLI_JAR" .
+            echo "Moved JAR to root for upload."
+            ls -lh jmztabm-cli-*.jar
+          else
+            echo "::error::Could not find jmztabm-cli-*.jar in the downloaded zip."
+            # List contents for debugging
+            ls -lR "${UNZIP_DIR}"
+            exit 1
+          fi
 
       - name: Upload CLI jar as artifact
         uses: actions/upload-artifact@v4
         with:
           name: jmztab-cli
-          # This wildcard path will match the file downloaded by Maven
+          # This wildcard path will match the extracted JAR
           path: jmztabm-cli-*.jar
