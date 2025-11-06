@@ -45,18 +45,24 @@ jobs:
       - name: Download jmzTab-m CLI (Snapshot)
         id: download_cli
         run: |
-          echo "Downloading jmzTab-m CLI 1.0.7-SNAPSHOT (Attempt 3: jar:bin)..."
+          VERSION="1.0.7-SNAPSHOT"
 
-          # This attempts to download the artifact with
-          # Type = jar
-          # Classifier = bin
-          mvn org.apache.maven.plugins:maven-dependency-plugin:3.7.1:copy \
-            -DrepoUrl=https://m.lifs-tools.org/artifactory/libs-snapshot \
-            -Dartifact=org.lifs-tools:jmztabm-cli:1.0.7-SNAPSHOT:jar:bin \
-            -DoutputDirectory=.
+          # We must use wget to download the file directly, as the Maven POM is missing in the repo.
+          # This URL points directly to the executable -bin.jar file.
+          CLI_URL="https://m.lifs-tools.org/artifactory/libs-snapshot/org/lifs-tools/jmztabm-cli/${VERSION}/jmztabm-cli-${VERSION}-bin.jar"
+
+          echo "Downloading jmzTab-m CLI from ${CLI_URL}..."
+
+          # Use wget to download the file.
+          # We add --no-check-certificate just in case the server has a self-signed cert.
+          wget --no-check-certificate -q "${CLI_URL}" -O "jmztabm-cli-${VERSION}-bin.jar"
+
+          if [ ! -s "jmztabm-cli-${VERSION}-bin.jar" ]; then
+            echo "::error::Download failed or file is empty. Check URL: ${CLI_URL}"
+            exit 1
+          fi
 
           echo "Download complete. Verifying file:"
-          # This should match the downloaded file, e.g., jmztabm-cli-1.0.7-SNAPSHOT-bin.jar
           ls -lh jmztabm-cli-*.jar
 
       - name: Upload CLI jar as artifact
