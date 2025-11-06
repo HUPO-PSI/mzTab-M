@@ -58,11 +58,14 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: MetaboLights
-            pattern: "examples/mtbls*"
-            extra_args: ""
           - name: Manual
             pattern: "examples/manual*"
+            extra_args: ""
+          - name: Masster
+            pattern: "examples/masster*"
+            extra_args: ""
+          - name: MetaboLights
+            pattern: "examples/mtbls*"
             extra_args: ""
           - name: MS-DIAL
             pattern: "examples/msdial*"
