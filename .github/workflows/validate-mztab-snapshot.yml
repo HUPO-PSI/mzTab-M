@@ -45,12 +45,11 @@ jobs:
       - name: Download jmzTab-m CLI (Snapshot)
         id: download_cli
         run: |
-          # The artifact ID is 'jmztabm' based on your new link
-          ARTIFACT_ID="jmztabm"
+          # This is the correct artifact ID
+          ARTIFACT_ID="jmztabm-cli"
           VERSION_BASE="1.0.7-SNAPSHOT"
 
           # 1. Download the metadata file from the correct path
-          # We use the 'artifactory' path, not the 'ui' path, for raw download
           METADATA_URL="https://m.lifs-tools.org/artifactory/libs-snapshot/org/lifs-tools/${ARTIFACT_ID}/${VERSION_BASE}/maven-metadata.xml"
 
           echo "Downloading metadata from ${METADATA_URL}..."
@@ -109,11 +108,11 @@ jobs:
           ls -lh "${FILE_NAME}"
 
           # Create a symlink with a predictable name for the upload wildcard
-          ln -s "${FILE_NAME}" jmztabm-snapshot-latest.jar
+          ln -s "${FILE_NAME}" jmztabm-cli-snapshot-latest.jar
 
       - name: Upload CLI jar as artifact
         uses: actions/upload-artifact@v4
         with:
           name: jmztab-cli
           # This path will now pick up the symlinked file
-          path: jmztabm-snapshot-latest.jar
+          path: jmztabm-cli-snapshot-latest.jar
