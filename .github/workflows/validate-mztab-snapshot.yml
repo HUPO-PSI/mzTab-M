@@ -45,12 +45,13 @@ jobs:
       - name: Download jmzTab-m CLI (Snapshot)
         id: download_cli
         run: |
-          VERSION_BASE="1.0.7-SNAPSHOT"
-          # This is the artifact ID from your mvn command
+          # The artifact ID is 'jmztabm' based on your new link
           ARTIFACT_ID="jmztabm"
+          VERSION_BASE="1.0.7-SNAPSHOT"
 
-          # 1. Download the metadata file that contains the *actual* timestamped filenames
-          METADATA_URL="https://m.lifs-tools.org/artifactory/libs-snapshot/org/lifs-tools/${ARTIFACT_ID}/maven-metadata.xml"
+          # 1. Download the metadata file from the correct path
+          # We use the 'artifactory' path, not the 'ui' path, for raw download
+          METADATA_URL="https://m.lifs-tools.org/artifactory/libs-snapshot/org/lifs-tools/${ARTIFACT_ID}/${VERSION_BASE}/maven-metadata.xml"
 
           echo "Downloading metadata from ${METADATA_URL}..."
           wget --no-check-certificate -q "${METADATA_URL}" -O "maven-metadata.xml"
@@ -62,7 +63,7 @@ jobs:
 
           # 2. Parse the metadata to find the full version string for the main .jar file
           # We need the <snapshotVersion> block that has <extension>jar</extension>
-          # but does *not* have a <classifier> tag.
+          # and does *not* have a <classifier> tag.
           echo "Parsing metadata..."
           LITERAL_VERSION=$(awk '
             /<snapshotVersion>/ { in_block=1; has_classifier=0; extension_is_jar=0; value="" }
@@ -108,11 +109,11 @@ jobs:
           ls -lh "${FILE_NAME}"
 
           # Create a symlink with a predictable name for the upload wildcard
-          ln -s "${FILE_NAME}" jmztabm-cli-snapshot-latest.jar
+          ln -s "${FILE_NAME}" jmztabm-snapshot-latest.jar
 
       - name: Upload CLI jar as artifact
         uses: actions/upload-artifact@v4
         with:
           name: jmztab-cli
           # This path will now pick up the symlinked file
-          path: jmztabm-cli-snapshot-latest.jar
+          path: jmztabm-snapshot-latest.jar
