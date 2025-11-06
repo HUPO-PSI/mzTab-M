@@ -6,11 +6,13 @@ on:
       - main
     paths:
       - 'examples/**'
+      - '.github/actions/**'
   pull_request:
     branches:
       - main
     paths:
       - 'examples/**'
+      - '.github/actions/**'
   workflow_dispatch:
 
 jobs:
