@@ -1,4 +1,37 @@
-LoadCodeBase:
+name: Validate v2.0.0 Snapshot
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'examples/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'examples/**'
+  workflow_dispatch:
+
+env:
+  JAVA_VERSION: '17'
+  JAVA_DISTRIBUTION: 'temurin'
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+
+  LoadCodeBase:
     runs-on: ubuntu-latest
     needs: setup
 
