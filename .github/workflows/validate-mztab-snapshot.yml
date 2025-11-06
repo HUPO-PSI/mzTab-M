@@ -46,10 +46,12 @@ jobs:
         id: download_cli
         run: |
           VERSION_BASE="1.0.7-SNAPSHOT"
-          ARTIFACT_ID="jmztabm-cli"
+          # This is the artifact ID from your mvn command
+          ARTIFACT_ID="jmztabm"
 
           # 1. Download the metadata file that contains the *actual* timestamped filenames
-          METADATA_URL="https://m.lifs-tools.org/artifactory/libs-snapshot/org/lifs-tools/${ARTIFACT_ID}/${VERSION_BASE}/maven-metadata.xml"
+          METADATA_URL="https://m.lifs-tools.org/artifactory/libs-snapshot/org/lifs-tools/${ARTIFACT_ID}/maven-metadata.xml"
+
           echo "Downloading metadata from ${METADATA_URL}..."
           wget --no-check-certificate -q "${METADATA_URL}" -O "maven-metadata.xml"
 
@@ -58,11 +60,27 @@ jobs:
             exit 1
           fi
 
-          # 2. Parse the metadata to find the full version string for the 'bin.jar'
-          # We look for the <snapshotVersion> block with <classifier>bin</classifier>
-          # and <extension>jar</extension>, then get its <value>
+          # 2. Parse the metadata to find the full version string for the main .jar file
+          # We need the <snapshotVersion> block that has <extension>jar</extension>
+          # but does *not* have a <classifier> tag.
           echo "Parsing metadata..."
-          LITERAL_VERSION=$(grep -A 2 '<classifier>bin</classifier>' maven-metadata.xml | grep '<value>' | sed 's/.*<value>\(.*\)<\/value>.*/\1/')
+          LITERAL_VERSION=$(awk '
+            /<snapshotVersion>/ { in_block=1; has_classifier=0; extension_is_jar=0; value="" }
+            /<\/snapshotVersion>/ {
+              if (in_block && !has_classifier && extension_is_jar) {
+                print value
+              }
+              in_block=0
+            }
+            /<classifier>/ { if (in_block) has_classifier=1 }
+            /<extension>jar<\/extension>/ { if (in_block) extension_is_jar=1 }
+            /<value>/ {
+              if (in_block) {
+                match($0, /<value>(.*)<\/value>/, arr);
+                value=arr[1]
+              }
+            }
+            ' maven-metadata.xml)
 
           if [ -z "$LITERAL_VERSION" ]; then
             echo "::error::Could not parse snapshot version from maven-metadata.xml. File contents:"
@@ -73,14 +91,14 @@ jobs:
           echo "Found literal version: ${LITERAL_VERSION}"
 
           # 3. Construct the full file name and URL
-          FILE_NAME="${ARTIFACT_ID}-${LITERAL_VERSION}-bin.jar"
+          FILE_NAME="${ARTIFACT_ID}-${LITERAL_VERSION}.jar"
           CLI_URL="https://m.lifs-tools.org/artifactory/libs-snapshot/org/lifs-tools/${ARTIFACT_ID}/${VERSION_BASE}/${FILE_NAME}"
 
           # 4. Download the actual file
           echo "Downloading final artifact: ${CLI_URL}"
           wget --no-check-certificate -q "${CLI_URL}" -O "${FILE_NAME}"
 
-          # 5. Check and rename
+          # 5. Check and create symlink for upload
           if [ ! -s "${FILE_NAME}" ]; then
             echo "::error::Download failed or file is empty. Check URL: ${CLI_URL}"
             exit 1
@@ -90,7 +108,6 @@ jobs:
           ls -lh "${FILE_NAME}"
 
           # Create a symlink with a predictable name for the upload wildcard
-          # This helps if there are other jars in the directory
           ln -s "${FILE_NAME}" jmztabm-cli-snapshot-latest.jar
 
       - name: Upload CLI jar as artifact
