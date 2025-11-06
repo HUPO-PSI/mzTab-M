@@ -90,7 +90,7 @@ jobs:
       - name: Verify CLI jar
         run: ls -lh
 
-            - name: Validate ${{ matrix.name }} files
+      - name: Validate ${{ matrix.name }} files
         run: |
           set +e  # Don't exit immediately on error
           CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
