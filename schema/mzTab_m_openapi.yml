@@ -766,7 +766,7 @@ components:
             MTD	database[1]	[MIRIAM, MIR:00100079, HMDB, ]
             MTD	database[1]-prefix	hmdb
             MTD	database[1]-version	3.6
-            MTD	database[1]-uri	http://www.hmdb.ca/
+            MTD	database[1]-uri	https://www.hmdb.ca
             MTD	database[2]	[,, "de novo", ]
             MTD	database[2]-prefix	dn
             MTD	database[2]-version	Unknown
@@ -1008,8 +1008,8 @@ components:
           x-mztab-example: |
             SMH	SML_ID	…	uri	…
             SML	1	…	http://www.genome.jp/dbget-bin/www_bget?cpd:C00031	…
-            SML	2	…	http://www.hmdb.ca/metabolites/HMDB0001847	…
-            SML	3	…	http://identifiers.org/hmdb/HMDB0001847	…
+            SML	2	…	https://www.hmdb.ca/metabolites/HMDB0001847	…
+            SML	3	…	https://identifiers.org/hmdb/HMDB0001847	…
           default: []
           items:
             type: string
@@ -1225,7 +1225,6 @@ components:
       required:
         - smf_id
         - exp_mass_to_charge
-        - charge
       properties:
         prefix:
           type: string
@@ -1483,7 +1482,7 @@ components:
           x-mztab-example: |
             SEH	SME_ID	identifier	…
             SME	1	CID:00027395	…
-            SME	2	HMDB:HMDB12345	…
+            SME	2	HMDB:HMDB0001847	…
             SME	3	CID:null	…
         chemical_formula:
           type: string
@@ -1529,7 +1528,7 @@ components:
             the small molecule’s HMDB, Chebi or KEGG entry).
           x-mztab-example: |
             SEH	SME_ID	…	uri	…
-            SME	1	…	http://www.hmdb.ca/metabolites/HMDB00054
+            SME	1	…	https://www.hmdb.ca/metabolites/HMDB0001847
           format: uri
         derivatized_form:
           $ref: "#/components/schemas/Parameter"
@@ -2240,7 +2239,7 @@ components:
         MTD	database[1]	[MIRIAM, MIR:00100079, HMDB, ]
         MTD	database[1]-prefix	hmdb
         MTD	database[1]-version	3.6
-        MTD	database[1]-uri	http://www.hmdb.ca/
+        MTD	database[1]-uri	https://www.hmdb.ca
         MTD	database[2]	[,, "de novo", ]
         MTD	database[2]-prefix	dn
         MTD	database[2]-version	Unknown

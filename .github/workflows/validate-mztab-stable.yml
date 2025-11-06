@@ -1,0 +1,146 @@
+name: Validate v2.0.0 for stable code 
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      
+  LoadCodeBase:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Print Java version from setup
+        run: echo "Using Java 21"
+
+      - name: Download jmzTab-m CLI
+        id: download_cli
+        run: |
+          VERSION="1.0.6"
+          CLI_URL="https://repo1.maven.org/maven2/de/isas/mztab/jmztabm-cli/${VERSION}/jmztabm-cli-${VERSION}.jar"
+          echo "Downloading jmzTab-m CLI version ${VERSION}..."
+          wget -q "${CLI_URL}" -O jmztabm-cli-${VERSION}.jar
+          echo "Downloaded jmzTab-m CLI jar: jmztabm-cli-${VERSION}.jar"
+      - name: Upload CLI jar as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jmztab-cli
+          path: jmztabm-cli-*.jar
+
+
+  ValidateFiles:
+    runs-on: ubuntu-latest
+    needs: LoadCodeBase
+    continue-on-error: true
+    strategy:
+      matrix:
+        include:
+          - name: MetaboLights
+            pattern: "examples/mtbls*"
+            extra_args: ""
+          - name: Manual
+            pattern: "examples/manual*"
+            extra_args: ""
+          - name: MS-DIAL
+            pattern: "examples/msdial*"
+            extra_args: ""
+          - name: MZmine
+            pattern: "examples/mzmine*"
+            extra_args: ""
+          - name: JSON
+            pattern: "examples/*.json"
+            extra_args: "--fromJson"
+          - name: MZTAB
+            pattern: "examples/*.mztab"
+            extra_args: ""
+
+    name: Validate ${{ matrix.name }} files
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download CLI jar
+        uses: actions/download-artifact@v4
+        with:
+          name: jmztab-cli
+          path: .
+
+      - name: Verify CLI jar
+        run: ls -lh
+
+      - name: Validate ${{ matrix.name }} files
+        run: |
+          set +e  # Don't exit immediately on error
+          CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
+          echo "Using CLI jar: $CLI_JAR"
+          
+          FILES=($(echo ${{ matrix.pattern }}))
+          if [ ! -e "${FILES[0]}" ]; then
+            echo "::warning title=No files found::No files matching '${{ matrix.pattern }}' were found."
+            exit 0
+          fi
+          
+          FAIL_COUNT=0
+          INFO_COUNT=0
+          
+          for file in "${FILES[@]}"; do
+            if [ -f "$file" ]; then
+              echo "Validating $file..."
+              
+              # Capture output and status
+              OUTPUT=$(mktemp)
+              java -jar "$CLI_JAR" -c "$file" ${{ matrix.extra_args }} -l Info >"$OUTPUT" 2>&1
+              EXIT_CODE=$?
+
+              # Emit warnings if any "[Info-" messages were found
+              if grep -q "\[Info-" "$OUTPUT"; then
+                echo "Found validator info messages in $file:"
+                while IFS= read -r line; do
+                  echo "::warning title=Validator Info in $file::$line"
+                  INFO_COUNT=$((INFO_COUNT + 1))
+                done < <(grep "\[Info-" "$OUTPUT")
+              else
+              # Only show output if there were no info warnings
+                cat "$OUTPUT"
+              fi
+
+              if [ $EXIT_CODE -ne 0 ]; then
+                echo "::error title=Validation failed::$file failed validation with exit code $EXIT_CODE"
+                FAIL_COUNT=$((FAIL_COUNT + 1))
+              else
+                echo "Validation of $file completed successfully!"
+              fi
+
+              rm -f "$OUTPUT"
+            fi
+          done
+          
+          echo "Number of failed validations: $FAIL_COUNT"
+          echo "Number of info warnings: $INFO_COUNT"
+          
+          if [ $FAIL_COUNT -ne 0 ]; then
+            echo "::error title=Validation summary::$FAIL_COUNT file(s) failed validation."
+            exit 1
+          else
+            echo "✅ All ${{ matrix.name }} files validated successfully (with $INFO_COUNT info warnings)."
+          fi
+

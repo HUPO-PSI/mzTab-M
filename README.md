@@ -5,7 +5,9 @@
 [![mzTab-M 2.0 Spec Build
 Workflow](https://github.com/HUPO-PSI/mzTab-M/actions/workflows/ci.yml/badge.svg)](https://github.com/HUPO-PSI/mzTab-M/actions/workflows/ci.yml)
 [![mzTab-M 2.0 Example File Validation
-Workflow](https://github.com/HUPO-PSI/mzTab-M/actions/workflows/validate-mztab.yml/badge.svg)](https://github.com/HUPO-PSI/mzTab-M/actions/workflows/validate-mztab.yml)
+Workflow](https://github.com/HUPO-PSI/mzTab-M/actions/workflows/validate-mztab-stable.yml/badge.svg)](https://github.com/HUPO-PSI/mzTab-M/blob/main/.github/workflows/validate-mztab-stable.yml)
+[![mzTab-M 2.x Example File Validation
+Workflow](https://github.com/HUPO-PSI/mzTab-M/actions/workflows/validate-mztab-snapshot.yml/badge.svg)](https://github.com/HUPO-PSI/mzTab-M/blob/main/.github/workflows/validate-mztab-snapshot.yml)
 
 --------------------------------------------------------------------------------
 
@@ -188,6 +190,9 @@ deployed in different formats to the mzTab-M documentation website.
 
 The repository includes example mzTab-M files in the `examples/` directory that
 are automatically validated using GitHub Actions on every push and pull request.
+
+If you had a new mztab-M example please follow the following naming convention: 
+*softwareName_0.1.2_databaseID_optionalComment.mzTab*
 
 ### Example Files
 

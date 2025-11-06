@@ -1,0 +1,210 @@
+name: Validate v2.0.0 Snapshot
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  JAVA_VERSION: '21'
+  JAVA_DISTRIBUTION: 'temurin'
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+
+  LoadCodeBase:
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Print Java version from setup
+        run: echo "Using Java ${{ env.JAVA_VERSION }}"
+
+      - name: Download jmzTab-m CLI (Snapshot)
+        id: download_cli
+        run: |
+          # This is the correct artifact ID
+          ARTIFACT_ID="jmztabm-cli"
+          VERSION_BASE="1.0.7-SNAPSHOT"
+
+          # 1. Download the metadata file from the correct path
+          METADATA_URL="https://m.lifs-tools.org/artifactory/libs-snapshot/org/lifs-tools/${ARTIFACT_ID}/${VERSION_BASE}/maven-metadata.xml"
+
+          echo "Downloading metadata from ${METADATA_URL}..."
+          wget --no-check-certificate -q "${METADATA_URL}" -O "maven-metadata.xml"
+
+          if [ ! -s "maven-metadata.xml" ]; then
+            echo "::error::Could not download maven-metadata.xml. Check URL: ${METADATA_URL}"
+            exit 1
+          fi
+
+          # 2. Parse the metadata to find the full version string for the main .jar file
+          # We need the <snapshotVersion> block that has <extension>jar</extension>
+          # and does *not* have a <classifier> tag.
+          echo "Parsing metadata..."
+          LITERAL_VERSION=$(awk '
+            /<snapshotVersion>/ { in_block=1; has_classifier=0; extension_is_jar=0; value="" }
+            /<\/snapshotVersion>/ {
+              if (in_block && !has_classifier && extension_is_jar) {
+                print value
+              }
+              in_block=0
+            }
+            /<classifier>/ { if (in_block) has_classifier=1 }
+            /<extension>jar<\/extension>/ { if (in_block) extension_is_jar=1 }
+            /<value>/ {
+              if (in_block) {
+                match($0, /<value>(.*)<\/value>/, arr);
+                value=arr[1]
+              }
+            }
+            ' maven-metadata.xml)
+
+          if [ -z "$LITERAL_VERSION" ]; then
+            echo "::error::Could not parse snapshot version from maven-metadata.xml. File contents:"
+            cat maven-metadata.xml
+            exit 1
+          fi
+
+          echo "Found literal version: ${LITERAL_VERSION}"
+
+          # 3. Construct the full file name and URL
+          FILE_NAME="${ARTIFACT_ID}-${LITERAL_VERSION}.jar"
+          CLI_URL="https://m.lifs-tools.org/artifactory/libs-snapshot/org/lifs-tools/${ARTIFACT_ID}/${VERSION_BASE}/${FILE_NAME}"
+
+          # 4. Download the actual file
+          echo "Downloading final artifact: ${CLI_URL}"
+          wget --no-check-certificate -q "${CLI_URL}" -O "${FILE_NAME}"
+
+          # 5. Check and create symlink for upload
+          if [ ! -s "${FILE_NAME}" ]; then
+            echo "::error::Download failed or file is empty. Check URL: ${CLI_URL}"
+            exit 1
+          fi
+
+          echo "Download complete. Verifying file:"
+          ls -lh "${FILE_NAME}"
+
+          # Create a symlink with a predictable name that matches the 'jmztabm-cli-*.jar' pattern
+          ln -s "${FILE_NAME}" jmztabm-cli-snapshot.jar
+
+      - name: Upload CLI jar as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jmztab-cli
+          # This path will now pick up the symlinked file
+          path: jmztabm-cli-snapshot.jar
+
+  ValidateFiles:
+    runs-on: ubuntu-latest
+    needs: LoadCodeBase
+    continue-on-error: true
+    strategy:
+      matrix:
+        include:
+          - name: MetaboLights
+            pattern: "examples/mtbls*"
+            extra_args: ""
+          - name: Manual
+            pattern: "examples/manual*"
+            extra_args: ""
+          - name: MS-DIAL
+            pattern: "examples/msdial*"
+            extra_args: ""
+          - name: MZmine
+            pattern: "examples/mzmine*"
+            extra_args: ""
+          - name: JSON
+            pattern: "examples/*.json"
+            extra_args: "--fromJson"
+          - name: MZTAB
+            pattern: "examples/*.mztab"
+            extra_args: ""
+
+    name: Validate ${{ matrix.name }} files
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download CLI jar
+        uses: actions/download-artifact@v4
+        with:
+          name: jmztab-cli
+          path: .
+
+      - name: Verify CLI jar
+        run: ls -lh
+
+      - name: Validate ${{ matrix.name }} files
+        run: |
+          set +e  # Don't exit immediately on error
+          CLI_JAR=$(ls jmztabm-cli-*.jar | head -n 1)
+          echo "Using CLI jar: $CLI_JAR"
+          
+          FILES=($(echo ${{ matrix.pattern }}))
+          if [ ! -e "${FILES[0]}" ]; then
+            echo "::warning title=No files found::No files matching '${{ matrix.pattern }}' were found."
+            exit 0
+          fi
+          
+          FAIL_COUNT=0
+          INFO_COUNT=0
+          
+          for file in "${FILES[@]}"; do
+            if [ -f "$file" ]; then
+              echo "Validating $file..."
+              
+              # Capture output and status
+              OUTPUT=$(mktemp)
+              java -jar "$CLI_JAR" -c "$file" ${{ matrix.extra_args }} -l Info >"$OUTPUT" 2>&1
+              EXIT_CODE=$?
+
+              # Emit warnings if any "[Info-" messages were found
+              if grep -q "\[Info-" "$OUTPUT"; then
+                echo "Found validator info messages in $file:"
+                while IFS= read -r line; do
+                  echo "::warning title=Validator Info in $file::$line"
+                  INFO_COUNT=$((INFO_COUNT + 1))
+                done < <(grep "\[Info-" "$OUTPUT")
+              else
+              # Only show output if there were no info warnings
+                cat "$OUTPUT"
+              fi
+
+              if [ $EXIT_CODE -ne 0 ]; then
+                echo "::error title=Validation failed::$file failed validation with exit code $EXIT_CODE"
+                FAIL_COUNT=$((FAIL_COUNT + 1))
+              else
+                echo "Validation of $file completed successfully!"
+              fi
+
+              rm -f "$OUTPUT"
+            fi
+          done
+          
+          echo "Number of failed validations: $FAIL_COUNT"
+          echo "Number of info warnings: $INFO_COUNT"
+          
+          if [ $FAIL_COUNT -ne 0 ]; then
+            echo "::error title=Validation summary::$FAIL_COUNT file(s) failed validation."
+            exit 1
+          else
+            echo "✅ All ${{ matrix.name }} files validated successfully (with $INFO_COUNT info warnings)."
+          fi
