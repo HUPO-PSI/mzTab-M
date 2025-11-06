@@ -1,5 +1,18 @@
 name: Validate v2.0.0 Snapshot
 
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'examples/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'examples/**'
+  workflow_dispatch:
+
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -11,8 +24,8 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
+          java-version: '21'
+          distribution: 'temurin'
 
   LoadCodeBase:
     runs-on: ubuntu-latest
