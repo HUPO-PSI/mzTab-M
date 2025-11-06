@@ -16,8 +16,6 @@ on:
 env:
   JAVA_VERSION: '17'
   JAVA_DISTRIBUTION: 'temurin'
-  # Note: The version is set in the 'Download' step's script
-  # CLI_VERSION: '1.0.7-SNAPSHOT'
 
 jobs:
   setup:
@@ -44,51 +42,24 @@ jobs:
       - name: Print Java version from setup
         run: echo "Using Java ${{ env.JAVA_VERSION }}"
 
-      - name: Download and extract jmzTab-m CLI
+      - name: Download jmzTab-m CLI (Snapshot)
         id: download_cli
         run: |
-          # This version matches the dev snapshot
-          VERSION="1.0.7-SNAPSHOT"
+          echo "Downloading jmzTab-m CLI 1.0.7-SNAPSHOT using Maven..."
 
-          # Snapshots are on Sonatype OSSRH with a different group ID (org.lifs-tools)
-          # The snapshot is distributed as a -bin.zip bundle
-          CLI_URL="https://oss.sonatype.org/content/repositories/snapshots/org/lifs-tools/jmztabm-cli/${VERSION}/jmztabm-cli-${VERSION}-bin.zip"
-          ZIP_FILE="jmztabm-cli-snapshot.zip"
-          UNZIP_DIR="jmztabm-cli-snapshot-bundle"
+          # Use the new Maven command to download the jar directly
+          mvn org.apache.maven.plugins:maven-dependency-plugin:3.7.1:copy \
+            -DrepoUrl=https://m.lifs-tools.org/artifactory/libs-snapshot \
+            -Dartifact=org.lifs-tools:jmztabm-cli:1.0.7-SNAPSHOT:jar \
+            -DoutputDirectory=.
 
-          echo "Downloading jmzTab-m CLI version ${VERSION} from ${CLI_URL}..."
-          wget -q "${CLI_URL}" -O "${ZIP_FILE}"
-
-          if [ ! -s "${ZIP_FILE}" ]; then
-            echo "::error::Download failed or file is empty. Check URL: ${CLI_URL}"
-            exit 1
-          fi
-
-          echo "Downloaded CLI zip: ${ZIP_FILE}"
-
-          echo "Unpacking ${ZIP_FILE} to ${UNZIP_DIR}..."
-          mkdir -p "${UNZIP_DIR}"
-          unzip -q "${ZIP_FILE}" -d "${UNZIP_DIR}"
-
-          # Find the single JAR file inside the unzipped bundle
-          # and move it to the root for artifact upload
-          CLI_JAR=$(find "${UNZIP_DIR}" -name "jmztabm-cli-*.jar" | head -n 1)
-
-          if [ -f "$CLI_JAR" ]; then
-            echo "Found CLI JAR: $CLI_JAR"
-            # Move it to the current directory to be uploaded
-            mv "$CLI_JAR" .
-            echo "Moved JAR to root for upload."
-            ls -lh jmztabm-cli-*.jar
-          else
-            echo "::error::Could not find jmztabm-cli-*.jar in the downloaded zip."
-            # List contents for debugging
-            ls -lR "${UNZIP_DIR}"
-            exit 1
-          fi
+          echo "Download complete. Verifying file:"
+          # The downloaded file will be named e.g., jmztabm-cli-1.0.7-SNAPSHOT.jar
+          ls -lh jmztabm-cli-*.jar
 
       - name: Upload CLI jar as artifact
         uses: actions/upload-artifact@v4
         with:
           name: jmztab-cli
-          path: jmztabm-cli-*.jar # This will now match the extracted JAR
+          # This wildcard path will match the file downloaded by Maven
+          path: jmztabm-cli-*.jar
