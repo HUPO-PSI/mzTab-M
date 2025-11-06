@@ -120,24 +120,36 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: MetaboLights
-            pattern: "examples/mtbls*"
+          - name: LDA
+            pattern: "examples/LDA*"
+            extra_args: ""
+          - name: lipidcompass
+            pattern: "examples/lipidcompass*"
             extra_args: ""
           - name: Manual
             pattern: "examples/manual*"
             extra_args: ""
+          - name: masster
+            pattern: "examples/masster*"
+            extra_args: ""
+          - name: MetaboScape
+            pattern: "examples/MetaboScape*"
+            extra_args: ""
           - name: MS-DIAL
             pattern: "examples/msdial*"
             extra_args: ""
-          - name: MZmine
+          - name: mzmine
             pattern: "examples/mzmine*"
             extra_args: ""
-          - name: JSON
-            pattern: "examples/*.json"
-            extra_args: "--fromJson"
-          - name: MZTAB
+          - name: progenesis
+            pattern: "examples/progenesis*"
+            extra_args: ""
+          - name: allMZTAB
             pattern: "examples/*.mztab"
             extra_args: ""
+          - name: allJSON
+            pattern: "examples/*.json"
+            extra_args: "--fromJson"
 
     name: Validate ${{ matrix.name }} files
     steps:
