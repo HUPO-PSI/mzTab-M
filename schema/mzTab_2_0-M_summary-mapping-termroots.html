@@ -1,0 +1,866 @@
+<!DOCTYPE html PUBLIC "" "">
+<!DOCTYPE html><html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>LipidCompass mzTab-M CV mapping</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body><div class="container">
+<h1>LipidCompass mzTab-M CV mapping</h1>
+
+  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+
+  <p><h2>
+				Rule:  derivatization_agent_may</h2><ul>
+<li>Scope: /metadata</li>
+<li>Path:    /metadata/@derivatizationAgent</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					AND
+							(and, all listed terms or their children are required)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">CHEBI</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=CHEBI:23367">CHEBI:23367</a></td>
+<td align="left">molecular entity</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  id_confidence_measure_must</h2><ul>
+<li>Scope: /metadata</li>
+<li>Path:    /metadata/@idConfidenceMeasure</li>
+<li>Requirement: MUST</li>
+<li>Boolean logic: 
+					OR
+							(inclusive or, one or more terms or their children are allowed)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1002888">MS:1002888</a></td>
+<td align="left">small molecule confidence measure</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="blue">yes</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  quantification_method_must</h2><ul>
+<li>Scope: /metadata</li>
+<li>Path:    /metadata/@quantificationMethod</li>
+<li>Requirement: MUST</li>
+<li>Boolean logic: 
+					OR
+							(inclusive or, one or more terms or their children are allowed)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">PRIDE</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000307">PRIDE:0000307</a></td>
+<td align="left">Quantification method</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1001833">MS:1001833</a></td>
+<td align="left">quantitation analysis summary</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  small_molecule_feature_quantification_unit_must</h2><ul>
+<li>Scope: /metadata</li>
+<li>Path:    /metadata/@smallMoleculeFeatureQuantificationUnit</li>
+<li>Requirement: MUST</li>
+<li>Boolean logic: 
+					XOR
+							(exclusive or, exactly one term or its children is allowed)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">PRIDE</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000392">PRIDE:0000392</a></td>
+<td align="left">Quantification unit</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+<tr align="center">
+<td align="left">UO</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=UO:0000051">UO:0000051</a></td>
+<td align="left">concentration unit</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000043">MS:1000043</a></td>
+<td align="left">intensity unit</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+<tr align="center">
+<td align="left">UO</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=UO:0000006">UO:0000006</a></td>
+<td align="left">substance unit</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  small_molecule_identification_reliability_may</h2><ul>
+<li>Scope: /metadata</li>
+<li>Path:    /metadata/@smallMoleculeIdentificationReliability</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					AND
+							(and, all listed terms or their children are required)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1002895">MS:1002895</a></td>
+<td align="left">small molecule identification attribute</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  small_molecule_quantification_unit_must</h2><ul>
+<li>Scope: /metadata</li>
+<li>Path:    /metadata/@smallMoleculeQuantificationUnit</li>
+<li>Requirement: MUST</li>
+<li>Boolean logic: 
+					XOR
+							(exclusive or, exactly one term or its children is allowed)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">PRIDE</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000392">PRIDE:0000392</a></td>
+<td align="left">Quantification unit</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+<tr align="center">
+<td align="left">UO</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=UO:0000051">UO:0000051</a></td>
+<td align="left">concentration unit</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000043">MS:1000043</a></td>
+<td align="left">intensity unit</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+<tr align="center">
+<td align="left">UO</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=UO:0000006">UO:0000006</a></td>
+<td align="left">substance unit</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  database_must</h2><ul>
+<li>Scope: /metadata/database</li>
+<li>Path:    /metadata/database/@param</li>
+<li>Requirement: MUST</li>
+<li>Boolean logic: 
+					XOR
+							(exclusive or, exactly one term or its children is allowed)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1001013">MS:1001013</a></td>
+<td align="left">database name</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1001347">MS:1001347</a></td>
+<td align="left">database file formats</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1001011">MS:1001011</a></td>
+<td align="left">search database details</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  instrument_analyzer_may</h2><ul>
+<li>Scope: /metadata/instrument</li>
+<li>Path:    /metadata/instrument/@analyzer</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					AND
+							(and, all listed terms or their children are required)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000451">MS:1000451</a></td>
+<td align="left">mass analyzer</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  instrument_detector_may</h2><ul>
+<li>Scope: /metadata/instrument</li>
+<li>Path:    /metadata/instrument/@detector</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					AND
+							(and, all listed terms or their children are required)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000026">MS:1000026</a></td>
+<td align="left">detector type</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  instrument_name_may</h2><ul>
+<li>Scope: /metadata/instrument</li>
+<li>Path:    /metadata/instrument/@name</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					AND
+							(and, all listed terms or their children are required)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000031">MS:1000031</a></td>
+<td align="left">instrument model</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  instrument_source_may</h2><ul>
+<li>Scope: /metadata/instrument</li>
+<li>Path:    /metadata/instrument/@source</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					AND
+							(and, all listed terms or their children are required)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000458">MS:1000458</a></td>
+<td align="left">source</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  msrun_format_may</h2><ul>
+<li>Scope: /metadata/msRun</li>
+<li>Path:    /metadata/msRun/@format</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					AND
+							(and, all listed terms or their children are required)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000560">MS:1000560</a></td>
+<td align="left">mass spectrometer file format</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  msrun_fragmentation_method_may</h2><ul>
+<li>Scope: /metadata/msRun</li>
+<li>Path:    /metadata/msRun/@fragmentationMethod</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					OR
+							(inclusive or, one or more terms or their children are allowed)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000044">MS:1000044</a></td>
+<td align="left">dissociation method</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="blue">yes</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  msrun_hash_method_may</h2><ul>
+<li>Scope: /metadata/msRun</li>
+<li>Path:    /metadata/msRun/@hashMethod</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					AND
+							(and, all listed terms or their children are required)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000561">MS:1000561</a></td>
+<td align="left">data file checksum type</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  msrun_id_format_may</h2><ul>
+<li>Scope: /metadata/msRun</li>
+<li>Path:    /metadata/msRun/@idFormat</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					AND
+							(and, all listed terms or their children are required)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000767">MS:1000767</a></td>
+<td align="left">native spectrum identifier format</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  msrun_scan_polarity_must</h2><ul>
+<li>Scope: /metadata/msRun</li>
+<li>Path:    /metadata/msRun/@scanPolarity</li>
+<li>Requirement: MUST</li>
+<li>Boolean logic: 
+					OR
+							(inclusive or, one or more terms or their children are allowed)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000129">MS:1000129</a></td>
+<td align="left">negative scan</td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000130">MS:1000130</a></td>
+<td align="left">positive scan</td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  sample_cell_type_may</h2><ul>
+<li>Scope: /metadata/sample</li>
+<li>Path:    /metadata/sample/@cellType</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					AND
+							(and, all listed terms or their children are required)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">CL</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=CL:0000000">CL:0000000</a></td>
+<td align="left">cell</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  sample_disease_may</h2><ul>
+<li>Scope: /metadata/sample</li>
+<li>Path:    /metadata/sample/@disease</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					OR
+							(inclusive or, one or more terms or their children are allowed)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">DOID</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=DOID:4">DOID:4</a></td>
+<td align="left">disease</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+<tr align="center">
+<td align="left">PRIDE</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000018">PRIDE:0000018</a></td>
+<td align="left">Disease free</td>
+<td><font color="blue">yes</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  sample_species_may</h2><ul>
+<li>Scope: /metadata/sample</li>
+<li>Path:    /metadata/sample/@species</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					OR
+							(inclusive or, one or more terms or their children are allowed)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">PRIDE</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000033">PRIDE:0000033</a></td>
+<td align="left">NEWT</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+<tr align="center">
+<td align="left">NCBITaxon</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=NCBITaxon:1">NCBITaxon:1</a></td>
+<td align="left">root</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  sample_tissue_may</h2><ul>
+<li>Scope: /metadata/sample</li>
+<li>Path:    /metadata/sample/@tissue</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					OR
+							(inclusive or, one or more terms or their children are allowed)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">BTO</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=BTO:0000000">BTO:0000000</a></td>
+<td align="left">tissues, cell types and enzyme sources</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+<tr align="center">
+<td align="left">PRIDE</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=PRIDE:0000442">PRIDE:0000442</a></td>
+<td align="left">Tissue not applicable to dataset</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  sample_processing_may</h2><ul>
+<li>Scope: /metadata/sampleprocessing</li>
+<li>Path:    /metadata/sampleProcessing/@sampleProcessing</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					AND
+							(and, all listed terms or their children are required)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MSIO</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=OBI:0000094">OBI:0000094</a></td>
+<td align="left">material processing</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="blue">yes</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  software_must</h2><ul>
+<li>Scope: /metadata/software</li>
+<li>Path:    /metadata/software/@parameter</li>
+<li>Requirement: MUST</li>
+<li>Boolean logic: 
+					AND
+							(and, all listed terms or their children are required)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1000531">MS:1000531</a></td>
+<td align="left">software</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  study_variable_average_function_may</h2><ul>
+<li>Scope: /metadata/studyvariable</li>
+<li>Path:    /metadata/studyVariable/@averageFunction</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					AND
+							(and, all listed terms or their children are required)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1002882">MS:1002882</a></td>
+<td align="left">study variable average function</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  study_variable_variation_function_may</h2><ul>
+<li>Scope: /metadata/studyvariable</li>
+<li>Path:    /metadata/studyVariable/@variationFunction</li>
+<li>Requirement: MAY</li>
+<li>Boolean logic: 
+					AND
+							(and, all listed terms or their children are required)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1002884">MS:1002884</a></td>
+<td align="left">study variable variation function</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+<p><h2>
+				Rule:  best_id_confidence_measure_must</h2><ul>
+<li>Scope: /smallMoleculeSummary</li>
+<li>Path:    /smallMoleculeSummary/@bestIdConfidenceMeasure</li>
+<li>Requirement: MUST</li>
+<li>Boolean logic: 
+					AND
+							(and, all listed terms or their children are required)
+						</li>
+</ul><h3><i>Allowed terms:</i></h3><table border="1" cellpadding="2" width="100%" style="border-style:solid; border-collapse:collapse;">
+<tr>
+<th>CV ID</th>
+<th>Accession</th>
+<th>Preferred name</th>
+<th>Specified term allowed?</th>
+<th>Child terms allowed?</th>
+<th>Allow more than one term?</th>
+<th>Use accession or preferred name?</th>
+</tr>
+<tr align="center">
+<td align="left">MS</td>
+<td align="left"><a href="https://www.ebi.ac.uk/ols4/search?q=MS:1002888">MS:1002888</a></td>
+<td align="left">small molecule confidence measure</td>
+<td><font color="red">no</font></td>
+<td><font color="blue">yes</font></td>
+<td><font color="red">no</font></td>
+<td>accession number</td>
+</tr>
+</table><hr></p>
+</div></body>
+</html>

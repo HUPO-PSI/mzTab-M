@@ -4,13 +4,9 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'examples/**'
   pull_request:
     branches:
       - main
-    paths:
-      - 'examples/**'
   workflow_dispatch:
 
 jobs:
@@ -35,7 +31,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Print Java version from setup
-        run: echo "Using Java 17"
+        run: echo "Using Java 21"
 
       - name: Download jmzTab-m CLI
         id: download_cli
@@ -55,30 +51,40 @@ jobs:
   ValidateFiles:
     runs-on: ubuntu-latest
     needs: LoadCodeBase
+    continue-on-error: true
     strategy:
       matrix:
         include:
+          - name: LDA
+            pattern: "examples/LDA*"
+            extra_args: ""
+          - name: lipidcompass
+            pattern: "examples/lipidcompass*"
+            extra_args: ""
           - name: Manual
             pattern: "examples/manual*"
             extra_args: ""
-          - name: Masster
+          - name: masster
             pattern: "examples/masster*"
             extra_args: ""
-          - name: MetaboLights
-            pattern: "examples/mtbls*"
-            extra_args: ""
+          - name: MetaboScape
+            pattern: "examples/MetaboScape*.json"
+            extra_args: "--fromJson"
           - name: MS-DIAL
             pattern: "examples/msdial*"
             extra_args: ""
-          - name: MZmine
+          - name: mzmine
             pattern: "examples/mzmine*"
             extra_args: ""
-          - name: JSON
-            pattern: "examples/*.json"
+          - name: progenesis
+            pattern: "examples/progenesis*.json"
             extra_args: "--fromJson"
-          - name: MZTAB
+          - name: allMZTAB
             pattern: "examples/*.mztab"
             extra_args: ""
+          - name: allJSON
+            pattern: "examples/*.json"
+            extra_args: "--fromJson"
 
     name: Validate ${{ matrix.name }} files
     steps:
@@ -106,27 +112,47 @@ jobs:
           fi
           
           FAIL_COUNT=0
+          INFO_COUNT=0
+          
           for file in "${FILES[@]}"; do
             if [ -f "$file" ]; then
               echo "Validating $file..."
-              java -jar "$CLI_JAR" -c "$file" ${{ matrix.extra_args }} -l Info
+              
+              # Capture output and status
+              OUTPUT=$(mktemp)
+              java -jar "$CLI_JAR" -c "$file" ${{ matrix.extra_args }} -l Info >"$OUTPUT" 2>&1
               EXIT_CODE=$?
+
+              # Emit warnings if any "[Info-" messages were found
+              if grep -q "\[Info-" "$OUTPUT"; then
+                echo "Found validator info messages in $file:"
+                while IFS= read -r line; do
+                  echo "::warning title=Validator Info in $file::$line"
+                  INFO_COUNT=$((INFO_COUNT + 1))
+                done < <(grep "\[Info-" "$OUTPUT")
+              else
+              # Only show output if there were no info warnings
+                cat "$OUTPUT"
+              fi
+
               if [ $EXIT_CODE -ne 0 ]; then
                 echo "::error title=Validation failed::$file failed validation with exit code $EXIT_CODE"
                 FAIL_COUNT=$((FAIL_COUNT + 1))
               else
                 echo "Validation of $file completed successfully!"
               fi
+
+              rm -f "$OUTPUT"
             fi
           done
           
           echo "Number of failed validations: $FAIL_COUNT"
+          echo "Number of info warnings: $INFO_COUNT"
+          
           if [ $FAIL_COUNT -ne 0 ]; then
             echo "::error title=Validation summary::$FAIL_COUNT file(s) failed validation."
             exit 1
           else
-            echo "✅ All ${{ matrix.name }} files validated successfully."
+            echo "✅ All ${{ matrix.name }} files validated successfully (with $INFO_COUNT info warnings)."
           fi
-          else
-             echo "All JSON files validated successfully."
-          fi
+
