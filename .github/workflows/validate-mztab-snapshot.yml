@@ -52,9 +52,9 @@ jobs:
           # and extract the JAR from it. We specify ':zip:bin' as the artifact type.
 
           mvn org.apache.maven.plugins:maven-dependency-plugin:3.7.1:copy \
-            -DrepoUrl=https://m.lifs-tools.org/artifactory/libs-snapshot \
-            -Dartifact=org.lifs-tools:jmztabm-cli:1.0.7-SNAPSHOT:zip:bin \
-            -DoutputDirectory=.
+          -DrepoUrl=https://m.lifs-tools.org/artifactory/libs-snapshot \
+          -Dartifact=org.lifs-tools:jmztabm-cli:1.0.7-SNAPSHOT:jar \
+          -DoutputDirectory=.
 
           echo "Download complete. Verifying and extracting file:"
           ls -lh *.zip
