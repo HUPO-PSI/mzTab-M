@@ -1081,6 +1081,22 @@ MTD study_variable[1]-assay_refs assay[1]\| assay[2]\| assay[3]
 ....
 |==============================================================================================
 
+[[study_variable1-n-description]]
+==== study_variable[1-n]-description
+
+[cols=",",]
+|=============================================================================
+|*Description* |A textual description of the study variable.
+|*Type* |String
+|*Mandatory* |True
+|*Example* a|
+....
+MTD study_variable[1]-description Group B (spike-in 0.74 fmol/uL)
+....
+|=============================================================================
+
+
+
 [[study_variable1-n-average_function1-n]]
 ==== study_variable[1-n]-average_function
 [cols=",",]
@@ -1108,21 +1124,6 @@ MTD study_variable-average_function [MS, MS:1002883, median, ]
 MTD study_variable-variation_function [MS, MS:1002885, standard error, ]
 ....
 |==========================================================================================================================================================================================================================================================================================
-
-
-[[study_variable1-n-description]]
-==== study_variable[1-n]-description
-
-[cols=",",]
-|=============================================================================
-|*Description* |A textual description of the study variable.
-|*Type* |String
-|*Mandatory* |True
-|*Example* a|
-....
-MTD study_variable[1]-description Group B (spike-in 0.74 fmol/uL)
-....
-|=============================================================================
 
 [[study_variable1-n-factors]]
 ==== study_variable[1-n]-factors
