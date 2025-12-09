@@ -76,6 +76,9 @@ list](https://lists.cebitec.uni-bielefeld.de/mailman3/postorius/lists/mztabm.ceb
     [GitHub Actions YAML](.github/workflows/validate-mztab.yml), using the
     aforementioned validator.
 
+-   **R Ecosystem Validator**:\
+    [reading-mzTab-into-R](https://github.com/michbur/reading-mzTab-into-R/)
+
 -   **Online Validator App**:\
     [jmzTab-m Web Validator](https://github.com/lifs-tools/jmzTab-m-webapp)
 
