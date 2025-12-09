@@ -1065,6 +1065,9 @@ MTD assay[1]-ms_run_ref ms_run[2]
 MTD study_variable[1] “control”
 
 MTD study_variable[2] “1 minute”
+
+MTD study_variable[13] “Wildtype”
+
 ....
 |================================================================================================================================================================================================================================================================================================
 
@@ -1092,6 +1095,22 @@ MTD study_variable[1]-assay_refs assay[1]\| assay[2]\| assay[3]
 |*Example* a|
 ....
 MTD study_variable[1]-description Group B (spike-in 0.74 fmol/uL)
+....
+|=============================================================================
+
+[[study_variable1-n-group]]
+==== study_variable[1-n]-group
+
+[cols=",",]
+|=============================================================================
+|*Description* |Grouping related `study_variable`s that belong to one experimental design factor in multi-factorial designs. Added in mzTab-M 2.1.
+|*Type* |String
+|*Mandatory* |False
+|*Example* a|
+....
+MTD study_variable[2]-group timepoint
+
+MTD study_variable[13]-group Genotype
 ....
 |=============================================================================
 
