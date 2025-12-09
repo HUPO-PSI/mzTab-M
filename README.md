@@ -135,6 +135,7 @@ list](https://lists.cebitec.uni-bielefeld.de/mailman3/postorius/lists/mztabm.ceb
 
 ### 🛠 Active Development (2.1.0+)
 
+-   Convertor from mzTab-M to ISA-tab format for MetaboLights submission can be found [here](https://github.com/EBI-Metabolights/mztabm2mtbls)
 -   Work with the [Lipidomics Standards
     Initiative](https://lipidomics-standards-initiative.org/) to map the
     reporting checklist to mzTab-M metadata.
