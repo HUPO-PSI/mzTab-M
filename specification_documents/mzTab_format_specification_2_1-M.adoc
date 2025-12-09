@@ -1128,7 +1128,7 @@ MTD study_variable[1]-description Group B (spike-in 0.74 fmol/uL)
 ==== study_variable[1-n]-factors
 [cols=","]
 |=======================================================================================================================================================================
-|*Description* |Additional parameters or factors, separated by bars, that are known about study variables allowing the capture of more complex, such as nested designs.
+|*Description* |Additional parameters or factors, separated by bars, that are known about study variables allowing the capture of more complex, such as nested designs. *This field is deprecated and will be removed in a future release*.
 |*Type* |Param List
 |*Mandatory* |False
 |*Example* a|
