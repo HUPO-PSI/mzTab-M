@@ -1200,12 +1200,12 @@ MTD cv[1]-version 4.1.11
 
 [cols=",",]
 |===============================================================================================================================================================================================================
-|*Description* |A string containing the URIs of the controlled vocabularies/ontologies used in the mzTab file. Note: For OBO ontologies, always use an OBO PURL rather than raw repository links to ensure long-term stability. 
+|*Description* |A string containing the URIs of the controlled vocabularies/ontologies used in the mzTab file. Note: For OBO ontologies, always use an OBO PURL rather than raw repository links to ensure long-term stability. For other ontology formats, please use the fully qualified PURL pointing to the ontology file.
 |*Type* |String
 |*Mandatory* |True
 |*Example* a|
 ....
-MTD cv[1]-uri http://purl.obolibrary.org/obo/ms.obo
+MTD cv[1]-uri https://purl.obolibrary.org/obo/ms.obo
 ....
 |===============================================================================================================================================================================================================
 
