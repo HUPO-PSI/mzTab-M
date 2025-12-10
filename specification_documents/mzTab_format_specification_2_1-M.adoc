@@ -253,8 +253,7 @@ Additional annotation software would typically be required to add the sample-lev
 [#figurerrr-1]
 image::img/media/figure1.png[image, title="Simple experimental designs in mzTab-M can be represented using a combination of the elements study_variable (SV), assay, ms_run and sample. Quantitative values can be reported in files for SVs and assays. A) SV is intended to capture different groups of replicates, which might have resulted from different levels of a given variable e.g. control versus treated (represented as 2 SVs), n time points over a treatment course (as n SVs). B) assay captures a measurement made about a molecule (small molecule/lipid) where multiple assays within the same group are taken to be replicates of some kind (biological or technical). C) ms_run captures a single run on an MS instrument. D) samples are optional in mzTab since the quantitative software may often be unaware of the biological samples that have been analyzed. If that information is available, references from assay to the same (technical, upper half) or different (biological, bottom half) samples are used to describe the type of replication performed.",width=100%,pdfwidth=100%,scaledwidth=100%]
 
-
-
+Starting with mzTab-M 2.1, more complex experimental designs involving multiple factors (e.g. different treatments at different time points) can be represented by grouping multiple study variables. Such a group of study variable instances can be considered a column in a wide-layout experimental design matrix. 
 
 [[reporting-derivatization-approaches]]
 === Reporting derivatization approaches
@@ -1066,6 +1065,9 @@ MTD assay[1]-ms_run_ref ms_run[2]
 MTD study_variable[1] “control”
 
 MTD study_variable[2] “1 minute”
+
+MTD study_variable[13] “Wildtype”
+
 ....
 |================================================================================================================================================================================================================================================================================================
 
@@ -1081,6 +1083,38 @@ MTD study_variable[2] “1 minute”
 MTD study_variable[1]-assay_refs assay[1]\| assay[2]\| assay[3]
 ....
 |==============================================================================================
+
+[[study_variable1-n-description]]
+==== study_variable[1-n]-description
+
+[cols=",",]
+|=============================================================================
+|*Description* |A textual description of the study variable.
+|*Type* |String
+|*Mandatory* |True
+|*Example* a|
+....
+MTD study_variable[1]-description Group B (spike-in 0.74 fmol/uL)
+....
+|=============================================================================
+
+[[study_variable1-n-group]]
+==== study_variable[1-n]-group
+
+[cols=",",]
+|=============================================================================
+|*Description* |Grouping related `study_variable`s that belong to one experimental design factor in multi-factorial designs. Added in mzTab-M 2.1.
+|*Type* |String
+|*Mandatory* |False
+|*Example* a|
+....
+MTD study_variable[2]-group timepoint
+
+MTD study_variable[13]-group Genotype
+....
+|=============================================================================
+
+
 
 [[study_variable1-n-average_function1-n]]
 ==== study_variable[1-n]-average_function
@@ -1110,26 +1144,11 @@ MTD study_variable-variation_function [MS, MS:1002885, standard error, ]
 ....
 |==========================================================================================================================================================================================================================================================================================
 
-
-[[study_variable1-n-description]]
-==== study_variable[1-n]-description
-
-[cols=",",]
-|=============================================================================
-|*Description* |A textual description of the study variable.
-|*Type* |String
-|*Mandatory* |True
-|*Example* a|
-....
-MTD study_variable[1]-description Group B (spike-in 0.74 fmol/uL)
-....
-|=============================================================================
-
 [[study_variable1-n-factors]]
 ==== study_variable[1-n]-factors
 [cols=","]
 |=======================================================================================================================================================================
-|*Description* |Additional parameters or factors, separated by bars, that are known about study variables allowing the capture of more complex, such as nested designs.
+|*Description* |Additional parameters or factors, separated by bars, that are known about study variables allowing the capture of more complex, such as nested designs. *This field is deprecated and will be removed in a future release*.
 |*Type* |Param List
 |*Mandatory* |False
 |*Example* a|
