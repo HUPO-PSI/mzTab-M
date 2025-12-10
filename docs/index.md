@@ -32,7 +32,7 @@ When you use mzTab format version 1.0.0, please cite the following publication:
 ## Specification documents
 ### Version 2.0.0 for Metabolomics
 
-  > Specification document ([HTML](2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.html),[DOCX](2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.docx),[PDF](2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.pdf))
+  > Specification document ([HTML](https://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.html),[DOCX](https://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.docx),[PDF](https://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.pdf))
 
 **Example Files**
 Several example of the format can be download from the next link [here](https://github.com/HUPO-PSI/mzTab/tree/master/examples/2_0-Metabolomics_Release)
