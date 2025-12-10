@@ -4,10 +4,14 @@
 
 |Format|Version|Date|Documents|Reference Implementations|
 |------|-------|----|---------|------------------------|
-|mzTab-M| 2.0.0 | March 2019 | [HTML](2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.html), [DOCX](2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.docx), [PDF](2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.pdf) | [jmzTab-m](https://github.com/lifs-tools/jmztab-m), [Web Validator](https://github.com/lifs-tools/jmztab-m-webapp) |
+|mzTab-M| 2.0.0 | March 2019 | [HTML](https://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.html), [DOCX](https://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.docx), [PDF](https://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.pdf) | [jmzTab-m](https://github.com/lifs-tools/jmztab-m), [Web Validator](https://github.com/lifs-tools/jmztab-m-webapp) |
 |mzTab| 1.0.0 | June 2014 | [DOCX](https://github.com/HUPO-PSI/mzTab/raw/master/specification_document-releases/1_0-Proteomics-Release/mzTab_format_specification.docx), [PDF](https://github.com/HUPO-PSI/mzTab/raw/master/specification_document-releases/1_0-Proteomics-Release/mzTab_format_specification.pdf) | [jmzTab](https://github.com/PRIDE-Utilities/jmztab), [Web Validator](https://github.com/lifs-tools/jmztab-m-webapp) |
 
-## General
+---
+
+## Overview
+The mzTab format is a flexible tab-delimited file format for the exchange and storage of proteomics and metabolomics results. It has been developed by the Proteomics Standards Initiative (PSI) of the Human Proteome Organization (HUPO). The format is designed to be easy to use, easy to parse, and flexible enough to cover a wide range of use cases in both proteomics and metabolomics.
+
 ### mzTab-M 2.0
 mzTab 2.0 for metabolomics (mzTab-M 2.0) is a non-backwards compatible new specification of mzTab geared towards MS-based small molecule metabolomics and lipidomics experiments. It is based on the same principles as its predecessor and extends it to these new application domains, where necessary.
 
@@ -27,9 +31,9 @@ When you use mzTab format version 1.0.0, please cite the following publication:
 
 ## Specification documents
 ### Version 2.0.0 for Metabolomics
-  
+
   > Specification document ([HTML](2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.html),[DOCX](2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.docx),[PDF](2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.pdf))
-  
+
 **Example Files**
 Several example of the format can be download from the next link [here](https://github.com/HUPO-PSI/mzTab/tree/master/examples/2_0-Metabolomics_Release)
 
