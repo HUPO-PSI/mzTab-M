@@ -1,0 +1,437 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "description": "This is the mzTab-M reference implementation and validation API service.",
+    "version": "2.0.0",
+    "title": "mzTab-M reference implementation and validation API.",
+    "contact": {
+      "email": "nils.hoffmann@cebitec.uni-bielefeld.de"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "x-global-options": {
+    "go_package": "mztabm"
+  },
+  "tags": [
+    {
+      "name": "validate",
+      "description": "mzTab validation",
+      "externalDocs": {
+        "description": "mzTab-M specification",
+        "url": "https://github.com/HUPO-PSI/mzTab"
+      }
+    }
+  ],
+  "paths": {
+    "/validatePlain": {
+      "post": {
+        "description": "Validates an mzTab file in plain text representation / tab-separated format and reports\nsyntactic, structural, and semantic\nerrors.\n",
+        "operationId": "validatePlainMzTabFile",
+        "tags": [
+          "validatePlain"
+        ],
+        "parameters": [
+          {
+            "name": "level",
+            "in": "query",
+            "description": "The level of errors that should be reported, one of ERROR, WARN, INFO.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "info",
+                "warn",
+                "error"
+              ],
+              "default": "info"
+            }
+          },
+          {
+            "name": "maxErrors",
+            "in": "query",
+            "description": "The maximum number of errors to return.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "maximum": 500,
+              "default": 100
+            }
+          },
+          {
+            "name": "semanticValidation",
+            "in": "query",
+            "description": "Whether a semantic validation against the default rule set should be performed.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "text/tab-separated-values": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "mzTab file that should be validated.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Validation Okay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "default": [],
+                  "items": {
+                    "$ref" : "#/components/schemas/ValidationMessage"
+                  }
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "422": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "default": [],
+                  "items": {
+                    "$ref" : "#/components/schemas/ValidationMessage"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/validate": {
+      "post": {
+        "description": "Validates an mzTab file in JSON representation and reports syntactic, structural, and semantic errors.\n",
+        "operationId": "validateMzTabFile",
+        "tags": [
+          "validate"
+        ],
+        "parameters": [
+          {
+            "name": "level",
+            "in": "query",
+            "description": "The level of errors that should be reported, one of ERROR, WARN, INFO.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "info",
+                "warn",
+                "error"
+              ],
+              "default": "info"
+            }
+          },
+          {
+            "name": "maxErrors",
+            "in": "query",
+            "description": "The maximum number of errors to return.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "maximum": 500,
+              "default": 100
+            }
+          },
+          {
+            "name": "semanticValidation",
+            "in": "query",
+            "description": "Whether a semantic validation against the default rule set should be performed.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "mzTab_2_0-M.json"
+              }
+            }
+          },
+          "description": "mzTab file that should be validated.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Validation Okay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "default": [],
+                  "items": {
+                    "$ref" : "#/components/schemas/ValidationMessage"
+                  }
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "422": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "default": [],
+                  "items": {
+                    "$ref" : "#/components/schemas/ValidationMessage"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/convertToTabSeparatedFormat": {
+      "post": {
+        "description": "Converts an mzTab file in JSON format to the tab separated format. If this method returns an error code 422, the provided file did not pass validation.\n",
+        "operationId": "convertToTabSeparatedFormat",
+        "tags": [
+          "convertToTabSeparatedFormat"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref" : "mzTab_2_0-M.json"
+              }
+            }
+          },
+          "description": "mzTab-M JSON or XML that should be converted.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Conversion Okay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "default": [],
+                  "items": {
+                    "$ref" : "#/components/schemas/ValidationMessage"
+                  }
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "422": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "default": [],
+                  "items": {
+                    "$ref" : "#/components/schemas/ValidationMessage"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/convert": {
+      "post": {
+        "description": "Converts an mzTab file in tab-separated representation to the JSON format. If this method returns an error code 422, the provided file did not pass validation.\n",
+        "operationId": "convertMzTabFile",
+        "tags": [
+          "convert"
+        ],
+        "requestBody": {
+          "content": {
+            "text/tab-separated-values": {
+              "schema": {
+                "type" : "string"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type" : "string"
+              }
+            }
+          },
+          "description": "mzTab file that should be validated.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Conversion Okay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "default": [],
+                  "items": {
+                    "$ref" : "#/components/schemas/ValidationMessage"
+                  }
+                } 
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "422": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "default": [],
+                  "items": {
+                    "$ref" : "#/components/schemas/ValidationMessage"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about mzTab for Metabolomics",
+    "url": "https://github.com/HUPO-PSI/mzTab"
+  },
+  "servers": [
+    {
+      "url": "https://apps.lifs-tools.org/mztabvalidator/rest/v2/"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ValidationMessage": {
+        "type": "object",
+        "required": [
+          "code",
+          "category",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "category": {
+            "enum": [
+              "format",
+              "logical",
+              "cross_check"
+            ],
+            "default": "format"
+          },
+          "message_type": {
+            "enum": [
+              "error",
+              "warn",
+              "info"
+            ],
+            "default": "info"
+          },
+          "message": {
+            "type": "string"
+          },
+          "line_number": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    }
+  }
+}
