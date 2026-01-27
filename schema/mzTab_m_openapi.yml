@@ -2069,13 +2069,13 @@ components:
     	usi_identifier:
           type: string
           description: >
-    		An identifier for the MS run based on the Universal Spectrum
-    		Identifier (USI) specification. Every deposited MS run can be
-   	        referenced with a shortened form: mzspec:<collection>:<msRun>. A
-                format suffix MAY be specified (e.g. mzspec:<collection>:<msRun>.RAW)
-                to signify a specific file type. If specified, the format suffix
-                should align with the ms_run[1-n]-format parameter and the
-                ms_run[1-n]-location suffix defined in the metadata section.
+            An identifier for the MS run based on the Universal Spectrum
+            Identifier (USI) specification. Every deposited MS run can be
+            referenced with a shortened form: mzspec:<collection>:<msRun>. A
+            format suffix MAY be specified (e.g. mzspec:<collection>:<msRun>.RAW)
+            to signify a specific file type. If specified, the format suffix
+            should align with the ms_run[1-n]-format parameter and the
+            ms_run[1-n]-location suffix defined in the metadata section.
     StudyVariable:
       description: >
         Specification of study_variable.
