@@ -121,6 +121,7 @@ list](https://lists.cebitec.uni-bielefeld.de/mailman3/postorius/lists/mztabm.ceb
 -   [MS-Dial](https://systemsomicslab.github.io/compms/msdial/main.html) has
     support for mzTab-M as output. MS-DIAL has two major versions, 4 and 5,
     but version 4 is no longer maintained. Anyone can easily produce mzTab-M using MS-DIAL5 console app by referring to [https://systemsomicslab.github.io/msdial5tutorial/consoleapp.html](https://systemsomicslab.github.io/msdial5tutorial/consoleapp.html).
+    This document describes how to automatically generate an mzTab-M containing chemical name assignments in an SML table from example mzML files, using only command-line operations.
 -   [MetaboAnalyst](https://www.metaboanalyst.ca/MetaboAnalyst/docs/Format.xhtml)
     can import mzTab-M since April 2020.
 -   [jmzTab-M](https://github.com/lifs-tools/jmzTab-m) provides the reference
