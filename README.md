@@ -120,13 +120,7 @@ list](https://lists.cebitec.uni-bielefeld.de/mailman3/postorius/lists/mztabm.ceb
     mzTab-M since late 2019.
 -   [MS-Dial](https://systemsomicslab.github.io/compms/msdial/main.html) has
     support for mzTab-M as output. MS-DIAL has two major versions, 4 and 5,
-    but version 4 is no longer maintained. Both versions 4 and 5 provide GUI and
-    [console editions](https://systemsomicslab.github.io/compms/msdial/consoleapp.html),
-    and the latest GUI editions of both versions support mzTab-M export.
-    However, the console edition of version 4 does not support mzTab-M export,
-    and the console edition of version 5 is still
-    [incomplete](https://github.com/systemsomicslab/MsdialWorkbench/issues/658).
-    ([Examples](../../wiki/Examples))
+    but version 4 is no longer maintained. Anyone can easily produce mzTab-M using MS-DIAL5 console app by referring to [https://systemsomicslab.github.io/msdial5tutorial/consoleapp.html](https://systemsomicslab.github.io/msdial5tutorial/consoleapp.html).
 -   [MetaboAnalyst](https://www.metaboanalyst.ca/MetaboAnalyst/docs/Format.xhtml)
     can import mzTab-M since April 2020.
 -   [jmzTab-M](https://github.com/lifs-tools/jmzTab-m) provides the reference
