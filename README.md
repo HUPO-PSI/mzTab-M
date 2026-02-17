@@ -76,6 +76,9 @@ list](https://lists.cebitec.uni-bielefeld.de/mailman3/postorius/lists/mztabm.ceb
     [GitHub Actions YAML](.github/workflows/validate-mztab.yml), using the
     aforementioned validator.
 
+-   **R Ecosystem Validator**:\
+    [reading-mzTab-into-R](https://github.com/michbur/reading-mzTab-into-R/)
+
 -   **Online Validator App**:\
     [jmzTab-m Web Validator](https://github.com/lifs-tools/jmzTab-m-webapp)
 
@@ -115,8 +118,10 @@ list](https://lists.cebitec.uni-bielefeld.de/mailman3/postorius/lists/mztabm.ceb
     mzTab-M as output ([Examples](../../wiki/Examples)).
 -   [GNPS](https://gnps.ucsd.edu/ProteoSAFe/static/gnps-splash.jsp) can import
     mzTab-M since late 2019.
--   [MS-Dial](http://prime.psc.riken.jp/Metabolomics_Software/MS-DIAL/) has
-    support for mzTab-M as output ([Examples](../../wiki/Examples)).
+-   [MS-Dial](https://systemsomicslab.github.io/compms/msdial/main.html) has
+    support for mzTab-M as output. MS-DIAL has two major versions, 4 and 5,
+    but version 4 is no longer maintained. Anyone can easily produce mzTab-M using MS-DIAL5 console app by referring to the [MS-DIAL 5 console app tutorial](https://systemsomicslab.github.io/msdial5tutorial/consoleapp.html).
+    The linked tutorial page describes how to automatically generate an mzTab-M file containing chemical name assignments in SML table from example mzML files, using only command-line operations.
 -   [MetaboAnalyst](https://www.metaboanalyst.ca/MetaboAnalyst/docs/Format.xhtml)
     can import mzTab-M since April 2020.
 -   [jmzTab-M](https://github.com/lifs-tools/jmzTab-m) provides the reference
@@ -132,6 +137,7 @@ list](https://lists.cebitec.uni-bielefeld.de/mailman3/postorius/lists/mztabm.ceb
 
 ### 🛠 Active Development (2.1.0+)
 
+-   Convertor from mzTab-M to ISA-tab format for MetaboLights submission can be found [here](https://github.com/EBI-Metabolights/mztabm2mtbls)
 -   Work with the [Lipidomics Standards
     Initiative](https://lipidomics-standards-initiative.org/) to map the
     reporting checklist to mzTab-M metadata.
