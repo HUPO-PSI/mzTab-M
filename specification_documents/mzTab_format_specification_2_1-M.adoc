@@ -253,7 +253,7 @@ Additional annotation software would typically be required to add the sample-lev
 [#figurerrr-1]
 image::img/media/figure1.png[image, title="Simple experimental designs in mzTab-M can be represented using a combination of the elements study_variable (SV), assay, ms_run and sample. Quantitative values can be reported in files for SVs and assays. A) SV is intended to capture different groups of replicates, which might have resulted from different levels of a given variable e.g. control versus treated (represented as 2 SVs), n time points over a treatment course (as n SVs). B) assay captures a measurement made about a molecule (small molecule/lipid) where multiple assays within the same group are taken to be replicates of some kind (biological or technical). C) ms_run captures a single run on an MS instrument. D) samples are optional in mzTab since the quantitative software may often be unaware of the biological samples that have been analyzed. If that information is available, references from assay to the same (technical, upper half) or different (biological, bottom half) samples are used to describe the type of replication performed.",width=100%,pdfwidth=100%,scaledwidth=100%]
 
-Starting with mzTab-M 2.1, more complex experimental designs involving multiple factors (e.g. different treatments at different time points) can be represented by grouping multiple study variables. Such a group of study variable instances can be considered a column in a wide-layout experimental design matrix. 
+Starting with mzTab-M 2.1, more complex experimental designs involving multiple factors (e.g. different treatments at different time points) can be represented by grouping multiple study variables. Such a group of study variable instances can be considered a column in a wide-layout experimental design matrix.
 
 [[reporting-derivatization-approaches]]
 === Reporting derivatization approaches
@@ -910,8 +910,8 @@ MTD ms_run[2]-id_format [MS, MS:1000774, multiple peak list nativeID format, ]
 [cols=",",]
 |===================================================================================================================================================================
 |*Description* |An identifier for the MS run based on the Universal Spectrum Identifier (USI) specification.
-Implied within the USI is an MS run identifier. Every deposited MS run can be referenced with a shortened form: `mzspec:<collection>:<msRun>`. More info on the standard can be found: https://www.psidev.info/usi. 
-Since an MS run may be represented in several formats (with potentially slightly different data associated with the spectrum), a format suffix MAY be specified (e.g. `mzspec:<collection>:<msRun>.RAW`) to signify that a specific file type is meant. 
+Implied within the USI is an MS run identifier. Every deposited MS run can be referenced with a shortened form: `mzspec:<collection>:<msRun>`. More info on the standard can be found: https://www.psidev.info/usi.
+Since an MS run may be represented in several formats (with potentially slightly different data associated with the spectrum), a format suffix MAY be specified (e.g. `mzspec:<collection>:<msRun>.RAW`) to signify that a specific file type is meant.
 If specified, the format suffix should align with the ms_run[1-n]-format parameter and the ms_run[1-n]-location suffix defined in the metadata section.
 |*Type* |String
 |*Mandatory* |False
@@ -1114,23 +1114,91 @@ MTD study_variable[1]-description Group B (spike-in 0.74 fmol/uL)
 ....
 |=============================================================================
 
-[[study_variable1-n-group]]
-==== study_variable[1-n]-group
+[[study_variable1-n-group_ref]]
+==== study_variable[1-n]-group_ref
 
 [cols=",",]
 |=============================================================================
-|*Description* |Grouping related `study_variable`s that belong to one experimental design factor in multi-factorial designs. Added in mzTab-M 2.1.
-|*Type* |String
-|*Mandatory* |False
+|*Description* |A reference to the study_variable_group that this study variable belongs to. This field is MANDATORY if study_variable_group(s) are defined, allowing study variables to be linked to the experimental design factors they represent.
+|*Type* |\{STUDY_VARIABLE_GROUP_ID}
+|*Mandatory* |True (if study_variable_group is defined)
 |*Example* a|
 ....
-MTD study_variable[2]-group timepoint
-
-MTD study_variable[13]-group Genotype
+MTD study_variable[1]-group_ref study_variable_group[1]
+MTD study_variable[2]-group_ref study_variable_group[1]
+MTD study_variable[3]-group_ref study_variable_group[2]
 ....
 |=============================================================================
 
+[[study_variable_group1-n]]
+==== study_variable_group[1-n]
 
+[cols=",",]
+|=============================================================================
+|*Description* |A parameter defining the group to which the study variable belongs. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter or a user-defined parameter. Added in mzTab-M 2.1.
+|*Type* |Parameter
+|*Mandatory* |False
+|*Example* a|
+....
+MTD study_variable_group[1] [,,sex,]
+MTD study_variable_group[2] [,,timepoint, ]
+....
+|=============================================================================
+
+[[study_variable_group1-n-description]]
+==== study_variable_group[1-n]-description
+
+[cols=",",]
+|=============================================================================
+|*Description* |A textual description of the study variable group.
+|*Type* |String
+|*Mandatory* |True (if study_variable_group is defined)
+|*Example* a|
+....
+MTD study_variable_group[1]-description Sex of the individual
+....
+|=============================================================================
+
+[[study_variable_group1-n-type]]
+==== study_variable_group[1-n]-type
+
+[cols=",",]
+|=============================================================================
+|*Description* |The data type of the group variable, which determines how the values should be interpreted or encoded/decoded. This field is MANDATORY when study_variable_group is defined to ensure unambiguous interpretation. The following data types are supported:
+
+* **nominal** – Categorical values without inherent ordering. No specific ordering is assumed and values represent categories without a defined sequence. Example: sex (male, female), tissue type (liver, kidney).
+
+* **ordinal** – Ordered categorical values where the sequence matters but intervals between levels are undefined. These values represent categories with a defined sequence or ranking. Example: disease severity (mild, moderate, severe), confidence levels (low, medium, high).
+
+* **categorical** – Categorical values with alphabetically ordered levels. This ensures consistent encoding across different implementations. The base level is defined alphabetically (i.e., the first value alphabetically becomes the reference level). Example: genotype (WT, mutant), treatment condition.
+
+* **logical** – Boolean/logical values (true/false, yes/no).
+
+Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).
+|*Type* |String (constrained)
+|*Mandatory* |True (if study_variable_group is defined)
+|*Example* a|
+....
+MTD study_variable_group[1]-type nominal
+MTD study_variable_group[2]-type ordinal
+MTD study_variable_group[3]-type categorical
+....
+|=============================================================================
+
+[[study_variable_group1-n-unit]]
+==== study_variable_group[1-n]-unit
+
+[cols=",",]
+|=============================================================================
+|*Description* |An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.). This SHOULD only be used for numeric or scalar values.
+|*Type* |Parameter
+|*Mandatory* |False
+|*Example* a|
+....
+MTD study_variable_group[1]-unit [UO, UO:0000033, day, ]
+MTD study_variable_group[2]-unit [UO, UO:0000010, second, ]
+....
+|=============================================================================
 
 [[study_variable1-n-average_function1-n]]
 ==== study_variable[1-n]-average_function
