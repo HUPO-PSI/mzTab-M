@@ -67,7 +67,7 @@
         },
         "line_number": {
           "type": "integer",
-          "format": "int32"
+          "format": "int64"
         }
       }
     },
@@ -906,7 +906,7 @@
           "format": "int32",
           "minimum": 1
         },
-        "sampleProcessing": {
+        "sample_processing": {
           "type": "array",
           "default": [],
           "description": "Parameters specifiying sample processing that was applied within one step.",
@@ -945,14 +945,14 @@
       "x-mztab-example": "MTD\tpublication[1]\tpubmed:21063943|doi:10.1007/978-1-60761-987-1_6\nMTD\tpublication[2]\tpubmed:20615486|doi:10.1016/j.jprot.2010.06.008\n",
       "x-mztab-serialize-by-id": "true",
       "type": "object",
-      "required": ["publicationItems"],
+      "required": ["publication_items"],
       "properties": {
         "id": {
           "type": "integer",
           "format": "int32",
           "minimum": 1
         },
-        "publicationItems": {
+        "publication_items": {
           "type": "array",
           "description": "The publication item ids referenced by this publication.",
           "default": [],
