@@ -133,11 +133,18 @@ The specification described in this document has not been developed in isolation
 1.  _mzML_ (http://www.psidev.info/mzml). mzML is the PSI standard for capturing mass spectra / peak lists resulting from mass spectrometry in proteomics <<martens-2011, (Martens _et al._ 2011)>>. mzTab files MAY be used in conjunction with mzML, although it will be possible to use mzTab with other formats of mass spectra. This document does not assume familiarity with mzML.
 2.  __ISA-TAB (__http://isa-tools.org/_)._ The ISA framework allows for reporting experimental metadata and study designs in considerable detail, and is already used for describing metabolomics experiments. It is expected that mzTab files may be linked to ISA-TAB formatted files, for cases where a rich experimental design is to be captured. The linkage between mzTab-M and ISA-TAB is further exemplified in section <<referencing-external-resources>>.
 
+[[relationship-to-mztab-previous]]
+=== Relationship to previous mzTab versions
+
 [[relationship-to-mztab-1.0]]
-=== Relationship to mzTab 1.0
+==== Relationship to mzTab 1.0
 
 The first stable version of mzTab (version 1.0) was developed primarily by the PSI as a format for the final results (identification or quantification) of a proteomics experiment, using MS. In mzTab version 1.0 limited support was included for metabolomics, through a small molecule table, in which end results could be encoded at the level of quantified metabolites. The intention of mzTab-M is to extend these concepts, so that more detail can be captured about the evidence trail for quantification, including MS features (different charge states or adducts) and the evidence trail for identifications - both of which could not be easily supported in mzTab v 1.0. mzTab-M is not formally backwards compatible, but follows a similar design pattern. It has not been designed to support proteomics. However, design decisions made in mzTab-M may in the future be adopted for a version of mzTab specifically intended for proteomics only (mzTab-P). At the time of writing, mzTab version 1.0 remains in active use for proteomics, but is deprecated for use in metabolomics.
 
+==== Relationship to mzTab-M 2.0.0
+
+The first stable version of mzTab-M for Metabolomics (version 2.0.0) was developed to support the reporting of results from MS-based metabolomics experiments.
+mzTab-M 2.1.0 clarifies several aspects, and introduces the `spectral_variable_group` to support multi-factorial experimental designs. 
 
 [[the-psi-mass-spectrometry-controlled-vocabulary-cv]]
 === The PSI Mass Spectrometry Controlled Vocabulary (CV)
@@ -159,6 +166,7 @@ The following ontologies or controlled vocabularies specified below may also be 
 * PRIDE (Proteomics Identifications) ontology (https://github.com/PRIDE-Utilities/pride-ontology).
 * MSIO (Metabolomics Standards Initiative) ontology (https://github.com/MSI-Metabolomics-Standards-Initiative/MSIO) for metabolomics, including harvesting, material and sample processing.
 * NCIT (NCI Thesaurus) (https://obofoundry.org/ontology/ncit.html) NCI Thesaurus (NCIt) is a reference terminology that includes broad coverage of the cancer domain, including cancer related diseases, findings and abnormalities.
+* STATO (STATO: the statistical methods ontology) (http://stato-ontology.org/) contains concepts and properties related to statistical methods, including relationships to study designs.
 
 Most of these ontologies are also indexed and searchable at EBI's Ontology Lookup Service (OLS) at https://www.ebi.ac.uk/ols/index
 
@@ -254,6 +262,11 @@ Additional annotation software would typically be required to add the sample-lev
 image::img/media/figure1.png[image, title="Simple experimental designs in mzTab-M can be represented using a combination of the elements study_variable (SV), assay, ms_run and sample. Quantitative values can be reported in files for SVs and assays. A) SV is intended to capture different groups of replicates, which might have resulted from different levels of a given variable e.g. control versus treated (represented as 2 SVs), n time points over a treatment course (as n SVs). B) assay captures a measurement made about a molecule (small molecule/lipid) where multiple assays within the same group are taken to be replicates of some kind (biological or technical). C) ms_run captures a single run on an MS instrument. D) samples are optional in mzTab since the quantitative software may often be unaware of the biological samples that have been analyzed. If that information is available, references from assay to the same (technical, upper half) or different (biological, bottom half) samples are used to describe the type of replication performed.",width=100%,pdfwidth=100%,scaledwidth=100%]
 
 Starting with mzTab-M 2.1, more complex experimental designs involving multiple factors (e.g. different treatments at different time points) can be represented by grouping multiple study variables. Such a group of study variable instances can be considered a column in a wide-layout experimental design matrix.
+
+[[reporting-factorial-experimental-designs]]
+=== Recommendations for reporting multifactorial experimental designs
+
+Some explanation is needed about the reporting of multifactorial experimental designs, which are common in metabolomics. In mzTab-M 2.1, the `study_variable_group` element has been introduced to support the grouping of multiple study variables (SVs) that together represent a column in a wide-layout experimental design matrix. For example, if there are two factors (e.g. treatment and time point). Each study_variable then references the relevant assay(s) and the `study_variable_group`. At least one `study_variable_group` MUST be defined.
 
 [[reporting-derivatization-approaches]]
 === Reporting derivatization approaches
@@ -513,7 +526,7 @@ MTD description An experiment investigating the effects of Il-6.
 ==== sample_processing[1-n]
 
 [cols=",",]
-|=================================================================================================================================================================================================================================================================
+|============================================================================
 |*Description* |A list of parameters describing a sample processing, preparation or handling step similar to a biological or analytical methods report. The order of the sample_processing items should reflect the order these processing steps were performed in. If multiple parameters are given for a step these MUST be separated by a “\|”. If derivatization was performed, it MUST be reported here as a general step, e.g. 'silylation' and the actual derivatization agens MUST be specified in the <<derivatization_agent1-n>> part.
 |*Type* |Parameter List
 |*Mandatory* |False
@@ -522,9 +535,9 @@ MTD description An experiment investigating the effects of Il-6.
 MTD sample_processing[1] [MSIO, MSIO:0000107, metabolism quenching using precooled 60 percent methanol ammonium bicarbonate buffer,]
 MTD sample_processing[2] [MSIO, MSIO:0000146, centrifugation,]
 MTD sample_processing[3] [MSIO, MSIO:0000141, metabolite extraction,]
-MTD sample_processing[4] [MSIO, MSIO:0000141, silylation,]|[MSIO, MSIO:0000116, oximation,]
+MTD sample_processing[4] [MSIO, MSIO:0000141, silylation,]\|[MSIO, MSIO:0000116, oximation,]
 ....
-|=================================================================================================================================================================================================================================================================
+|============================================================================
 
 [[instrument1-n-name]]
 ==== instrument[1-n]-name
@@ -919,7 +932,7 @@ If specified, the format suffix should align with the ms_run[1-n]-format paramet
 ....
 MTD ms_run[1]-usi_identifier mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09
 ....
-|=================================================================================================================================================================
+|===================================================================================================================================================================
 
 [[ms_run1-n-fragmentation_method1-n]]
 ==== ms_run[1-n]-fragmentation_method[1-n]
@@ -1119,9 +1132,9 @@ MTD study_variable[1]-description Group B (spike-in 0.74 fmol/uL)
 
 [cols=",",]
 |=============================================================================
-|*Description* |A reference to the study_variable_group that this study variable belongs to. This field is MANDATORY if study_variable_group(s) are defined, allowing study variables to be linked to the experimental design factors they represent.
+|*Description* |A reference to the study_variable_group that this study variable belongs to, allowing study variables to be linked to the experimental design factors they represent.
 |*Type* |\{STUDY_VARIABLE_GROUP_ID}
-|*Mandatory* |True (if study_variable_group is defined)
+|*Mandatory* |True
 |*Example* a|
 ....
 MTD study_variable[1]-group_ref study_variable_group[1]
@@ -1135,13 +1148,13 @@ MTD study_variable[3]-group_ref study_variable_group[2]
 
 [cols=",",]
 |=============================================================================
-|*Description* |A parameter defining the group to which the study variable belongs. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter or a user-defined parameter. Added in mzTab-M 2.1.
+|*Description* |A parameter defining the group to which the study variable belongs. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter or a user-defined parameter. At least one study_variable_group MUST be defined. Added in mzTab-M 2.1.
 |*Type* |Parameter
-|*Mandatory* |False
+|*Mandatory* |True
 |*Example* a|
 ....
 MTD study_variable_group[1] [,,sex,]
-MTD study_variable_group[2] [,,timepoint, ]
+MTD study_variable_group[2] [EFO, EFO:0004953, date of diagnosis, ]
 ....
 |=============================================================================
 
@@ -1164,24 +1177,55 @@ MTD study_variable_group[1]-description Sex of the individual
 
 [cols=",",]
 |=============================================================================
-|*Description* |The data type of the group variable, which determines how the values should be interpreted or encoded/decoded. This field is MANDATORY when study_variable_group is defined to ensure unambiguous interpretation. The following data types are supported:
+|*Description* |The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of the examples below. While the `type` also has implications for how the variables are encoded/decoded, that information goes into the `study_variable_group[1-n]-datatype`.  
 
-* **nominal** – Categorical values without inherent ordering. No specific ordering is assumed and values represent categories without a defined sequence. Example: sex (male, female), tissue type (liver, kidney).
+ The following data types are supported:
 
-* **ordinal** – Ordered categorical values where the sequence matters but intervals between levels are undefined. These values represent categories with a defined sequence or ranking. Example: disease severity (mild, moderate, severe), confidence levels (low, medium, high).
+* **categorical** – `[STATO, STATO_0000252, categorical variable]` is a variable that can only assume a finite number values without inherent ordering. Synonym "nominal" variable. In programming languages often represented as enums, factors (in R), or strings.
 
-* **categorical** – Categorical values with alphabetically ordered levels. This ensures consistent encoding across different implementations. The base level is defined alphabetically (i.e., the first value alphabetically becomes the reference level). Example: genotype (WT, mutant), treatment condition.
+* **ordinal** – `[STATO, STATO_0000228, ordinal variable]` Ordered categorical variable where the sequence matters but intervals between levels are undefined. These values represent categories with a defined sequence or ranking. Example: disease severity (mild, moderate, severe), confidence levels (low, medium, high).
 
-* **logical** – Boolean/logical values (true/false, yes/no).
+* **continuous** – `[STATO, STATO_0000251, continuous variable]` is a variable that can take any value within a range on a continuous scale. Example: temperature, height, concentration, time.
+
+//#* **logical** – Boolean/logical values (true/false, yes/no).
+
+Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).
+|*Type* |Parameter
+|*Mandatory* |False
+|*Example* a|
+....
+MTD study_variable_group[1]-type [STATO, STATO_0000252, categorical variable]
+MTD study_variable_group[2]-type [STATO, STATO_0000228, ordinal variable]
+MTD study_variable_group[3]-type [STATO, STATO_0000251, continuous variable]
+....
+
+|=============================================================================
+[[study_variable_group1-n-datatype]]
+==== study_variable_group[1-n]-datatype
+
+[cols=",",]
+|=============================================================================
+|*Description* |The datatype of the group variable, which determines how they can be encoded and parsed in mzTab-M files, and how the values are handled in programming languages. Datatypes are specified as W3C XML Schema datatypes.
+
+The following datatypes are supported:
+
+* xsd:string – Character string.
+* xsd:integer – Arbitrary‑size integer.
+* xsd:decimal – Arbitrary‑precision decimal number.
+* xsd:boolean – Boolean value (`true` / `false`).
+* xsd:date – Calendar date (YYYY‑MM‑DD).
+* xsd:time – Time (hh:mm:ss).
+* xsd:dateTime – Combined date and time, optional timezone.
+* xsd:anyURI – A Uniform Resource Identifier reference.
 
 Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).
 |*Type* |String (constrained)
-|*Mandatory* |True (if study_variable_group is defined)
+|*Mandatory* |False
 |*Example* a|
 ....
-MTD study_variable_group[1]-type nominal
-MTD study_variable_group[2]-type ordinal
-MTD study_variable_group[3]-type categorical
+MTD study_variable_group[1]-datatype xsd:string
+MTD study_variable_group[2]-datatype xsd:decimal
+MTD study_variable_group[3]-datatype xsd:date
 ....
 |=============================================================================
 
@@ -1358,7 +1402,7 @@ MTD database[5]-prefix null
 [cols=",",]
 |==============================================================================================================================================================================================================================================
 |*Description:* |The database version is mandatory where identification has been performed. This may be a formal version number e.g. “1.4.1”, a date of access “2016-10-27” (ISO-8601 format) or “Unknown” if there is no suitable version that can be annotated.
-|*Type:* |String
+|*Type* |String
 |*Mandatory* |True
 |*Example* a|
 ....

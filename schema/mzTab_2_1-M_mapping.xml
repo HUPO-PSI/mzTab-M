@@ -130,6 +130,17 @@ Changelog:
       <CvTerm termAccession="OBI:0000750" useTerm="false" termName="study design independent variable" isRepeatable="false" allowChildren="true" cvIdentifierRef="OBI"></CvTerm>
     </CvMappingRule>
 
+    <CvMappingRule id="study_variable_group_type_may" cvElementPath="/metadata/studyVariableGroup/type/type/@Parameter" requirementLevel="MAY"  scopePath="/metadata/studyVariableGroup" cvTermsCombinationLogic="OR">
+      <CvTerm termAccession="STATO:0000252" useTerm="yes" termName="categorical variable" isRepeatable="false" allowChildren="true" cvIdentifierRef="STATO"></CvTerm>
+      <CvTerm termAccession="STATO:0000251" useTerm="yes" termName="continuous variable" isRepeatable="false" allowChildren="true" cvIdentifierRef="STATO"></CvTerm>
+    </CvMappingRule>
+
+<!-- TODO study variable datatype -->
+    <!--<CvMappingRule id="study_variable_group_datatype_may" cvElementPath="/metadata/studyVariableGroup/@datatype" requirementLevel="MAY"  scopePath="/metadata/studyVariableGroup" cvTermsCombinationLogic="OR">
+      <CvTerm termAccession="xx:yyy" useTerm="false" termName="integer" isRepeatable="false" allowChildren="true" cvIdentifierRef="xx"></CvTerm>
+    </CvMappingRule>
+-->
+
     <!-- study variable group unit -->
     <CvMappingRule id="study_variable_group_unit_may" cvElementPath="/metadata/studyVariableGroup/@unit" requirementLevel="MAY"  scopePath="/metadata/studyVariableGroup" cvTermsCombinationLogic="OR">
       <CvTerm termAccession="UO:0000003" useTerm="false" termName="time unit" isRepeatable="false" allowChildren="true" cvIdentifierRef="UO"></CvTerm>

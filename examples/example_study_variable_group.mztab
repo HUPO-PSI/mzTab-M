@@ -10,18 +10,21 @@ COM Study Variable Groups Definition
 COM sex group - nominal type (categorical without ordering)
 MTD study_variable_group[1]	[,,sex,]
 MTD study_variable_group[1]-description	Sex of the individual
-MTD study_variable_group[1]-type	nominal
+MTD study_variable_group[1]-type	[STATO, STATO_0000252, categorical variable]
+MTD study_variable_group[1]-datatype	string
 
 COM timepoint group - ordinal type (ordered categorical) with unit
 MTD study_variable_group[2]	[,,timepoint,]
 MTD study_variable_group[2]-description	Time after treatment in days
-MTD study_variable_group[2]-type	ordinal
+MTD study_variable_group[2]-type	[STATO, STATO_0000228, ordinal variable]
+MTD study_variable_group[1]-datatype	integer
 MTD study_variable_group[2]-unit	[UO, UO:0000033, day, ]
 
 COM genotype group - categorical type (with alphabetical ordering)
 MTD study_variable_group[3]	[,,genotype, ]
 MTD study_variable_group[3]-description	Genetic background of samples
-MTD study_variable_group[3]-type	categorical
+MTD study_variable_group[3]-type	[STATO, STATO_0000252, categorical variable]
+MTD study_variable_group[1]-datatype	string
 
 COM Study Variables Definition
 COM Female control at 0 days

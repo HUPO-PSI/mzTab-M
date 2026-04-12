@@ -402,6 +402,7 @@ components:
         - ms_run
         - assay
         - study_variable
+        - study_variable_group
         - cv
         - database
         - small_molecule-quantification_unit
@@ -719,7 +720,9 @@ components:
 
             description: A textual description of the study variable group.
 
-            type: The data type of the group variable (nominal, ordinal, categorical, or logical).
+            type: The statistical type of the group variable (nominal, ordinal, categorical, or logical).
+
+            datatype: The data type of the group variable.
 
             unit: An optional parameter specifying the unit of the study variable group.
           default: []
@@ -737,6 +740,8 @@ components:
             MTD	study_variable_group[2]-description	Time after treatment
 
             MTD	study_variable_group[2]-type	ordinal
+
+            MTD	study_variable_group[2]-datatype	integer
 
             MTD	study_variable_group[2]-unit	[UO, UO:0000033, day, ]
         custom:
