@@ -720,7 +720,7 @@ components:
 
             description: A textual description of the study variable group.
 
-            type: The statistical type of the group variable (nominal, ordinal, categorical, or logical).
+            type: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO_0000252, categorical variable], [STATO, STATO_0000228, ordinal variable], or [STATO, STATO_0000251, continuous variable].
 
             datatype: The data type of the group variable.
 
@@ -729,11 +729,11 @@ components:
           items:
             $ref: "#/components/schemas/StudyVariableGroup"
           x-mztab-example: >
-            MTD	study_variable_group[1]	[,,sex,]
+            MTD	study_variable_group[1]	[PATO, PATO_0000383, sex, ]
 
             MTD	study_variable_group[1]-description	Sex of the individual
 
-            MTD	study_variable_group[1]-type	nominal
+            MTD	study_variable_group[1]-type	[STATO, STATO_0000252, categorical variable]
 
             MTD	study_variable_group[2]	[,,timepoint,]
 
@@ -2174,17 +2174,17 @@ components:
 
         unit: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).
       x-mztab-example: >
-        MTD	study_variable_group[1]	[,,sex,]
+        MTD	study_variable_group[1]	[PATO, PATO_0000383, sex, ]
 
         MTD	study_variable_group[1]-description	Sex of the individual
 
-        MTD	study_variable_group[1]-type	nominal
+        MTD	study_variable_group[1]-type	[STATO, STATO_0000252, categorical variable, ]
 
-        MTD	study_variable_group[2]	[,,timepoint,]
+        MTD	study_variable_group[2]	[PATO, PATO_0000384, timepoint, ]
 
         MTD	study_variable_group[2]-description	Time after treatment
 
-        MTD	study_variable_group[2]-type	ordinal
+        MTD	study_variable_group[2]-type	[STATO, STATO_0000228, ordinal variable, ]
 
         MTD	study_variable_group[2]-unit	[UO, UO:0000033, day, ]
 
@@ -2205,7 +2205,6 @@ components:
         - id
         - parameter
         - description
-        - type
       properties:
         id:
           type: integer
@@ -2219,22 +2218,18 @@ components:
           type: string
           description: A textual description of the study variable group.
         type:
-          type: string
-          enum:
-            - nominal
-            - ordinal
-            - categorical
-            - logical
+          $ref: "#/components/schemas/Parameter"
           description: >
-            The data type of the group variable values.
+            The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of the examples below.
 
-            "nominal" - Categorical values without inherent ordering; in R use as.is() or character vectors.
+            [STATO, STATO_0000252, categorical variable] is a variable that can only assume a finite number values without inherent ordering. Synonym "nominal" variable.
 
-            "ordinal" - Ordered categorical values; in R convert to ordered factor.
+            [STATO, STATO_0000228, ordinal variable]` Ordered categorical variable where the sequence matters but intervals between levels are undefined. These values represent categories with a defined sequence or ranking.
 
-            "categorical" - Categorical values with alphabetically ordered levels; in R convert to factor with alphabetical ordering.
-
-            "logical" - Boolean/logical values; in R convert to logical vectors.
+            [STATO, STATO_0000251, continuous variable]` is a variable that can take any value within a range on a continuous scale.
+        datatype:
+          type: string
+          description: The datatype of the group variable, which determines how they can be encoded and parsed, and how the values could be handled in programming languages.
         unit:
           $ref: "#/components/schemas/Parameter"
           description: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).

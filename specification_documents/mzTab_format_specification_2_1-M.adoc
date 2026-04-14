@@ -1187,8 +1187,6 @@ MTD study_variable_group[1]-description Sex of the individual
 
 * **continuous** – `[STATO, STATO_0000251, continuous variable]` is a variable that can take any value within a range on a continuous scale. Example: temperature, height, concentration, time.
 
-//#* **logical** – Boolean/logical values (true/false, yes/no).
-
 Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).
 |*Type* |Parameter
 |*Mandatory* |False
@@ -1205,7 +1203,7 @@ MTD study_variable_group[3]-type [STATO, STATO_0000251, continuous variable]
 
 [cols="20,80",]
 |=============================================================================
-|*Description* |The datatype of the group variable, which determines how they can be encoded and parsed in mzTab-M files, and how the values are handled in programming languages. Datatypes are specified as W3C XML Schema datatypes.
+|*Description* |The datatype of the group variable, which determines how they can be encoded and parsed in mzTab-M files, and how the values could be handled in programming languages. 
 
 The following datatypes are supported:
 
