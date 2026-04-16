@@ -865,6 +865,44 @@
         }
       }
     },
+    "ExtendedParameter": {
+      "description": "Extended parameter to allow for nested parameters. The parameter name is used as a key and the value can be a string or a parameter.\n",
+      "x-mztab-example": "[MS, MS:1000008, ionization type, [MS,MS:1000073, electrospray ionization]]\n[,,A user parameter, [UO, UO:0000012, kelvin, 100]]\n[,,A user parameter, The value]\n",
+      "type": "object",
+      "required": [
+        "name",
+        "value"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1
+        },
+        "cv_label": {
+          "type": "string",
+          "default": ""
+        },
+        "cv_accession": {
+          "type": "string",
+          "default": ""
+        },
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string",
+              "default": ""
+            },
+            {
+              "$ref" : "#/definitions/Parameter"
+            }
+          ]
+        }
+      }
+    },
     "Instrument": {
       "description": "The name, source, analyzer and detector of the instruments used in the experiment. Multiple instruments are numbered [1-n].",
       "x-mztab-example": "MTD\tinstrument[1]-name\t[MS, MS:1000449, LTQ Orbitrap,]\nMTD\tinstrument[1]-source\t[MS, MS:1000073, ESI,]\n…\nMTD\tinstrument[2]-source\t[MS, MS:1000598, ETD,]\nMTD\tinstrument[1]-analyzer[1]\t[MS, MS:1000291, linear ion trap,]\n…\nMTD\tinstrument[2]-analyzer[1]\t[MS, MS:1000484, orbitrap,]\nMTD\tinstrument[1]-detector\t[MS, MS:1000253, electron multiplier,]\n…\nMTD\tinstrument[2]-detector\t[MS, MS:1000348, focal plane collector,]\n",
@@ -1133,6 +1171,23 @@
           "format": "uri",
           "description": "The msRun's location URI."
         },
+        "protocol_refs": {
+          "type": "array",
+          "description": "References to all protocols used in the ms run. If no protocol is specified, the protocols defined in the assay section are assumed to be used.",
+          "x-mztab-example": "MTD\tms_run[1]-protocol_refs\tprotocol[1]|protocol[2]\n",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "parameters": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref" : "#/definitions/ExtendedParameter"
+          },
+          "description": "Additional parameters of the msRun, separated by bars."
+        },
         "instrument_ref": {
           "$ref": "#/definitions/Instrument"
         },
@@ -1164,6 +1219,44 @@
         },
         "hash_method": {
           "$ref": "#/properties/Parameter"
+        }
+      }
+    },
+    "Protocol": {
+      "description": "Specification of protocol used in assay or ms_run. See more at [OBI, OBI:0000272, protocol, ] ",
+      "x-mztab-example": "MTD\tprotocol[1]-name\tMass spectrometry\nMTD\tprotocol[1]-type\t[CHMO, CHMO:0000470, mass spectrometry,]\nMTD\tprotocol[1]-description\tEluting compounds were detected from m/z 100-1000 using a hybrid quadrupole ...\nMTD\tprotocol[1]-parameters\t[MS, MS:1000008, ionization type, [MS,MS:1000073, electrospray ionization]] | [MS, MS:1003761, instrument class, [MS, MS:1003951, time-of-flight instrument]] |  [, , Scan m/z range, 100-1000]\n",
+      "x-mztab-serialize-by-id": "true",
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the protocol.",
+          "minLength": 1
+        },
+        "type": {
+          "$ref" : "#/definitions/Parameter",
+          "description": "Type of the protocol."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the protocol."
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref" : "#/definitions/ExtendedParameter"
+          },
+          "description": "Parameters of the protocol, separated by bars."
         }
       }
     },
@@ -1231,6 +1324,23 @@
         "name": {
           "type": "string",
           "description": "The assay name."
+        },
+        "protocol_refs": {
+          "type": "array",
+          "description": "References to all protocols used in the assay.",
+          "x-mztab-example": "MTD\tassay[1]-protocol_refs\tprotocol[1]|protocol[2]\n",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "parameters": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref" : "#/definitions/ExtendedParameter"
+          },
+          "description": "Additional parameters of the assay, separated by bars."
         },
         "custom": {
           "type": "array",
