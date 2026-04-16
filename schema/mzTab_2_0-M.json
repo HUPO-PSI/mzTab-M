@@ -59,7 +59,7 @@
       "properties": {
         "prefix": {
           "type": "string",
-          "enum": ["COM"],
+          "pattern": "^COM$",
           "default": "COM"
         },
         "msg": {
@@ -77,7 +77,7 @@
       "x-mztab-example": "MTD\tmzTab-version\t2.0.0-M\nMTD\tmzTab-ID\tMTBL1234\nMTD\ttitle\tEffects of Rapamycin on metabolite profile\n...\n",
       "required": [
         "prefix",
-        "fileDescription",
+        "description",
         "mzTab-version",
         "mzTab-ID",
         "quantification_method",
@@ -95,9 +95,8 @@
         "prefix": {
           "type": "string",
           "description": "The metadata section prefix. MUST always be MTD.\n",
-          "enum": ["MTD"],
-          "default": "MTD",
-          "example": "MTD"
+          "pattern": "^MTD$",
+          "default": "MTD"
         },
         "mzTab-version": {
           "type": "string",
@@ -143,7 +142,7 @@
           "description": "A URI pointing to the file’s source data (e.g., a MetaboLights records).",
           "default": [],
           "items": {
-            "$ref" : "#/definitions/URI"
+            "$ref" : "#/definitions/Uri"
           },
           "x-mztab-example": "MTD\turi[1]\thttps://www.ebi.ac.uk/metabolights/MTBLS517\n"
         },
@@ -152,7 +151,7 @@
           "description": "A URI pointing to an external file with more details about the study design (e.g., an ISA-TAB file).",
           "default": [],
           "items": {
-            "$ref" : "#/definitions/URI"
+            "$ref" : "#/definitions/Uri"
           },
           "x-mztab-example": "MTD\texternal_study_uri[1]\thttps://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt\n"
         },
@@ -350,7 +349,7 @@
           "type": "string",
           "description": "The small molecule table row prefix. SML MUST be used for rows of the small molecule table.",
           "x-mztab-example": "SML 1 …\n",
-          "enum": ["SML"],
+          "pattern": "^SML$",
           "default": "SML",
           "readOnly": true
         },
@@ -358,7 +357,7 @@
           "type": "string",
           "description": "The small molecule table header prefix. SMH MUST be used for the small molecule table header line (the column labels).",
           "x-mztab-example": "SMH\tSML_ID …\n",
-          "enum": ["SMH"],
+          "pattern": "^SMH$",
           "default": "SMH",
           "readOnly": true
         },
@@ -542,17 +541,15 @@
           "type": "string",
           "description": "The small molecule feature table row prefix. SMF MUST be used for rows of the small molecule feature table.",
           "x-mztab-example": "SMF 1 …\n",
-          "enum": ["SMF"],
-          "default": "SMF",
-          "readOnly": true
+          "pattern": "^SMF$",
+          "default": "SMF"
         },
         "header_prefix": {
           "type": "string",
           "description": "The small molecule feature table header prefix. SFH MUST be used for the small molecule feature table header line (the column labels).",
           "x-mztab-example": "SFH\tSMF_ID\t…\n",
-          "enum": ["SFH"],
-          "default": "SFH",
-          "readOnly": true
+          "pattern": "^SFH$",
+          "default": "SFH"
         },
         "smf_id": {
           "type": "integer",
@@ -681,17 +678,15 @@
           "type": "string",
           "description": "The small molecule evidence table row prefix. SME MUST be used for rows of the small molecule evidence table.",
           "x-mztab-example": "SME\t1\t…\n",
-          "enum": ["SME"],
-          "default": "SME",
-          "readOnly": true
+          "pattern": "^SME$",
+          "default": "SME"
         },
         "header_prefix": {
           "type": "string",
           "description": "The small molecule evidence table header prefix. SEH MUST be used for the small molecule evidence table header line (the column labels).",
           "x-mztab-example": "SEH\tSME_ID\t…\n",
-          "enum": ["SEH"],
-          "default": "SEH",
-          "readOnly": true
+          "pattern": "^SEH$",
+          "default": "SEH"
         },
         "sme_id": {
           "type": "integer",
@@ -1067,7 +1062,7 @@
           "description": "Additional user or cv parameters.",
           "default": [],
           "items": {
-            "$ref": "#/properties/Parameter"
+            "$ref": "#/definitions/Parameter"
           }
         },
         "species": {
@@ -1075,7 +1070,7 @@
           "description": "Biological species information on the sample.",
           "default": [],
           "items": {
-            "$ref": "#/properties/Parameter"
+            "$ref": "#/definitions/Parameter"
           }
         },
         "tissue": {
@@ -1083,7 +1078,7 @@
           "description": "Biological tissue information on the sample.",
           "default": [],
           "items": {
-            "$ref": "#/properties/Parameter"
+            "$ref": "#/definitions/Parameter"
           }
         },
         "cell_type": {
@@ -1091,7 +1086,7 @@
           "description": "Biological cell type information on the sample.",
           "default": [],
           "items": {
-            "$ref": "#/properties/Parameter"
+            "$ref": "#/definitions/Parameter"
           }
         },
         "disease": {
@@ -1099,7 +1094,7 @@
           "description": "Disease information on the sample.",
           "default": [],
           "items": {
-            "$ref": "#/properties/Parameter"
+            "$ref": "#/definitions/Parameter"
           }
         },
         "description": {
@@ -1136,16 +1131,16 @@
           "description": "The instrument referenced by this msRun."
         },
         "format": {
-          "$ref": "#/properties/Parameter"
+          "$ref": "#/definitions/Parameter"
         },
         "id_format": {
-          "$ref": "#/properties/Parameter"
+          "$ref": "#/definitions/Parameter"
         },
         "fragmentation_method": {
           "type": "array",
           "default": [],
           "items": {
-            "$ref": "#/properties/Parameter"
+            "$ref": "#/definitions/Parameter"
           },
           "description": "The fragmentation methods applied during this msRun."
         },
@@ -1153,7 +1148,7 @@
           "type": "array",
           "default": [],
           "items": {
-            "$ref": "#/properties/Parameter"
+            "$ref": "#/definitions/Parameter"
           },
           "description": "The scan polarity/polarities used during this msRun."
         },
@@ -1162,7 +1157,7 @@
           "description": "The file hash value of this msRun's data file."
         },
         "hash_method": {
-          "$ref": "#/properties/Parameter"
+          "$ref": "#/definitions/Parameter"
         }
       }
     },
@@ -1204,16 +1199,16 @@
             "description": "The ms run(s) referenced by this study variable."
         },
         "average_function": {
-          "$ref": "#/properties/Parameter"
+          "$ref": "#/definitions/Parameter"
         },
         "variation_function": {
-          "$ref": "#/properties/Parameter"
+          "$ref": "#/definitions/Parameter"
         },
         "factors": {
           "type": "array",
           "default": [],
           "items": {
-            "$ref": "#/properties/Parameter"
+            "$ref": "#/definitions/Parameter"
           },
           "description": "Parameters indicating which factors were used for the assays referenced by this study variable, and at which levels."
         }
@@ -1239,7 +1234,7 @@
           "type": "array",
           "default": [],
           "items": {
-            "$ref": "#/properties/Parameter"
+            "$ref": "#/definitions/Parameter"
           },
           "description": "Additional user or cv parameters."
         },
@@ -1311,7 +1306,7 @@
           "minimum": 1
         },
         "param": {
-          "$ref": "#/properties/Parameter"
+          "$ref": "#/definitions/Parameter"
         },
         "prefix": {
           "type": "string",
@@ -1323,9 +1318,18 @@
           "description": "The database version."
         },
         "uri": {
-          "type": "string",
-          "format": "uri",
-          "description": "The URI to the online database."
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uri",
+              "description": "The URI to the online database."
+            },
+            {
+              "type": "string",
+              "pattern": "^null$",
+              "description": "no database."
+            }
+          ]
         }
       }
     },
@@ -1340,7 +1344,7 @@
           "description": "The fully qualified target column name."
         },
         "param": {
-          "$ref": "#/properties/Parameter"
+          "$ref": "#/definitions/Parameter"
         }
       }
     },
@@ -1355,7 +1359,7 @@
           "description": "The fully qualified column name."
         },
         "param": {
-          "$ref": "#/properties/Parameter"
+          "$ref": "#/definitions/Parameter"
         },
         "value": {
           "type": "string",
