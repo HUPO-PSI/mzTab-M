@@ -366,7 +366,8 @@
           "type": "integer",
           "description": "A within file unique identifier for the small molecule.",
           "x-mztab-example": "SMH\tSML_ID\t…\nSML\t1\t…\nSML\t2\t…\n",
-          "format": "int32"
+          "format": "int32",
+          "minimum": 1
         },
         "smf_id_refs": {
           "type": "array",
@@ -375,7 +376,8 @@
           "default": [],
           "items": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "minimum": 1
           }
         },
         "database_identifier": {
@@ -556,7 +558,8 @@
           "type": "integer",
           "description": "A within file unique identifier for the small molecule feature.",
           "x-mztab-example": "SFH\tSMF_ID\t…\nSMF\t1\t…\nSMF\t2\t…\n",
-          "format": "int32"
+          "format": "int32",
+          "minimum": 1
         },
         "sme_id_refs": {
           "type": "array",
@@ -565,7 +568,8 @@
           "default": [],
           "items": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "minimum": 1
           }
         },
         "sme_id_ref_ambiguity_code": {
@@ -666,7 +670,7 @@
         "exp_mass_to_charge",
         "charge",
         "theoretical_mass_to_charge",
-        "spectra_ref",
+        "spectra_refs",
         "identification_method",
         "ms_level",
         "rank"
@@ -758,25 +762,15 @@
           "x-mztab-example": "SEH\tSME_ID\t…\ttheoretical_mass_to_charge …\nSME\t1\t…\t1234.71\t…\n",
           "format": "double"
         },
-        "spectra_ref": {
+        "spectra_refs": {
           "type": "array",
-          "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a “|” delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.\n\nIf a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.\n",
+          "description": "References to spectra in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a “|” delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.\n\nIf a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.\n",
           "x-mztab-example": "SEH\tSME_ID\t…\tspectra_ref\t…\nSME\t1\t…\tms_run[1]:index=5\t…\n",
           "default": [],
           "items": {
-            "type": "object",
-            "required": ["ms_run", "reference"],
-            "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a “|” delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.\n\nIf a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.\n",
-            "x-mztab-example": "SEH\tSME_ID\t…\tspectra_ref\t…\nSME\t1\t\t\tms_run[1]:index=5\t…\n",
-            "properties": {
-              "ms_run": {
-                "$ref" : "#/definitions/MsRun"
-              },
-              "reference": {
-                "description": "The (vendor-dependendent) reference string to the actual mass spectrum.\n",
-                "type": "string"
-              }
-            }
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1
           }
         },
         "identification_method": {
@@ -985,8 +979,10 @@
       "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a “|” delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.\n\nIf a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.\n",
       "x-mztab-example": "SEH\tSME_ID\t…\tspectra_ref\t…\nSME\t1\t\t\tms_run[1]:index=5\t…\n",
       "properties": {
-        "ms_run": {
-          "$ref": "#/definitions/MsRun"
+        "ms_run_ref": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 1
         },
         "reference": {
           "description": "The (vendor-dependendent) reference string to the actual mass spectrum.\n",
@@ -1134,7 +1130,10 @@
           "description": "The msRun's location URI."
         },
         "instrument_ref": {
-          "$ref": "#/definitions/Instrument"
+          "type": "integer",
+          "format": "int32",
+          "minimum": 1,
+          "description": "The instrument referenced by this msRun."
         },
         "format": {
           "$ref": "#/properties/Parameter"
@@ -1187,18 +1186,22 @@
           "type": "array",
           "default": [],
           "items": {
-            "$ref": "#/definitions/Assay"
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1
           },
           "description": "The assays referenced by this study variable."
         },
-        "ms_run_ref": {
+        "ms_run_refs": {
             "type": "array",
             "default": [],
             "minItems": 1,
             "items": {
-             "$ref": "#/definitions/MsRun"
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
             },
-            "description": "The ms run(s) referenced by this assay."
+            "description": "The ms run(s) referenced by this study variable."
         },
         "average_function": {
           "$ref": "#/properties/Parameter"
@@ -1221,7 +1224,7 @@
       "x-mztab-example": "MTD\tassay[1]\tfirst assay\nMTD\tassay[1]-custom[1]\t[MS, , Assay operator, Fred Blogs]\nMTD\tassay[1]-external_uri\thttps://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt?STUDYASSAY=a_e04_c18pos.txt\nMTD\tassay[1]-sample_ref\tsample[1]\nMTD\tassay[1]-ms_run_ref\tms_run[1]\n",
       "x-mztab-serialize-by-id": "true",
       "type": "object",
-      "required": ["name", "ms_run_ref"],
+      "required": ["name", "ms_run_refs"],
       "properties": {
         "id": {
           "type": "integer",
@@ -1246,66 +1249,19 @@
           "description": "An external URI to further information about this assay."
         },
         "sample_ref": {
-          "$ref": "#/definitions/Sample"
+          "type": "integer",
+          "format": "int32",
+          "minimum": 1,
+          "description": "The sample referenced by this assay."
         },
-        "ms_run_ref": {
+        "ms_run_refs": {
           "type": "array",
           "default": [],
           "minItems": 1,
           "items": {
-            "description": "Specification of ms_run. \nlocation: Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the [1-n] cardinality is referenced elsewhere. If pre-fractionation has been performed, then [1-n] ms_runs SHOULD be created per assay. \ninstrument_ref: If different instruments are used in different runs, instrument_ref can be used to link a specific instrument to a specific run. \nformat: Parameter specifying the data format of the external MS data file. If ms_run[1-n]-format is present, ms_run[1-n]-id_format SHOULD also be present, following the parameters specified in Table 1. \nid_format: Parameter specifying the id format used in the external data file. If ms_run[1-n]-id_format is present, ms_run[1-n]-format SHOULD also be present.\nfragmentation_method: The type(s) of fragmentation used in a given ms run.\nscan_polarity: The polarity mode of a given run. Usually only one value SHOULD be given here except for the case of mixed polarity runs.\nhash: Hash value of the corresponding external MS data file defined in ms_run[1-n]-location. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.\nhash_method: A parameter specifying the hash methods used to generate the String in ms_run[1-n]-hash. Specifics of the hash method used MAY follow the definitions of the mzML format. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.\n",
-            "x-mztab-example": "COM\tlocation can be a local or remote URI\nMTD\tms_run[1]-location\tfile:///C:/path/to/my/file.mzML\nMTD\tms_run[1]-instrument_ref\tinstrument[1]\nMTD\tms_run[1]-format\t[MS, MS:1000584, mzML file, ]\nMTD\tms_run[1]-id_format\t[MS, MS:1000530, mzML unique identifier, ]\nMTD\tms_run[1]-fragmentation_method[1]\t[MS, MS:1000133, CID, ]\nCOM\tfor mixed polarity scan scenarios\nMTD\tms_run[1]-scan_polarity[1]\t[MS, MS:1000130, positive scan, ]\nMTD\tms_run[1]-scan_polarity[2]\t[MS, MS:1000129, negative scan, ]\nMTD\tms_run[1]-hash_method\t[MS, MS:1000569, SHA-1, ]\nMTD\tms_run[1]-hash\tde9f2c7fd25e1b3afad3e85a0bd17d9b100db4b3\n",
-            "x-mztab-serialize-by-id": "true",
-            "type": "object",
-            "required": ["id", "location"],
-            "properties": {
-              "id": {
-                "type": "integer",
-                "format": "int32",
-                "minimum": 1
-              },
-              "name": {
-                "type": "string",
-                "description": "The msRun's name."
-              },
-              "location": {
-                "type": "string",
-                "format": "uri",
-                "description": "The msRun's location URI."
-              },
-              "instrument_ref": {
-                "$ref" : "#/definitions/Instrument"
-              },
-              "format": {
-                "$ref": "#/properties/Parameter"
-              },
-              "id_format": {
-                "$ref": "#/properties/Parameter"
-              },
-              "fragmentation_method": {
-                "type": "array",
-                "default": [],
-                "items": {
-                  "$ref": "#/properties/Parameter"
-                },
-                "description": "The fragmentation methods applied during this msRun."
-              },
-              "scan_polarity": {
-                "type": "array",
-                "default": [],
-                "items": {
-                  "$ref": "#/properties/Parameter"
-                },
-                "description": "The scan polarity/polarities used during this msRun."
-              },
-              "hash": {
-                "type": "string",
-                "description": "The file hash value of this msRun's data file."
-              },
-              "hash_method": {
-                "$ref": "#/properties/Parameter"
-              }
-            }
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1
           },
           "description": "The ms run(s) referenced by this assay."
         }
