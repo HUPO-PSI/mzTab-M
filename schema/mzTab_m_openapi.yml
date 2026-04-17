@@ -692,8 +692,6 @@ components:
             variation_function: The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default) e.g. “standard error”.
 
             description: A textual description of the study variable.
-
-            factors: Additional parameters or factors, separated by bars, that are known about study variables allowing the capture of more complex, such as nested designs.
           default: []
           items:
             $ref: "#/components/schemas/StudyVariable"
@@ -708,21 +706,19 @@ components:
 
             MTD	study_variable[1]-description	Group B (spike-in 0.74 fmol/uL)
 
-            MTD	study_variable[1]-factors	[,,rapamycin dose,0.5mg]
-
             MTD	study_variable[2]	1 minute
         study_variable_group:
           type: array
           description: >
             Specification of study_variable_group.
 
-            (empty) parameter: A parameter defining the group to which study variables belong, allowing grouping of related study variables that belong to the same experimental design factor in multi-factorial designs.
+            (empty) parameter: A parameter defining the group to which study variables belong, allowing grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. For software that does not capture study variables, a single study_variable_group MUST be reported, linking to the single study variable, and MUST have the identifier "undefined".
 
             description: A textual description of the study variable group.
 
             type: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO_0000252, categorical variable], [STATO, STATO_0000228, ordinal variable], or [STATO, STATO_0000251, continuous variable].
 
-            datatype: The data type of the group variable.
+            datatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, and xsd:anyURI.
 
             unit: An optional parameter specifying the unit of the study variable group.
           default: []
@@ -735,13 +731,15 @@ components:
 
             MTD	study_variable_group[1]-type	[STATO, STATO_0000252, categorical variable]
 
+            MTD	study_variable_group[1]-datatype	xsd:string
+
             MTD	study_variable_group[2]	[,,timepoint,]
 
             MTD	study_variable_group[2]-description	Time after treatment
 
-            MTD	study_variable_group[2]-type	ordinal
+            MTD	study_variable_group[2]-type	[STATO, STATO_0000228, ordinal variable]
 
-            MTD	study_variable_group[2]-datatype	integer
+            MTD	study_variable_group[2]-datatype	xsd:integer
 
             MTD	study_variable_group[2]-unit	[UO, UO:0000033, day, ]
         custom:
@@ -2110,8 +2108,6 @@ components:
         variation_function: The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default) e.g. “standard error”.
 
         description: A textual description of the study variable.
-
-        factors: Additional parameters or factors, separated by bars, that are known about study variables allowing the capture of more complex, such as nested designs.
       x-mztab-example: >
         MTD	study_variable[1]	control
 
@@ -2122,8 +2118,6 @@ components:
         MTD	study_variable-variation_function	[MS, MS:1002885, standard error, ]
 
         MTD	study_variable[1]-description	Group B (spike-in 0.74 fmol/uL)
-
-        MTD	study_variable[1]-factors	[,,time point, 1 minute]|[,,rapamycin dose,0.5mg]
 
         MTD	study_variable[2]	1 minute 0.5mg rapamycin
       x-mztab-serialize-by-id: "true"
@@ -2155,22 +2149,17 @@ components:
         description:
           type: string
           description: A free-form description of this study variable.
-        factors:
-          type: array
-          default: []
-          items:
-            $ref: "#/components/schemas/Parameter"
-          description: Parameters indicating which factors were used for the assays
-            referenced by this study variable, and at which levels.
     StudyVariableGroup:
       description: >
         Specification of study_variable_group.
 
-        (empty) name/parameter: A parameter defining the group to which study variables belong. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter (e.g., [OBI, OBI:0001667, organism development stage, ]) or a user-defined parameter (e.g., [,,sex,]). Added in mzTab-M 2.1.
+        (empty) name/parameter: A parameter defining the group to which study variables belong. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter (e.g., [OBI, OBI:0001667, organism development stage, ]) or a user-defined parameter (e.g., [,,sex,]). For software that does not capture study variables, a single study_variable_group MUST be reported, linking to the single study variable, and MUST have the identifier "undefined". Added in mzTab-M 2.1.
 
         description: A textual description of the study variable group.
 
-        type: The data type of the group variable, which determines how the values should be interpreted or encoded/decoded. Supported values are: "nominal" (categorical values without ordering), "ordinal" (ordered categorical values), "categorical" (categorical values with alphabetical ordering), or "logical" (boolean values).
+        type: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO_0000252, categorical variable], [STATO, STATO_0000228, ordinal variable], or [STATO, STATO_0000251, continuous variable].
+
+        datatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, and xsd:anyURI. Date, time and dateTime values MUST be encoded in ISO 8601 format.
 
         unit: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).
       x-mztab-example: >
@@ -2180,11 +2169,15 @@ components:
 
         MTD	study_variable_group[1]-type	[STATO, STATO_0000252, categorical variable, ]
 
+        MTD	study_variable_group[1]-datatype	xsd:string
+
         MTD	study_variable_group[2]	[PATO, PATO_0000384, timepoint, ]
 
         MTD	study_variable_group[2]-description	Time after treatment
 
         MTD	study_variable_group[2]-type	[STATO, STATO_0000228, ordinal variable, ]
+
+        MTD	study_variable_group[2]-datatype	xsd:integer
 
         MTD	study_variable_group[2]-unit	[UO, UO:0000033, day, ]
 
@@ -2222,14 +2215,15 @@ components:
           description: >
             The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of the examples below.
 
-            [STATO, STATO_0000252, categorical variable] is a variable that can only assume a finite number values without inherent ordering. Synonym "nominal" variable.
+            [STATO, STATO_0000252, categorical variable] is a variable that can only assume a finite number of values without inherent ordering.
 
-            [STATO, STATO_0000228, ordinal variable]` Ordered categorical variable where the sequence matters but intervals between levels are undefined. These values represent categories with a defined sequence or ranking.
+            [STATO, STATO_0000228, ordinal variable] is an ordered variable where the sequence matters but intervals between levels are undefined. These values represent categories with a defined sequence or ranking.
 
-            [STATO, STATO_0000251, continuous variable]` is a variable that can take any value within a range on a continuous scale.
+            [STATO, STATO_0000251, continuous variable] is a variable that can take any value within a range on a continuous scale.
         datatype:
           type: string
-          description: The datatype of the group variable, which determines how they can be encoded and parsed, and how the values could be handled in programming languages.
+          description: >
+            The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed in mzTab-M files and how they could be handled in programming languages. Optional, but producers of mzTab-M 2.1.0 SHOULD provide a value to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, and xsd:anyURI. Date, time and dateTime values MUST be encoded in ISO 8601 format.
         unit:
           $ref: "#/components/schemas/Parameter"
           description: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).
