@@ -1185,20 +1185,20 @@ MTD study_variable_group[1]-description Sex of the individual
 
  The following data types are supported:
 
-* **categorical** – `[STATO, STATO_0000252, categorical variable]` is a variable that can only assume a finite number of values without inherent ordering. In programming languages often represented as enums, factors (in R), or strings.
+* **categorical** – `[STATO, STATO:0000252, categorical variable]` is a variable that can only assume a finite number of values without inherent ordering. In programming languages often represented as enums, factors (in R), or strings.
 
-* **ordinal** – `[STATO, STATO_0000228, ordinal variable]` Ordered variable where the sequence matters but intervals between levels are undefined. These values represent categories with a defined sequence or ranking. Example: disease severity (mild, moderate, severe), confidence levels (low, medium, high).
+* **ordinal** – `[STATO, STATO:0000228, ordinal variable]` Ordered variable where the sequence matters but intervals between levels are undefined. These values represent categories with a defined sequence or ranking. Example: disease severity (mild, moderate, severe), confidence levels (low, medium, high).
 
-* **continuous** – `[STATO, STATO_0000251, continuous variable]` is a variable that can take any value within a range on a continuous scale. Example: temperature, height, concentration, time.
+* **continuous** – `[STATO, STATO:0000251, continuous variable]` is a variable that can take any value within a range on a continuous scale. Example: temperature, height, concentration, time.
 
 Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).
 |*Type* |Parameter
 |*Mandatory* |False
 |*Example* a|
 ....
-MTD study_variable_group[1]-type [STATO, STATO_0000252, categorical variable]
-MTD study_variable_group[2]-type [STATO, STATO_0000228, ordinal variable]
-MTD study_variable_group[3]-type [STATO, STATO_0000251, continuous variable]
+MTD study_variable_group[1]-type [STATO, STATO:0000252, categorical variable]
+MTD study_variable_group[2]-type [STATO, STATO:0000228, ordinal variable]
+MTD study_variable_group[3]-type [STATO, STATO:0000251, continuous variable]
 ....
 
 |=============================================================================

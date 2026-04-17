@@ -716,7 +716,7 @@ components:
 
             description: A textual description of the study variable group.
 
-            type: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO_0000252, categorical variable], [STATO, STATO_0000228, ordinal variable], or [STATO, STATO_0000251, continuous variable].
+            type: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO:0000252, categorical variable], [STATO, STATO:0000228, ordinal variable], or [STATO, STATO:0000251, continuous variable].
 
             datatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, and xsd:anyURI.
 
@@ -725,11 +725,11 @@ components:
           items:
             $ref: "#/components/schemas/StudyVariableGroup"
           x-mztab-example: >
-            MTD	study_variable_group[1]	[PATO, PATO_0000383, sex, ]
+            MTD	study_variable_group[1]	[PATO, PATO:0000383, sex, ]
 
             MTD	study_variable_group[1]-description	Sex of the individual
 
-            MTD	study_variable_group[1]-type	[STATO, STATO_0000252, categorical variable]
+            MTD	study_variable_group[1]-type	[STATO, STATO:0000252, categorical variable]
 
             MTD	study_variable_group[1]-datatype	xsd:string
 
@@ -737,7 +737,7 @@ components:
 
             MTD	study_variable_group[2]-description	Time after treatment
 
-            MTD	study_variable_group[2]-type	[STATO, STATO_0000228, ordinal variable]
+            MTD	study_variable_group[2]-type	[STATO, STATO:0000228, ordinal variable]
 
             MTD	study_variable_group[2]-datatype	xsd:integer
 
@@ -2157,25 +2157,25 @@ components:
 
         description: A textual description of the study variable group.
 
-        type: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO_0000252, categorical variable], [STATO, STATO_0000228, ordinal variable], or [STATO, STATO_0000251, continuous variable].
+        type: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO:0000252, categorical variable], [STATO, STATO:0000228, ordinal variable], or [STATO, STATO:0000251, continuous variable].
 
         datatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, and xsd:anyURI. Date, time and dateTime values MUST be encoded in ISO 8601 format.
 
         unit: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).
       x-mztab-example: >
-        MTD	study_variable_group[1]	[PATO, PATO_0000383, sex, ]
+        MTD	study_variable_group[1]	[PATO, PATO:0000383, sex, ]
 
         MTD	study_variable_group[1]-description	Sex of the individual
 
-        MTD	study_variable_group[1]-type	[STATO, STATO_0000252, categorical variable, ]
+        MTD	study_variable_group[1]-type	[STATO, STATO:0000252, categorical variable, ]
 
         MTD	study_variable_group[1]-datatype	xsd:string
 
-        MTD	study_variable_group[2]	[PATO, PATO_0000384, timepoint, ]
+        MTD	study_variable_group[2]	[PATO, PATO:0000384, timepoint, ]
 
         MTD	study_variable_group[2]-description	Time after treatment
 
-        MTD	study_variable_group[2]-type	[STATO, STATO_0000228, ordinal variable, ]
+        MTD	study_variable_group[2]-type	[STATO, STATO:0000228, ordinal variable, ]
 
         MTD	study_variable_group[2]-datatype	xsd:integer
 
@@ -2215,11 +2215,11 @@ components:
           description: >
             The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of the examples below.
 
-            [STATO, STATO_0000252, categorical variable] is a variable that can only assume a finite number of values without inherent ordering.
+            [STATO, STATO:0000252, categorical variable] is a variable that can only assume a finite number of values without inherent ordering.
 
-            [STATO, STATO_0000228, ordinal variable] is an ordered variable where the sequence matters but intervals between levels are undefined. These values represent categories with a defined sequence or ranking.
+            [STATO, STATO:0000228, ordinal variable] is an ordered variable where the sequence matters but intervals between levels are undefined. These values represent categories with a defined sequence or ranking.
 
-            [STATO, STATO_0000251, continuous variable] is a variable that can take any value within a range on a continuous scale.
+            [STATO, STATO:0000251, continuous variable] is a variable that can take any value within a range on a continuous scale.
         datatype:
           type: string
           description: >
