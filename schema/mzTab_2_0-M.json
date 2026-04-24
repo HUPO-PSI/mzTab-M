@@ -176,6 +176,15 @@
           },
           "x-mztab-example": "COM\tExperiment where all samples consisted of the same two species\nMTD\tsample[1]\tindividual number 1\nMTD\tsample[1]-species[1]\t[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]\nMTD\tsample[1]-tissue[1]\t[BTO, BTO:0000759, liver, ]\nMTD\tsample[1]-cell_type[1]\t[CL, CL:0000182, hepatocyte, ]\nMTD\tsample[1]-disease[1]\t[DOID, DOID:684, hepatocellular carcinoma, ]\nMTD\tsample[1]-disease[2]\t[DOID, DOID:9451, alcoholic fatty liver, ]\nMTD\tsample[1]-description\tHepatocellular carcinoma samples.\nMTD\tsample[1]-custom[1]\t[,,Extraction date, 2011-12-21]\nMTD\tsample[1]-custom[2]\t[,,Extraction reason, liver biopsy]\nMTD\tsample[2]\tindividual number 2\nMTD\tsample[2]-species[1]\t[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]\nMTD\tsample[2]-tissue[1]\t[BTO, BTO:0000759, liver, ]\nMTD\tsample[2]-cell_type[1]\t[CL, CL:0000182, hepatocyte, ]\nMTD\tsample[2]-description\tHealthy control samples.\n"
         },
+        "protocol": {
+          "type": "array",
+          "description": "Protocols used in the study. Multiple protocols MAY be specified for each study.",
+          "default": [],
+          "items": {
+            "$ref" : "#/definitions/Protocol"
+          },
+          "x-mztab-example": "MTD\tprotocol[1]-name\tMass Spectrometry\nMTD\tprotocol[1]-type\t[CHMO, CHMO:0000470, mass spectrometry, ]\nMTD\tprotocol[1]-description\tEluting compounds were detected ...\nMTD\tprotocol[1]-parameters\t[MS, MS:1000008, ionization type, [MS,MS:1000073, electrospray ionization]]\n"
+        },
         "sample_processing": {
           "type": "array",
           "description": "A list of parameters describing a sample processing, preparation or handling step similar to a biological or analytical methods report. The order of the sample_processing items should reflect the order these processing steps were performed in. If multiple parameters are given for a step these MUST be separated by a “|”. If derivatization was performed, it MUST be reported here as a general step, e.g. 'silylation' and the actual derivatization agens MUST be specified in the Section 6.2.54 part.\n",
@@ -1159,15 +1168,6 @@
           "type": "string",
           "format": "uri",
           "description": "The msRun's location URI."
-        },
-        "protocol_refs": {
-          "type": "array",
-          "description": "References to all protocols used in the ms run. If no protocol is specified, the protocols defined in the assay section are assumed to be used.",
-          "x-mztab-example": "MTD\tms_run[1]-protocol_refs\tprotocol[1]|protocol[2]\n",
-          "items": {
-            "type": "integer",
-            "format": "int64"
-          }
         },
         "parameters": {
           "type": "array",
