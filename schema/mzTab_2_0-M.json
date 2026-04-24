@@ -670,7 +670,7 @@
         "exp_mass_to_charge",
         "charge",
         "theoretical_mass_to_charge",
-        "spectra_refs",
+        "spectra_references",
         "identification_method",
         "ms_level",
         "rank"
@@ -762,15 +762,13 @@
           "x-mztab-example": "SEH\tSME_ID\t…\ttheoretical_mass_to_charge …\nSME\t1\t…\t1234.71\t…\n",
           "format": "double"
         },
-        "spectra_refs": {
+        "spectra_references": {
           "type": "array",
           "description": "References to spectra in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a “|” delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.\n\nIf a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.\n",
           "x-mztab-example": "SEH\tSME_ID\t…\tspectra_ref\t…\nSME\t1\t…\tms_run[1]:index=5\t…\n",
           "default": [],
           "items": {
-            "type": "integer",
-            "format": "int32",
-            "minimum": 1
+            "$ref": "#/definitions/SpectraReference"
           }
         },
         "identification_method": {
@@ -973,7 +971,7 @@
         }
       }
     },
-    "SpectraRef": {
+    "SpectraReference": {
       "type": "object",
       "required": ["ms_run", "reference"],
       "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a “|” delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.\n\nIf a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.\n",
