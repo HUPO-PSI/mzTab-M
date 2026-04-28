@@ -133,11 +133,18 @@ The specification described in this document has not been developed in isolation
 1.  _mzML_ (http://www.psidev.info/mzml). mzML is the PSI standard for capturing mass spectra / peak lists resulting from mass spectrometry in proteomics <<martens-2011, (Martens _et al._ 2011)>>. mzTab files MAY be used in conjunction with mzML, although it will be possible to use mzTab with other formats of mass spectra. This document does not assume familiarity with mzML.
 2.  __ISA-TAB (__http://isa-tools.org/_)._ The ISA framework allows for reporting experimental metadata and study designs in considerable detail, and is already used for describing metabolomics experiments. It is expected that mzTab files may be linked to ISA-TAB formatted files, for cases where a rich experimental design is to be captured. The linkage between mzTab-M and ISA-TAB is further exemplified in section <<referencing-external-resources>>.
 
+[[relationship-to-mztab-previous]]
+=== Relationship to previous mzTab versions
+
 [[relationship-to-mztab-1.0]]
-=== Relationship to mzTab 1.0
+==== Relationship to mzTab 1.0
 
 The first stable version of mzTab (version 1.0) was developed primarily by the PSI as a format for the final results (identification or quantification) of a proteomics experiment, using MS. In mzTab version 1.0 limited support was included for metabolomics, through a small molecule table, in which end results could be encoded at the level of quantified metabolites. The intention of mzTab-M is to extend these concepts, so that more detail can be captured about the evidence trail for quantification, including MS features (different charge states or adducts) and the evidence trail for identifications - both of which could not be easily supported in mzTab v 1.0. mzTab-M is not formally backwards compatible, but follows a similar design pattern. It has not been designed to support proteomics. However, design decisions made in mzTab-M may in the future be adopted for a version of mzTab specifically intended for proteomics only (mzTab-P). At the time of writing, mzTab version 1.0 remains in active use for proteomics, but is deprecated for use in metabolomics.
 
+==== Relationship to mzTab-M 2.0.0
+
+The first stable version of mzTab-M for Metabolomics (version 2.0.0) was developed to support the reporting of results from MS-based metabolomics experiments.
+mzTab-M 2.1.0 clarifies several aspects, and introduces the `study_variable_group` element to support multi-factorial experimental designs. As a consequence, the `study_variable[1-n]-factors` field has been removed: the experimental factors it was intended to capture are now represented explicitly through `study_variable_group[1-n]` and its sub-fields (`-description`, `-type`, `-datatype`, `-unit`), together with the `study_variable[1-n]-group_ref` reference from each study variable to its group.
 
 [[the-psi-mass-spectrometry-controlled-vocabulary-cv]]
 === The PSI Mass Spectrometry Controlled Vocabulary (CV)
@@ -159,6 +166,7 @@ The following ontologies or controlled vocabularies specified below may also be 
 * PRIDE (Proteomics Identifications) ontology (https://github.com/PRIDE-Utilities/pride-ontology).
 * MSIO (Metabolomics Standards Initiative) ontology (https://github.com/MSI-Metabolomics-Standards-Initiative/MSIO) for metabolomics, including harvesting, material and sample processing.
 * NCIT (NCI Thesaurus) (https://obofoundry.org/ontology/ncit.html) NCI Thesaurus (NCIt) is a reference terminology that includes broad coverage of the cancer domain, including cancer related diseases, findings and abnormalities.
+* STATO (STATO: the statistical methods ontology) (http://stato-ontology.org/) contains concepts and properties related to statistical methods, including relationships to study designs.
 
 Most of these ontologies are also indexed and searchable at EBI's Ontology Lookup Service (OLS) at https://www.ebi.ac.uk/ols/index
 
@@ -253,8 +261,12 @@ Additional annotation software would typically be required to add the sample-lev
 [#figurerrr-1]
 image::img/media/figure1.png[image, title="Simple experimental designs in mzTab-M can be represented using a combination of the elements study_variable (SV), assay, ms_run and sample. Quantitative values can be reported in files for SVs and assays. A) SV is intended to capture different groups of replicates, which might have resulted from different levels of a given variable e.g. control versus treated (represented as 2 SVs), n time points over a treatment course (as n SVs). B) assay captures a measurement made about a molecule (small molecule/lipid) where multiple assays within the same group are taken to be replicates of some kind (biological or technical). C) ms_run captures a single run on an MS instrument. D) samples are optional in mzTab since the quantitative software may often be unaware of the biological samples that have been analyzed. If that information is available, references from assay to the same (technical, upper half) or different (biological, bottom half) samples are used to describe the type of replication performed.",width=100%,pdfwidth=100%,scaledwidth=100%]
 
+Starting with mzTab-M 2.1, more complex experimental designs involving multiple factors (e.g. different treatments at different time points) can be represented by grouping multiple study variables. Such a group of study variable instances can be considered a column in a wide-layout experimental design matrix.
 
+[[reporting-factorial-experimental-designs]]
+=== Recommendations for reporting multifactorial experimental designs
 
+Some explanation is needed about the reporting of multifactorial experimental designs, which are common in metabolomics. In mzTab-M 2.1, the `study_variable_group` element has been introduced to support the grouping of multiple study variables (SVs) that together represent a column in a wide-layout experimental design matrix. For example, if there are two factors (e.g. treatment and time point). Each study_variable then references the relevant assay(s) and the `study_variable_group`. At least one `study_variable_group` MUST be defined.
 
 [[reporting-derivatization-approaches]]
 === Reporting derivatization approaches
@@ -384,8 +396,12 @@ Every line in an mzTab file MUST start with a three letter code identifying the 
 
 * *Header lines* +
 Each table based section (small molecule, small molecule feature and small molecule evidence) MUST start with the corresponding header line. These header lines MUST only occur once in the document since each section also MUST only occur once.
-* *Dates* +
-Dates and times MUST be supplied in the ISO 8601 format (“YYYY-MM-DD”, “YYYY-MM-DDTHH:MMZ” respectively).
+* *Dates and times* +
+Dates and times MUST be encoded using the ISO 8601 format:
++
+** Dates MUST use the form `YYYY-MM-DD` (e.g. `2025-03-14`).
+** Times MUST use the form `hh:mm:ss` (e.g. `09:45:30`). Fractional seconds and a timezone designator (`Z` for UTC, or `±hh:mm`) MAY be appended (e.g. `09:45:30.250Z`, `09:45:30+02:00`).
+** Combined date and time values MUST use the form `YYYY-MM-DDThh:mm:ss` (e.g. `2025-03-14T09:45:30`). Fractional seconds and a timezone designator MAY be appended (e.g. `2025-03-14T09:45:30Z`, `2025-03-14T09:45:30+02:00`).
 * *Decimal separator* +
 In mzTab files the dot (“.”) MUST be used as decimal separator. Thousand separators MUST NOT be used in mzTab files.
 * *Comment lines and empty lines* +
@@ -454,7 +470,7 @@ Regular expressions (*Regex*) follow the Perl regular expression syntax with min
 [[mztab-version]]
 ==== mzTab-version
 
-[cols=",",]
+[cols="20,80",]
 |==============================================
 |*Description* |The version of the mzTab file. The suffix MUST be "-M" for mzTab for metabolomics (mzTab-M).
 |*Type* a|Regex
@@ -471,7 +487,7 @@ MTD mzTab-version  2.0.0-M
 [[mztab-id]]
 ==== mzTab-ID
 
-[cols=",",]
+[cols="20,80",]
 |=========================================
 |*Description* |The ID of the mzTab file, this could be supplied by the repository from which it is downloaded or a local identifier from the lab producing the file. It is not intended to be a globally unique ID but carry some locally useful meaning.
 |*Type* |String
@@ -485,7 +501,7 @@ MTD mzTab-ID MTBL1234
 [[title]]
 ==== title
 
-[cols=",",]
+[cols="20,80",]
 |================================================
 |*Description* |The file’s human readable title.
 |*Type* |String
@@ -499,7 +515,7 @@ MTD title Effects of Rapamycin on metabolite profile
 [[description]]
 ==== description
 
-[cols=",",]
+[cols="20,80",]
 |============================================================================
 |*Description* |The file’s human readable description.
 |*Type* |String
@@ -513,8 +529,8 @@ MTD description An experiment investigating the effects of Il-6.
 [[sample_processing1-n]]
 ==== sample_processing[1-n]
 
-[cols=",",]
-|=================================================================================================================================================================================================================================================================
+[cols="20,80",]
+|============================================================================
 |*Description* |A list of parameters describing a sample processing, preparation or handling step similar to a biological or analytical methods report. The order of the sample_processing items should reflect the order these processing steps were performed in. If multiple parameters are given for a step these MUST be separated by a “\|”. If derivatization was performed, it MUST be reported here as a general step, e.g. 'silylation' and the actual derivatization agens MUST be specified in the <<derivatization_agent1-n>> part.
 |*Type* |Parameter List
 |*Mandatory* |False
@@ -523,14 +539,14 @@ MTD description An experiment investigating the effects of Il-6.
 MTD sample_processing[1] [MSIO, MSIO:0000107, metabolism quenching using precooled 60 percent methanol ammonium bicarbonate buffer,]
 MTD sample_processing[2] [MSIO, MSIO:0000146, centrifugation,]
 MTD sample_processing[3] [MSIO, MSIO:0000141, metabolite extraction,]
-MTD sample_processing[4] [MSIO, MSIO:0000141, silylation,]|[MSIO, MSIO:0000116, oximation,]
+MTD sample_processing[4] [MSIO, MSIO:0000141, silylation,]\|[MSIO, MSIO:0000116, oximation,]
 ....
-|=================================================================================================================================================================================================================================================================
+|============================================================================
 
 [[instrument1-n-name]]
 ==== instrument[1-n]-name
 
-[cols=",",]
+[cols="20,80",]
 |==========================================================================================================
 |*Description* |The name of the instrument used in the experiment. Multiple instruments are numbered 1..n.
 |*Type* |Parameter
@@ -544,7 +560,7 @@ MTD instrument[1]-name [MS, MS:1000449, LTQ Orbitrap,]
 [[instrument1-n-source]]
 ==== instrument[1-n]-source
 
-[cols=",",]
+[cols="20,80",]
 |=======================================================================================================
 |*Description* |The instrument's source used in the experiment. Multiple instruments are numbered [1-n].
 |*Type* |Parameter
@@ -560,7 +576,7 @@ MTD instrument[2]-source [MS, MS:1000598, ETD,]
 [[instrument1-n-analyzer1-n]]
 ==== instrument[1-n]-analyzer[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |================================================================================================================
 |*Description* |The instrument’s analyzer type used in the experiment. Multiple instruments are numbered [1-n].
 |*Type* |Parameter
@@ -576,7 +592,7 @@ MTD instrument[2]-analyzer[1] [MS, MS:1000484, orbitrap,]
 [[instrument1-n-detector]]
 ==== instrument[1-n]-detector
 
-[cols=",",]
+[cols="20,80",]
 |==============================================================================================================
 |*Description* |The instrument's detector type used in the experiment. Multiple instruments are numbered [1-n].
 |*Type* |Parameter
@@ -591,7 +607,7 @@ MTD instrument[2]-detector [MS, MS:1000348, focal plane collector,]
 
 [[software1-n]]
 ==== software[1-n]
-[cols=",",]
+[cols="20,80",]
 |============================================================================================================================================================================================================================
 |*Description* |Software used to analyze the data and obtain the reported results. The parameter’s value SHOULD contain the software’s version. The order (numbering) should reflect the order in which the tools were used.
 |*Type* |Parameter
@@ -605,7 +621,7 @@ MTD software[1] [MS, MS:1002879, Progenesis QI, 3.0]
 [[software1-n-setting1-n]]
 ==== software[1-n]-setting[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |====================================================================================================================================================================================================================================
 |*Description* |A software setting used. This field MAY occur multiple times for a single software. The value of this field is deliberately set as a String, since there currently do not exist CV terms for every possible setting.
 |*Type* |String
@@ -621,7 +637,7 @@ MTD software[2]-setting Parent tolerance = 0.5 Da
 [[publication1-n]]
 ==== publication[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |========================================================================================================================================================================================================================================================================
 |*Description* |A publication associated with this file. Several publications can be given by indicating the number in the square brackets after “publication”. PubMed ids must be prefixed by “pubmed:”, DOIs by “doi:”. Multiple identifiers MUST be separated by “\|”.
 |*Type* |String
@@ -636,7 +652,7 @@ MTD publication[2] pubmed:20615486\|doi:10.1016/j.jprot.2010.06.008
 [[contact1-n-name]]
 ==== contact[1-n]-name
 
-[cols=",",]
+[cols="20,80",]
 |================================================================================================================================================================================================================================
 |*Description* |The contact's name. Several contacts can be given by indicating the number in the square brackets after "contact". A contact has to be supplied in the format [first name] [initials] [last name] (see example).
 |*Type* |String
@@ -653,7 +669,7 @@ MTD contact[2]-name Francis Crick
 [[contact1-n-affiliation]]
 ==== contact[1-n]-affiliation
 
-[cols=",",]
+[cols="20,80",]
 |=================================================================
 |*Description* |The contact’s affiliation.
 |*Type* |String
@@ -668,7 +684,7 @@ MTD contact[2]-affiliation Cambridge University, UK
 [[contact1-n-email]]
 ==== contact[1-n]-email
 
-[cols=",",]
+[cols="20,80",]
 |===================================================
 |*Description* |The contact’s e-mail address.
 |*Type* |String
@@ -684,7 +700,7 @@ MTD contact[2]-email crick@cam.ac.uk
 [[uri1-n]]
 ==== uri[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |================================================================================================================================
 |*Description* |A URI pointing to the file's source data (e.g., a  MetaboLights records).
 |*Type* |URI
@@ -699,7 +715,7 @@ MTD uri[1] https://www.ebi.ac.uk/metabolights/MTBLS517
 [[external_study_uri1-n]]
 ==== external_study_uri[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |================================================================================================================================
 |*Description* |A URI pointing to an external file with more details about the study design (e.g., an ISA-TAB file).
 |*Type* |URI
@@ -714,7 +730,7 @@ MTD external_study_uri[1] https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_In
 [[quantification_method]]
 ==== quantification_method
 
-[cols=",",]
+[cols="20,80",]
 |======================================================================================
 |*Description* |The quantification method used in the experiment reported in the file.
 |*Type* |Parameter
@@ -729,7 +745,7 @@ MTD quantification_method [MS, MS:1001838, SRM quantitation analysis, ]
 
 
 ==== sample[1-n]
-[cols=",",]
+[cols="20,80",]
 |======================================================================================================================
 |*Description* |A name for each sample to serve as a list of the samples that MUST be reported in the following tables. Samples MUST be reported if a statistical design is being captured (i.e. bio or tech replicates). If the type of replicates are not known, samples SHOULD NOT be reported.
 |*Type* |String
@@ -745,7 +761,7 @@ MTD sample[2] individual number 2
 [[sample1-n-species1-n]]
 ==== sample[1-n]-species[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |=================================================================================
 |*Description* |The respective species of the samples analysed. For more complex cases, such as metagenomics, optional columns and userParams should be used.
 |*Type* |Parameter
@@ -769,7 +785,7 @@ MTD sample[2]-species[2] [NCBITaxon, NCBITaxon:12130, Human rhinovirus 2, ]
 [[sample1-n-tissue1-n]]
 ==== sample[1-n]-tissue[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |===============================================================
 |*Description* |The respective tissue(s) of the sample.
 |*Type* |Parameter
@@ -783,7 +799,7 @@ MTD sample[1]-tissue[1] [BTO, BTO:0000759, liver, ]
 [[sample1-n-cell_type1-n]]
 ==== sample[1-n]-cell_type[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |=====================================================================
 |*Description* |The respective cell type(s) of the sample.
 |*Type* |Parameter
@@ -797,7 +813,7 @@ MTD sample[1]-cell_type[1] [CL, CL:0000182, hepatocyte, ]
 [[sample1-n-disease1-n]]
 ==== sample[1-n]-disease[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |===================================================================================
 |*Description* |The respective disease(s) of the sample.
 |*Type* |Parameter
@@ -812,7 +828,7 @@ MTD sample[1]-disease[2] [DOID, DOID:9451, alcoholic fatty liver, ]
 [[sample1-n-description]]
 ==== sample[1-n]-description
 
-[cols=",",]
+[cols="20,80",]
 |=========================================================================
 |*Description* |A human readable description of the sample.
 |*Type* |String
@@ -827,7 +843,7 @@ MTD sample[2]-description Healthy control samples.
 [[sample1-n-custom1-n]]
 ==== sample[1-n]-custom[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |=========================================================================
 |*Description:* |Parameters describing the sample’s additional properties. Dates MUST be provided in ISO-8601 format.
 |*Type:* |Parameter
@@ -844,7 +860,7 @@ MTD sample[1]-custom[2] [,,Extraction reason, liver biopsy]
 [[ms_run1-n-location]]
 ==== ms_run[1-n]-location
 
-[cols=",",]
+[cols="20,80",]
 |=====================================================================================================================================================================================================================================================================================================================================================
 |*Description* |Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the [1-n] cardinality is referenced elsewhere. If pre-fractionation has been performed, then [1-n] ms_runs SHOULD be created per assay.
 |*Type* |URI
@@ -860,7 +876,7 @@ MTD ms_run[1]-location ftp://ftp.ebi.ac.uk/path/to/file
 [[ms_run1-n-instrument_ref]]
 ==== ms_run[1-n]-instrument_ref
 
-[cols=",",]
+[cols="20,80",]
 |=====================================================================================================================================================================================================================================================================================================================================================
 |*Description* |If different instruments are used in different runs, this attribute can be used to link a specific instrument to a specific run.
 |*Type* |Integer
@@ -874,7 +890,7 @@ MTD ms_run[1]-instrument_ref instrument[1]
 
 [[ms_run1-n-format]]
 ==== ms_run[1-n]-format
-[cols=",",]
+[cols="20,80",]
 |====================================================================================================================================================================
 |*Description* |A parameter specifying the data format of the external MS data file. If ms_run[1-n]-format is present, ms_run[1-n]-id_format SHOULD also be present, following the parameters specified in Table 1.
 |*Type* |Parameter
@@ -891,7 +907,7 @@ MTD ms_run[2]-id_format [MS, MS:1000774, multiple peak list nativeID format, ]
 
 [[ms_run1-n-id_format]]
 ==== ms_run[1-n]-id_format
-[cols=",",]
+[cols="20,80",]
 |==================================================================================================================================================================
 |*Description* |Parameter specifying the id format used in the external data file. If ms_run[1-n]-id_format is present, ms_run[1-n]-format SHOULD also be present.
 |*Type* |Parameter
@@ -908,11 +924,11 @@ MTD ms_run[2]-id_format [MS, MS:1000774, multiple peak list nativeID format, ]
 
 [[ms_run1-n-usi_identifier]]
 ==== ms_run[1-n]-usi_identifier
-[cols=",",]
+[cols="20,80",]
 |===================================================================================================================================================================
 |*Description* |An identifier for the MS run based on the Universal Spectrum Identifier (USI) specification.
-Implied within the USI is an MS run identifier. Every deposited MS run can be referenced with a shortened form: `mzspec:<collection>:<msRun>`. More info on the standard can be found: https://www.psidev.info/usi. 
-Since an MS run may be represented in several formats (with potentially slightly different data associated with the spectrum), a format suffix MAY be specified (e.g. `mzspec:<collection>:<msRun>.RAW`) to signify that a specific file type is meant. 
+Implied within the USI is an MS run identifier. Every deposited MS run can be referenced with a shortened form: `mzspec:<collection>:<msRun>`. More info on the standard can be found: https://www.psidev.info/usi.
+Since an MS run may be represented in several formats (with potentially slightly different data associated with the spectrum), a format suffix MAY be specified (e.g. `mzspec:<collection>:<msRun>.RAW`) to signify that a specific file type is meant.
 If specified, the format suffix should align with the ms_run[1-n]-format parameter and the ms_run[1-n]-location suffix defined in the metadata section.
 |*Type* |String
 |*Mandatory* |False
@@ -925,7 +941,7 @@ MTD ms_run[1]-usi_identifier mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f
 [[ms_run1-n-fragmentation_method1-n]]
 ==== ms_run[1-n]-fragmentation_method[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |===========================================================================
 |*Description* |The type(s) of fragmentation used in a given ms run.
 |*Type* |Parameter
@@ -942,7 +958,7 @@ MTD ms_run[1]-fragmentation_method[2] [MS, MS:1000422, HCD, ]
 [[ms_run1-n-scan_polarity1-n]]
 ==== ms_run[1-n]-scan_polarity[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |===========================================================================
 |*Description* |The polarity mode of a given run. Usually only one value SHOULD be given here except for the case of mixed polarity runs.
 |*Type* |Parameter
@@ -966,7 +982,7 @@ MTD ms_run[1]-scan_polarity[2] [MS, MS:1000129, negative scan, ]
 
 [[ms_run1-n-hash]]
 ==== ms_run[1-n]-hash
-[cols=",",]
+[cols="20,80",]
 |======================================================================================================================================================================================
 |*Description* |Hash value of the corresponding external MS data file defined in ms_run[1-n]-location. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.
 |*Type* |String
@@ -980,7 +996,7 @@ MTD ms_run[1]-hash de9f2c7fd25e1b3afad3e85a0bd17d9b100db4b3
 
 [[ms_run1-n-hash_method]]
 ==== ms_run[1-n]-hash_method
-[cols=",",]
+[cols="20,80",]
 |=========================================================================================================================================================================================================================================================================
 |*Description* |A parameter specifying the hash methods used to generate the String in ms_run[1-n]-hash. Specifics of the hash method used MAY follow the definitions of the mzML format. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.
 |*Type* |Parameter
@@ -995,7 +1011,7 @@ MTD ms_run[1]-hash de9f2c7fd25e1b3afad3e85a0bd17d9b100db4b3
 
 [[assay1-n]]
 ==== assay[1-n]
-[cols=",",]
+[cols="20,80",]
 |======================================================================================================================
 |*Description* |A name for each assay, to serve as a list of the assays that MUST be reported in the following tables.
 |*Type* |String
@@ -1009,7 +1025,7 @@ MTD assay[2] second assay
 
 [[assay1-n-custom1-n]]
 ==== assay[1-n]-custom[1-n]
-[cols=",",]
+[cols="20,80",]
 |==================================================================
 |*Description* |Additional parameters or values for a given assay.
 |*Type* |Parameter
@@ -1023,7 +1039,7 @@ MTD assay[1]-custom[1] [MS, , Assay operator, Fred Blogs]
 
 [[assay1-n-external_uri]]
 ==== assay[1-n]-external_uri
-[cols=",",]
+[cols="20,80",]
 |====================================================================================================================================
 |*Description* |A reference to further information about the assay, for example via a reference to an object within an ISA-TAB file.
 |*Type* |URI
@@ -1039,7 +1055,7 @@ MTD assay[1]-external_uri https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_In
 [[assay1-n-sample_ref]]
 ==== assay[1-n]-sample_ref
 
-[cols=",",]
+[cols="20,80",]
 |=========================================================================
 |*Description* |An association from a given assay to the sample analysed.
 |*Type* |\{SAMPLE_ID}
@@ -1053,7 +1069,7 @@ MTD assay[2]-sample_ref sample[2]
 
 [[assay1-n-ms_run_ref]]
 ==== assay[1-n]-ms_run_ref
-[cols=",",]
+[cols="20,80",]
 |===========================================================================================================================================================================================================================================================
 |*Description* |
 An association from a given assay to the source MS run. All assays MUST reference exactly one ms_run unless a workflow with pre-fractionation is being encoded, in which case each assay MUST reference _n_ ms_runs where _n_ fractions have been collected.
@@ -1072,7 +1088,7 @@ MTD assay[1]-ms_run_ref ms_run[2]
 [[study_variable1-n]]
 ==== study_variable[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |================================================================================================================================================================================================================================================================================================
 |*Description* |A name for each study variable (experimental condition or factor), to serve as a list of the study variables that MUST be reported in the following tables. For software that does not capture study variables, a single study variable MUST be reported, linking to all assays. This single study variable MUST have the identifier “undefined“.
 |*Type* |String
@@ -1082,12 +1098,15 @@ MTD assay[1]-ms_run_ref ms_run[2]
 MTD study_variable[1] “control”
 
 MTD study_variable[2] “1 minute”
+
+MTD study_variable[13] “Wildtype”
+
 ....
 |================================================================================================================================================================================================================================================================================================
 
 [[study_variable1-n-assay_refs]]
 ==== study_variable[1-n]-assay_refs
-[cols=",",]
+[cols="20,80",]
 |==============================================================================================
 |*Description* |Bar-separated references to the IDs of assays grouped in the study variable.
 |*Type* |\{ASSAY_ID}, ...
@@ -1098,9 +1117,140 @@ MTD study_variable[1]-assay_refs assay[1]\| assay[2]\| assay[3]
 ....
 |==============================================================================================
 
+[[study_variable1-n-description]]
+==== study_variable[1-n]-description
+
+[cols="20,80",]
+|=============================================================================
+|*Description* |A textual description of the study variable.
+|*Type* |String
+|*Mandatory* |True
+|*Example* a|
+....
+MTD study_variable[1]-description Group B (spike-in 0.74 fmol/uL)
+....
+|=============================================================================
+
+[[study_variable1-n-group_ref]]
+==== study_variable[1-n]-group_ref
+
+[cols="20,80",]
+|=============================================================================
+|*Description* |A reference to the study_variable_group that this study variable belongs to, allowing study variables to be linked to the experimental design factors they represent.
+|*Type* |\{STUDY_VARIABLE_GROUP_ID}
+|*Mandatory* |True
+|*Example* a|
+....
+MTD study_variable[1]-group_ref study_variable_group[1]
+MTD study_variable[2]-group_ref study_variable_group[1]
+MTD study_variable[3]-group_ref study_variable_group[2]
+....
+|=============================================================================
+
+[[study_variable_group1-n]]
+==== study_variable_group[1-n]
+
+[cols="20,80",]
+|=============================================================================
+|*Description* |A parameter defining the group to which the study variable belongs. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter or a user-defined parameter. At least one study_variable_group MUST be defined. For software that does not capture study variables, a single study_variable_group MUST be reported, linking to the single study variable. This single study_variable_group MUST have the identifier “undefined”. Added in mzTab-M 2.1.
+|*Type* |Parameter
+|*Mandatory* |True
+|*Example* a|
+....
+MTD study_variable_group[1] [,,sex,]
+MTD study_variable_group[2] [EFO, EFO:0004953, date of diagnosis, ]
+....
+|=============================================================================
+
+[[study_variable_group1-n-description]]
+==== study_variable_group[1-n]-description
+
+[cols="20,80",]
+|=============================================================================
+|*Description* |A textual description of the study variable group.
+|*Type* |String
+|*Mandatory* |True (if study_variable_group is defined)
+|*Example* a|
+....
+MTD study_variable_group[1]-description Sex of the individual
+....
+|=============================================================================
+
+[[study_variable_group1-n-type]]
+==== study_variable_group[1-n]-type
+
+[cols="20,80",]
+|=============================================================================
+|*Description* |The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of the examples below. While the `type` also has implications for how the variables are encoded/decoded, that information goes into the `study_variable_group[1-n]-datatype`.  
+
+ The following data types are supported:
+
+* **categorical** – `[STATO, STATO:0000252, categorical variable]` is a variable that can only assume a finite number of values without inherent ordering. In programming languages often represented as enums, factors (in R), or strings.
+
+* **ordinal** – `[STATO, STATO:0000228, ordinal variable]` Ordered variable where the sequence matters but intervals between levels are undefined. These values represent categories with a defined sequence or ranking. Example: disease severity (mild, moderate, severe), confidence levels (low, medium, high).
+
+* **continuous** – `[STATO, STATO:0000251, continuous variable]` is a variable that can take any value within a range on a continuous scale. Example: temperature, height, concentration, time.
+
+Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).
+|*Type* |Parameter
+|*Mandatory* |False
+|*Example* a|
+....
+MTD study_variable_group[1]-type [STATO, STATO:0000252, categorical variable]
+MTD study_variable_group[2]-type [STATO, STATO:0000228, ordinal variable]
+MTD study_variable_group[3]-type [STATO, STATO:0000251, continuous variable]
+....
+
+|=============================================================================
+[[study_variable_group1-n-datatype]]
+==== study_variable_group[1-n]-datatype
+
+[cols="20,80",]
+|=============================================================================
+|*Description* |The datatype of the group variable, which determines how they can be encoded and parsed in mzTab-M files, and how the values could be handled in programming languages.
+
+Producers of mzTab-M 2.1.0 SHOULD provide a `datatype` for each `study_variable_group` to simplify interpretation by downstream consumers of the format. The field is not mandatory, but its presence removes ambiguity about how the associated values are encoded and should be parsed.
+
+The following datatypes are supported:
+
+* xsd:string – Character string.
+* xsd:integer – Arbitrary‑size integer.
+* xsd:decimal – Arbitrary‑precision decimal number.
+* xsd:boolean – Boolean value (`true` / `false`).
+* xsd:date – Calendar date, encoded in ISO 8601 format (`YYYY-MM-DD`).
+* xsd:time – Time of day, encoded in ISO 8601 format (`hh:mm:ss`, optional fractional seconds and timezone).
+* xsd:dateTime – Combined date and time, encoded in ISO 8601 format (`YYYY-MM-DDThh:mm:ss`, with optional fractional seconds and timezone, e.g. `YYYY-MM-DDThh:mm:ssZ`).
+* xsd:anyURI – A Uniform Resource Identifier reference.
+
+Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).
+|*Type* |String (constrained)
+|*Mandatory* |False
+|*Example* a|
+....
+MTD study_variable_group[1]-datatype xsd:string
+MTD study_variable_group[2]-datatype xsd:decimal
+MTD study_variable_group[3]-datatype xsd:date
+....
+|=============================================================================
+
+[[study_variable_group1-n-unit]]
+==== study_variable_group[1-n]-unit
+
+[cols="20,80",]
+|=============================================================================
+|*Description* |An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.). This SHOULD only be used for numeric or scalar values.
+|*Type* |Parameter
+|*Mandatory* |False
+|*Example* a|
+....
+MTD study_variable_group[1]-unit [UO, UO:0000033, day, ]
+MTD study_variable_group[2]-unit [UO, UO:0000010, second, ]
+....
+|=============================================================================
+
 [[study_variable1-n-average_function1-n]]
 ==== study_variable[1-n]-average_function
-[cols=",",]
+[cols="20,80",]
 |==========================================================================================================================================================================================================================================================================================
 |*Description* |The function used to calculate the study variable quantification value and the operation used is not arithmetic mean (default) e.g. “geometric mean”, “median”. The 1-n refers to different study variables.
 |*Type* |Parameter
@@ -1114,7 +1264,7 @@ MTD study_variable-average_function [MS, MS:1002883, median, ]
 
 [[study_variable1-n-variation_function]]
 ==== study_variable[1-n]-variation_function
-[cols=",",]
+[cols="20,80",]
 |==========================================================================================================================================================================================================================================================================================
 |*Description* |The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default) e.g. “standard error”.
 |*Type* |Parameter
@@ -1126,39 +1276,10 @@ MTD study_variable-variation_function [MS, MS:1002885, standard error, ]
 ....
 |==========================================================================================================================================================================================================================================================================================
 
-
-[[study_variable1-n-description]]
-==== study_variable[1-n]-description
-
-[cols=",",]
-|=============================================================================
-|*Description* |A textual description of the study variable.
-|*Type* |String
-|*Mandatory* |True
-|*Example* a|
-....
-MTD study_variable[1]-description Group B (spike-in 0.74 fmol/uL)
-....
-|=============================================================================
-
-[[study_variable1-n-factors]]
-==== study_variable[1-n]-factors
-[cols=","]
-|=======================================================================================================================================================================
-|*Description* |Additional parameters or factors, separated by bars, that are known about study variables allowing the capture of more complex, such as nested designs.
-|*Type* |Param List
-|*Mandatory* |False
-|*Example* a|
-[subs="verbatim,quotes"]
-....
-MTD study_variable[1]-factors [,,rapamycin dose,0.5mg]
-....
-|=======================================================================================================================================================================
-
 [[custom1-n]]
 ==== custom[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |===========================================================================
 |*Description* |Any additional parameters describing the analysis reported.
 |*Type* |Parameter
@@ -1172,7 +1293,7 @@ MTD custom[1] [,,MS operator, Florian]
 [[cv1-n-label]]
 ==== cv[1-n]-label
 
-[cols=",",]
+[cols="20,80",]
 |===============================================================================================================
 |*Description* |A string describing the labels of the controlled vocabularies/ontologies used in the mzTab file as a short-hand e.g. "MS" for PSI-MS.
 |*Type* |String
@@ -1186,7 +1307,7 @@ MTD cv[1]-label MS
 [[cv1-n-full_name]]
 ==== cv[1-n]-full_name
 
-[cols=",",]
+[cols="20,80",]
 |===================================================================================================================
 |*Description* |A string describing the full names of the controlled vocabularies/ontologies used in the mzTab file.
 |*Type* |String
@@ -1200,7 +1321,7 @@ MTD cv[1]-full_name PSI-MS controlled vocabulary
 [[cv1-n-version]]
 ==== cv[1-n]-version
 
-[cols=",",]
+[cols="20,80",]
 |================================================================================================================
 |*Description* |A string describing the version of the controlled vocabularies/ontologies used in the mzTab file.
 |*Type* |String
@@ -1214,7 +1335,7 @@ MTD cv[1]-version 4.1.11
 [[cv1-n-uri]]
 ==== cv[1-n]-uri
 
-[cols=",",]
+[cols="20,80",]
 |===============================================================================================================================================================================================================
 |*Description* |A string containing the URIs of the controlled vocabularies/ontologies used in the mzTab file. Note: For OBO ontologies, always use an OBO PURL rather than raw repository links to ensure long-term stability. For other ontology formats, please use the fully qualified PURL pointing to the ontology file.
 |*Type* |String
@@ -1228,7 +1349,7 @@ MTD cv[1]-uri https://purl.obolibrary.org/obo/ms.obo
 [[database1-n]]
 ==== database[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |===========================================================================================================================================================================================================================
 |*Description* |The description of databases used. For cases, where a known database has not been used for identification, a userParam SHOULD be inserted to describe any identification performed e.g. de novo.
 
@@ -1249,7 +1370,7 @@ MTD database[5] [,, "no database", null ]
 
 [[database1-n-prefix]]
 ==== database[1-n]-prefix
-[cols=",",]
+[cols="20,80",]
 |====================================================================================================================================================
 |*Description* |The prefix used in the “identifier” column of data tables. For the “no database” case "null" must be used.
 |*Type* |String
@@ -1268,10 +1389,10 @@ MTD database[5]-prefix null
 [[database1-n-version]]
 ==== database[1-n]-version
 
-[cols=",",]
+[cols="20,80",]
 |==============================================================================================================================================================================================================================================
 |*Description:* |The database version is mandatory where identification has been performed. This may be a formal version number e.g. “1.4.1”, a date of access “2016-10-27” (ISO-8601 format) or “Unknown” if there is no suitable version that can be annotated.
-|*Type:* |String
+|*Type* |String
 |*Mandatory* |True
 |*Example* a|
 ....
@@ -1284,7 +1405,7 @@ MTD database[2]-version Unknown
 [[database1-n-uri]]
 ==== database[1-n]-uri
 
-[cols=",",]
+[cols="20,80",]
 |===============================================
 |*Description* |The URI to the database. For the “no database” case, "null" must be reported.
 |*Type* |URI
@@ -1300,7 +1421,7 @@ MTD database[5]-uri null
 [[derivatization_agent1-n]]
 ==== derivatization_agent[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |===============================================================================================================================
 |*Description* |A description of derivatization agents applied to small molecules, using userParams or CV terms where possible.
 |*Type* |Param
@@ -1313,7 +1434,7 @@ MTD derivatization_agent[1] [XLMOD, XLMOD:07014, N-methyl-N-t-butyldimethylsilyl
 
 [[small_molecule-quantification_unit]]
 ==== small_molecule-quantification_unit
-[cols=",",]
+[cols="20,80",]
 |=============================================================================================================
 |*Description* |Defines what type of units are reported in the small molecule summary quantification / abundance fields.
 |*Type* |Parameter
@@ -1327,7 +1448,7 @@ MTD small_molecule-quantification_unit [MS, MS:1002887, Progenesis QI normalised
 
 [[small_molecule_feature-quantification_unit]]
 ==== small_molecule_feature-quantification_unit
-[cols=",",]
+[cols="20,80",]
 |=====================================================================================================================
 |*Description* |Defines what type of units are reported in the small molecule feature quantification / abundance fields.
 |*Type* |Parameter
@@ -1341,7 +1462,7 @@ MTD small_molecule_feature-quantification_unit [MS, MS:1002887, Progenesis QI no
 
 [[small_molecule-identification_reliability]]
 ==== small_molecule-identification_reliability
-[cols=",",]
+[cols="20,80",]
 |================================================================================================================================================
 |*Description* |The system used for giving reliability / confidence codes to small molecule identifications MUST be specified if not using the default codes (see <<reliability>> and for details).
 |*Type* |Param
@@ -1358,7 +1479,7 @@ MTD small_molecule-identification_reliability [MS, MS:1002955, hr-ms compound id
 [[id_confidence_measure1-n]]
 ==== id_confidence_measure[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |=====================================================================================================================================================================================================================================================
 |*Description* |The type of small molecule confidence measures or scores MUST be reported as a CV parameter [1-n]. The CV parameter definition should formally state whether the ordering is high to low or vice versa. The order of the scores SHOULD reflect their importance for the identification and be used to determine the identification’s rank.
 |*Type* |Parameter
@@ -1376,7 +1497,7 @@ id_confidence_measure[3]	[MS,MS:1002891,isotopic fit score,]
 [[colunit-small_molecule]]
 ==== colunit-small_molecule
 
-[cols=",",]
+[cols="20,80",]
 |=================================================================================================================================================================================
 |*Description* |
 Defines the used unit for a column in the small molecule section. The format of the value has to be \{column name}=\{Parameter defining the unit}
@@ -1395,7 +1516,7 @@ MTD colunit-small_molecule opt_global_cv_MS:MS:1002954_collisional_cross_section
 [[colunit-small_molecule_feature]]
 ==== colunit-small_molecule_feature
 
-[cols=",",]
+[cols="20,80",]
 |=================================================================================================================================================================================
 |*Description* |
 Defines the used unit for a column in the small molecule feature section. The format of the value has to be \{column name}=\{Parameter defining the unit}
@@ -1414,7 +1535,7 @@ MTD colunit-small_molecule_feature opt_ms_run[1]_cv_MS:MS:1002476_ion_mobility_d
 [[colunit-small_molecule_evidence]]
 ==== colunit-small_molecule_evidence
 
-[cols=",",]
+[cols="20,80",]
 |===========================================================================================================================================================================
 |*Description* |Defines the used unit for a column in the small molecule evidence section. The format of the value has to be \{column name}=\{Parameter defining the unit}.
 |*Type* |String
@@ -1440,7 +1561,7 @@ All columns are MANDATORY except for “opt_” columns.
 [[sml_id]]
 ==== SML_ID
 
-[cols=",",]
+[cols="20,80",]
 |=======================================================================
 |*Description* |A within file unique identifier for the small molecule.
 |*Type* |Integer
@@ -1456,7 +1577,7 @@ SML 2 …
 [[smf_id_refs]]
 ==== SMF_ID_REFS
 
-[cols=",",]
+[cols="20,80",]
 |==============================================================================================================================================================================================================================================
 |*Description* |References to all the features on which quantitation has been based (SMF elements) via referencing SMF_ID values. Multiple values SHOULD be provided as a “\|” separated list. This MAY be null only if this is a Summary file.
 |*Type* |\{SMF_ID} list
@@ -1470,7 +1591,7 @@ SML 1 2\|3\|11…
 
 [[database_identifier]]
 ==== database_identifier
-[cols=",",]
+[cols="20,80",]
 |=================================================================================================================================================================================================================================================================================================================================
 |*Description* |
 A list of “\|” separated possible identifiers for the small molecule; multiple values MUST only be provided to indicate ambiguity in the identification of the molecule and not to demonstrate different identifier types for the same molecule. Alternative identifiers for the same molecule MAY be provided as optional columns.
@@ -1494,7 +1615,7 @@ SML 3 null
 [[chemical_formula]]
 ==== chemical_formula
 
-[cols=",",]
+[cols="20,80",]
 |=============================================================================================================================================================================================================================================================================================================================================================================================================================================
 |*Description* |
 A list of “\|” separated potential chemical formulae of the reported compound. The number of values provided MUST match the number of entities reported under “database_identifier”, even if this leads to redundant reporting of information (i.e. if ambiguity can be resolved in the chemical formula), and the validation software will throw an error if the number of “\|” symbols does not match. “null” values between bars are allowed.
@@ -1515,7 +1636,7 @@ SML 1 … C17H20N4O2 …
 [[smiles]]
 ==== smiles
 
-[cols=",",]
+[cols="20,80",]
 |=====================================================================================================================================================================================================================================================================================================================================================================================================
 |*Description* |A list of “\|” separated potential molecule structures in the simplified molecular-input line-entry system (SMILES) for the small molecule. The number of values provided MUST match the number of entities reported under “database_identifier”, and the validation software will throw an error if the number of “\|” symbols does not match. “null” values between bars are allowed.
 |*Type* |String List
@@ -1530,7 +1651,7 @@ SML 1 … C17H20N4O2 C1=CC=C(C=C1)CCNC(=O)CCNNC(=O)C2=CC=NC=C2 …
 [[inchi]]
 ==== inchi
 
-[cols=",",]
+[cols="20,80",]
 |======================================================================================================================================================================================================================================================================================================================================================
 |*Description* |
 A list of “\|” separated potential standard IUPAC International Chemical Identifier (InChI) of the given substance.
@@ -1549,7 +1670,7 @@ SML 1 … C17H20N4O2 … InChI=1S/C17H20N4O2/c22-16(19-12-6-14-4-2-1-3-5-14)9-13
 [[chemical_name]]
 ==== chemical_name
 
-[cols=",",]
+[cols="20,80",]
 |===========================================================================================================================================================================================================================================================================================================================================================================================================================================================================
 |*Description* |A list of “\|” separated possible chemical/common names for the small molecule, or general description if a chemical name is unavailable. Multiple names are only to demonstrate ambiguity in the identification. The number of values provided MUST match the number of entities reported under “database_identifier”, and the validation software will throw an error if the number of “\|” symbols does not match. “null” values between bars are allowed.
 |*Type* |String List
@@ -1564,7 +1685,7 @@ SML 1 … N-(2-phenylethyl)-3-[2-(pyridine-4-carbonyl)hydrazinyl]propanamide…
 [[uri]]
 ==== uri
 
-[cols=",",]
+[cols="20,80",]
 |================================================================================================================================================================================================================================================================================================================================================================================
 |*Description* |A URI pointing to the small molecule’s entry in a reference database (e.g., the small molecule’s HMDB or KEGG entry). The number of values provided MUST match the number of entities reported under “database_identifier”, and the validation software will throw an error if the number of “\|” symbols does not match. “null” values between bars are allowed.
 |*Type* |URI List
@@ -1582,7 +1703,7 @@ SML 3 … http://identifiers.org/hmdb/HMDB0001847 …
 [[theoretical_neutral_mass]]
 ==== theoretical_neutral_mass
 
-[cols=",",]
+[cols="20,80",]
 |==========================================================================================================================================================================================================================================================================================
 |*Description* |
 The small molecule’s precursor’s theoretical neutral mass.
@@ -1601,7 +1722,7 @@ SML 1 … 1234.5 …
 
 [[adduct_ions]]
 ==== adduct_ions
-[cols=",",]
+[cols="20,80",]
 |============================================================================================================================================================================================================================================================================================================================================================
 |*Description* |A “\|” separated list of detected adducts for this this molecule, following the general style in the 2013 IUPAC recommendations on http://dx.doi.org/10.1351/PAC-REC-06-04-06[terms relating to MS] e.g. `[M+H]1+`, `[M+Na]1+`, `[M+NH4]1+`, `[M-H]1-`, `[M+Cl]1-`, `[M+H]1+`. If the adduct classification is ambiguous with regards to identification evidence it MAY be null.
 |*Type* a|Regex List
@@ -1619,7 +1740,7 @@ SML 1 … [M+H]1+ \| [M+Na]1+ …
 [[reliability]]
 ==== reliability
 //options="header" removed in following table to allow normal adoc macros
-[cols=","]
+[cols="20,80"]
 |============================================================================================================
 |*Description* a|
 The reliability of the given small molecule identification. This must be supplied by the resource and MUST be reported as an integer between 1-4:
@@ -1680,7 +1801,7 @@ SML 1 … 2a …
 [[best_id_confidence_measure]]
 ==== best_id_confidence_measure
 
-[cols=",",]
+[cols="20,80",]
 |============================================================================================================
 |*Description* |The approach or database search that identified this small molecule with highest confidence.
 |*Type* |Parameter
@@ -1695,7 +1816,7 @@ SML 1 … [MS, MS:1001477, SpectraST,] …
 [[best_id_confidence_value]]
 ==== best_id_confidence_value
 
-[cols=",",]
+[cols="20,80",]
 |===================================================================================================================================================================================================================================================================================================
 |*Description* |The best confidence measure in identification (for this type of score) for the given small molecule across all assays. The type of score MUST be defined in the metadata section. If the small molecule was not identified by the specified search engine, “null” MUST be reported. If the confidence measure does not report a numerical confidence value, “null” SHOULD be reported.
 |*Type* |Double
@@ -1710,7 +1831,7 @@ SML 1 … 0.7 …
 [[abundance_assay1-n]]
 ==== abundance_assay[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |=====================================================================================================================================================================
 |*Description* |The small molecule’s abundance in every assay described in the metadata section MUST be reported. Null or zero values may be reported as appropriate. "null" SHOULD be used to report missing quantities, while zero SHOULD be used to indicate a present but not reliably quantifiable value (e.g. below a minimum noise threshold).
 |*Type* |Double
@@ -1725,7 +1846,7 @@ SML 1 … 0.3 …
 [[abundance_study_variable1-n]]
 ==== abundance_study_variable[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |============================================================================================================================================================================================================================================================================
 |*Description* |The small molecule’s abundance in all the study variables described in the metadata section (study_variable[1-n]_average_function), calculated using the method as described in the Metadata section (default = arithmetic mean across assays). Null or zero values may be reported as appropriate. "null" SHOULD be used to report missing quantities, while zero SHOULD be used to indicate a present but not reliably quantifiable value (e.g. below a minimum noise threshold).
 |*Type* |Double
@@ -1740,7 +1861,7 @@ SML 1 … 0.3 …
 [[abundance_variation_study_variable-1-n]]
 ==== abundance_variation_study_variable[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |=========================================================================================================================
 |*Description* |A measure of the variability of the study variable abundance measurement, calculated using the method as described in the metadata section (study_variable[1-n]_average_function), with a  default = arithmethic co-efficient of variation of the small molecule’s abundance in the given study variable.
 |*Type* |Double
@@ -1755,7 +1876,7 @@ SML 1 … 0.3 0.04 …
 [[opt_identifier_]]
 ==== opt_\{identifier}_*
 
-[cols=",",]
+[cols="20,80",]
 |===============================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
 |*Description* |Additional columns can be added to the end of the small molecule table. These column headers MUST start with the prefix “opt_” followed by the \{identifier} of the object they reference: assay, study variable, MS run or “global” (if the value relates to all replicates). Column names MUST only contain the following characters: ‘A’-‘Z’, ‘a’-‘z’, ‘0’-‘9’, ‘_’, ‘-’, ‘[’, ‘]’, and ‘:’. CV parameter accessions MAY be used for optional columns following the format: pass:[opt_{identifier}_cv_{accession}_{parameter name}]. Spaces within the parameter’s name MUST be replaced by ‘_’.
 |*Type* |Column
@@ -1792,7 +1913,7 @@ All columns are MANDATORY except for “opt_” columns.
 [[smf_id]]
 ==== SMF_ID
 
-[cols=",",]
+[cols="20,80",]
 |===============================================================================
 |*Description* |A within file unique identifier for the small molecule feature.
 |*Type* |Integer
@@ -1808,7 +1929,7 @@ SMF 2 …
 [[sme_id_refs]]
 ==== SME_ID_REFS
 
-[cols=",",]
+[cols="20,80",]
 |==============================================================================================================================================================================================================================================================================================================================================================================
 |*Description* |References to the identification evidence (SME elements) via referencing SME_ID values. Multiple values MAY be provided as a “\|” separated list to indicate ambiguity in the identification or to indicate that different types of data supported the identifiction (see SME_ID_REF_ambiguity_code). For the case of a consensus approach where multiple adduct forms are used to infer the SML ID, different features should just reference the same SME_ID value(s).
 |*Type* |\{SME_ID} list
@@ -1823,7 +1944,7 @@ SMF 1 5\|6\|12…
 [[sme_id_ref_ambiguity_code]]
 ==== SME_ID_REF_ambiguity_code
 
-[cols=",",]
+[cols="20,80",]
 |=================================================================================================================================================================================================================================================================================================================================================================
 |*Description* |If multiple values are given under SME_ID_REFS, one of the following codes MUST be provided. 1=Ambiguous identification; 2=Only different evidence streams for the same molecule with no ambiguity; 3=Both ambiguous identification and multiple evidence streams. If there are no or one value under SME_ID_REFs, this MUST be reported as null.
 |*Type* |Integer
@@ -1837,7 +1958,7 @@ SMF 1 5\|6\|12… 1
 
 [[adduct_ion]]
 ==== adduct_ion
-[cols=",",]
+[cols="20,80",]
 |==========================================================================================================================================================================================================
 |*Description* |The assumed classification of this molecule's adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. `[M+H]1+`, `[M+Na]1+`, `[M+NH4]1+`, `[M-H]1-`, `[M+Cl]1-`, `[M+H]1+`.
 |*Type* a|
@@ -1857,7 +1978,7 @@ SMF 2 … [M+2Na]2+ …
 [[isotopomer]]
 ==== isotopomer
 
-[cols=",",]
+[cols="20,80",]
 |===================================================================================================================================================================================================================================================
 |*Description* |If de-isotoping has not been performed, then the isotopomer quantified MUST be reported here e.g. “+1”, “+2”, “13C peak” using CV terms, otherwise (i.e. for approaches where SMF rows are de-isotoped features) this MUST be null.
 |*Type* |Parameter
@@ -1872,7 +1993,7 @@ SMF 1 … [MS,MS:1002957,”isotopomer MS peak”,”13C peak”]…
 [[exp_mass_to_charge-1]]
 ==== exp_mass_to_charge
 
-[cols=",",]
+[cols="20,80",]
 |============================================================================================================================================================================================================================================================
 |*Description* |The __exp__erimental mass/charge value for the feature, by default assumed to be the mean across assays or a representative value. For approaches that report isotopomers as SMF rows, then the m/z of the isotopomer MUST be reported here.
 |*Type* |Double
@@ -1887,7 +2008,7 @@ SMF 1 … 1234.5 …
 [[charge]]
 ==== charge
 
-[cols=",",]
+[cols="20,80",]
 |===========================================
 |*Description* |The feature’s charge value using positive integers both for positive and negative polarity modes. Is nullable in the SMF table but if identification is precised the charge is expected to expected to be known.
 |*Type* |Integer
@@ -1902,7 +2023,7 @@ SMF 1 … 1 …
 [[retention_time_in_seconds-1]]
 ==== retention_time_in_seconds
 
-[cols=",",]
+[cols="20,80",]
 |====================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
 |*Description* |The apex of the feature on the retention time axis, in a Master or aggregate MS run. Retention time MUST be reported in seconds. Retention time values for individual MS runs (i.e. before alignment) MAY be reported as optional columns. Retention time SHOULD only be null in the case of direct infusion MS or other techniques where a retention time value is absent or unknown. Relative retention time or retention time index values MAY be reported as optional columns, and could be considered for inclusion in future versions of mzTab as appropriate.
 |*Type* |Double
@@ -1917,7 +2038,7 @@ SMF 1 … 1345.7 …
 [[retention_time_in_seconds_start]]
 ==== retention_time_in_seconds_start
 
-[cols=",",]
+[cols="20,80",]
 |========================================================================================================================================================================================================================================================================================================================================================
 |*Description* |The start time of the feature on the retention time axis, in a Master or aggregate MS run. Retention time MUST be reported in seconds. Retention time start and end SHOULD only be null in the case of direct infusion MS or other techniques where a retention time value is absent or unknown and MAY be reported in optional columns.
 |*Type* |Double
@@ -1932,7 +2053,7 @@ SMF 1 … 1327.0 …
 [[retention_time_in_seconds_end]]
 ==== retention_time_in_seconds_end
 
-[cols=",",]
+[cols="20,80",]
 |=======================================================================================================================================================================================================================================================================================================================================================
 |*Description* |The end time of the feature on the retention time axis, in a Master or aggregate MS run. Retention time MUST be reported in seconds. Retention time start and end SHOULD only be null in the case of direct infusion MS or other techniques where a retention time value is absent or unknown and MAY be reported in optional columns..
 |*Type* |Double
@@ -1947,7 +2068,7 @@ SMF 1 … 1327.8 …
 [[abundance_assay1-n-1]]
 ==== abundance_assay[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |==============================================================================================================================================================
 |*Description* |The feature’s abundance in every assay described in the metadata section MUST be reported. Null or zero values may be reported as appropriate.
 |*Type* |Double
@@ -1962,7 +2083,7 @@ SMF 1 … 38648 …
 [[opt_identifier_-1]]
 ==== opt_\{identifier}_*
 
-[cols=",",]
+[cols="20,80",]
 |=======================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
 |*Description* |Additional columns can be added to the end of the small molecule feature table. These column headers MUST start with the prefix “opt_” followed by the \{identifier} of the object they reference: assay, study variable, MS run or “global” (if the value relates to all replicates). Column names MUST only contain the following characters: ‘A’-‘Z’, ‘a’-‘z’, ‘0’-‘9’, ‘_’, ‘-’, ‘[’, ‘]’, and ‘:’. CV parameter accessions MAY be used for optional columns following the format: pass:[opt_{identifier}_cv_{accession}_{parameter name}]. Spaces within the parameter’s name MUST be replaced by ‘_’.
 |*Type* |Column
@@ -1997,7 +2118,7 @@ All columns are MANDATORY except for “opt_” columns.
 [[sme_id]]
 ==== SME_ID
 
-[cols=",",]
+[cols="20,80",]
 |=======================================================================================
 |*Description* |A within file unique identifier for the small molecule evidence result.
 |*Type* |Integer
@@ -2012,7 +2133,7 @@ SME 1 …
 [[evidence_input_id]]
 ==== evidence_input_id
 
-[cols=",",]
+[cols="20,80",]
 |==================================================================================================================================================================================================================================================================
 |*Description* |A within file unique identifier for the input data used to support this identification e.g. fragment spectrum, RT and m/z pair, isotope profile that was used for the identification process, to serve as a grouping mechanism, whereby multiple rows of results from the same input data share the same ID. The identifiers may be human readable but should not be assumed to be interpretable. For example, if fragmentation spectra have been searched then the ID may be the spectrum reference, or for accurate mass search, the ms_run[2]:458.75.
 |*Type* |String
@@ -2031,7 +2152,7 @@ SME 3 ms_run[1]:mass=278.65;rt=376.5
 [[database_identifier-1]]
 ==== database_identifier
 
-[cols=",",]
+[cols="20,80",]
 |=============================================================================================================================================
 |*Description* |
 The putative identification for the small molecule sourced from an external database, using the same prefix specified in database[1-n]-prefix.
@@ -2055,7 +2176,7 @@ SME 3 CID:null …
 [[chemical_formula-1]]
 ==== chemical_formula
 
-[cols=",",]
+[cols="20,80",]
 |==================================================================================================================================================================================================================================================================================================================================================================
 |*Description* |
 The chemical formula of the identified compound e.g. in a database, assumed to match the theoretical mass to charge (in some cases this will be the derivatized form, including adducts and protons).
@@ -2076,7 +2197,7 @@ SME 1 … C17H20N4O2 …
 [[smiles-1]]
 ==== smiles
 
-[cols=",",]
+[cols="20,80",]
 |=======================================================================================================================================
 |*Description* |The potential molecule’s structure in the simplified molecular-input line-entry system (SMILES) for the small molecule.
 |*Type* |String
@@ -2091,7 +2212,7 @@ SML 1 … C17H20N4O2 C1=CC=C(C=C1)CCNC(=O)CCNNC(=O)C2=CC=NC=C2 …
 [[inchi-1]]
 ==== inchi
 
-[cols=",",]
+[cols="20,80",]
 |===================================================================================================
 |*Description* |A standard IUPAC International Chemical Identifier (InChI) for the given substance.
 |*Type* |String
@@ -2106,7 +2227,7 @@ SML 1 … C17H20N4O2 … InChI=1S/C17H20N4O2/c22-16(19-12-6-14-4-2-1-3-5-14)9-13
 [[chemical_name-1]]
 ==== chemical_name
 
-[cols=",",]
+[cols="20,80",]
 |====================================================================================================================
 |*Description* |The small molecule’s chemical/common name, or general description if a chemical name is unavailable.
 |*Type* |String
@@ -2121,7 +2242,7 @@ SML 1 … N-(2-phenylethyl)-3-[2-(pyridine-4-carbonyl)hydrazinyl]propanamide…
 [[uri-1]]
 ==== uri
 
-[cols=",",]
+[cols="20,80",]
 |==================================================================================================================================
 |*Description* |A URI pointing to the small molecule’s entry in a database (e.g., the small molecule’s HMDB, Chebi or KEGG entry).
 |*Type* |URI
@@ -2136,7 +2257,7 @@ SME 1 … http://www.hmdb.ca/metabolites/HMDB00054
 [[derivatized_form]]
 ==== derivatized_form
 
-[cols=",",]
+[cols="20,80",]
 |==============================================================================================================================================================================================
 |*Description* |If a derivatized form has been analysed by MS, then the functional group attached to the molecule should be reported here using suitable userParam or CV terms as appropriate.
 |*Type* |Parameter
@@ -2151,7 +2272,7 @@ SML CID:00027395 … [CHEBI, CHEBI:51088, trimethylsilyl group, 3] …
 
 [[adduct_ion-1]]
 ==== adduct_ion
-[cols=",",]
+[cols="20,80",]
 |============================================================================================================================================================================================================================================================================================================
 |*Description* |The assumed classification of this molecule's adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. `[M+H]+`, `[M+Na]1+`, `[M+NH4]1+`, `[M-H]1-`, `[M+Cl]1-`. If the adduct classification is ambiguous with regards to identification evidence it MAY be null.
 |*Type* a|Regex
@@ -2173,7 +2294,7 @@ SME 2 … [M+Cl]- …
 [[exp_mass_to_charge-2]]
 ==== exp_mass_to_charge
 
-[cols=",",]
+[cols="20,80",]
 |==============================================================================================================================================================================================================================================
 |*Description* |The __exp__erimental mass/charge value for the precursor ion. If multiple adduct forms have been combined into a single identification event/search, then a single value e.g. for the protonated form SHOULD be reported here.
 |*Type* |Double
@@ -2188,7 +2309,7 @@ SME 1 … 1234.5 …
 [[charge-1]]
 ==== charge
 
-[cols=",",]
+[cols="20,80",]
 |===========================================
 |*Description* |The small molecule evidence's charge value using positive integers both for positive and negative polarity modes.
 |*Type* |Integer
@@ -2203,7 +2324,7 @@ SME 1 … 1 …
 [[theoretical_mass_to_charge]]
 ==== theoretical_mass_to_charge
 
-[cols=",",]
+[cols="20,80",]
 |==========================================================================================================================================
 |*Description* |The theoretical mass/charge value for the small molecule or the database mass/charge value (for a spectral library match).
 |*Type* |Double
@@ -2218,7 +2339,7 @@ SME 1 … 1234.71 …
 [[spectra_ref]]
 ==== spectra_ref
 
-[cols=",",]
+[cols="20,80",]
 |==========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
 |*Description* |
 Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:\{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a “\|” delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra  in advance of the search to make identifications.
@@ -2237,7 +2358,7 @@ SME 1 … ms_run[1]:index=5 …
 [[identification_method]]
 ==== identification_method
 
-[cols=",",]
+[cols="20,80",]
 |=======================================================================================================================================================================
 |*Description* |The database search, search engine or process that was used to identify this small molecule e.g. the name of software, database or manual curation etc. If manual validation has been performed quality, the following CV term SHOULD be used: "quality estimation by manual validation" MS:1001058.
 |*Type* |Parameter
@@ -2252,7 +2373,7 @@ SME 1 … [MS, MS:1001477, SpectraST,] …
 [[ms_level]]
 ==== ms_level
 
-[cols=",",]
+[cols="20,80",]
 |=====================================================================================================================================================================================================================================================================================================
 |*Description* |The highest MS level used to inform identification e.g. MS1 (accurate mass only) = “ms level=1” or from an MS2 fragmentation spectrum = “ms level=2”. For direct fragmentation or data independent approaches where fragmentation data is used, appropriate CV terms SHOULD be used .
 |*Type* |Parameter
@@ -2267,7 +2388,7 @@ SME 1 … [MS, MS:1000511, ms level, 2] …
 [[id_confidence_measure1-n-1]]
 ==== id_confidence_measure[1-n]
 
-[cols=",",]
+[cols="20,80",]
 |========================================================================================================================================================================
 |*Description* |Any statistical value or score for the identification. The metadata section reports the type of score used, as id_confidence_measure[1-n] of type Param.
 |*Type* |Double
@@ -2284,7 +2405,7 @@ SME 1 … 0.7 …
 [[rank]]
 ==== rank
 
-[cols=",",]
+[cols="20,80",]
 |============================================================================================================================================================================================================================================
 |*Description* |The rank of this identification from this approach as increasing integers from 1 (best ranked identification). Ties (equal score) are represented by using the same rank – defaults to 1 if there is no ranking system used.
 |*Type* |Integer
@@ -2299,7 +2420,7 @@ SME 1 … 1 …
 [[opt_identifier_-2]]
 ==== opt_\{identifier}_*
 
-[cols=",",]
+[cols="20,80",]
 |========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
 |*Description* |Additional columns can be added to the end of the small molecule evidence table. These column headers MUST start with the prefix “opt_” followed by the \{identifier} of the object they reference: assay, study variable, MS run or “global” (if the value relates to all replicates). Column names MUST only contain the following characters: ‘A’-‘Z’, ‘a’-‘z’, ‘0’-‘9’, ‘_’, ‘-’, ‘[’, ‘]’, and ‘:’. CV parameter accessions MAY be used for optional columns following the format: pass:[opt_{identifier}_cv_{accession}_{parameter name}]. Spaces within the parameter’s name MUST be replaced by ‘_’.
 |*Type* |Column

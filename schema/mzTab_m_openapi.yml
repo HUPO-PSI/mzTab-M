@@ -255,18 +255,18 @@ components:
 
 
         The mzTab-M format consists of four cross-referenced data tables:
-            
-            * Metadata (MTD), 
-            * Small Molecule (SML), 
-            * Small Molecule Feature (SMF) and the 
-            * Small Molecule Evidence (SME). 
 
-        The MTD and SML tables are mandatory, and for a file to contain any evidence about how molecules were quantified or identified by software, then all four tables must be present. The tables must follow the order MTD, SML, SMF and SME, with a blank line separating each table. 
+            * Metadata (MTD),
+            * Small Molecule (SML),
+            * Small Molecule Feature (SMF) and the
+            * Small Molecule Evidence (SME).
+
+        The MTD and SML tables are mandatory, and for a file to contain any evidence about how molecules were quantified or identified by software, then all four tables must be present. The tables must follow the order MTD, SML, SMF and SME, with a blank line separating each table.
 
 
         The structure of each table, in terms of the rows and columns that must be present is tightly specified and formally defined and explained in the mzTab-M specification document.
 
-        mzTab-M files MUST have one Metadata (MTD) section and one Small Molecule (SML) Section. In practice, we expect that most files SHOULD also include one Small Molecule Feature (SMF) section, and one Small Molecule Evidence (SME) Section. 
+        mzTab-M files MUST have one Metadata (MTD) section and one Small Molecule (SML) Section. In practice, we expect that most files SHOULD also include one Small Molecule Feature (SMF) section, and one Small Molecule Evidence (SME) Section.
 
         Files lacking SMF and SME sections can only present summary data about quantified molecules, without any evidence trail for how those values were derived. It will be left to reading software to determine whether additional validation will be requested such that SMF and SME tables MUST be present.
       required:
@@ -386,7 +386,7 @@ components:
         section are optional apart from those noted as mandatory. The fields in
         the metadata section MUST be reported in order of the various fields
         listed here. The field’s name and value MUST be separated by a tab
-        character. 
+        character.
       x-mztab-example: |
         MTD	mzTab-version	2.0.0-M
         MTD	mzTab-ID	MTBL1234
@@ -402,6 +402,7 @@ components:
         - ms_run
         - assay
         - study_variable
+        - study_variable_group
         - cv
         - database
         - small_molecule-quantification_unit
@@ -515,17 +516,17 @@ components:
           description: >
             Specification of sample.
 
-            (empty) name: A name for each sample to serve as a list of the samples that MUST be reported in the following tables. Samples MUST be reported if a statistical design is being captured (i.e. bio or tech replicates). If the type of replicates are not known, samples SHOULD NOT be reported. 
+            (empty) name: A name for each sample to serve as a list of the samples that MUST be reported in the following tables. Samples MUST be reported if a statistical design is being captured (i.e. bio or tech replicates). If the type of replicates are not known, samples SHOULD NOT be reported.
 
-            species: The respective species of the samples analysed. For more complex cases, such as metagenomics, optional columns and userParams should be used. 
+            species: The respective species of the samples analysed. For more complex cases, such as metagenomics, optional columns and userParams should be used.
 
-            tissue: The respective tissue(s) of the sample. 
+            tissue: The respective tissue(s) of the sample.
 
-            cell_type: The respective cell type(s) of the sample. 
+            cell_type: The respective cell type(s) of the sample.
 
-            disease: The respective disease(s) of the sample. 
+            disease: The respective disease(s) of the sample.
 
-            description: A human readable description of the sample. 
+            description: A human readable description of the sample.
 
             custom: Custom parameters describing the sample’s additional properties. Dates MUST be provided in ISO-8601 format.
           default: []
@@ -614,13 +615,13 @@ components:
         ms_run:
           type: array
           description: >
-            Specification of ms_run. 
+            Specification of ms_run.
 
-            location: Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the [1-n] cardinality is referenced elsewhere. If pre-fractionation has been performed, then [1-n] ms_runs SHOULD be created per assay. 
+            location: Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the [1-n] cardinality is referenced elsewhere. If pre-fractionation has been performed, then [1-n] ms_runs SHOULD be created per assay.
 
-            instrument_ref: If different instruments are used in different runs, instrument_ref can be used to link a specific instrument to a specific run. 
+            instrument_ref: If different instruments are used in different runs, instrument_ref can be used to link a specific instrument to a specific run.
 
-            format: Parameter specifying the data format of the external MS data file. If ms_run[1-n]-format is present, ms_run[1-n]-id_format SHOULD also be present, following the parameters specified in Table 1. 
+            format: Parameter specifying the data format of the external MS data file. If ms_run[1-n]-format is present, ms_run[1-n]-id_format SHOULD also be present, following the parameters specified in Table 1.
 
             id_format: Parameter specifying the id format used in the external data file. If ms_run[1-n]-id_format is present, ms_run[1-n]-format SHOULD also be present.
 
@@ -651,13 +652,13 @@ components:
           description: >
             Specification of assay.
 
-            (empty) name: A name for each assay, to serve as a list of the assays that MUST be reported in the following tables. 
+            (empty) name: A name for each assay, to serve as a list of the assays that MUST be reported in the following tables.
 
-            custom: Additional custom parameters or values for a given assay. 
+            custom: Additional custom parameters or values for a given assay.
 
-            external_uri: An external reference uri to further information about the assay, for example via a reference to an object within an ISA-TAB file. 
+            external_uri: An external reference uri to further information about the assay, for example via a reference to an object within an ISA-TAB file.
 
-            sample_ref: An association from a given assay to the sample analysed. 
+            sample_ref: An association from a given assay to the sample analysed.
 
             ms_run_ref: An association from a given assay to the source MS run. All assays MUST reference exactly one ms_run unless a workflow with pre-fractionation is being encoded, in which case each assay MUST reference n ms_runs where n fractions have been collected. Multiple assays SHOULD reference the same ms_run to capture multiplexed experimental designs.
           default: []
@@ -691,8 +692,6 @@ components:
             variation_function: The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default) e.g. “standard error”.
 
             description: A textual description of the study variable.
-
-            factors: Additional parameters or factors, separated by bars, that are known about study variables allowing the capture of more complex, such as nested designs.
           default: []
           items:
             $ref: "#/components/schemas/StudyVariable"
@@ -707,9 +706,42 @@ components:
 
             MTD	study_variable[1]-description	Group B (spike-in 0.74 fmol/uL)
 
-            MTD	study_variable[1]-factors	[,,rapamycin dose,0.5mg]
-
             MTD	study_variable[2]	1 minute
+        study_variable_group:
+          type: array
+          description: >
+            Specification of study_variable_group.
+
+            (empty) parameter: A parameter defining the group to which study variables belong, allowing grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. For software that does not capture study variables, a single study_variable_group MUST be reported, linking to the single study variable, and MUST have the identifier "undefined".
+
+            description: A textual description of the study variable group.
+
+            type: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO:0000252, categorical variable], [STATO, STATO:0000228, ordinal variable], or [STATO, STATO:0000251, continuous variable].
+
+            datatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, and xsd:anyURI.
+
+            unit: An optional parameter specifying the unit of the study variable group.
+          default: []
+          items:
+            $ref: "#/components/schemas/StudyVariableGroup"
+          x-mztab-example: >
+            MTD	study_variable_group[1]	[PATO, PATO:0000383, sex, ]
+
+            MTD	study_variable_group[1]-description	Sex of the individual
+
+            MTD	study_variable_group[1]-type	[STATO, STATO:0000252, categorical variable]
+
+            MTD	study_variable_group[1]-datatype	xsd:string
+
+            MTD	study_variable_group[2]	[,,timepoint,]
+
+            MTD	study_variable_group[2]-description	Time after treatment
+
+            MTD	study_variable_group[2]-type	[STATO, STATO:0000228, ordinal variable]
+
+            MTD	study_variable_group[2]-datatype	xsd:integer
+
+            MTD	study_variable_group[2]-unit	[UO, UO:0000033, day, ]
         custom:
           type: array
           description: Any additional parameters describing the analysis reported.
@@ -910,7 +942,7 @@ components:
             the same molecule MAY be provided as optional columns.
 
 
-            The database identifier must be preceded by the resource description (prefix) followed by a colon, as specified in the metadata section.    
+            The database identifier must be preceded by the resource description (prefix) followed by a colon, as specified in the metadata section.
 
 
             A null value MAY be provided if the identification is sufficiently ambiguous as to be meaningless for reporting or the small molecule has not been identified.
@@ -1726,7 +1758,7 @@ components:
         a step these MUST be separated by a “|”. If derivatization was
         performed, it MUST be reported here as a general step, e.g. 'silylation'
         and the actual derivatization agens MUST be specified in the Section
-        6.2.54 part.      
+        6.2.54 part.
       x-mztab-example: >
         MTD	sample_processing[1]	[MSIO, MSIO:0000107, metabolism quenching using
         precooled 60 percent methanol ammonium bicarbonate buffer,]
@@ -1920,17 +1952,17 @@ components:
       description: >
         Specification of sample.
 
-        (empty) name: A name for each sample to serve as a list of the samples that MUST be reported in the following tables. Samples MUST be reported if a statistical design is being captured (i.e. bio or tech replicates). If the type of replicates are not known, samples SHOULD NOT be reported. 
+        (empty) name: A name for each sample to serve as a list of the samples that MUST be reported in the following tables. Samples MUST be reported if a statistical design is being captured (i.e. bio or tech replicates). If the type of replicates are not known, samples SHOULD NOT be reported.
 
-        species: The respective species of the samples analysed. For more complex cases, such as metagenomics, optional columns and userParams should be used. 
+        species: The respective species of the samples analysed. For more complex cases, such as metagenomics, optional columns and userParams should be used.
 
-        tissue: The respective tissue(s) of the sample. 
+        tissue: The respective tissue(s) of the sample.
 
-        cell_type: The respective cell type(s) of the sample. 
+        cell_type: The respective cell type(s) of the sample.
 
-        disease: The respective disease(s) of the sample. 
+        disease: The respective disease(s) of the sample.
 
-        description: A human readable description of the sample. 
+        description: A human readable description of the sample.
 
         custom: Custom parameters describing the sample's additional properties. Dates MUST be provided in ISO-8601 format.
       x-mztab-example: |
@@ -1994,13 +2026,13 @@ components:
           type: string
     MsRun:
       description: >
-        Specification of ms_run. 
+        Specification of ms_run.
 
-        location: Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the [1-n] cardinality is referenced elsewhere. If pre-fractionation has been performed, then [1-n] ms_runs SHOULD be created per assay. 
+        location: Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the [1-n] cardinality is referenced elsewhere. If pre-fractionation has been performed, then [1-n] ms_runs SHOULD be created per assay.
 
-        instrument_ref: If different instruments are used in different runs, instrument_ref can be used to link a specific instrument to a specific run. 
+        instrument_ref: If different instruments are used in different runs, instrument_ref can be used to link a specific instrument to a specific run.
 
-        format: Parameter specifying the data format of the external MS data file. If ms_run[1-n]-format is present, ms_run[1-n]-id_format SHOULD also be present, following the parameters specified in Table 1. 
+        format: Parameter specifying the data format of the external MS data file. If ms_run[1-n]-format is present, ms_run[1-n]-id_format SHOULD also be present, following the parameters specified in Table 1.
 
         id_format: Parameter specifying the id format used in the external data file. If ms_run[1-n]-id_format is present, ms_run[1-n]-format SHOULD also be present.
 
@@ -2076,8 +2108,6 @@ components:
         variation_function: The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default) e.g. “standard error”.
 
         description: A textual description of the study variable.
-
-        factors: Additional parameters or factors, separated by bars, that are known about study variables allowing the capture of more complex, such as nested designs.  
       x-mztab-example: >
         MTD	study_variable[1]	control
 
@@ -2088,8 +2118,6 @@ components:
         MTD	study_variable-variation_function	[MS, MS:1002885, standard error, ]
 
         MTD	study_variable[1]-description	Group B (spike-in 0.74 fmol/uL)
-
-        MTD	study_variable[1]-factors	[,,time point, 1 minute]|[,,rapamycin dose,0.5mg]
 
         MTD	study_variable[2]	1 minute 0.5mg rapamycin
       x-mztab-serialize-by-id: "true"
@@ -2111,6 +2139,9 @@ components:
           items:
             $ref: "#/components/schemas/Assay"
           description: The assays referenced by this study variable.
+        group_ref:
+          $ref: "#/components/schemas/StudyVariableGroup"
+          description: Reference to the study_variable_group that this study variable belongs to. This field is mandatory if study_variable_group(s) are defined.
         average_function:
           $ref: "#/components/schemas/Parameter"
         variation_function:
@@ -2118,24 +2149,95 @@ components:
         description:
           type: string
           description: A free-form description of this study variable.
-        factors:
-          type: array
-          default: []
-          items:
-            $ref: "#/components/schemas/Parameter"
-          description: Parameters indicating which factors were used for the assays
-            referenced by this study variable, and at which levels.
+    StudyVariableGroup:
+      description: >
+        Specification of study_variable_group.
+
+        (empty) name/parameter: A parameter defining the group to which study variables belong. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter (e.g., [OBI, OBI:0001667, organism development stage, ]) or a user-defined parameter (e.g., [,,sex,]). For software that does not capture study variables, a single study_variable_group MUST be reported, linking to the single study variable, and MUST have the identifier "undefined". Added in mzTab-M 2.1.
+
+        description: A textual description of the study variable group.
+
+        type: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO:0000252, categorical variable], [STATO, STATO:0000228, ordinal variable], or [STATO, STATO:0000251, continuous variable].
+
+        datatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, and xsd:anyURI. Date, time and dateTime values MUST be encoded in ISO 8601 format.
+
+        unit: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).
+      x-mztab-example: >
+        MTD	study_variable_group[1]	[PATO, PATO:0000383, sex, ]
+
+        MTD	study_variable_group[1]-description	Sex of the individual
+
+        MTD	study_variable_group[1]-type	[STATO, STATO:0000252, categorical variable, ]
+
+        MTD	study_variable_group[1]-datatype	xsd:string
+
+        MTD	study_variable_group[2]	[PATO, PATO:0000384, timepoint, ]
+
+        MTD	study_variable_group[2]-description	Time after treatment
+
+        MTD	study_variable_group[2]-type	[STATO, STATO:0000228, ordinal variable, ]
+
+        MTD	study_variable_group[2]-datatype	xsd:integer
+
+        MTD	study_variable_group[2]-unit	[UO, UO:0000033, day, ]
+
+        MTD	study_variable[1]	Female_0day
+
+        MTD	study_variable[1]-group_ref	study_variable_group[1]
+
+        MTD	study_variable[1]-assay_refs	assay[1]| assay[2]| assay[3]
+
+        MTD	study_variable[2]	Female_1day
+
+        MTD	study_variable[2]-group_ref	study_variable_group[2]
+
+        MTD	study_variable[2]-assay_refs	assay[4]| assay[5]| assay[6]
+      x-mztab-serialize-by-id: "true"
+      type: object
+      required:
+        - id
+        - parameter
+        - description
+      properties:
+        id:
+          type: integer
+          format: int32
+          minimum: 1
+          description: The unique identifier for this study variable group.
+        parameter:
+          $ref: "#/components/schemas/Parameter"
+          description: A CV or user parameter defining the study variable group.
+        description:
+          type: string
+          description: A textual description of the study variable group.
+        type:
+          $ref: "#/components/schemas/Parameter"
+          description: >
+            The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of the examples below.
+
+            [STATO, STATO:0000252, categorical variable] is a variable that can only assume a finite number of values without inherent ordering.
+
+            [STATO, STATO:0000228, ordinal variable] is an ordered variable where the sequence matters but intervals between levels are undefined. These values represent categories with a defined sequence or ranking.
+
+            [STATO, STATO:0000251, continuous variable] is a variable that can take any value within a range on a continuous scale.
+        datatype:
+          type: string
+          description: >
+            The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed in mzTab-M files and how they could be handled in programming languages. Optional, but producers of mzTab-M 2.1.0 SHOULD provide a value to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, and xsd:anyURI. Date, time and dateTime values MUST be encoded in ISO 8601 format.
+        unit:
+          $ref: "#/components/schemas/Parameter"
+          description: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).
     Assay:
       description: >
         Specification of assay.
 
-        (empty) name: A name for each assay, to serve as a list of the assays that MUST be reported in the following tables. 
+        (empty) name: A name for each assay, to serve as a list of the assays that MUST be reported in the following tables.
 
-        custom: Additional custom parameters or values for a given assay. 
+        custom: Additional custom parameters or values for a given assay.
 
-        external_uri: An external reference uri to further information about the assay, for example via a reference to an object within an ISA-TAB file. 
+        external_uri: An external reference uri to further information about the assay, for example via a reference to an object within an ISA-TAB file.
 
-        sample_ref: An association from a given assay to the sample analysed. 
+        sample_ref: An association from a given assay to the sample analysed.
 
         ms_run_ref: An association from a given assay to the source MS run. All assays MUST reference exactly one ms_run unless a workflow with pre-fractionation is being encoded, in which case each assay MUST reference n ms_runs where n fractions have been collected. Multiple assays SHOULD reference the same ms_run to capture multiplexed experimental designs.
       x-mztab-example: >
