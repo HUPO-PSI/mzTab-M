@@ -1241,7 +1241,7 @@ MTD study_variable[2] [,,Male,]
 MTD study_variable[2]-group_ref study_variable_group[4]
 
 COM CV Parameter value:
-MTD study_variable[3] [NO, NO:12345, Male,]
+MTD study_variable[3] [NCIT, NCIT:C20197, Male, ]
 MTD study_variable[3]-group_ref study_variable_group[4]
 ....
 |=============================================================================
