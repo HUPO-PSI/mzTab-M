@@ -718,7 +718,7 @@ components:
 
             type: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO:0000252, categorical variable], [STATO, STATO:0000228, ordinal variable], or [STATO, STATO:0000251, continuous variable].
 
-            datatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, and xsd:anyURI.
+            datatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, xsd:anyURI, and Parameter (for values reported as user-defined or CV Parameters). Writers MUST ensure that all study_variable values linked to the same study_variable_group share the declared datatype and reporting convention.
 
             unit: An optional parameter specifying the unit of the study variable group.
           default: []
@@ -2131,8 +2131,11 @@ components:
           format: int32
           minimum: 1
         name:
-          type: string
-          description: The study variable name.
+          description: >
+            The study variable value. Encoded according to the datatype declared on the referenced study_variable_group: either a literal value (for xsd:* datatypes) or a Parameter (for the Parameter datatype, e.g. `[NO, NO:12345, Male,]` or `[,,Male,]`).
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/Parameter"
         assay_refs:
           type: array
           default: []
@@ -2159,7 +2162,7 @@ components:
 
         type: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO:0000252, categorical variable], [STATO, STATO:0000228, ordinal variable], or [STATO, STATO:0000251, continuous variable].
 
-        datatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, and xsd:anyURI. Date, time and dateTime values MUST be encoded in ISO 8601 format.
+        datatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, xsd:anyURI, and Parameter (for values reported as user-defined or CV Parameters). Date, time and dateTime values MUST be encoded in ISO 8601 format. Writers MUST ensure that all study_variable values linked to the same study_variable_group share the declared datatype and reporting convention.
 
         unit: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).
       x-mztab-example: >
@@ -2223,7 +2226,7 @@ components:
         datatype:
           type: string
           description: >
-            The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed in mzTab-M files and how they could be handled in programming languages. Optional, but producers of mzTab-M 2.1.0 SHOULD provide a value to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, and xsd:anyURI. Date, time and dateTime values MUST be encoded in ISO 8601 format.
+            The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed in mzTab-M files and how they could be handled in programming languages. Optional, but producers of mzTab-M 2.1.0 SHOULD provide a value to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, xsd:anyURI, and Parameter (for values reported as user-defined or CV Parameters). Date, time and dateTime values MUST be encoded in ISO 8601 format. Writers MUST ensure that all study_variable values linked to the same study_variable_group share the declared datatype and reporting convention.
         unit:
           $ref: "#/components/schemas/Parameter"
           description: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).
