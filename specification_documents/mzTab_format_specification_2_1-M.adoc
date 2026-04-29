@@ -144,7 +144,7 @@ The first stable version of mzTab (version 1.0) was developed primarily by the P
 ==== Relationship to mzTab-M 2.0.0
 
 The first stable version of mzTab-M for Metabolomics (version 2.0.0) was developed to support the reporting of results from MS-based metabolomics experiments.
-mzTab-M 2.1.0 clarifies several aspects, and introduces the `study_variable_group` element to support multi-factorial experimental designs. As a consequence, the `study_variable[1-n]-factors` field has been removed: the experimental factors it was intended to capture are now represented explicitly through `study_variable_group[1-n]` and its sub-fields (`-description`, `-type`, `-datatype`, `-unit`), together with the `study_variable[1-n]-group_ref` reference from each study variable to its group.
+mzTab-M 2.1.0 clarifies several aspects, and introduces the `study_variable_group` element to support multi-factorial experimental designs. As a consequence, the `study_variable[1-n]-factors` field has been removed: the experimental factors it was intended to capture are now represented explicitly through `study_variable_group[1-n]` and its sub-fields (`-description`, `-type`, `-datatype`, `-unit`), together with the `study_variable[1-n]-group_ref` reference from each study variable to its group. The `-datatype` sub-field supports the standard XSD primitive types as well as `Parameter`, allowing study variable values to be reported as user-defined or CV Parameters when categorical factors are best expressed by ontology terms.
 
 [[the-psi-mass-spectrometry-controlled-vocabulary-cv]]
 === The PSI Mass Spectrometry Controlled Vocabulary (CV)
@@ -1096,11 +1096,8 @@ MTD assay[1]-ms_run_ref ms_run[2]
 |*Example* a|
 ....
 MTD study_variable[1] “control”
-
 MTD study_variable[2] “1 minute”
-
 MTD study_variable[13] “Wildtype”
-
 ....
 |================================================================================================================================================================================================================================================================================================
 
@@ -1221,6 +1218,9 @@ The following datatypes are supported:
 * xsd:time – Time of day, encoded in ISO 8601 format (`hh:mm:ss`, optional fractional seconds and timezone).
 * xsd:dateTime – Combined date and time, encoded in ISO 8601 format (`YYYY-MM-DDThh:mm:ss`, with optional fractional seconds and timezone, e.g. `YYYY-MM-DDThh:mm:ssZ`).
 * xsd:anyURI – A Uniform Resource Identifier reference.
+* Parameter – The values of the linked study_variables are reported as a Parameter (user-defined or CV Parameter), using the standard mzTab-M Parameter syntax `[CV, accession, name, value]`.
+
+Writers MUST ensure that the values of the `study_variable` entries belonging to the same `study_variable_group` all have the same type (e.g. string, number, ...) and use the same convention of reporting the value directly or as a Parameter, consistent with the `datatype` declared on the group. If the `study_variable_group` defines the `datatype` as `Parameter`, the CVParam qualifying the `study_variable_group` itself can be of a different CV origin than the CVParams used in the linked `study_variable` values.
 
 Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).
 |*Type* |String (constrained)
@@ -1230,6 +1230,19 @@ Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type in
 MTD study_variable_group[1]-datatype xsd:string
 MTD study_variable_group[2]-datatype xsd:decimal
 MTD study_variable_group[3]-datatype xsd:date
+MTD study_variable_group[4]-datatype Parameter
+
+COM plain string value:
+MTD study_variable[1] Male
+MTD study_variable[1]-group_ref study_variable_group[1]
+
+COM user-defined Parameter value:
+MTD study_variable[2] [,,Male,]
+MTD study_variable[2]-group_ref study_variable_group[4]
+
+COM CV Parameter value:
+MTD study_variable[3] [NCIT, NCIT:C20197, Male, ]
+MTD study_variable[3]-group_ref study_variable_group[4]
 ....
 |=============================================================================
 
