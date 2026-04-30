@@ -1,6 +1,9 @@
 ---
 name: rikenlipidomics2mztabm
 description: Convert a pair of RIKEN-LIPIDOMICS-style MSDIAL alignment TSV files (a *_forMTD.tsv per-sample metadata table plus a *_forSMLSMF.tsv alignment export, layout used in https://github.com/kozo2/hupopsi-pymztabm-handson/tree/main/RIKEN_LIPIDOMICS) into a valid mzTab-M 2.0.0-M file using the `pymztab-m` Python package, where success means the in-memory `MzTabM.validate(...)` reports zero ERROR-level messages. Use this skill whenever the user has MSDIAL alignment TSVs (or anything called "RIKEN lipidomics", "forMTD/forSMLSMF", "MS-DIAL export", "alignment_results.tsv") and wants to convert, export, share, archive, or upload it as mzTab-M / "the standard metabolomics format" / "mzTab" — even if they don't say "mzTab-M" explicitly. Also trigger when the user wants to check that an existing mzTab-M file passes the pymzTab-m validator, or asks for help wiring metadata + SML/SMF/SME sections together.
+metadata:
+  author: Kozo Nishida
+  version: "1.0"
 ---
 
 # rikenlipidomics2mztabm
