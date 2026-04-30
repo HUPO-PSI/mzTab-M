@@ -4,7 +4,7 @@ info:
   version: 2.0.0
   title: mzTab-M reference implementation and validation API.
   contact:
-    email: nils.hoffmann@cebitec.uni-bielefeld.de
+    email: n.hoffmann@fz-juelich.de
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -678,35 +678,6 @@ components:
             MTD	assay[2]	second assay
 
             MTD	assay[2]-sample_ref	sample[2]
-        study_variable:
-          type: array
-          description: >
-            Specification of study_variable.
-
-            (empty) name: A name for each study variable (experimental condition or factor), to serve as a list of the study variables that MUST be reported in the following tables. For software that does not capture study variables, a single study variable MUST be reported, linking to all assays. This single study variable MUST have the identifier “undefined“.
-
-            assay_refs: Bar-separated references to the IDs of assays grouped in the study variable.
-
-            average_function: The function used to calculate the study variable quantification value and the operation used is not arithmetic mean (default) e.g. “geometric mean”, “median”. The 1-n refers to different study variables.
-
-            variation_function: The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default) e.g. “standard error”.
-
-            description: A textual description of the study variable.
-          default: []
-          items:
-            $ref: "#/components/schemas/StudyVariable"
-          x-mztab-example: >
-            MTD	study_variable[1]	control
-
-            MTD	study_variable[1]-assay_refs	assay[1]| assay[2]| assay[3]
-
-            MTD	study_variable-average_function	[MS, MS:1002883, median, ]
-
-            MTD	study_variable-variation_function	[MS, MS:1002885, standard error, ]
-
-            MTD	study_variable[1]-description	Group B (spike-in 0.74 fmol/uL)
-
-            MTD	study_variable[2]	1 minute
         study_variable_group:
           type: array
           description: >
@@ -742,6 +713,35 @@ components:
             MTD	study_variable_group[2]-datatype	xsd:integer
 
             MTD	study_variable_group[2]-unit	[UO, UO:0000033, day, ]
+        study_variable:
+          type: array
+          description: >
+            Specification of study_variable.
+
+            (empty) name: A name for each study variable (experimental condition or factor), to serve as a list of the study variables that MUST be reported in the following tables. For software that does not capture study variables, a single study variable MUST be reported, linking to all assays. This single study variable MUST have the identifier “undefined“.
+
+            assay_refs: Bar-separated references to the IDs of assays grouped in the study variable.
+
+            average_function: The function used to calculate the study variable quantification value and the operation used is not arithmetic mean (default) e.g. “geometric mean”, “median”. The 1-n refers to different study variables.
+
+            variation_function: The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default) e.g. “standard error”.
+
+            description: A textual description of the study variable.
+          default: []
+          items:
+            $ref: "#/components/schemas/StudyVariable"
+          x-mztab-example: >
+            MTD	study_variable[1]	control
+
+            MTD	study_variable[1]-assay_refs	assay[1]| assay[2]| assay[3]
+
+            MTD	study_variable-average_function	[MS, MS:1002883, median, ]
+
+            MTD	study_variable-variation_function	[MS, MS:1002885, standard error, ]
+
+            MTD	study_variable[1]-description	Group B (spike-in 0.74 fmol/uL)
+
+            MTD	study_variable[2]	1 minute
         custom:
           type: array
           description: Any additional parameters describing the analysis reported.
