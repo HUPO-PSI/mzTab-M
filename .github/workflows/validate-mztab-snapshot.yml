@@ -8,6 +8,7 @@ on:
     branches:
       - main
   workflow_dispatch:
+  workflow_call:
 
 env:
   JAVA_VERSION: '21'
