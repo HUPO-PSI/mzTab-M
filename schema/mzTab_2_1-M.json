@@ -5476,16 +5476,16 @@
         },
         "name": {
           "allow_multiple": false,
-          "anyOf": [
+          "oneOf": [
             {
               "type": "string"
             },
             {
-              "type": "null"
+              "$ref": "#/$defs/Parameter"
             }
           ],
           "default": null,
-          "description": "The study variable name.",
+          "description": "The study variable value. Encoded according to the datatype declared on the referenced study_variable_group: either a literal value (for xsd:* datatypes) or a Parameter (for the Parameter datatype, e.g. `[NO, NO:12345, Male,]` or `[,,Male,]`).",
           "ignore": false,
           "list_concatenation_str": null,
           "mztab_example": null,
@@ -5825,11 +5825,14 @@
               "type": "string"
             },
             {
+              "$ref": "#/$defs/Parameter"
+            },
+            {
               "type": "null"
             }
           ],
           "default": null,
-          "description": "The study variable group datatype",
+          "description": "The datatype of the group variable, which determines how they can be encoded and parsed in mzTab-M files, and how the values could be handled in programming languages.\n\nProducers of mzTab-M 2.1.0 SHOULD provide a `datatype` for each `study_variable_group` to simplify interpretation by downstream consumers of the format. The field is not mandatory, but its presence removes ambiguity about how the associated values are encoded and should be parsed.\n\nThe following datatypes are supported:\n\n* xsd:string – Character string.\n* xsd:integer – Arbitrary‑size integer.\n* xsd:decimal – Arbitrary‑precision decimal number.\n* xsd:boolean – Boolean value (`true` / `false`).\n* xsd:date – Calendar date, encoded in ISO 8601 format (`YYYY-MM-DD`).\n* xsd:time – Time of day, encoded in ISO 8601 format (`hh:mm:ss`, optional fractional seconds and timezone).\n* xsd:dateTime – Combined date and time, encoded in ISO 8601 format (`YYYY-MM-DDThh:mm:ss`, with optional fractional seconds and timezone, e.g. `YYYY-MM-DDThh:mm:ssZ`).\n* xsd:anyURI – A Uniform Resource Identifier reference.\n* Parameter – The values of the linked study_variables are reported as a Parameter (user-defined or CV Parameter), using the standard mzTab-M Parameter syntax `[CV, accession, name, value]`.\n\nWriters MUST ensure that the values of the `study_variable` entries belonging to the same `study_variable_group` all have the same type (e.g. string, number, ...) and use the same convention of reporting the value directly or as a Parameter, consistent with the `datatype` declared on the group. If the `study_variable_group` defines the `datatype` as `Parameter`, the CVParam qualifying the `study_variable_group` itself can be of a different CV origin than the CVParams used in the linked `study_variable` values.\n\nTools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).",
           "ignore": false,
           "list_concatenation_str": null,
           "mztab_example": null,
@@ -5844,7 +5847,10 @@
             "pattern": null,
             "required": null,
             "value_constraint": null
-          }
+          }, 
+          "examples": [
+            "....\nMTD\tstudy_variable_group[1]-datatype\txsd:string\nMTD\tstudy_variable_group[2]-datatype\txsd:decimal\nMTD\tstudy_variable_group[3]-datatype\txsd:date\nMTD\tstudy_variable_group[4]-datatype\tParameter\n\nCOM\tplain string value:\nMTD\tstudy_variable[1]\tMale\nMTD\tstudy_variable[1]-group_ref\tstudy_variable_group[1]\n\nCOM\tuser-defined Parameter value:\nMTD\tstudy_variable[2]\t[,,Male,]\nMTD\tstudy_variable[2]-group_ref\tstudy_variable_group[4]\n\nCOM\tCV Parameter value:\nMTD\tstudy_variable[3]\t[NCIT, NCIT:C20197, Male, ]\nMTD\tstudy_variable[3]-group_ref\tstudy_variable_group[4]\n...."
+          ]
         },
         "unit": {
           "allow_multiple": false,
@@ -5877,7 +5883,7 @@
       },
       "title": "StudyVariableGroup",
       "type": "object",
-      "description": "Specification of study_variable_group.\n(empty) name/parameter: A parameter defining the group to which study variables belong. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter (e.g., [OBI, OBI:0001667, organism development stage, ]) or a user-defined parameter (e.g., [,,sex,]). For software that does not capture study variables, a single study_variable_group MUST be reported, linking to the single study variable, and MUST have the identifier \"undefined\". Added in mzTab-M 2.1.\ndescription: A textual description of the study variable group.\ntype: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO:0000252, categorical variable], [STATO, STATO:0000228, ordinal variable], or [STATO, STATO:0000251, continuous variable].\ndatatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, and xsd:anyURI. Date, time and dateTime values MUST be encoded in ISO 8601 format.\nunit: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).",
+      "description": "Specification of study_variable_group.\n(empty) name/parameter: A parameter defining the group to which study variables belong. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter (e.g., [OBI, OBI:0001667, organism development stage, ]) or a user-defined parameter (e.g., [,,sex,]). For software that does not capture study variables, a single study_variable_group MUST be reported, linking to the single study variable, and MUST have the identifier \"undefined\". Added in mzTab-M 2.1.\ndescription: A textual description of the study variable group.\ntype: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO:0000252, categorical variable], [STATO, STATO:0000228, ordinal variable], or [STATO, STATO:0000251, continuous variable].\ndatatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, xsd:anyURI, and Parameter (for values reported as user-defined or CV Parameters). Date, time and dateTime values MUST be encoded in ISO 8601 format. Writers MUST ensure that all study_variable values linked to the same study_variable_group share the declared datatype and reporting convention.\nunit: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).",
       "examples": [
         "MTD\tstudy_variable_group[1]\t[PATO, PATO:0000383, sex, ]\nMTD\tstudy_variable_group[1]-description\tSex of the individual\nMTD\tstudy_variable_group[1]-type\t[STATO, STATO:0000252, categorical variable, ]\nMTD\tstudy_variable_group[1]-datatype\txsd:string\nMTD\tstudy_variable_group[2]\t[PATO, PATO:0000384, timepoint, ]\nMTD\tstudy_variable_group[2]-description\tTime after treatment\nMTD\tstudy_variable_group[2]-type\t[STATO, STATO:0000228, ordinal variable, ]\nMTD\tstudy_variable_group[2]-datatype\txsd:integer\nMTD\tstudy_variable_group[2]-unit\t[UO, UO:0000033, day, ]\nMTD\tstudy_variable[1]\tFemale_0day\nMTD\tstudy_variable[1]-group_ref\tstudy_variable_group[1]\nMTD\tstudy_variable[1]-assay_refs\tassay[1]| assay[2]| assay[3]\nMTD\tstudy_variable[2]\tFemale_1day\nMTD\tstudy_variable[2]-group_ref\tstudy_variable_group[2]\nMTD\tstudy_variable[2]-assay_refs\tassay[4]| assay[5]| assay[6]"
       ]
