@@ -15,7 +15,7 @@ jobs:
     uses: HUPO-PSI/mzTab-M/.github/workflows/ci.yml@main
 
   test-examples-workflow:
-    uses: HUPO-PSI/mzTab-M/.github/workflows/validate.yml@main
+    uses: HUPO-PSI/mzTab-M/.github/workflows/validate-mztab-stable.yml@main
 
   publish-site:
     name: Build and publish Antora site
