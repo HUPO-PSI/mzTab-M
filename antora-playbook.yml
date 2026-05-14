@@ -6,7 +6,7 @@ site:
 content:
   sources:
     - url: .
-      branches: HEAD
+      branches: main
       # worktrees: . allows Antora to pick up uncommitted changes during local preview.
       # In CI the working tree matches HEAD, so this is harmless there too.
       worktrees: .
@@ -16,6 +16,7 @@ ui:
   bundle:
     url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
     snapshot: true
+  supplemental_files: ./node_modules/antora-dark-theme/supplemental-ui
 
 antora:
   extensions:
