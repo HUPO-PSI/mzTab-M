@@ -1,15 +1,88 @@
-== MzTab-M 2.0 for Metabolomics
+== MzTab-M 2.1 for Metabolomics
 :stylesheet: style.css
-This directory contains the source of the standard document for the mzTab-m 2.0 for metabolomics standard and associated documents.
+This directory contains the source of the standard document for the mzTab-M 2.1 for metabolomics standard and associated documents.
 
   * The source of the standard document: https://github.com/HUPO-PSI/mzTab/blob/master/specification_document-releases/2_0-Metabolomics-Release/mzTab_format_specification_2_0-M_release.adoc[mzTab_format_specification_2_0-M_release.adoc]
   * The compiled version of the document is available as https://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.html[html], https://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.docx[docx], or https://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.pdf[pdf]
   * The proposed CV term mapping file for semantic validation: https://github.com/HUPO-PSI/mzTab/blob/master/specification_document-releases/2_0-Metabolomics-Release/mzTab_2_0-M_mapping.xml[mzTab_2_0-M_mapping.xml]
-  * Other files that reflect the standardization process and associated 
+  * Other files that reflect the standardization process and associated
 
 When you use the mzTab-M format version 2.0, please cite the following publication:
 
   * **https://pubs.acs.org/doi/10.1021/acs.analchem.8b04310[N. Hoffmann et al., Analytical Chemistry 2019.] (http://www.ncbi.nlm.nih.gov/pubmed/30688441[PubMed record]).**
+
+=== Schema and API Specification
+
+The canonical schema definitions for mzTab-M 2.1 live in the `schema/` directory.
+
+==== JSON Schema (`mzTab_2_1-M.json`)
+
+`schema/mzTab_2_1-M.json` is the primary JSON Schema (draft 2020-12) describing all
+mzTab-M 2.1 object models.  It is the source of truth for field definitions,
+types, validation policies, descriptions, and examples.
+
+==== OpenAPI Specification (`mzTab_2_1-M_openapi.json`)
+
+`schema/mzTab_2_1-M_openapi.json` is a valid OpenAPI 3.1.1 document describing the
+mzTab-M REST validation and conversion API.  The 25 shared object model schemas
+are referenced externally from `mzTab_2_1-M.json` rather than duplicated, so the
+two files stay in sync automatically.
+
+NOTE: The previous OpenAPI YAML file (`mzTab_2_1-M_openapi.yml`) has been superseded
+by `mzTab_2_1-M_openapi.json`.  All schema definitions have been consolidated into
+the JSON Schema (`mzTab_2_1-M.json`) and the OpenAPI JSON spec references them from
+there. The YAML file has been removed.
+
+===== Converting the OpenAPI YAML to JSON
+
+If the YAML spec is updated and needs to be re-converted to JSON, use the provided
+helper script:
+
+[source,bash]
+----
+cd schema
+python3 openapi_to_jsonschema.py \
+    --input  mzTab_2_1-M_openapi.yml \
+    --output mzTab_2_1-M_openapi.json
+----
+
+The script extracts `components/schemas` from the OpenAPI YAML, rewrites all
+`$ref: '#/components/schemas/X'` pointers to `$ref: '#/$defs/X'`, converts
+`x-mztab-example` extension fields to standard JSON Schema `examples` arrays,
+and writes a self-contained JSON Schema document.
+
+==== Generating the AsciiDoc Field Reference (`mzTab_2_1-M_schema.adoc`)
+
+A human-readable AsciiDoc reference document listing every mzTab-M field with its
+description, type, mandatory status, and example usage can be generated from
+`mzTab_2_1-M.json` using the provided script:
+
+[source,bash]
+----
+cd schema
+python3 generate_schema_adoc.py
+----
+
+This writes `schema/mzTab_2_1-M_schema.adoc` by default.  Both the input schema
+and the output path can be overridden:
+
+[source,bash]
+----
+python3 generate_schema_adoc.py \
+    --schema mzTab_2_1-M.json \
+    --output ../specification_documents/mzTab_2_1-M_schema.adoc
+----
+
+===== Prerequisites
+
+Python 3.8 or later is required.  No third-party packages are needed for
+`generate_schema_adoc.py`.  The `openapi_to_jsonschema.py` conversion script
+additionally requires PyYAML:
+
+[source,bash]
+----
+pip install pyyaml
+----
 
 === Working with AsciiDoc
 
@@ -31,17 +104,3 @@ If you want to edit the document, have a look at the admonitions prefixed with
 They also contain the keyword TODO to make automatic finding of TODO items easier.
 Unfortunately, GitHub does not highlight text marked with #highlight me#, so that 
 TODOs should be close to the text or section that should be updated.
-
-=== Conversion from docx to AsciiDoc
-
-- Install pandoc: http://pandoc.org/
-
-- Run the conversion, images will be extracted and placed in the 'ímg/' folder.
-
-> ./transform_to_adoc.sh
-
-*NOTE* The script will transform all *.docx files in the current directory, renaming them to *.adoc in the process, so now data is being overwritten.
-
-*NOTE* Currently, tables, especially nested ones are not properly converted. 
-
-
