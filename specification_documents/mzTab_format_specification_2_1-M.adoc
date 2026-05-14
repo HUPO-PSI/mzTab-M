@@ -443,7 +443,7 @@ URIs MUST follow the format defined in https://tools.ietf.org/html/rfc3986[RFC 3
 To support a future evolution of the format, an mzTab file MUST report its version. From version 2.0.0-M onwards, we intend to use https://semver.org/[semantic versioning]. This means that increasing the last digit of the version (the _patch_ level) indicates backwards compatible fixes to the specification that require no adaptation of consumers or producers of the format. A change in the middle digit of the version (the _minor_ level) indicates new features that are backwards compatible to existing software but will require updates for new producers and consumers to make use of those features. Finally, a change in the first digit of the version (the _major_ level) indicates breaking changes in the format that require changes in any producing or consuming software to support features of that version.
 
 
-include::../schema/mzTab_m_schema.adoc[]
+include::schema/mzTab_m_schema.adoc[]
 
 
 [[non-supported-use-cases]]
