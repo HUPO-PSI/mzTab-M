@@ -1,0 +1,33 @@
+= Getting Started with mzTab-M
+
+== Prerequisites
+
+You need a plain-text editor and either the https://github.com/lifs-tools/jmztab-m[jmzTab-m] command-line tool or the xref:validation:web-validator.adoc[online web validator] to check your files.
+
+== Understanding the Format
+
+An mzTab-M file is a UTF-8 plain-text, tab-delimited file with the extension `.mztab`.
+Each line starts with a two- or three-letter prefix that identifies its section:
+
+[cols="1,1,3"]
+|===
+|Prefix |Section |Purpose
+
+|`MTD` |Metadata |Experimental context, software, databases, assay definitions
+|`SML` |Small Molecule Summary |One row per reported small molecule
+|`SMF` |Small Molecule Feature |One row per detected feature (optional but recommended)
+|`SME` |Small Molecule Evidence |One row per identification evidence entry (optional but recommended)
+|===
+
+MTD and SML are mandatory; SMF and SME SHOULD be included to fully represent identification evidence.
+
+== Validating a File
+
+Use the xref:validation:web-validator.adoc[web validator] to check a file against the specification without installing any software.
+For command-line use, see the https://github.com/lifs-tools/jmztab-m[jmzTab-m] documentation.
+
+== Next Steps
+
+* Read the xref:file-format.adoc[file format overview] for a detailed description of each section.
+* Browse xref:examples.adoc[example files] to see how real datasets are represented.
+* Review the xref:validation:profiles.adoc[validation profiles] to understand which fields are required for your reporting level.

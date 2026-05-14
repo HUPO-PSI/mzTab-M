@@ -1,0 +1,34 @@
+= Contributing
+
+Contributions to the mzTab-M specification, schema, tooling, and documentation are welcome.
+
+== Reporting Issues
+
+Use the https://github.com/HUPO-PSI/mzTab-M/issues[GitHub issue tracker] to report bugs, ask questions, or propose changes to the specification.
+Please include a minimal mzTab-M file that demonstrates the issue where applicable.
+
+== Proposing Specification Changes
+
+Specification changes are discussed as GitHub issues before any pull request is opened.
+Changes that affect the field definitions or controlled vocabulary requirements require review by the PSI metabolomics working group.
+
+. Open an issue describing the proposed change and its motivation.
+. Reach consensus with the working group (allow at least two weeks for discussion).
+. Submit a pull request that updates `specification_documents/mzTab_format_specification_2_1-M.adoc` and `schema/mzTab_2_1-M.json` together.
+. Update or add example files in `examples/` to demonstrate the change.
+
+== Contributing to the Documentation
+
+Documentation source files are AsciiDoc pages under `docs/mztabm/modules/`.
+The site is built with Antora; see xref:index.adoc[] for the tooling setup.
+
+To preview your changes locally, run:
+
+[source,bash]
+----
+./build-site.sh
+----
+
+== Code of Conduct
+
+All contributors are expected to follow the https://www.contributor-covenant.org/[Contributor Covenant] code of conduct.

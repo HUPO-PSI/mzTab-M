@@ -1,0 +1,30 @@
+= Web Validator
+
+The mzTab-M web validator provides browser-based validation of mzTab-M files without requiring any local software installation.
+
+== jmzTab-m Web Application
+
+The https://github.com/lifs-tools/jmztab-m-webapp[jmzTab-m web application] exposes the jmzTab-m validation engine as a RESTful service with an HTML form interface.
+
+It accepts an mzTab-M file upload and returns a structured validation report listing all errors, warnings, and informational messages with line-number references.
+
+== Usage
+
+. Open the web validator in your browser.
+. Upload your `.mztab` file using the file chooser, or paste the file content into the text area.
+. Select the xref:profiles.adoc[validation profile] that matches your file's `mzTab-mode` declaration.
+. Click *Validate* and review the results.
+
+== API Access
+
+The validator exposes a REST endpoint that accepts a multipart file upload and returns a JSON validation report.
+This allows programmatic integration into submission pipelines.
+
+[source,bash]
+----
+curl -X POST https://<validator-host>/api/validate \
+  -F "file=@my_results.mztab" \
+  -H "Accept: application/json"
+----
+
+See the https://github.com/lifs-tools/jmztab-m-webapp[jmzTab-m-webapp repository] for the OpenAPI description of the validation API.

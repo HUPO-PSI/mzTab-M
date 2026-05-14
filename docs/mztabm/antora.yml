@@ -1,0 +1,10 @@
+name: mztabm
+version: '2.1'
+prerelease: -dev
+title: mzTab-M
+nav:
+  - modules/ROOT/nav.adoc
+  - modules/users/nav.adoc
+  - modules/developers/nav.adoc
+  - modules/validation/nav.adoc
+  - modules/about/nav.adoc

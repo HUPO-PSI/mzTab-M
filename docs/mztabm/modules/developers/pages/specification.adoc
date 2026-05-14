@@ -1,0 +1,37 @@
+= Specification Document
+
+The mzTab-M 2.1 specification is the normative reference for the format.
+It defines all mandatory and optional fields, controlled vocabulary requirements, column ordering rules, and file structure constraints.
+
+== Current Version: 2.1 (In Development)
+
+The specification source is maintained as an AsciiDoc document in the repository at
+`specification_documents/mzTab_format_specification_2_1-M.adoc`.
+
+Pre-built artefacts for the current development snapshot are produced by the CI pipeline and available as build artefacts on the https://github.com/HUPO-PSI/mzTab-M/actions[GitHub Actions] page.
+
+== Released Version: 2.0.0 (March 2019)
+
+The ratified 2.0.0 release documents are available in multiple formats:
+
+* https://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.html[HTML]
+* https://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.pdf[PDF]
+* https://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.docx[DOCX]
+
+== Key Sections
+
+The specification is structured as follows:
+
+. General file format rules (encoding, line endings, delimiters)
+. Metadata section (MTD) — mandatory and optional fields
+. Small Molecule Summary (SML) — column definitions and constraints
+. Small Molecule Feature (SMF) — column definitions and constraints
+. Small Molecule Evidence (SME) — column definitions and constraints
+. Controlled vocabulary requirements and ontology usage
+. Quantification and normalisation reporting rules
+. Identification confidence level reporting
+
+== Changes from 2.0 to 2.1
+
+The 2.1 development version introduces validation profiles, clarified identification confidence reporting, and alignment with current ontology term recommendations.
+A detailed change log is maintained in the specification document preamble.

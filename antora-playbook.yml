@@ -1,0 +1,26 @@
+site:
+  title: mzTab-M
+  url: https://hupo-psi.github.io/mzTab-M
+  start_page: mztabm::index.adoc
+
+content:
+  sources:
+    - url: .
+      branches: HEAD
+      # worktrees: . allows Antora to pick up uncommitted changes during local preview.
+      # In CI the working tree matches HEAD, so this is harmless there too.
+      worktrees: .
+      start_path: docs/mztabm
+
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+
+antora:
+  extensions:
+    - require: '@antora/lunr-extension'
+      index_latest_only: true
+
+output:
+  dir: ./build/site

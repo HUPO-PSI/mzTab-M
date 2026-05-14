@@ -1,0 +1,18 @@
+= mzTab-M for Developers
+
+This section provides the technical resources needed to implement mzTab-M support in software — the specification, schema, reference implementations, and contribution guidelines.
+
+== Resources
+
+* xref:specification.adoc[] — the normative specification document defining every field, controlled vocabulary requirement, and file structure rule.
+* xref:schema.adoc[] — a machine-readable JSON schema and generated field reference, suitable for parser and validator generation.
+* xref:implementations.adoc[] — reference libraries (jmzTab-m for Java, generated clients for other languages).
+* xref:contributing.adoc[] — how to report issues, propose changes, and contribute to the specification or tooling.
+
+== Design Principles
+
+mzTab-M is developed following an _API-first_ approach: the JSON schema is the authoritative source for the domain model, and reference implementations are generated from it.
+This means that extending the format begins with a schema change, followed by updating the specification, and finally regenerating or updating the libraries.
+
+All controlled vocabulary terms referenced in mzTab-M files must be drawn from registered ontologies (PSI-MS, ChEBI, NCIT, and others).
+New term requests should be submitted to the respective ontology maintainers and referenced via their accession numbers.
