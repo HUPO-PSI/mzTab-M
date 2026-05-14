@@ -1932,7 +1932,7 @@
             "maximum": null,
             "minimum": null,
             "pattern": null,
-            "required": true,
+            "required": null,
             "value_constraint": null
           }
         },
@@ -2497,7 +2497,7 @@
             "maximum": null,
             "minimum": null,
             "pattern": null,
-            "required": true,
+            "required": false,
             "value_constraint": null
           }
         },
@@ -2624,9 +2624,6 @@
           "anyOf": [
             {
               "type": "string"
-            },
-            {
-              "type": "null"
             }
           ],
           "default": "",
@@ -2643,7 +2640,7 @@
             "maximum": null,
             "minimum": null,
             "pattern": null,
-            "required": null,
+            "required": true,
             "value_constraint": null
           }
         },
@@ -2652,9 +2649,6 @@
           "anyOf": [
             {
               "type": "string"
-            },
-            {
-              "type": "null"
             }
           ],
           "default": "",
@@ -2671,7 +2665,7 @@
             "maximum": null,
             "minimum": null,
             "pattern": null,
-            "required": null,
+            "required": true,
             "value_constraint": null
           }
         }
@@ -3345,7 +3339,7 @@
             "value_constraint": null
           }
         },
-        "SME_ID": {
+        "sme_id": {
           "anyOf": [
             {
               "type": "integer"
@@ -4041,7 +4035,7 @@
             "value_constraint": null
           }
         },
-        "SMF_ID": {
+        "smf_id": {
           "anyOf": [
             {
               "type": "integer"
@@ -4072,7 +4066,7 @@
             "value_constraint": "non-negative-integer"
           }
         },
-        "SME_ID_REFS": {
+        "sme_id_refs": {
           "anyOf": [
             {
               "items": {
@@ -4086,7 +4080,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "References to the identification evidence (SME elements) via referencing SME_ID values. Multiple values MAY be provided as a | separated list to indicate ambiguity in the identification or to indicate that different types of data supported the identifiction (see SME_ID_REF_ambiguity_code). For the case of a consensus approach where multiple adduct forms are used to infer the SML ID, different features should just reference the same SME_ID value(s).",
+          "description": "References to the identification evidence (SME elements) via referencing SME_ID values. Multiple values MAY be provided as a | separated list to indicate ambiguity in the identification or to indicate that different types of data supported the identifiction (see sme_id_ref_ambiguity_code). For the case of a consensus approach where multiple adduct forms are used to infer the SML ID, different features should just reference the same SME_ID value(s).",
           "examples": [
             [
               5,
@@ -4110,7 +4104,7 @@
             "value_constraint": "non-negative-integer"
           }
         },
-        "SME_ID_REF_ambiguity_code": {
+        "sme_id_ref_ambiguity_code": {
           "anyOf": [
             {
               "type": "integer"
@@ -4262,7 +4256,7 @@
             "maximum": null,
             "minimum": null,
             "pattern": null,
-            "required": true,
+            "required": false,
             "value_constraint": null
           }
         },
@@ -4530,7 +4524,7 @@
             "value_constraint": null
           }
         },
-        "SML_ID": {
+        "sml_id": {
           "anyOf": [
             {
               "type": "integer"
@@ -4561,7 +4555,7 @@
             "value_constraint": "non-negative-integer"
           }
         },
-        "SMF_ID_REFS": {
+        "smf_id_refs": {
           "anyOf": [
             {
               "items": {
@@ -5551,37 +5545,6 @@
           "object_level_value": false,
           "referenced_field_name": null,
           "title": "Description",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
-        },
-        "factors": {
-          "allow_multiple": false,
-          "anyOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/Parameter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Parameters indicating which factors were used for the assays referenced by this study variable, and at which levels.",
-          "ignore": false,
-          "list_concatenation_str": "|",
-          "mztab_example": null,
-          "non_indexed_list_value": false,
-          "object_level_value": false,
-          "referenced_field_name": null,
-          "title": "Factors",
           "validation_policy": {
             "enforcement_level": "required",
             "maximum": null,

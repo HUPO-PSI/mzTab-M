@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   description: This is the mzTab-M reference implementation and validation API service.
-  version: 2.0.0
+  version: 2.1.0-M
   title: mzTab-M reference implementation and validation API.
   contact:
     email: n.hoffmann@fz-juelich.de
@@ -321,6 +321,7 @@ components:
             All columns are MANDATORY except for “opt_” columns.
           type: array
           default: []
+          minItems: 1
           items:
             $ref: "#/components/schemas/SmallMoleculeFeature"
         smallMoleculeEvidence:
@@ -344,6 +345,7 @@ components:
             All columns are MANDATORY except for “opt_” columns.
           type: array
           default: []
+          minItems: 1
           items:
             $ref: "#/components/schemas/SmallMoleculeEvidence"
         comment:
@@ -388,13 +390,12 @@ components:
         listed here. The field’s name and value MUST be separated by a tab
         character.
       x-mztab-example: |
-        MTD	mzTab-version	2.0.0-M
+        MTD	mzTab-version	2.1.0-M
         MTD	mzTab-ID	MTBL1234
         MTD	title	Effects of Rapamycin on metabolite profile
         ...
       required:
         - prefix
-        - fileDescription
         - mzTab-version
         - mzTab-ID
         - quantification_method
@@ -406,7 +407,6 @@ components:
         - cv
         - database
         - small_molecule-quantification_unit
-        - small_molecule_feature-quantification_unit
         - id_confidence_measure
       properties:
         prefix:
@@ -426,6 +426,7 @@ components:
           x-mztab-example: |
             MTD	mzTab-version	2.0.0-M
             MTD	mzTab-version	2.0.1-M
+            MTD	mzTab-version	2.1.0-M
         mzTab-ID:
           type: string
           description: >
@@ -870,6 +871,21 @@ components:
             name 'opt_global_mass_error'
 
             MTD	colunit-small_molecule_evidence	opt_global_mass_error=[UO, UO:0000169, parts per million, ]
+        protocol:
+          type: array
+          description: >
+            Experimental protocols referenced by assays. Each protocol describes one or
+            more steps of the experimental procedure (e.g. sample preparation, data
+            acquisition). Protocols are numbered [1-n] and referenced from assay objects
+            via protocol_refs. Added in mzTab-M 2.1.
+          default: []
+          items:
+            $ref: "#/components/schemas/Protocol"
+          x-mztab-example: |
+            MTD	protocol[1]	extraction
+            MTD	protocol[1]-type	[MSIO, MSIO:0000141, metabolite extraction,]
+            MTD	protocol[2]	acquisition
+            MTD	protocol[2]-type	[MSIO, MSIO:0000031, mass spectrometry,]
     SmallMoleculeSummary:
       type: object
       description: >
@@ -1292,7 +1308,7 @@ components:
             referencing SME_ID values. Multiple values MAY be provided as a “|”
             separated list to indicate ambiguity in the identification or to
             indicate that different types of data supported the identifiction
-            (see SME_ID_REF_ambiguity_code). For the case of a consensus
+            (see sme_id_ref_ambiguity_code). For the case of a consensus
             approach where multiple adduct forms are used to infer the SML ID,
             different features should just reference the same SME_ID value(s).
           x-mztab-example: |
@@ -1304,6 +1320,9 @@ components:
             format: int32
         sme_id_ref_ambiguity_code:
           type: integer
+          format: int32
+          minimum: 1
+          maximum: 3
           description: If multiple values are given under SME_ID_REFS, one of the following
             codes MUST be provided. 1=Ambiguous identification; 2=Only different
             evidence streams for the same molecule with no ambiguity; 3=Both
@@ -1312,7 +1331,6 @@ components:
           x-mztab-example: |
             SFH	SMF_ID	SME_ID_REFS	SME_ID_REF_ambiguity_code
             SMF	1	5|6|12…	1
-          format: int32
         adduct_ion:
           type: string
           description: The assumed classification of this molecule’s adduct ion after
@@ -1607,6 +1625,7 @@ components:
           format: double
         spectra_ref:
           type: array
+          minItems: 1
           description: >
             Reference to a spectrum in a spectrum file, for example a
             fragmentation spectrum has been used to support the identification.
@@ -1627,7 +1646,7 @@ components:
             SME	1	…	ms_run[1]:index=5	…
           default: []
           items:
-            $ref: "#/components/schemas/SpectraRef"
+            $ref: "#/components/schemas/SpectraReference"
         identification_method:
           $ref: "#/components/schemas/Parameter"
         ms_level:
@@ -1711,11 +1730,90 @@ components:
         cv_accession:
           type: string
           default: ""
+          description: >
+            The CV accession in CURIE format, e.g. "MS:1001234". MUST be empty for
+            user parameters. When present, must match the pattern
+            "<CV_label>:<local_id>".
+          pattern: '^([A-Za-z][A-Za-z0-9_\-\.]*:[^\s]+)?$'
         name:
           type: string
         value:
           type: string
           default: ""
+    ExtendedParameter:
+      description: >
+        An extended parameter that allows the value field to hold either a plain string or a
+        nested Parameter object. Used where a CV-parameterized value is itself a CV term
+        (e.g. instrument acquisition parameters).
+
+        Parameters are always reported as [CV label, accession, name, value]. Any field that
+        is not available MUST be left empty.
+      x-mztab-example: |
+        [MS, MS:1000031, instrument model, [MS, MS:1000449, LTQ Orbitrap,]]
+        [,,A user parameter, The value]
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          minimum: 1
+        cv_label:
+          type: string
+          default: ""
+        cv_accession:
+          type: string
+          default: ""
+          description: >
+            The CV accession in CURIE format, e.g. "MS:1001234". MUST be empty for
+            user parameters. When present, must match the pattern
+            "<CV_label>:<local_id>".
+          pattern: '^([A-Za-z][A-Za-z0-9_\-\.]*:[^\s]+)?$'
+        name:
+          type: string
+        value:
+          description: >
+            The parameter value. May be a plain string or a nested Parameter object when
+            the value is itself a controlled vocabulary term.
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/Parameter"
+    Protocol:
+      description: >
+        A protocol describing one or more steps of an experimental procedure, such as sample
+        preparation, data acquisition or data processing. Protocols are referenced from
+        Assay objects. Added in mzTab-M 2.1.
+      x-mztab-example: |
+        MTD	protocol[1]	extraction
+        MTD	protocol[1]-type	[MSIO, MSIO:0000141, metabolite extraction,]
+        MTD	protocol[1]-description	Extraction using 80% methanol
+        MTD	protocol[1]-parameter[1]	[MSIO, MSIO:0000107, quenching, [MSIO, MSIO:0000109, liquid nitrogen,]]
+      x-mztab-serialize-by-id: "true"
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        id:
+          type: integer
+          format: int32
+          minimum: 1
+        name:
+          type: string
+          description: The protocol name (serves as its plain-text identifier in the MTD section).
+        type:
+          $ref: "#/components/schemas/Parameter"
+          description: The protocol type, as a CV or user parameter.
+        description:
+          type: string
+          description: A free-text description of the protocol.
+        parameters:
+          type: array
+          default: []
+          description: >
+            Parameters that further describe the protocol. Each parameter may carry a
+            plain-string value or a nested Parameter (ExtendedParameter).
+          items:
+            $ref: "#/components/schemas/ExtendedParameter"
     Instrument:
       description: The name, source, analyzer and detector of the instruments used in the
         experiment. Multiple instruments are numbered [1-n].
@@ -1775,10 +1873,10 @@ components:
           type: integer
           format: int32
           minimum: 1
-        sampleProcessing:
+        sample_processing:
           type: array
           default: []
-          description: Parameters specifiying sample processing that was applied within one
+          description: Parameters specifying sample processing that was applied within one
             step.
           items:
             $ref: "#/components/schemas/Parameter"
@@ -1826,13 +1924,13 @@ components:
       x-mztab-serialize-by-id: "true"
       type: object
       required:
-        - publicationItems
+        - publication_items
       properties:
         id:
           type: integer
           format: int32
           minimum: 1
-        publicationItems:
+        publication_items:
           type: array
           description: The publication item ids referenced by this publication.
           default: []
@@ -1857,7 +1955,7 @@ components:
         accession:
           type: string
           description: The native accession id for this publication item.
-    SpectraRef:
+    SpectraReference:
       type: object
       required:
         - ms_run
@@ -1887,12 +1985,6 @@ components:
             The (vendor-dependendent) reference string to the actual mass
             spectrum.
           type: string
-    StringList:
-      type: array
-      default: []
-      description: A typed list of strings.
-      items:
-        type: string
     Contact:
       description: >
         The contact’s name, affiliation and e-mail. Several contacts can be
@@ -2095,6 +2187,17 @@ components:
           description: The file hash value of this msRun's data file.
         hash_method:
           $ref: "#/components/schemas/Parameter"
+        parameters:
+          type: array
+          default: []
+          description: >
+            Additional parameters describing this MS run (e.g. acquisition mode, ion
+            mobility settings). Each parameter's value may itself be a CV term
+            (ExtendedParameter). Added in mzTab-M 2.1.
+          items:
+            $ref: "#/components/schemas/ExtendedParameter"
+          x-mztab-example: |
+            MTD	ms_run[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, LTQ Orbitrap,]]
     StudyVariable:
       description: >
         Specification of study_variable.
@@ -2138,10 +2241,18 @@ components:
           default: []
           items:
             $ref: "#/components/schemas/Assay"
-          description: The assays referenced by this study variable.
-        group_ref:
-          $ref: "#/components/schemas/StudyVariableGroup"
-          description: Reference to the study_variable_group that this study variable belongs to. This field is mandatory if study_variable_group(s) are defined.
+          description: The assays referenced by this study variable. If using assay_refs, ms_run_refs MUST not be reported.
+        group_refs:
+          type: array
+          default: []
+          description: >
+            References to the study_variable_group(s) that this study variable belongs to.
+            A study variable may belong to more than one group in multi-factorial designs.
+            This field is mandatory if study_variable_group(s) are defined.
+          items:
+            $ref: "#/components/schemas/StudyVariableGroup"
+          x-mztab-example: |
+            MTD	study_variable[1]-group_ref	study_variable_group[1]| study_variable_group[2]
         average_function:
           $ref: "#/components/schemas/Parameter"
         variation_function:
@@ -2149,6 +2260,19 @@ components:
         description:
           type: string
           description: A free-form description of this study variable.
+        ms_run_refs:
+          type: array
+          default: []
+          description: >
+            References to the MS runs directly associated with this study variable, in
+            addition to those reachable via assay_refs. Added in mzTab-M 2.1. For study variables
+            that capture ms run and not sample or assay level information, this element allows direct linking.
+            Examples include batch groups, blank types etc. If using ms_run_refs, assay_refs MUST not be reported.
+            TODO: need example to illustrate use case vs. use of assay_refs
+          items:
+            $ref: "#/components/schemas/MsRun"
+          x-mztab-example: |
+            MTD	study_variable[1]-ms_run_ref	ms_run[1]| ms_run[2]
     StudyVariableGroup:
       description: >
         Specification of study_variable_group.
@@ -2196,7 +2320,7 @@ components:
       type: object
       required:
         - id
-        - parameter
+        - name
         - description
       properties:
         id:
@@ -2204,9 +2328,12 @@ components:
           format: int32
           minimum: 1
           description: The unique identifier for this study variable group.
-        parameter:
+        name:
           $ref: "#/components/schemas/Parameter"
-          description: A CV or user parameter defining the study variable group.
+          description: >
+            A CV or user parameter defining the study variable group (e.g.
+            [PATO, PATO:0000383, sex, ]). Corresponds to the top-level value of
+            the MTD study_variable_group[n] line.
         description:
           type: string
           description: A textual description of the study variable group.
@@ -2223,7 +2350,19 @@ components:
         datatype:
           type: string
           description: >
-            The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed in mzTab-M files and how they could be handled in programming languages. Optional, but producers of mzTab-M 2.1.0 SHOULD provide a value to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, and xsd:anyURI. Date, time and dateTime values MUST be encoded in ISO 8601 format.
+            The datatype of the group variable, used to disambiguate how the associated
+            values are encoded and parsed in mzTab-M files. Optional, but producers of
+            mzTab-M 2.1.0 SHOULD provide a value. Date, time and dateTime values MUST be
+            encoded in ISO 8601 format.
+          enum:
+            - xsd:string
+            - xsd:integer
+            - xsd:decimal
+            - xsd:boolean
+            - xsd:date
+            - xsd:time
+            - xsd:dateTime
+            - xsd:anyURI
         unit:
           $ref: "#/components/schemas/Parameter"
           description: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).
@@ -2282,6 +2421,28 @@ components:
           items:
             $ref: "#/components/schemas/MsRun"
           description: The ms run(s) referenced by this assay.
+        protocol_refs:
+          type: array
+          default: []
+          description: >
+            References to the protocols that were applied in this assay. Multiple protocols
+            may be referenced. Each entry must correspond to a protocol defined in the
+            metadata section. Added in mzTab-M 2.1.
+          items:
+            $ref: "#/components/schemas/Protocol"
+          x-mztab-example: |
+            MTD	assay[1]-protocol_ref	protocol[1]| protocol[2]
+        parameters:
+          type: array
+          default: []
+          description: >
+            Additional parameters describing this assay (e.g. acquisition parameters). Each
+            parameter's value may itself be a CV term (ExtendedParameter). Added in
+            mzTab-M 2.1.
+          items:
+            $ref: "#/components/schemas/ExtendedParameter"
+          x-mztab-example: |
+            MTD	assay[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, LTQ Orbitrap,]]
     CV:
       description: >
         Specification of controlled vocabularies.
@@ -2405,8 +2566,8 @@ components:
         These column headers MUST start with the prefix “opt_” followed by the
         {identifier} of the object they reference: assay, study variable, MS run
         or “global” (if the value relates to all replicates). Column names MUST
-        only contain the following characters: ‘A’-‘Z’, ‘a’-‘z’, ‘0’-‘9’, ‘’,
-        ‘-’, ‘[’, ‘]’, and ‘:’. CV parameter accessions MAY be used for optional
+        only contain the following characters: ‘A’-’Z’, ‘a’-’z’, ‘0’-’9’, ‘’,
+        ‘-’, ‘[‘, ‘]’, and ‘:’. CV parameter accessions MAY be used for optional
         columns following the format: opt{identifier}_cv_{accession}_\{parameter
         name}. Spaces within the parameter’s name MUST be replaced by ‘_’.
       x-mztab-example: |
@@ -2415,9 +2576,14 @@ components:
       properties:
         identifier:
           type: string
-          description: The fully qualified column name.
+          description: >
+            The fully qualified column name. Must be one of: “global”,
+            “ms_run[{n}]”, “assay[{n}]”, or “study_variable[{n}]”, where
+            {n} is a positive integer.
+          pattern: ‘^(global|ms_run\[\d+\]|assay\[\d+\]|study_variable\[\d+\])$’
         param:
-          $ref: "#/components/schemas/Parameter"
+          $ref: “#/components/schemas/Parameter”
+          description: The parameter defining the unit or meaning of this optional column.
         value:
           type: string
           description: The value for this column in a particular row.
