@@ -1,0 +1,31 @@
+<header class="header adt-header">
+  <nav class="navbar adt-site-navbar" aria-label="Site">
+    <div class="navbar-brand adt-header-brand">
+      <a class="adt-header-logo-item" href="{{{or (lookup site.keys 'site_home_url') site.url}}}" rel="noopener" target="_blank" title="{{{or (lookup site.keys 'site_home_label') 'Project home'}}}" aria-label="{{{or (lookup site.keys 'site_home_label') 'Project home'}}} (opens in new tab)">
+        <img class="adt-header-logo" src="{{{uiRootPath}}}/img/logo.svg" width="34" height="34" alt="" />
+      </a>
+      <a class="navbar-item adt-header-title" href="{{{or site.url siteRootPath}}}">{{or (lookup site.keys 'header_doc_title') site.title}}</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu adt-topbar" role="navigation" aria-label="External links">
+      {{#if env.SITE_SEARCH_PROVIDER}}
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Search the docs"{{#if page.home}} autofocus{{/if}}>
+        </div>
+      </div>
+      {{/if}}
+      <div class="navbar-end adt-header-actions">
+        {{#if (and @root.page.origin @root.page.origin.webUrl)}}
+        <a class="navbar-item adt-header-icon-btn adt-header-vcs" href="{{{@root.page.origin.webUrl}}}" rel="noopener" target="_blank" title="Source repository" aria-label="Source repository (opens in new tab)">
+          <img class="adt-header-vcs-img" src="{{{uiRootPath}}}/img/vcs/code.svg" width="24" height="24" alt="" />
+        </a>
+        {{else}}
+        <a class="navbar-item adt-header-icon-btn adt-header-vcs" href="{{{or (lookup site.keys 'github_profile_url') 'https://github.com'}}}" rel="noopener" target="_blank" title="Source host" aria-label="Source host (opens in new tab)">
+          <img class="adt-header-vcs-img" src="{{{uiRootPath}}}/img/vcs/github.svg" width="24" height="24" alt="" />
+        </a>
+        {{/if}}
+      </div>
+    </div>
+  </nav>
+  {{> adt-doc-mast}}
+</header>

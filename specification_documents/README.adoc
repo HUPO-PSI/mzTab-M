@@ -84,6 +84,41 @@ additionally requires PyYAML:
 pip install pyyaml
 ----
 
+==== Updating the Antora Documentation Partials
+
+The Antora documentation site (`docs/mztabm/`) includes the field reference and
+the specification as AsciiDoc _partials_.  These partials are pre-processed
+versions of the canonical source files and **must be regenerated** whenever
+`schema/mzTab_2_1-M.json` or
+`specification_documents/mzTab_format_specification_2_1-M.adoc` change.
+
+Use the `gen-docs.sh` helper script in the repository root:
+
+[source,bash]
+----
+# Regenerate both the schema reference and the specification partial
+./gen-docs.sh
+
+# Regenerate only the schema reference (after JSON schema edits)
+./gen-docs.sh --schema
+
+# Regenerate only the specification partial (after spec document edits)
+./gen-docs.sh --spec
+----
+
+After running the script, commit the updated partials:
+
+[source,bash]
+----
+git add docs/mztabm/modules/developers/partials/mzTab_m_schema.adoc \
+        docs/mztabm/modules/developers/partials/mzTab_format_specification.adoc
+git commit -m "docs: regenerate Antora partials"
+git push
+----
+
+See the *Documentation Workflow* section in the top-level `README.md` for the
+full site-preview and release instructions.
+
 === Working with AsciiDoc
 
 * Homepage: http://asciidoctor.org/
