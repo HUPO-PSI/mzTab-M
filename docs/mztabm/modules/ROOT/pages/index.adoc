@@ -1,0 +1,55 @@
+= mzTab-M Documentation Hub
+:description: The official documentation for mzTab-M, the PSI standard for reporting MS-based metabolomics and lipidomics results.
+
+mzTab-M is the https://psidev.info[HUPO-PSI] community standard for reporting mass spectrometry-based small molecule metabolomics and lipidomics results.
+It is designed to be compact, human-readable, and machine-parseable, enabling straightforward integration with downstream analysis pipelines and data repositories.
+
+== Highlights
+
+[cols="1,3",frame=none,grid=none]
+|===
+|*Semantically enriched*
+|All identifiers, units, and controlled vocabulary terms are referenced via ontology entries from https://www.ebi.ac.uk/ols/ontologies/ms[PSI-MS], https://www.ebi.ac.uk/ols/ontologies/chebi[ChEBI], and other community ontologies.
+
+|*Typed and structured*
+|Mandatory and optional fields are formally typed. The xref:developers:schema.adoc[JSON schema] and xref:developers:specification.adoc[specification] define every allowed value unambiguously.
+
+|*Validation profiles*
+|Results can be validated against xref:validation:profiles.adoc[tiered validation profiles] that reflect the level of identification confidence, from feature-only through summary-level reporting.
+
+|*AI-ready*
+|Structured, ontology-anchored metadata makes mzTab-M files suitable for automated processing and integration into AI/ML pipelines without additional curation.
+
+|*MetaboLights submission*
+|mzTab-M can be used to create full local submissions in ISA-Tab and MAF format for https://www.ebi.ac.uk/metabolights/[MetaboLights], the EMBL-EBI repository for metabolomics experiments, using the https://github.com/EBI-Metabolights/mztabm2mtbls[mztabm2mtbls] library.
+|===
+
+== Quick Links
+
+[cols="1,1,1",frame=none,grid=none]
+|===
+|xref:users:getting-started.adoc[Getting Started]
+|xref:developers:specification.adoc[Specification 2.1]
+|xref:validation:index.adoc[Validate a File]
+
+|xref:users:examples.adoc[Example Files]
+|xref:developers:schema.adoc[Schema Reference]
+|xref:about:cite.adoc[How to Cite]
+|===
+
+== Cite
+
+When you use mzTab-M 2.1 in your work, please cite:
+
+____
+TBD
+____
+
+When you use mzTab-M 2.0 in your work, please cite:
+
+____
+Nils Hoffmann, Joel Rein, Timo Sachsenberg, Jürgen Hartler, Kenneth Haug, Gerhard Mayer, Oliver Alka, Saravanan Dayalan, Jake T. M. Pearce, Philippe Rocca-Serra, Da Qi, Martin Eisenacher, Yasset Perez-Riverol, Juan Antonio Vizcaíno, Reza M. Salek, Steffen Neumann, and Andrew R. Jones
+_mzTab-M: A Data Standard for Sharing Quantitative Results in Mass Spectrometry Metabolomics._
+Analytical Chemistry 2019, 91 (5), 3302–3310.
+https://pubs.acs.org/doi/10.1021/acs.analchem.8b04310[DOI: 10.1021/acs.analchem.8b04310] | https://www.ncbi.nlm.nih.gov/pubmed/30688441[ PubMed PMID: 30688441]
+____

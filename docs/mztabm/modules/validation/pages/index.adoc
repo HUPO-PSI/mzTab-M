@@ -1,0 +1,31 @@
+= Validation
+
+mzTab-M files can be validated at multiple levels, from basic structural compliance to full semantic correctness against controlled vocabularies and quantification reporting rules.
+
+== Validation Approach
+
+Validation in mzTab-M is structured around xref:profiles.adoc[validation profiles] that reflect the level of identification and quantification evidence present in a file.
+A file is validated against the profile that matches its `mzTab-mode` and `mzTab-type` declarations.
+
+== Validation Levels
+
+Minimal:: Checks mandatory fields, correct section ordering, and tab-delimited structure.
+Structural:: Adds cross-reference consistency (SML ↔ SMF ↔ SME links), column cardinality, and assay/study-variable definitions.
+Semantic:: Adds controlled vocabulary term resolution — all `[param]` entries are checked against their declared ontologies.
+
+== Tools
+
+* xref:web-validator.adoc[Web Validator] — browser-based, no installation required.
+* https://github.com/lifs-tools/jmztab-m[jmzTab-m] CLI — command-line validation with detailed error reporting and machine-readable output.
+
+== Validation Output
+
+The validator produces a structured list of validation messages, each with:
+
+* A severity level (`ERROR`, `WARN`, `INFO`)
+* A line number and column reference
+* An error code from the mzTab-M error code registry
+* A human-readable description
+
+Files containing `ERROR`-level messages do not conform to the specification.
+`WARN`-level messages indicate deviations from best practices.

@@ -1,0 +1,38 @@
+= File Format Overview
+
+An mzTab-M file is a UTF-8 plain-text, tab-delimited file.
+Each line begins with a section prefix, followed by tab-separated fields.
+Comment lines begin with `#` and are ignored by parsers.
+
+For the complete field-level specification, see xref:developers:specification.adoc[].
+
+== Metadata Section (MTD)
+
+The metadata section opens the file and defines all controlled vocabulary terms, software, databases, assays, and study variables that are referenced in the data tables.
+All mandatory MTD fields must appear before any data rows.
+
+Key mandatory fields include `mzTab-version`, `mzTab-mode`, `mzTab-type`, and `description`.
+
+== Small Molecule Summary (SML)
+
+The SML section contains one row per reported small molecule entity.
+Each row aggregates evidence across all features and all assays.
+
+Columns include identifiers (`chemical_name`, `inchi`, `smiles`), database cross-references, and abundance values per assay.
+
+== Small Molecule Feature (SMF)
+
+The SMF section captures individual detected features — retention time, _m/z_, charge, and adduct — and links them to the SML summary row via `SMF_ID`.
+
+Including SMF rows is strongly recommended so that downstream consumers can access the underlying signal evidence.
+
+== Small Molecule Evidence (SME)
+
+The SME section records each individual identification evidence entry and links it to SMF rows.
+It captures the database match, identification method (MS1 or MS2), rank, and associated scores.
+
+== Line Endings and Encoding
+
+Files MUST use UTF-8 encoding.
+Line endings MUST be LF (`\n`); CRLF is not permitted.
+Tabs are the sole column delimiter; no quoting of fields is used.

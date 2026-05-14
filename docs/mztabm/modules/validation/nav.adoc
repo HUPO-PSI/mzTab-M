@@ -1,0 +1,4 @@
+.Validation
+* xref:index.adoc[Overview]
+* xref:profiles.adoc[Validation Profiles]
+* xref:web-validator.adoc[Web Validator]

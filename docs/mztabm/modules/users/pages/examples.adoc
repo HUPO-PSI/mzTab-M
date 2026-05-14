@@ -1,0 +1,23 @@
+= Example Files
+
+The https://github.com/HUPO-PSI/mzTab-M/tree/main/examples[examples directory] in the repository contains annotated mzTab-M files covering common experimental scenarios.
+
+== Available Examples
+
+Examples are provided for the following scenarios (see the repository for the full list):
+
+* Lipidomics experiment with positive and negative ion mode
+* Metabolomics study with multiple study variables
+* MS1-only summary reporting (no SMF/SME)
+* Full evidence chain from feature to identification (MTD + SML + SMF + SME)
+* Submission-ready files for MetaboLights
+
+== Using the Examples
+
+Each example file can be validated with the xref:validation:web-validator.adoc[web validator] to confirm it conforms to the specification.
+
+The https://github.com/lifs-tools/jmztab-m[jmzTab-m] library includes a test suite that exercises all examples; they are a good starting point for integration testing.
+
+== Contributing Examples
+
+If you have a well-characterised dataset that illustrates a scenario not covered above, please open a pull request against the https://github.com/HUPO-PSI/mzTab-M[mzTab-M repository] with your example file and a brief description.

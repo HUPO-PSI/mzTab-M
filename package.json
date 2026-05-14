@@ -1,0 +1,9 @@
+{
+  "name": "mztabm-docs",
+  "private": true,
+  "dependencies": {
+    "@antora/cli": "3",
+    "@antora/site-generator": "3",
+    "@antora/lunr-extension": "1.0.0-alpha.13"
+  }
+}

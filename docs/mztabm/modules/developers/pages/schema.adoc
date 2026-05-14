@@ -1,0 +1,37 @@
+= Schema Reference
+
+The mzTab-M JSON schema provides a machine-readable definition of the format structure.
+It is used for domain model generation, parser testing, and automated validation.
+
+== Schema Files
+
+The schemas are located in the `schema/` directory of the repository:
+
+`schema/mzTab_2_1-M.json`:: The primary JSON schema for mzTab-M 2.1, using JSON Schema draft-07 / OpenAPI 3.1 conventions.
+`schema/mzTab_2_1-M_mapping.xml`:: Mapping file that associates mzTab-M fields with their controlled vocabulary term roots.
+`schema/mzTab_2_1-M_metabolights_mapping.xml`:: MetaboLights-specific mapping for submission validation.
+
+== Field Reference
+
+The field reference below is generated from `schema/mzTab_2_1-M.json` via `schema/generate_schema_adoc.py`.
+
+// TODO: include the generated schema reference once the generation pipeline is integrated into the Antora build.
+// include::partial$mzTab_m_schema.adoc[]
+
+Refer to `mzTab_m_schema.adoc` in the repository root for the current generated field reference, or run the generator:
+
+[source,bash]
+----
+python3 schema/generate_schema_adoc.py schema/mzTab_2_1-M.json > mzTab_m_schema.adoc
+----
+
+== Using the Schema
+
+=== Validator Generation
+
+The JSON schema can be used directly with https://github.com/networknt/json-schema-validator[json-schema-validator] (Java) or https://python-jsonschema.readthedocs.io/[jsonschema] (Python) to validate mzTab-M metadata objects.
+
+=== Domain Model Generation
+
+OpenAPI-compatible tooling (e.g., https://openapi-generator.tech/[openapi-generator]) can produce client models from `schema/mzTab_2_1-M_openapi.json`.
+The https://github.com/lifs-tools/jmztab-m[jmzTab-m] Java library is the reference implementation generated this way.
