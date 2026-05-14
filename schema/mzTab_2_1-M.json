@@ -205,7 +205,10 @@
             "pattern": null,
             "required": null,
             "value_constraint": "non-negative-integer"
-          }
+          },
+          "examples": [
+            "MTD\tassay[1]-protocol_ref\tprotocol[1]| protocol[2]"
+          ]
         },
         "parameters": {
           "allow_multiple": false,
@@ -236,11 +239,18 @@
             "pattern": null,
             "required": null,
             "value_constraint": null
-          }
+          },
+          "examples": [
+            "MTD\tassay[1]-parameter[1]\t[MS, MS:1000031, instrument model, [MS, MS:1000449, LTQ Orbitrap,]]"
+          ]
         }
       },
       "title": "Assay",
-      "type": "object"
+      "type": "object",
+      "description": "Specification of assay.\n(empty) name: A name for each assay, to serve as a list of the assays that MUST be reported in the following tables.\ncustom: Additional custom parameters or values for a given assay.\nexternal_uri: An external reference uri to further information about the assay, for example via a reference to an object within an ISA-TAB file.\nsample_ref: An association from a given assay to the sample analysed.\nms_run_ref: An association from a given assay to the source MS run. All assays MUST reference exactly one ms_run unless a workflow with pre-fractionation is being encoded, in which case each assay MUST reference n ms_runs where n fractions have been collected. Multiple assays SHOULD reference the same ms_run to capture multiplexed experimental designs.",
+      "examples": [
+        "MTD\tassay[1]\tfirst assay\nMTD\tassay[1]-custom[1]\t[MS, , Assay operator, Fred Blogs]\nMTD\tassay[1]-external_uri\thttps://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt?STUDYASSAY=a_e04_c18pos.txt\nMTD\tassay[1]-sample_ref\tsample[1]\nMTD\tassay[1]-ms_run_ref\tms_run[1]"
+      ]
     },
     "CV": {
       "properties": {
@@ -386,7 +396,11 @@
         }
       },
       "title": "CV",
-      "type": "object"
+      "type": "object",
+      "description": "Specification of controlled vocabularies.\nlabel: A string describing the labels of the controlled vocabularies/ontologies used in the mzTab file as a short-hand e.g. \"MS\" for PSI-MS.\nfull_name: A string describing the full names of the controlled vocabularies/ontologies used in the mzTab file.\nversion: A string describing the version of the controlled vocabularies/ontologies used in the mzTab file.\nuri: A string containing the URIs of the controlled vocabularies/ontologies used in the mzTab file.",
+      "examples": [
+        "MTD\tcv[1]-label\tMS\nMTD\tcv[1]-full_name\tPSI-MS controlled vocabulary\nMTD\tcv[1]-version\t4.1.11\nMTD\tcv[1]-uri\thttps://raw.githubusercontent.com/HUPO-PSI/psi-ms-CV/master/psi-ms.obo"
+      ]
     },
     "ColumnParameterMapping": {
       "properties": {
@@ -448,7 +462,11 @@
         }
       },
       "title": "ColumnParameterMapping",
-      "type": "object"
+      "type": "object",
+      "description": "Defines the used unit for a column in the mzTab-M file. The format of the value has to be \\{column name}=\\{Parameter defining the unit}. This field MUST NOT be used to define a unit for quantification columns. The unit used for small molecule quantification values MUST be set in small_molecule-quantification_unit.",
+      "examples": [
+        "COM\tcolunit for optional small molecule summary column with the name 'opt_global_cv_MS:MS:1002954_collisional_cross_sectional_area'\nMTD\tcolunit-small_molecule\topt_global_cv_MS:MS:1002954_collisional_cross_sectional_area=[UO,UO:00003241, square angstrom,]"
+      ]
     },
     "Comment": {
       "description": "Comment lines can be placed anywhere in an mzTab file.\nThese lines must start with the three-letter code COM\nand are ignored by most parsers.\nEmpty lines can also occur anywhere in an mzTab file and are ignored.",
@@ -532,7 +550,10 @@
         }
       },
       "title": "Comment",
-      "type": "object"
+      "type": "object",
+      "examples": [
+        "COM\tThis is a comment line"
+      ]
     },
     "Contact": {
       "properties": {
@@ -678,7 +699,11 @@
         }
       },
       "title": "Contact",
-      "type": "object"
+      "type": "object",
+      "description": "The contact’s name, affiliation and e-mail. Several contacts can be given by indicating the number in the square brackets after \"contact\". A contact has to be supplied in the format [first name] [initials] [last name].",
+      "examples": [
+        "MTD\tcontact[1]-name\tJames D. Watson\nMTD\tcontact[1]-affiliation\tCambridge University, UK\nMTD\tcontact[1]-email\twatson@cam.ac.uk\nMTD\tcontact[2]-name\tFrancis Crick\nMTD\tcontact[2]-affiliation\tCambridge University, UK\nMTD\tcontact[2]-email\tcrick@cam.ac.uk\nMTD\tcontact[2]-orcid\t0000-0002-1825-0097"
+      ]
     },
     "Database": {
       "properties": {
@@ -742,7 +767,7 @@
             }
           ],
           "default": null,
-          "description": "The prefix used in the \u201cidentifier\u201d column of data tables. For the 'no database' case 'null' must be used.",
+          "description": "The prefix used in the “identifier” column of data tables. For the 'no database' case 'null' must be used.",
           "ignore": false,
           "list_concatenation_str": null,
           "mztab_example": null,
@@ -770,7 +795,7 @@
             }
           ],
           "default": null,
-          "description": "The database version is mandatory where identification has been performed. This may be a formal version number e.g. \u201c1.4.1\u201d, a date of access \u201c2016-10-27\u201d (ISO-8601 format) or \u201cUnknown\u201d if there is no suitable version that can be annotated.",
+          "description": "The database version is mandatory where identification has been performed. This may be a formal version number e.g. “1.4.1”, a date of access “2016-10-27” (ISO-8601 format) or “Unknown” if there is no suitable version that can be annotated.",
           "ignore": false,
           "list_concatenation_str": null,
           "mztab_example": null,
@@ -798,7 +823,7 @@
             }
           ],
           "default": null,
-          "description": "The URI to the database. For the \u201cno database\u201d case, 'null' must be reported.",
+          "description": "The URI to the database. For the “no database” case, 'null' must be reported.",
           "ignore": false,
           "list_concatenation_str": null,
           "mztab_example": null,
@@ -817,7 +842,11 @@
         }
       },
       "title": "Database",
-      "type": "object"
+      "type": "object",
+      "description": "Specification of databases.\n(empty): The description of databases used. For cases, where a known database has not been used for identification, a userParam SHOULD be inserted to describe any identification performed e.g. de novo. If no identification has been performed at all then \"no database\" should be inserted followed by null.\nprefix: The prefix used in the “identifier” column of data tables. For the “no database” case \"null\" must be used.\nversion: The database version is mandatory where identification has been performed. This may be a formal version number e.g. “1.4.1”, a date of access “2016-10-27” (ISO-8601 format) or “Unknown” if there is no suitable version that can be annotated.\nuri: The URI to the database. For the “no database” case, \"null\" must be reported.",
+      "examples": [
+        "MTD\tdatabase[1]\t[MIRIAM, MIR:00100079, HMDB, ]\nMTD\tdatabase[1]-prefix\thmdb\nMTD\tdatabase[1]-version\t3.6\nMTD\tdatabase[1]-uri\thttps://www.hmdb.ca\nMTD\tdatabase[2]\t[,, \"de novo\", ]\nMTD\tdatabase[2]-prefix\tdn\nMTD\tdatabase[2]-version\tUnknown\nMTD\tdatabase[2]-uri\tnull\nMTD\tdatabase[3]\t[,, \"no database\", null ]\nMTD\tdatabase[3]-prefix\tnull\nMTD\tdatabase[3]-version\tUnknown\nMTD\tdatabase[3]-uri\tnull"
+      ]
     },
     "ExtendedParameter": {
       "properties": {
@@ -966,7 +995,11 @@
         }
       },
       "title": "ExtendedParameter",
-      "type": "object"
+      "type": "object",
+      "description": "An extended parameter that allows the value field to hold either a plain string or a nested Parameter object. Used where a CV-parameterized value is itself a CV term (e.g. instrument acquisition parameters).\nParameters are always reported as [CV label, accession, name, value]. Any field that is not available MUST be left empty.",
+      "examples": [
+        "[MS, MS:1000031, instrument model, [MS, MS:1000449, LTQ Orbitrap,]]\n[,,A user parameter, The value]"
+      ]
     },
     "Instrument": {
       "properties": {
@@ -1115,7 +1148,11 @@
         }
       },
       "title": "Instrument",
-      "type": "object"
+      "type": "object",
+      "description": "The name, source, analyzer and detector of the instruments used in the experiment. Multiple instruments are numbered [1-n].",
+      "examples": [
+        "MTD\tinstrument[1]-name\t[MS, MS:1000449, LTQ Orbitrap,]\nMTD\tinstrument[1]-source\t[MS, MS:1000073, ESI,]\n…\nMTD\tinstrument[2]-source\t[MS, MS:1000598, ETD,]\nMTD\tinstrument[1]-analyzer[1]\t[MS, MS:1000291, linear ion trap,]\n…\nMTD\tinstrument[2]-analyzer[1]\t[MS, MS:1000484, orbitrap,]\nMTD\tinstrument[1]-detector\t[MS, MS:1000253, electron multiplier,]\n…\nMTD\tinstrument[2]-detector\t[MS, MS:1000348, focal plane collector,]"
+      ]
     },
     "Metadata": {
       "properties": {
@@ -1379,7 +1416,10 @@
             "pattern": null,
             "required": null,
             "value_constraint": null
-          }
+          },
+          "examples": [
+            "MTD\turi[1]\thttps://www.ebi.ac.uk/metabolights/MTBLS517"
+          ]
         },
         "external_study_uri": {
           "allow_multiple": false,
@@ -1410,7 +1450,10 @@
             "pattern": null,
             "required": null,
             "value_constraint": null
-          }
+          },
+          "examples": [
+            "MTD\texternal_study_uri[1]\thttps://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt"
+          ]
         },
         "instrument": {
           "allow_multiple": false,
@@ -1505,7 +1548,10 @@
             "pattern": null,
             "required": null,
             "value_constraint": null
-          }
+          },
+          "examples": [
+            "COM\tExperiment where all samples consisted of the same two species\nMTD\tsample[1]\tindividual number 1\nMTD\tsample[1]-species[1]\t[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]\nMTD\tsample[1]-tissue[1]\t[BTO, BTO:0000759, liver, ]\nMTD\tsample[1]-cell_type[1]\t[CL, CL:0000182, hepatocyte, ]\nMTD\tsample[1]-disease[1]\t[DOID, DOID:684, hepatocellular carcinoma, ]\nMTD\tsample[1]-disease[2]\t[DOID, DOID:9451, alcoholic fatty liver, ]\nMTD\tsample[1]-description\tHepatocellular carcinoma samples.\nMTD\tsample[1]-custom[1]\t[,,Extraction date, 2011-12-21]\nMTD\tsample[1]-custom[2]\t[,,Extraction reason, liver biopsy]\nMTD\tsample[2]\tindividual number 2\nMTD\tsample[2]-species[1]\t[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]\nMTD\tsample[2]-tissue[1]\t[BTO, BTO:0000759, liver, ]\nMTD\tsample[2]-cell_type[1]\t[CL, CL:0000182, hepatocyte, ]\nMTD\tsample[2]-description\tHealthy control samples."
+          ]
         },
         "protocol": {
           "allow_multiple": false,
@@ -1663,7 +1709,7 @@
             }
           ],
           "default": null,
-          "description": "Specification of ms_run. location: Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a \u201cnull\u201d MUST be used as a place holder value, since the [1-n] cardinality is referenced elsewhere. If pre-fractionation has been performed, then [1-n] ms_runs SHOULD be created per assay.instrument_ref: If different instruments are used in different runs, instrument_ref can be used to link a specific instrument to a specific run. format: Parameter specifying the data format of the external MS data file. If ms_run[1-n]-format is present, ms_run[1-n]-id_format SHOULD also be present, following the parameters specified in Table 1. id_format: Parameter specifying the id format used in the external data file. If ms_run[1-n]-id_format is present, ms_run[1-n]-format SHOULD also be present.fragmentation_method: The type(s) of fragmentation used in a given ms run.scan_polarity: The polarity mode of a given run. Usually only one value SHOULD be given here except for the case of mixed polarity runs.hash: Hash value of the corresponding external MS data file defined in ms_run[1-n]-location. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.hash_method: A parameter specifying the hash methods used to generate the String in ms_run[1-n]-hash. Specifics of the hash method used MAY follow the definitions of the mzML format. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.",
+          "description": "Specification of ms_run. location: Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the [1-n] cardinality is referenced elsewhere. If pre-fractionation has been performed, then [1-n] ms_runs SHOULD be created per assay.instrument_ref: If different instruments are used in different runs, instrument_ref can be used to link a specific instrument to a specific run. format: Parameter specifying the data format of the external MS data file. If ms_run[1-n]-format is present, ms_run[1-n]-id_format SHOULD also be present, following the parameters specified in Table 1. id_format: Parameter specifying the id format used in the external data file. If ms_run[1-n]-id_format is present, ms_run[1-n]-format SHOULD also be present.fragmentation_method: The type(s) of fragmentation used in a given ms run.scan_polarity: The polarity mode of a given run. Usually only one value SHOULD be given here except for the case of mixed polarity runs.hash: Hash value of the corresponding external MS data file defined in ms_run[1-n]-location. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.hash_method: A parameter specifying the hash methods used to generate the String in ms_run[1-n]-hash. Specifics of the hash method used MAY follow the definitions of the mzML format. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.",
           "ignore": false,
           "list_concatenation_str": null,
           "mztab_example": null,
@@ -1678,7 +1724,10 @@
             "pattern": null,
             "required": true,
             "value_constraint": null
-          }
+          },
+          "examples": [
+            "COM\tlocation can be a local or remote URI\nMTD\tms_run[1]-location\tfile:///C:/path/to/my/file.mzML\nMTD\tms_run[1]-instrument_ref\tinstrument[1]\nMTD\tms_run[1]-format\t[MS, MS:1000584, mzML file, ]\nMTD\tms_run[1]-id_format\t[MS, MS:1000530, mzML unique identifier, ]\nMTD\tms_run[1]-fragmentation_method[1]\t[MS, MS:1000133, CID, ]\nCOM\tfor mixed polarity scan scenarios\nMTD\tms_run[1]-scan_polarity[1]\t[MS, MS:1000130, positive scan, ]\nMTD\tms_run[1]-scan_polarity[2]\t[MS, MS:1000129, negative scan, ]\nMTD\tms_run[1]-hash_method\t[MS, MS:1000569, SHA-1, ]\nMTD\tms_run[1]-hash\tde9f2c7fd25e1b3afad3e85a0bd17d9b100db4b3"
+          ]
         },
         "assay": {
           "allow_multiple": false,
@@ -1709,7 +1758,10 @@
             "pattern": null,
             "required": true,
             "value_constraint": null
-          }
+          },
+          "examples": [
+            "MTD\tassay[1]\tfirst assay\nMTD\tassay[1]-custom[1]\t[MS, , Assay operator, Fred Blogs]\nMTD\tassay[1]-sample_ref\tsample[1]\nMTD\tassay[1]-ms_run_ref\tms_run[1]\nMTD\tassay[1]-external_uri\thttps://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt?STUDYASSAY=a_e04_c18pos.txt\nMTD\tassay[2]\tsecond assay\nMTD\tassay[2]-sample_ref\tsample[2]"
+          ]
         },
         "study_variable_group": {
           "allow_multiple": false,
@@ -1740,7 +1792,10 @@
             "pattern": null,
             "required": null,
             "value_constraint": null
-          }
+          },
+          "examples": [
+            "MTD\tstudy_variable_group[1]\t[PATO, PATO:0000383, sex, ]\nMTD\tstudy_variable_group[1]-description\tSex of the individual\nMTD\tstudy_variable_group[1]-type\t[STATO, STATO:0000252, categorical variable]\nMTD\tstudy_variable_group[1]-datatype\txsd:string\nMTD\tstudy_variable_group[2]\t[,,timepoint,]\nMTD\tstudy_variable_group[2]-description\tTime after treatment\nMTD\tstudy_variable_group[2]-type\t[STATO, STATO:0000228, ordinal variable]\nMTD\tstudy_variable_group[2]-datatype\txsd:integer\nMTD\tstudy_variable_group[2]-unit\t[UO, UO:0000033, day, ]"
+          ]
         },
         "study_variable": {
           "allow_multiple": false,
@@ -1756,7 +1811,7 @@
             }
           ],
           "default": null,
-          "description": "Specification of study_variable. (empty) name: A name for each study variable (experimental condition or factor), to serve as a list of the study variables that MUST be reported in the following tables. For software that does not capture study variables, a single study variable MUST be reported, linking to all assays. This single study variable MUST have the identifier \u201cundefined\u201c. assay_refs: Bar-separated references to the IDs of assays grouped in the study variable. average_function: The function used to calculate the study variable quantification value and the operation used is not arithmetic mean (default) e.g. \u201cgeometric mean\u201d, \u201cmedian\u201d. The 1-n refers to different study variables. variation_function: The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default) e.g. \u201cstandard error\u201d. description: A textual description of the study variable. factors: Additional parameters or factors, separated by bars, that are known about study variables allowing the capture of more complex, such as nested designs. ",
+          "description": "Specification of study_variable. (empty) name: A name for each study variable (experimental condition or factor), to serve as a list of the study variables that MUST be reported in the following tables. For software that does not capture study variables, a single study variable MUST be reported, linking to all assays. This single study variable MUST have the identifier “undefined“. assay_refs: Bar-separated references to the IDs of assays grouped in the study variable. average_function: The function used to calculate the study variable quantification value and the operation used is not arithmetic mean (default) e.g. “geometric mean”, “median”. The 1-n refers to different study variables. variation_function: The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default) e.g. “standard error”. description: A textual description of the study variable. factors: Additional parameters or factors, separated by bars, that are known about study variables allowing the capture of more complex, such as nested designs. ",
           "ignore": false,
           "list_concatenation_str": null,
           "mztab_example": null,
@@ -1771,7 +1826,10 @@
             "pattern": null,
             "required": true,
             "value_constraint": null
-          }
+          },
+          "examples": [
+            "MTD\tstudy_variable[1]\tcontrol\nMTD\tstudy_variable[1]-assay_refs\tassay[1]| assay[2]| assay[3]\nMTD\tstudy_variable-average_function\t[MS, MS:1002883, median, ]\nMTD\tstudy_variable-variation_function\t[MS, MS:1002885, standard error, ]\nMTD\tstudy_variable[1]-description\tGroup B (spike-in 0.74 fmol/uL)\nMTD\tstudy_variable[2]\t1 minute"
+          ]
         },
         "custom": {
           "allow_multiple": false,
@@ -1950,7 +2008,7 @@
             }
           ],
           "default": null,
-          "description": "Specification of databases. (empty): The description of databases used. For cases, where a known database has not been used for identification, a userParam SHOULD be inserted to describe any identification performed. e.g. de novo. If no identification has been performed at all then 'no database' should be inserted followed by null. prefix: The prefix used in the \u201cidentifier\u201d column of data tables. For the 'no database' case 'null' must be used. version: The database version is mandatory where identification has been performed. This may be a formal version number e.g. \u201c1.4.1\u201d, a date of access \u201c2016-10-27\u201d (ISO-8601 format) or \u201cUnknown\u201d if there is no suitable version that can be annotated. uri: The URI to the database. For the 'no database' case, 'null' must be reported. ",
+          "description": "Specification of databases. (empty): The description of databases used. For cases, where a known database has not been used for identification, a userParam SHOULD be inserted to describe any identification performed. e.g. de novo. If no identification has been performed at all then 'no database' should be inserted followed by null. prefix: The prefix used in the “identifier” column of data tables. For the 'no database' case 'null' must be used. version: The database version is mandatory where identification has been performed. This may be a formal version number e.g. “1.4.1”, a date of access “2016-10-27” (ISO-8601 format) or “Unknown” if there is no suitable version that can be annotated. uri: The URI to the database. For the 'no database' case, 'null' must be reported. ",
           "examples": [
             "MTD\tdatabase[1]\t[MS, MS:1002992, HMDB, 4.0]",
             "MTD\tdatabase[1]-prefix\tHMDB",
@@ -2115,7 +2173,11 @@
         "cv"
       ],
       "title": "Metadata",
-      "type": "object"
+      "type": "object",
+      "description": "The metadata section provides additional information about the dataset(s) reported in the mzTab file. All fields in the metadata section are optional apart from those noted as mandatory. The fields in the metadata section MUST be reported in order of the various fields listed here. The field’s name and value MUST be separated by a tab character.",
+      "examples": [
+        "MTD\tmzTab-version\t2.1.0-M\nMTD\tmzTab-ID\tMTBL1234\nMTD\ttitle\tEffects of Rapamycin on metabolite profile\n..."
+      ]
     },
     "MsRun": {
       "properties": {
@@ -2434,11 +2496,18 @@
             "pattern": null,
             "required": null,
             "value_constraint": null
-          }
+          },
+          "examples": [
+            "MTD\tms_run[1]-parameter[1]\t[MS, MS:1000031, instrument model, [MS, MS:1000449, LTQ Orbitrap,]]"
+          ]
         }
       },
       "title": "MsRun",
-      "type": "object"
+      "type": "object",
+      "description": "Specification of ms_run.\nlocation: Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the [1-n] cardinality is referenced elsewhere. If pre-fractionation has been performed, then [1-n] ms_runs SHOULD be created per assay.\ninstrument_ref: If different instruments are used in different runs, instrument_ref can be used to link a specific instrument to a specific run.\nformat: Parameter specifying the data format of the external MS data file. If ms_run[1-n]-format is present, ms_run[1-n]-id_format SHOULD also be present, following the parameters specified in Table 1.\nid_format: Parameter specifying the id format used in the external data file. If ms_run[1-n]-id_format is present, ms_run[1-n]-format SHOULD also be present.\nfragmentation_method: The type(s) of fragmentation used in a given ms run.\nscan_polarity: The polarity mode of a given run. Usually only one value SHOULD be given here except for the case of mixed polarity runs.\nhash: Hash value of the corresponding external MS data file defined in ms_run[1-n]-location. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.\nhash_method: A parameter specifying the hash methods used to generate the String in ms_run[1-n]-hash. Specifics of the hash method used MAY follow the definitions of the mzML format. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.",
+      "examples": [
+        "COM\tlocation can be a local or remote URI\nMTD\tms_run[1]-location\tfile:///C:/path/to/my/file.mzML\nMTD\tms_run[1]-instrument_ref\tinstrument[1]\nMTD\tms_run[1]-format\t[MS, MS:1000584, mzML file, ]\nMTD\tms_run[1]-id_format\t[MS, MS:1000530, mzML unique identifier, ]\nMTD\tms_run[1]-fragmentation_method[1]\t[MS, MS:1000133, CID, ]\nCOM\tfor mixed polarity scan scenarios\nMTD\tms_run[1]-scan_polarity[1]\t[MS, MS:1000130, positive scan, ]\nMTD\tms_run[1]-scan_polarity[2]\t[MS, MS:1000129, negative scan, ]\nMTD\tms_run[1]-hash_method\t[MS, MS:1000569, SHA-1, ]\nMTD\tms_run[1]-hash\tde9f2c7fd25e1b3afad3e85a0bd17d9b100db4b3"
+      ]
     },
     "OptColumnMapping": {
       "properties": {
@@ -2531,7 +2600,11 @@
         }
       },
       "title": "OptColumnMapping",
-      "type": "object"
+      "type": "object",
+      "description": "Additional columns can be added to the end of the small molecule table. These column headers MUST start with the prefix “opt_” followed by the {identifier} of the object they reference: assay, study variable, MS run or “global” (if the value relates to all replicates). Column names MUST only contain the following characters: ‘A’-’Z’, ‘a’-’z’, ‘0’-’9’, ‘’, ‘-’, ‘[‘, ‘]’, and ‘:’. CV parameter accessions MAY be used for optional columns following the format: opt{identifier}_cv_{accession}_\\{parameter name}. Spaces within the parameter’s name MUST be replaced by ‘_’.",
+      "examples": [
+        "SMH\tSML_ID\t…\topt_assay[1]_my_value\t…\topt_global_another_value\nSML\t1\t…\tMy value\t…\tsome other value"
+      ]
     },
     "Parameter": {
       "properties": {
@@ -2671,7 +2744,11 @@
         }
       },
       "title": "Parameter",
-      "type": "object"
+      "type": "object",
+      "description": "mzTab makes use of CV parameters. As mzTab is expected to be used in several experimental environments where parameters might not yet be available for the generated scores etc. all parameters can either report CV parameters or user parameters that only contain a name and a value.\nParameters are always reported as [CV label, accession, name, value]. Any field that is not available MUST be left empty.",
+      "examples": [
+        "[MS, MS:1001477, SpectraST,]\n[,,A user parameter, The value]"
+      ]
     },
     "Protocol": {
       "properties": {
@@ -2820,7 +2897,11 @@
         }
       },
       "title": "Protocol",
-      "type": "object"
+      "type": "object",
+      "description": "A protocol describing one or more steps of an experimental procedure, such as sample preparation, data acquisition or data processing. Protocols are referenced from Assay objects. Added in mzTab-M 2.1.",
+      "examples": [
+        "MTD\tprotocol[1]\textraction\nMTD\tprotocol[1]-type\t[MSIO, MSIO:0000141, metabolite extraction,]\nMTD\tprotocol[1]-description\tExtraction using 80% methanol\nMTD\tprotocol[1]-parameter[1]\t[MSIO, MSIO:0000107, quenching, [MSIO, MSIO:0000109, liquid nitrogen,]]"
+      ]
     },
     "Publication": {
       "properties": {
@@ -2885,7 +2966,11 @@
         }
       },
       "title": "Publication",
-      "type": "object"
+      "type": "object",
+      "description": "A publication associated with this file. Several publications can be given by indicating the number in the square brackets after “publication”. PubMed ids must be prefixed by “pubmed:”, DOIs by “doi:”. Multiple identifiers MUST be separated by “|”.",
+      "examples": [
+        "MTD\tpublication[1]\tpubmed:21063943|doi:10.1007/978-1-60761-987-1_6\nMTD\tpublication[2]\tpubmed:20615486|doi:10.1016/j.jprot.2010.06.008"
+      ]
     },
     "PublicationItem": {
       "properties": {
@@ -2952,7 +3037,8 @@
         }
       },
       "title": "PublicationItem",
-      "type": "object"
+      "type": "object",
+      "description": "A publication item, defined by a qualifier and a native accession, e.g. pubmed id."
     },
     "Sample": {
       "properties": {
@@ -3197,7 +3283,11 @@
         }
       },
       "title": "Sample",
-      "type": "object"
+      "type": "object",
+      "description": "Specification of sample.\n(empty) name: A name for each sample to serve as a list of the samples that MUST be reported in the following tables. Samples MUST be reported if a statistical design is being captured (i.e. bio or tech replicates). If the type of replicates are not known, samples SHOULD NOT be reported.\nspecies: The respective species of the samples analysed. For more complex cases, such as metagenomics, optional columns and userParams should be used.\ntissue: The respective tissue(s) of the sample.\ncell_type: The respective cell type(s) of the sample.\ndisease: The respective disease(s) of the sample.\ndescription: A human readable description of the sample.\ncustom: Custom parameters describing the sample's additional properties. Dates MUST be provided in ISO-8601 format.",
+      "examples": [
+        "COM\tExperiment where all samples consisted of the same two species\nMTD\tsample[1]\tindividual number 1\nMTD\tsample[1]-species[1]\t[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]\nMTD\tsample[1]-tissue[1]\t[BTO, BTO:0000759, liver, ]\nMTD\tsample[1]-cell_type[1]\t[CL, CL:0000182, hepatocyte, ]\nMTD\tsample[1]-disease[1]\t[DOID, DOID:684, hepatocellular carcinoma, ]\nMTD\tsample[1]-disease[2]\t[DOID, DOID:9451, alcoholic fatty liver, ]\nMTD\tsample[1]-description\tHepatocellular carcinoma samples.\nMTD\tsample[1]-custom[1]\t[,,Extraction date, 2011-12-21]\nMTD\tsample[1]-custom[2]\t[,,Extraction reason, liver biopsy]\nMTD\tsample[2]\tindividual number 2\nMTD\tsample[2]-species[1]\t[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]\nMTD\tsample[2]-tissue[1]\t[BTO, BTO:0000759, liver, ]\nMTD\tsample[2]-cell_type[1]\t[CL, CL:0000182, hepatocyte, ]\nMTD\tsample[2]-description\tHealthy control samples."
+      ]
     },
     "SampleProcessing": {
       "properties": {
@@ -3262,7 +3352,11 @@
         }
       },
       "title": "SampleProcessing",
-      "type": "object"
+      "type": "object",
+      "description": "A list of parameters describing a sample processing, preparation or handling step similar to a biological or analytical methods report. The order of the sample_processing items should reflect the order these processing steps were performed in. If multiple parameters are given for a step these MUST be separated by a “|”. If derivatization was performed, it MUST be reported here as a general step, e.g. 'silylation' and the actual derivatization agens MUST be specified in the Section 6.2.54 part.",
+      "examples": [
+        "MTD\tsample_processing[1]\t[MSIO, MSIO:0000107, metabolism quenching using precooled 60 percent methanol ammonium bicarbonate buffer,]\nMTD\tsample_processing[2]\t[MSIO, MSIO:0000146, centrifugation,]\nMTD\tsample_processing[3]\t[MSIO, MSIO:0000141, metabolite extraction,]\nMTD\tsample_processing[4]\t[MSIO, MSIO:0000141, silylation,]"
+      ]
     },
     "SmallMoleculeEvidence": {
       "properties": {
@@ -3285,7 +3379,10 @@
             "pattern": "SME",
             "required": true,
             "value_constraint": null
-          }
+          },
+          "examples": [
+            "SME\t1\t…"
+          ]
         },
         "header_prefix": {
           "column_value_field": null,
@@ -3306,7 +3403,10 @@
             "pattern": "SEH",
             "required": true,
             "value_constraint": null
-          }
+          },
+          "examples": [
+            "SEH\tSME_ID\t…"
+          ]
         },
         "comment": {
           "anyOf": [
@@ -3412,7 +3512,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The putative identification for the small molecule sourced from an external database, using the same prefix specified in database[1-n]-prefix.  This could include additionally a chemical class or an identifier to a spectral library entity, even if its actual identity is unknown.  For the \u201cno database\u201d case, 'null' must be used. The unprefixed use of 'null' is prohibited for any other case. If no putative identification can be reported for a particular database, it MUST be reported as the database prefix followed by null.",
+          "description": "The putative identification for the small molecule sourced from an external database, using the same prefix specified in database[1-n]-prefix.  This could include additionally a chemical class or an identifier to a spectral library entity, even if its actual identity is unknown.  For the “no database” case, 'null' must be used. The unprefixed use of 'null' is prohibited for any other case. If no putative identification can be reported for a particular database, it MUST be reported as the database prefix followed by null.",
           "examples": [
             "CID:00027395"
           ],
@@ -3443,7 +3543,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The chemical formula of the identified compound e.g. in a database, assumed to match the theoretical mass to charge (in some cases this will be the derivatized form, including adducts and protons).  This should be specified in Hill notation (EA Hill 1900), i.e. elements in the order C, H and then alphabetically all other elements. Counts of one may be omitted. Elements should be capitalized properly to avoid confusion (e.g., \u201cCO\u201d vs. \u201cCo\u201d). The chemical formula reported should refer to the neutral form. Charge state is reported by the charge field.  Example N-acetylglucosamine would be encoded by the string \u201cC8H15NO6\u201d ",
+          "description": "The chemical formula of the identified compound e.g. in a database, assumed to match the theoretical mass to charge (in some cases this will be the derivatized form, including adducts and protons).  This should be specified in Hill notation (EA Hill 1900), i.e. elements in the order C, H and then alphabetically all other elements. Counts of one may be omitted. Elements should be capitalized properly to avoid confusion (e.g., “CO” vs. “Co”). The chemical formula reported should refer to the neutral form. Charge state is reported by the charge field.  Example N-acetylglucosamine would be encoded by the string “C8H15NO6” ",
           "examples": [
             "C17H20N4O2"
           ],
@@ -3598,7 +3698,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The derivatized form of the small molecule, if the identification was based on a specific derivative (e.g. 2 TMS). This MUST be specified using CV terms (where possible) otherwise \u201cnull\u201d.",
+          "description": "The derivatized form of the small molecule, if the identification was based on a specific derivative (e.g. 2 TMS). This MUST be specified using CV terms (where possible) otherwise “null”.",
           "examples": [
             "[CHEBI, CHEBI:51088, trimethylsilyl group, 3]"
           ],
@@ -3629,7 +3729,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The assumed classification of this molecule\u2019s adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-. If the adduct classification is ambiguous with regards to identification evidence it MAY be null.",
+          "description": "The assumed classification of this molecule’s adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-. If the adduct classification is ambiguous with regards to identification evidence it MAY be null.",
           "examples": [
             "[M+H]+"
           ],
@@ -3677,7 +3777,8 @@
             "pattern": null,
             "required": true,
             "value_constraint": null
-          }
+          },
+          "description": "The experimental mass/charge value for the precursor ion. If multiple adduct forms have been combined into a single identification event/search, then a single value e.g. for the protonated form SHOULD be reported here."
         },
         "charge": {
           "anyOf": [
@@ -3755,7 +3856,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a | delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.  If a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. \u201cms_run[1]\u201d. ",
+          "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a | delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.  If a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”. ",
           "examples": [
             [
               "ms_run[1]:index=5"
@@ -3927,7 +4028,7 @@
           ],
           "column_value_field": "value",
           "default": null,
-          "description": "Additional columns can be added to the end of the small molecule evidence table. These column headers MUST start with the prefix \u201copt_\u201d followed by the {identifier} of the object they reference: assay, study variable, MS run or \u201cglobal\u201d (if the value relates to all replicates). Column names MUST only contain the following characters: 'A'-'Z', 'a'-'z', '0'-'9', '_', '-', '[', ']', and ':'. CV parameter accessions MAY be used for optional columns following the format: opt_{identifier}_cv_{accession}_{parameter name}. Spaces within the parameter's name MUST be replaced by '_'. ",
+          "description": "Additional columns can be added to the end of the small molecule evidence table. These column headers MUST start with the prefix “opt_” followed by the {identifier} of the object they reference: assay, study variable, MS run or “global” (if the value relates to all replicates). Column names MUST only contain the following characters: 'A'-'Z', 'a'-'z', '0'-'9', '_', '-', '[', ']', and ':'. CV parameter accessions MAY be used for optional columns following the format: opt_{identifier}_cv_{accession}_{parameter name}. Spaces within the parameter's name MUST be replaced by '_'. ",
           "examples": [
             "opt_assay[1]_my_value=My value",
             "opt_global_another_value=some other value"
@@ -3950,10 +4051,11 @@
         }
       },
       "title": "SmallMoleculeEvidence",
-      "type": "object"
+      "type": "object",
+      "description": "The small molecule evidence section is table-based, representing evidence for identifications of small molecules/features, from database search or any other process used to give putative identifications to molecules. In a typical case, each row represents one result from a single search or intepretation of a piece of evidence e.g. a database search with a fragmentation spectrum. Multiple results from a given input data item (e.g. one fragment spectrum) SHOULD share the same value under evidence_input_id.\n\nThe small molecule evidence section MUST always come after the Small Molecule Feature Table. All table columns MUST be Tab separated. There MUST NOT be any empty cells. Missing values MUST be reported using “null”.\n\nThe order of columns MUST follow the order specified below.\n\nAll columns are MANDATORY except for “opt_” columns."
     },
     "SmallMoleculeFeature": {
-      "description": "The small molecule feature section is table-based, representing individual\nMS regions (generally considered to be the elution profile for all isotopomers\nformed from a single charge state of a molecule), that have been\nmeasured/quantified. However, for approaches that quantify individual isotopomers.\ne.g. stable isotope labelling/flux studies,\nthen each SMF row SHOULD represent a single isotopomer.\n\nDifferent adducts or derivatives and different charge states of\nindividual molecules should be reported as separate SMF rows.\n\nThe small molecule feature section MUST always come after the Small Molecule Table.\nAll table columns MUST be Tab separated. There MUST NOT be any empty cells.\nMissing values MUST be reported using \u201cnull\u201d.\n\nThe order of columns MUST follow the order specified below.\n\nAll columns are MANDATORY except for \u201copt_\u201d columns.",
+      "description": "The small molecule feature section is table-based, representing individual\nMS regions (generally considered to be the elution profile for all isotopomers\nformed from a single charge state of a molecule), that have been\nmeasured/quantified. However, for approaches that quantify individual isotopomers.\ne.g. stable isotope labelling/flux studies,\nthen each SMF row SHOULD represent a single isotopomer.\n\nDifferent adducts or derivatives and different charge states of\nindividual molecules should be reported as separate SMF rows.\n\nThe small molecule feature section MUST always come after the Small Molecule Table.\nAll table columns MUST be Tab separated. There MUST NOT be any empty cells.\nMissing values MUST be reported using “null”.\n\nThe order of columns MUST follow the order specified below.\n\nAll columns are MANDATORY except for “opt_” columns.",
       "properties": {
         "prefix": {
           "anyOf": [
@@ -3981,7 +4083,10 @@
             "pattern": "SMF",
             "required": true,
             "value_constraint": null
-          }
+          },
+          "examples": [
+            "SMF 1 …"
+          ]
         },
         "header_prefix": {
           "column_value_field": null,
@@ -4002,7 +4107,10 @@
             "pattern": "SFH",
             "required": true,
             "value_constraint": null
-          }
+          },
+          "examples": [
+            "SFH\tSMF_ID\t…"
+          ]
         },
         "comment": {
           "anyOf": [
@@ -4146,7 +4254,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The assumed classification of this molecule\u2019s adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-. ",
+          "description": "The assumed classification of this molecule’s adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-. ",
           "examples": [
             "[M+H]1+",
             "[M+2Na]2+"
@@ -4178,9 +4286,9 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "If de-isotoping has not been performed, then the isotopomer quantified MUST be reported here e.g. \u201c+1\u201d, \u201c+2\u201d, \u201c13C peak\u201d using CV terms, otherwise (i.e. for approaches were SMF rows are de-isotoped features) this MUST be null.",
+          "description": "If de-isotoping has not been performed, then the isotopomer quantified MUST be reported here e.g. “+1”, “+2”, “13C peak” using CV terms, otherwise (i.e. for approaches were SMF rows are de-isotoped features) this MUST be null.",
           "examples": [
-            "[MS,MS:1002957,\u201disotopomer MS peak\u201d,\u201d13C peak\u201d]"
+            "[MS,MS:1002957,”isotopomer MS peak”,”13C peak”]"
           ],
           "ignore": false,
           "list_concatenation_str": null,
@@ -4240,7 +4348,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The feature\u2019s charge value using positive integers both for positive and negative polarity modes.",
+          "description": "The feature’s charge value using positive integers both for positive and negative polarity modes.",
           "examples": [
             1
           ],
@@ -4374,7 +4482,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The feature\u2019s abundance in every assay described in the metadata section MUST be reported. Null or zero values may be reported as appropriate.",
+          "description": "The feature’s abundance in every assay described in the metadata section MUST be reported. Null or zero values may be reported as appropriate.",
           "examples": [
             [
               38648.0
@@ -4410,7 +4518,7 @@
           ],
           "column_value_field": "value",
           "default": null,
-          "description": "Additional columns can be added to the end of the small molecule feature table. These column headers MUST start with the prefix \u201copt_\u201d followed by the {identifier} of the object they reference: assay, study variable, MS run or \u201cglobal\u201d (if the value relates to all replicates). Column names MUST only contain the following characters: 'A'-'Z', 'a'-'z', '0'-'9', '', '-', '[', ']', and ':'. CV parameter accessions MAY be used for optional columns following the format: opt{identifier}_cv_{accession}_parameter name}. Spaces within the parameter's name MUST be replaced by '_'. ",
+          "description": "Additional columns can be added to the end of the small molecule feature table. These column headers MUST start with the prefix “opt_” followed by the {identifier} of the object they reference: assay, study variable, MS run or “global” (if the value relates to all replicates). Column names MUST only contain the following characters: 'A'-'Z', 'a'-'z', '0'-'9', '', '-', '[', ']', and ':'. CV parameter accessions MAY be used for optional columns following the format: opt{identifier}_cv_{accession}_parameter name}. Spaces within the parameter's name MUST be replaced by '_'. ",
           "examples": [
             "opt_assay[1]_my_value=My value",
             "opt_global_another_value=some other value"
@@ -4463,7 +4571,10 @@
             "pattern": "SML",
             "required": true,
             "value_constraint": null
-          }
+          },
+          "examples": [
+            "SML 1 …"
+          ]
         },
         "header_prefix": {
           "anyOf": [
@@ -4491,7 +4602,10 @@
             "pattern": "SMH",
             "required": true,
             "value_constraint": null
-          }
+          },
+          "examples": [
+            "SMH\tSML_ID …"
+          ]
         },
         "comment": {
           "anyOf": [
@@ -4649,7 +4763,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The chemical formula of the identified compound e.g. in a database, assumed to match the theoretical mass to charge (in some cases this will be the derivatized form, including adducts and protons). This should be specified in Hill notation (EA Hill 1900), i.e. elements in the order C, H and then alphabetically all other elements. Counts of one may be omitted. Elements should be capitalized properly to avoid confusion (e.g., \u201cCO\u201d vs. \u201cCo\u201d). The chemical formula reported should refer to the neutral form. Charge state is reported by the charge field in the SME and SMF section.\nExample N-acetylglucosamine would be encoded by the string \u201cC8H15NO6\u201d",
+          "description": "The chemical formula of the identified compound e.g. in a database, assumed to match the theoretical mass to charge (in some cases this will be the derivatized form, including adducts and protons). This should be specified in Hill notation (EA Hill 1900), i.e. elements in the order C, H and then alphabetically all other elements. Counts of one may be omitted. Elements should be capitalized properly to avoid confusion (e.g., “CO” vs. “Co”). The chemical formula reported should refer to the neutral form. Charge state is reported by the charge field in the SME and SMF section.\nExample N-acetylglucosamine would be encoded by the string “C8H15NO6”",
           "examples": [
             [
               "C17H20N4O2"
@@ -4685,7 +4799,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The potential molecule\u2019s structure in the simplified molecular-input line-entry system (SMILES) for the small molecule.",
+          "description": "The potential molecule’s structure in the simplified molecular-input line-entry system (SMILES) for the small molecule.",
           "examples": [
             [
               "C1=CC=C(C=C1)CCNC(=O)CCNNC(=O)C2=CC=NC=C2"
@@ -4757,7 +4871,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The small molecule\u2019s chemical/common name, or general description if a chemical name is unavailable.",
+          "description": "The small molecule’s chemical/common name, or general description if a chemical name is unavailable.",
           "examples": [
             [
               "N-(2-phenylethyl)-3-[2-(pyridine-4-carbonyl)hydrazinyl]propanamide"
@@ -4793,7 +4907,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "A URI pointing to the small molecule\u2019s entry in a database (e.g., the small molecule\u2019s HMDB, Chebi or KEGG entry).",
+          "description": "A URI pointing to the small molecule’s entry in a database (e.g., the small molecule’s HMDB, Chebi or KEGG entry).",
           "examples": [
             [
               "http://www.genome.jp/dbget-bin/www_bget?cpd:C00031"
@@ -5018,7 +5132,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The small molecule\u2019s abundance in every assay described in the metadata section MUST be reported. Null or zero values may be reported as appropriate.",
+          "description": "The small molecule’s abundance in every assay described in the metadata section MUST be reported. Null or zero values may be reported as appropriate.",
           "examples": [
             [
               12340.0
@@ -5061,7 +5175,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The small molecule\u2019s abundance in every study variable described in the metadata section. Null or zero values may be reported as appropriate.",
+          "description": "The small molecule’s abundance in every study variable described in the metadata section. Null or zero values may be reported as appropriate.",
           "examples": [
             [
               1230.0
@@ -5104,7 +5218,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The small molecule\u2019s abundance variation in every study variable described in the metadata section. Null or zero values may be reported as appropriate.",
+          "description": "The small molecule’s abundance variation in every study variable described in the metadata section. Null or zero values may be reported as appropriate.",
           "examples": [
             [
               0.2
@@ -5140,7 +5254,7 @@
           ],
           "column_value_field": "value",
           "default": null,
-          "description": "Additional columns can be added to the end of the small molecule table. These column headers MUST start with the prefix \u201copt_\u201d followed by the {identifier} of the object they reference: assay, study variable, MS run or \u201cglobal\u201d (if the value relates to all replicates). Column names MUST only contain the following characters: 'A'-'Z', 'a'-'z', '0'-'9', '', '-', '[', ']', and ':'. CV parameter accessions MAY be used for optional columns following the format: opt{identifier}_cv_{accession}_{parameter name}. Spaces within the parameter's name MUST be replaced by '_'. ",
+          "description": "Additional columns can be added to the end of the small molecule table. These column headers MUST start with the prefix “opt_” followed by the {identifier} of the object they reference: assay, study variable, MS run or “global” (if the value relates to all replicates). Column names MUST only contain the following characters: 'A'-'Z', 'a'-'z', '0'-'9', '', '-', '[', ']', and ':'. CV parameter accessions MAY be used for optional columns following the format: opt{identifier}_cv_{accession}_{parameter name}. Spaces within the parameter's name MUST be replaced by '_'. ",
           "examples": [
             "opt_global_cv_MS:1002217_decoy_peptide=null"
           ],
@@ -5162,7 +5276,8 @@
         }
       },
       "title": "SmallMoleculeSummary",
-      "type": "object"
+      "type": "object",
+      "description": "The small molecule summary section is table-based, represented summarized quantitative information across assays and study variables, grouped by identification in rows. The small molecule section MUST always come after the metadata section. All table columns MUST be Tab separated. There MUST NOT be any empty cells; missing values MUST be reported using “null” for columns where Is Nullable = “True”.\n\nEach row of the small molecule section is intended to report one final result to be communicated in terms of a molecule that has been quantified. In many cases, this may be the molecule of biological interest, although in some cases, the final result could be a derivatized form as appropriate – although it is desirable for the database identifier(s) to reference to the biological (non-derivatized) form. In general, different adduct forms would generally be reported in the Small Molecule Feature section.\n\nThe order of columns MUST follow the order specified below.\n\nAll columns are MANDATORY except for “opt_” columns."
     },
     "Software": {
       "properties": {
@@ -5255,7 +5370,11 @@
         }
       },
       "title": "Software",
-      "type": "object"
+      "type": "object",
+      "description": "Software used to analyze the data and obtain the reported results. The parameter’s value SHOULD contain the software’s version. The order (numbering) should reflect the order in which the tools were used. A software setting used. This field MAY occur multiple times for a single software. The value of this field is deliberately set as a String, since there currently do not exist CV terms for every possible setting.",
+      "examples": [
+        "MTD\tsoftware[1]\t[MS, MS:1002879, Progenesis QI, 3.0]\nMTD\tsoftware[1]-setting\tFragment tolerance = 0.1 Da\n…\nMTD\tsoftware[2]-setting\tParent tolerance = 0.5 Da"
+      ]
     },
     "SpectraReference": {
       "properties": {
@@ -5317,7 +5436,11 @@
         }
       },
       "title": "SpectraReference",
-      "type": "object"
+      "type": "object",
+      "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a “|” delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.\n\nIf a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.",
+      "examples": [
+        "SEH\tSME_ID\t…\tspectra_ref\t…\nSME\t1\t\t\tms_run[1]:index=5\t…"
+      ]
     },
     "StudyVariable": {
       "properties": {
@@ -5406,7 +5529,10 @@
             "pattern": null,
             "required": null,
             "value_constraint": "non-negative-integer"
-          }
+          },
+          "examples": [
+            "MTD\tstudy_variable[1]-group_ref\tstudy_variable_group[1]| study_variable_group[2]"
+          ]
         },
         "assay_refs": {
           "allow_multiple": false,
@@ -5468,7 +5594,10 @@
             "pattern": null,
             "required": null,
             "value_constraint": "non-negative-integer"
-          }
+          },
+          "examples": [
+            "MTD\tstudy_variable[1]-ms_run_ref\tms_run[1]| ms_run[2]"
+          ]
         },
         "average_function": {
           "allow_multiple": false,
@@ -5556,7 +5685,11 @@
         }
       },
       "title": "StudyVariable",
-      "type": "object"
+      "type": "object",
+      "description": "Specification of study_variable.\n(empty) name: A name for each study variable (experimental condition or factor), to serve as a list of the study variables that MUST be reported in the following tables. For software that does not capture study variables, a single study variable MUST be reported, linking to all assays. This single study variable MUST have the identifier “undefined“.\nassay_refs: Bar-separated references to the IDs of assays grouped in the study variable.\naverage_function: The function used to calculate the study variable quantification value and the operation used is not arithmetic mean (default) e.g. “geometric mean”, “median”. The 1-n refers to different study variables.\nvariation_function: The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default) e.g. “standard error”.\ndescription: A textual description of the study variable.",
+      "examples": [
+        "MTD\tstudy_variable[1]\tcontrol\nMTD\tstudy_variable[1]-assay_refs\tassay[1]| assay[2]| assay[3]\nMTD\tstudy_variable-average_function\t[MS, MS:1002883, median, ]\nMTD\tstudy_variable-variation_function\t[MS, MS:1002885, standard error, ]\nMTD\tstudy_variable[1]-description\tGroup B (spike-in 0.74 fmol/uL)\nMTD\tstudy_variable[2]\t1 minute 0.5mg rapamycin"
+      ]
     },
     "StudyVariableGroup": {
       "properties": {
@@ -5586,7 +5719,8 @@
             "pattern": null,
             "required": null,
             "value_constraint": null
-          }
+          },
+          "description": "The unique identifier for this study variable group."
         },
         "name": {
           "allow_multiple": false,
@@ -5740,7 +5874,11 @@
         }
       },
       "title": "StudyVariableGroup",
-      "type": "object"
+      "type": "object",
+      "description": "Specification of study_variable_group.\n(empty) name/parameter: A parameter defining the group to which study variables belong. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter (e.g., [OBI, OBI:0001667, organism development stage, ]) or a user-defined parameter (e.g., [,,sex,]). For software that does not capture study variables, a single study_variable_group MUST be reported, linking to the single study variable, and MUST have the identifier \"undefined\". Added in mzTab-M 2.1.\ndescription: A textual description of the study variable group.\ntype: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO:0000252, categorical variable], [STATO, STATO:0000228, ordinal variable], or [STATO, STATO:0000251, continuous variable].\ndatatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, and xsd:anyURI. Date, time and dateTime values MUST be encoded in ISO 8601 format.\nunit: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).",
+      "examples": [
+        "MTD\tstudy_variable_group[1]\t[PATO, PATO:0000383, sex, ]\nMTD\tstudy_variable_group[1]-description\tSex of the individual\nMTD\tstudy_variable_group[1]-type\t[STATO, STATO:0000252, categorical variable, ]\nMTD\tstudy_variable_group[1]-datatype\txsd:string\nMTD\tstudy_variable_group[2]\t[PATO, PATO:0000384, timepoint, ]\nMTD\tstudy_variable_group[2]-description\tTime after treatment\nMTD\tstudy_variable_group[2]-type\t[STATO, STATO:0000228, ordinal variable, ]\nMTD\tstudy_variable_group[2]-datatype\txsd:integer\nMTD\tstudy_variable_group[2]-unit\t[UO, UO:0000033, day, ]\nMTD\tstudy_variable[1]\tFemale_0day\nMTD\tstudy_variable[1]-group_ref\tstudy_variable_group[1]\nMTD\tstudy_variable[1]-assay_refs\tassay[1]| assay[2]| assay[3]\nMTD\tstudy_variable[2]\tFemale_1day\nMTD\tstudy_variable[2]-group_ref\tstudy_variable_group[2]\nMTD\tstudy_variable[2]-assay_refs\tassay[4]| assay[5]| assay[6]"
+      ]
     },
     "Uri": {
       "properties": {
@@ -5802,7 +5940,11 @@
         }
       },
       "title": "Uri",
-      "type": "object"
+      "type": "object",
+      "description": "A URI pointing to the file’s source data (e.g., a MetaboLights records) or an external file with more details about the study design.",
+      "examples": [
+        "MTD\turi[1]\thttps://www.ebi.ac.uk/metabolights/MTBLS517\n…\nMTD\texternal_study_uri[1]\thttps://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt"
+      ]
     }
   },
   "description": "    mzTab-M is intended as a reporting standard for quantitative results\n    from metabolomics/lipodomics approaches.\n\n    This format is further intended to provide local LIMS systems\n    as well as MS metabolomics repositories a simple way to share\n    and combine basic information. The mzTab-M format consists of four\n    cross-referenced data tables:\n\n    * Metadata (MTD),\n    * Small Molecule (SML),\n    * Small Molecule Feature (SMF) and the\n    * Small Molecule Evidence (SME).\n\nThe MTD and SML tables are mandatory, and for a file to contain any evidence about\nhow molecules were quantified or identified by software,\nthen all four tables must be present. The tables must follow the order\nMTD, SML, SMF and SME, with a blank line separating each table.\n\nThe structure of each table, in terms of the rows and columns\nthat must be present is\ntightly specified and formally defined and explained in\nthe mzTab-M specification document.\nmzTab-M files MUST have one Metadata (MTD) section and\none Small Molecule (SML) Section. In practice, we expect that most files SHOULD also\ninclude one Small Molecule Feature (SMF) section,\nand one Small Molecule Evidence (SME) Section.\nFiles lacking SMF and SME sections can only present summary data\nabout quantified molecules, without any evidence trail for\nhow those values were derived.\nIt will be left to reading software to determine whether\nadditional validation will be\nrequested such that SMF and SME tables MUST be present.",
@@ -5849,7 +5991,7 @@
         }
       ],
       "default": null,
-      "description": "The small molecule section is table-based. The small molecule section MUST always come after the metadata section. All table columns MUST be Tab separated. There MUST NOT be any empty cells; missing values MUST be reported using \u201cnull\u201d for columns where Is Nullable = \u201cTrue\u201d.  Each row of the small molecule section is intended to report one final result to be communicated in terms of a molecule that has been quantified. In many cases, this may be the molecule of biological interest, although in some cases, the final result could be a derivatized form as appropriate - although it is desirable for the database identifier(s) to reference to the biological (non-derivatized) form. In general, different adduct forms would generally be reported in the Small Molecule Feature section.  The order of columns MUST follow the order specified below.  All columns are MANDATORY except for \u201copt_\u201d columns. ",
+      "description": "The small molecule section is table-based. The small molecule section MUST always come after the metadata section. All table columns MUST be Tab separated. There MUST NOT be any empty cells; missing values MUST be reported using “null” for columns where Is Nullable = “True”.  Each row of the small molecule section is intended to report one final result to be communicated in terms of a molecule that has been quantified. In many cases, this may be the molecule of biological interest, although in some cases, the final result could be a derivatized form as appropriate - although it is desirable for the database identifier(s) to reference to the biological (non-derivatized) form. In general, different adduct forms would generally be reported in the Small Molecule Feature section.  The order of columns MUST follow the order specified below.  All columns are MANDATORY except for “opt_” columns. ",
       "ignore": false,
       "list_concatenation_str": null,
       "mztab_example": null,
@@ -5880,7 +6022,7 @@
         }
       ],
       "default": null,
-      "description": "The small molecule feature section is table-based, representing individual MS regions (generally considered to be the elution profile for all isotopomers formed from a single charge state of a molecule), that have been measured/quantified. However, for approaches that quantify individual isotopomers e.g. stable isotope labelling/flux studies, then each SMF row SHOULD represent a single isotopomer. Different adducts or derivatives and different charge states of individual molecules should be reported as separate SMF rows. The small molecule feature section MUST always come after the Small Molecule Table. All table columns MUST be Tab separated. There MUST NOT be any empty cells. Missing values MUST be reported using \u201cnull\u201d.  The order of columns MUST follow the order specified below.  All columns are MANDATORY except for \u201copt_\u201d columns. ",
+      "description": "The small molecule feature section is table-based, representing individual MS regions (generally considered to be the elution profile for all isotopomers formed from a single charge state of a molecule), that have been measured/quantified. However, for approaches that quantify individual isotopomers e.g. stable isotope labelling/flux studies, then each SMF row SHOULD represent a single isotopomer. Different adducts or derivatives and different charge states of individual molecules should be reported as separate SMF rows. The small molecule feature section MUST always come after the Small Molecule Table. All table columns MUST be Tab separated. There MUST NOT be any empty cells. Missing values MUST be reported using “null”.  The order of columns MUST follow the order specified below.  All columns are MANDATORY except for “opt_” columns. ",
       "ignore": false,
       "list_concatenation_str": null,
       "mztab_example": null,
@@ -5911,7 +6053,7 @@
         }
       ],
       "default": null,
-      "description": "The small molecule evidence section is table-based, representing evidence for identifications of small molecules/features, from database search or any other process used to give putative identifications to molecules. In a typical case, each row represents one result from a single search or interpretation of a piece of evidence e.g. a database search with a fragmentation spectrum. Multiple results from a given input data item (e.g. one fragment spectrum) SHOULD share the same value under evidence_input_id.  The small molecule evidence section MUST always come after the Small Molecule Feature Table. All table columns MUST be Tab separated. There MUST NOT be any empty cells. Missing values MUST be reported using \u201cnull\u201d.  The order of columns MUST follow the order specified below.  All columns are MANDATORY except for \u201copt_\u201d columns. ",
+      "description": "The small molecule evidence section is table-based, representing evidence for identifications of small molecules/features, from database search or any other process used to give putative identifications to molecules. In a typical case, each row represents one result from a single search or interpretation of a piece of evidence e.g. a database search with a fragmentation spectrum. Multiple results from a given input data item (e.g. one fragment spectrum) SHOULD share the same value under evidence_input_id.  The small molecule evidence section MUST always come after the Small Molecule Feature Table. All table columns MUST be Tab separated. There MUST NOT be any empty cells. Missing values MUST be reported using “null”.  The order of columns MUST follow the order specified below.  All columns are MANDATORY except for “opt_” columns. ",
       "ignore": false,
       "list_concatenation_str": null,
       "mztab_example": null,

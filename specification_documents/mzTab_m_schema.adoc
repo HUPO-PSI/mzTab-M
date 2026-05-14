@@ -115,10 +115,14 @@ MTD	description	Analysis of lipid profiles in brain tissue samples examining the
 |*Mandatory* |False
 |*Example* a|
 ....
-MTD	sample_processing[1]	MTD	sample_processing[1]	[SEP,SEP:00142,extraction,]
-MTD	sample_processing[1]	MTD	sample_processing[2]	[SEP,SEP:00210,centrifugation,]|[SEP,SEP:00211,13000g]
+MTD	sample_processing[1]	[MSIO, MSIO:0000107, metabolism quenching using precooled 60 percent methanol ammonium bicarbonate buffer,]
+MTD	sample_processing[2]	[MSIO, MSIO:0000146, centrifugation,]
+MTD	sample_processing[3]	[MSIO, MSIO:0000141, metabolite extraction,]
+MTD	sample_processing[4]	[MSIO, MSIO:0000141, silylation,]
 ....
 |============================================================
+
+The name, source, analyzer and detector of the instruments used in the experiment. Multiple instruments are numbered [1-n].
 
 [[instrument1-n-name]]
 ==== instrument[1-n]-name
@@ -170,8 +174,10 @@ MTD	sample_processing[1]	MTD	sample_processing[2]	[SEP,SEP:00210,centrifugation,
 |*Mandatory* |False
 |*Example* a|
 ....
-MTD	software[1]	MTD	software[1]	[MS,MS:1000532,Xcalibur,3.1]
-MTD	software[1]	MTD	software[2]	[MS,MS:1002342,MetaboScape,2022b]
+MTD	software[1]	[MS, MS:1002879, Progenesis QI, 3.0]
+MTD	software[1]-setting	Fragment tolerance = 0.1 Da
+…
+MTD	software[2]-setting	Parent tolerance = 0.5 Da
 ....
 |============================================================
 
@@ -195,10 +201,12 @@ MTD	software[1]	MTD	software[2]	[MS,MS:1002342,MetaboScape,2022b]
 |*Mandatory* |True
 |*Example* a|
 ....
-MTD	publication[1]	MTD	publication[1]	doi:10.1021/example.2023
-MTD	publication[1]	MTD	publication[2]	pubmed:12345678|doi:10.1021/another.2023
+MTD	publication[1]	pubmed:21063943|doi:10.1007/978-1-60761-987-1_6
+MTD	publication[2]	pubmed:20615486|doi:10.1016/j.jprot.2010.06.008
 ....
 |============================================================
+
+The contact’s name, affiliation and e-mail. Several contacts can be given by indicating the number in the square brackets after "contact". A contact has to be supplied in the format [first name] [initials] [last name].
 
 [[contact1-n-name]]
 ==== contact[1-n]-name
@@ -251,6 +259,12 @@ MTD	publication[1]	MTD	publication[2]	pubmed:12345678|doi:10.1021/another.2023
 |*Description* |The URI pointing to the external resource.
 |*Type* |URI
 |*Mandatory* |False
+|*Example* a|
+....
+MTD	uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517
+…
+MTD	external_study_uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt
+....
 |============================================================
 
 [[external_study_uri1-n]]
@@ -261,6 +275,12 @@ MTD	publication[1]	MTD	publication[2]	pubmed:12345678|doi:10.1021/another.2023
 |*Description* |The URI pointing to the external resource.
 |*Type* |URI
 |*Mandatory* |False
+|*Example* a|
+....
+MTD	uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517
+…
+MTD	external_study_uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt
+....
 |============================================================
 
 [[quantification_method]]
@@ -281,6 +301,24 @@ MTD	publication[1]	MTD	publication[2]	pubmed:12345678|doi:10.1021/another.2023
 |*Description* |The sample's name.
 |*Type* |String
 |*Mandatory* |False
+|*Example* a|
+....
+COM	Experiment where all samples consisted of the same two species
+MTD	sample[1]	individual number 1
+MTD	sample[1]-species[1]	[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]
+MTD	sample[1]-tissue[1]	[BTO, BTO:0000759, liver, ]
+MTD	sample[1]-cell_type[1]	[CL, CL:0000182, hepatocyte, ]
+MTD	sample[1]-disease[1]	[DOID, DOID:684, hepatocellular carcinoma, ]
+MTD	sample[1]-disease[2]	[DOID, DOID:9451, alcoholic fatty liver, ]
+MTD	sample[1]-description	Hepatocellular carcinoma samples.
+MTD	sample[1]-custom[1]	[,,Extraction date, 2011-12-21]
+MTD	sample[1]-custom[2]	[,,Extraction reason, liver biopsy]
+MTD	sample[2]	individual number 2
+MTD	sample[2]-species[1]	[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]
+MTD	sample[2]-tissue[1]	[BTO, BTO:0000759, liver, ]
+MTD	sample[2]-cell_type[1]	[CL, CL:0000182, hepatocyte, ]
+MTD	sample[2]-description	Healthy control samples.
+....
 |============================================================
 
 [[sample1-n-species1-n]]
@@ -342,6 +380,16 @@ MTD	publication[1]	MTD	publication[2]	pubmed:12345678|doi:10.1021/another.2023
 |*Type* |Parameter List
 |*Mandatory* |False
 |============================================================
+
+Specification of ms_run.
+location: Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the [1-n] cardinality is referenced elsewhere. If pre-fractionation has been performed, then [1-n] ms_runs SHOULD be created per assay.
+instrument_ref: If different instruments are used in different runs, instrument_ref can be used to link a specific instrument to a specific run.
+format: Parameter specifying the data format of the external MS data file. If ms_run[1-n]-format is present, ms_run[1-n]-id_format SHOULD also be present, following the parameters specified in Table 1.
+id_format: Parameter specifying the id format used in the external data file. If ms_run[1-n]-id_format is present, ms_run[1-n]-format SHOULD also be present.
+fragmentation_method: The type(s) of fragmentation used in a given ms run.
+scan_polarity: The polarity mode of a given run. Usually only one value SHOULD be given here except for the case of mixed polarity runs.
+hash: Hash value of the corresponding external MS data file defined in ms_run[1-n]-location. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.
+hash_method: A parameter specifying the hash methods used to generate the String in ms_run[1-n]-hash. Specifics of the hash method used MAY follow the definitions of the mzML format. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.
 
 [[ms_run1-n-location]]
 ==== ms_run[1-n]-location
@@ -431,6 +479,10 @@ MTD	publication[1]	MTD	publication[2]	pubmed:12345678|doi:10.1021/another.2023
 |*Description* |Additional parameters of the assay, separated by bars.
 |*Type* |Parameter List
 |*Mandatory* |False
+|*Example* a|
+....
+MTD	ms_run[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, LTQ Orbitrap,]]
+....
 |============================================================
 
 [[assay1-n]]
@@ -441,6 +493,14 @@ MTD	publication[1]	MTD	publication[2]	pubmed:12345678|doi:10.1021/another.2023
 |*Description* |The assay name.
 |*Type* |String
 |*Mandatory* |True
+|*Example* a|
+....
+MTD	assay[1]	first assay
+MTD	assay[1]-custom[1]	[MS, , Assay operator, Fred Blogs]
+MTD	assay[1]-external_uri	https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt?STUDYASSAY=a_e04_c18pos.txt
+MTD	assay[1]-sample_ref	sample[1]
+MTD	assay[1]-ms_run_ref	ms_run[1]
+....
 |============================================================
 
 [[assay1-n-custom1-n]]
@@ -491,6 +551,10 @@ MTD	publication[1]	MTD	publication[2]	pubmed:12345678|doi:10.1021/another.2023
 |*Description* |The protocol(s) referenced by this assay.
 |*Type* |Integer List
 |*Mandatory* |False
+|*Example* a|
+....
+MTD	assay[1]-protocol_ref	protocol[1]| protocol[2]
+....
 |============================================================
 
 [[assay1-n-parameters1-n]]
@@ -501,6 +565,10 @@ MTD	publication[1]	MTD	publication[2]	pubmed:12345678|doi:10.1021/another.2023
 |*Description* |Additional parameters of the assay, separated by bars.
 |*Type* |Parameter List
 |*Mandatory* |False
+|*Example* a|
+....
+MTD	assay[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, LTQ Orbitrap,]]
+....
 |============================================================
 
 [[study_variable1-n]]
@@ -511,6 +579,15 @@ MTD	publication[1]	MTD	publication[2]	pubmed:12345678|doi:10.1021/another.2023
 |*Description* |The study variable name.
 |*Type* |String
 |*Mandatory* |True
+|*Example* a|
+....
+MTD	study_variable[1]	control
+MTD	study_variable[1]-assay_refs	assay[1]| assay[2]| assay[3]
+MTD	study_variable-average_function	[MS, MS:1002883, median, ]
+MTD	study_variable-variation_function	[MS, MS:1002885, standard error, ]
+MTD	study_variable[1]-description	Group B (spike-in 0.74 fmol/uL)
+MTD	study_variable[2]	1 minute 0.5mg rapamycin
+....
 |============================================================
 
 [[study_variable1-n-assay_refs1-n]]
@@ -531,6 +608,10 @@ MTD	publication[1]	MTD	publication[2]	pubmed:12345678|doi:10.1021/another.2023
 |*Description* |The ms run(s) referenced by this study variable.
 |*Type* |Integer List
 |*Mandatory* |False
+|*Example* a|
+....
+MTD	study_variable[1]-ms_run_ref	ms_run[1]| ms_run[2]
+....
 |============================================================
 
 [[study_variable1-n-description]]
@@ -551,6 +632,10 @@ MTD	publication[1]	MTD	publication[2]	pubmed:12345678|doi:10.1021/another.2023
 |*Description* |The study variable group this study variable belongs to.
 |*Type* |Integer List
 |*Mandatory* |False
+|*Example* a|
+....
+MTD	study_variable[1]-group_ref	study_variable_group[1]| study_variable_group[2]
+....
 |============================================================
 
 [[study_variable1-n-average_function]]
@@ -581,6 +666,24 @@ MTD	publication[1]	MTD	publication[2]	pubmed:12345678|doi:10.1021/another.2023
 |*Description* |The study variable group name.
 |*Type* |Parameter
 |*Mandatory* |True
+|*Example* a|
+....
+MTD	study_variable_group[1]	[PATO, PATO:0000383, sex, ]
+MTD	study_variable_group[1]-description	Sex of the individual
+MTD	study_variable_group[1]-type	[STATO, STATO:0000252, categorical variable, ]
+MTD	study_variable_group[1]-datatype	xsd:string
+MTD	study_variable_group[2]	[PATO, PATO:0000384, timepoint, ]
+MTD	study_variable_group[2]-description	Time after treatment
+MTD	study_variable_group[2]-type	[STATO, STATO:0000228, ordinal variable, ]
+MTD	study_variable_group[2]-datatype	xsd:integer
+MTD	study_variable_group[2]-unit	[UO, UO:0000033, day, ]
+MTD	study_variable[1]	Female_0day
+MTD	study_variable[1]-group_ref	study_variable_group[1]
+MTD	study_variable[1]-assay_refs	assay[1]| assay[2]| assay[3]
+MTD	study_variable[2]	Female_1day
+MTD	study_variable[2]-group_ref	study_variable_group[2]
+MTD	study_variable[2]-assay_refs	assay[4]| assay[5]| assay[6]
+....
 |============================================================
 
 [[study_variable_group1-n-description]]
@@ -622,6 +725,8 @@ MTD	publication[1]	MTD	publication[2]	pubmed:12345678|doi:10.1021/another.2023
 |*Type* |Parameter
 |*Mandatory* |False
 |============================================================
+
+A protocol describing one or more steps of an experimental procedure, such as sample preparation, data acquisition or data processing. Protocols are referenced from Assay objects. Added in mzTab-M 2.1.
 
 [[protocol1-n-name]]
 ==== protocol[1-n]-name
@@ -673,9 +778,15 @@ MTD	publication[1]	MTD	publication[2]	pubmed:12345678|doi:10.1021/another.2023
 |*Mandatory* |False
 |*Example* a|
 ....
-MTD	custom[1]	MTD	custom	[MS, MS:1000001, custom param, value]
+MTD	custom	[MS, MS:1000001, custom param, value]
 ....
 |============================================================
+
+Specification of controlled vocabularies.
+label: A string describing the labels of the controlled vocabularies/ontologies used in the mzTab file as a short-hand e.g. "MS" for PSI-MS.
+full_name: A string describing the full names of the controlled vocabularies/ontologies used in the mzTab file.
+version: A string describing the version of the controlled vocabularies/ontologies used in the mzTab file.
+uri: A string containing the URIs of the controlled vocabularies/ontologies used in the mzTab file.
 
 [[cv1-n-label]]
 ==== cv[1-n]-label
@@ -727,8 +838,18 @@ MTD	custom[1]	MTD	custom	[MS, MS:1000001, custom param, value]
 |*Mandatory* |True
 |*Example* a|
 ....
-MTD	database[1]	MTD	database[1]	[MS, MS:1002992, HMDB, 4.0]
-MTD	database[1]	MTD	database[1]-prefix	HMDB
+MTD	database[1]	[MIRIAM, MIR:00100079, HMDB, ]
+MTD	database[1]-prefix	hmdb
+MTD	database[1]-version	3.6
+MTD	database[1]-uri	https://www.hmdb.ca
+MTD	database[2]	[,, "de novo", ]
+MTD	database[2]-prefix	dn
+MTD	database[2]-version	Unknown
+MTD	database[2]-uri	null
+MTD	database[3]	[,, "no database", null ]
+MTD	database[3]-prefix	null
+MTD	database[3]-version	Unknown
+MTD	database[3]-uri	null
 ....
 |============================================================
 
@@ -772,7 +893,7 @@ MTD	database[1]	MTD	database[1]-prefix	HMDB
 |*Mandatory* |False
 |*Example* a|
 ....
-MTD	derivatization_agent[1]	MTD	derivatization_agent[1]	[XLMOD, XLMOD:07014, N-methyl-N-t-butyldimethylsilyltrifluoroacetamide, ]
+MTD	derivatization_agent[1]	[XLMOD, XLMOD:07014, N-methyl-N-t-butyldimethylsilyltrifluoroacetamide, ]
 ....
 |============================================================
 
@@ -786,7 +907,7 @@ MTD	derivatization_agent[1]	MTD	derivatization_agent[1]	[XLMOD, XLMOD:07014, N-m
 |*Mandatory* |True
 |*Example* a|
 ....
-MTD	small_molecule-quantification_unit	MTD	small_molecule-quantification_unit	[MS, MS:1001113, peak area, ]
+MTD	small_molecule-quantification_unit	[MS, MS:1001113, peak area, ]
 ....
 |============================================================
 
@@ -800,7 +921,7 @@ MTD	small_molecule-quantification_unit	MTD	small_molecule-quantification_unit	[M
 |*Mandatory* |False
 |*Example* a|
 ....
-MTD	small_molecule_feature-quantification_unit	MTD	small_molecule_feature-quantification_unit	[MS, MS:1001113, peak area, ]
+MTD	small_molecule_feature-quantification_unit	[MS, MS:1001113, peak area, ]
 ....
 |============================================================
 
@@ -814,7 +935,7 @@ MTD	small_molecule_feature-quantification_unit	MTD	small_molecule_feature-quanti
 |*Mandatory* |False
 |*Example* a|
 ....
-MTD	small_molecule-identification_reliability	MTD	small_molecule-identification_reliability	[MS, MS:1000932, identification reliability, ]
+MTD	small_molecule-identification_reliability	[MS, MS:1000932, identification reliability, ]
 ....
 |============================================================
 
@@ -834,8 +955,8 @@ Scores determine confidence in molecular identifications
 |*Mandatory* |True
 |*Example* a|
 ....
-MTD	id_confidence_measure[1]	MTD	id_confidence_measure[1]	[MS,MS:1002890,fragmentation score,]
-MTD	id_confidence_measure[1]	MTD	id_confidence_measure[2]	[MS,MS:1002891,retention time score,]
+MTD	id_confidence_measure[1]	[MS,MS:1002890,fragmentation score,]
+MTD	id_confidence_measure[2]	[MS,MS:1002891,retention time score,]
 ....
 |============================================================
 
@@ -858,8 +979,8 @@ Important Notes
 |*Mandatory* |False
 |*Example* a|
 ....
-MTD	colunit-small_molecule	MTD	colunit-small_molecule	retention_time=[UO,UO:0000031,minute,]
-MTD	colunit-small_molecule	MTD	colunit-small_molecule	mass=[UO,UO:0000221,dalton,]
+MTD	colunit-small_molecule	retention_time=[UO,UO:0000031,minute,]
+MTD	colunit-small_molecule	mass=[UO,UO:0000221,dalton,]
 ....
 |============================================================
 
@@ -873,7 +994,7 @@ MTD	colunit-small_molecule	MTD	colunit-small_molecule	mass=[UO,UO:0000221,dalton
 |*Mandatory* |False
 |*Example* a|
 ....
-MTD	colunit-small_molecule_feature	MTD	colunit-small_molecule_feature	retention_time=[UO, UO:0000031, minute, ]
+MTD	colunit-small_molecule_feature	retention_time=[UO, UO:0000031, minute, ]
 ....
 |============================================================
 
@@ -887,7 +1008,7 @@ MTD	colunit-small_molecule_feature	MTD	colunit-small_molecule_feature	retention_
 |*Mandatory* |False
 |*Example* a|
 ....
-MTD	colunit-small_molecule_evidence	MTD	colunit-small_molecule_evidence	retention_time=[UO, UO:0000031, minute, ]
+MTD	colunit-small_molecule_evidence	retention_time=[UO, UO:0000031, minute, ]
 ....
 |============================================================
 
@@ -943,6 +1064,7 @@ SML	...	2|3|11	...
 ....
 SMH	...	database_identifier	...
 SML	...	CID:00027395	...
+SMH	...	database_identifier	...
 SML	...	HMDB:HMDB0001847	...
 ....
 |============================================================
@@ -1026,6 +1148,7 @@ SML	...	N-(2-phenylethyl)-3-[2-(pyridine-4-carbonyl)hydrazinyl]propanamide	...
 ....
 SMH	...	uri	...
 SML	...	http://www.genome.jp/dbget-bin/www_bget?cpd:C00031	...
+SMH	...	uri	...
 SML	...	http://www.hmdb.ca/metabolites/HMDB0001847	...
 ....
 |============================================================
@@ -1084,6 +1207,7 @@ The reliability of the given small molecule identification. This must be supplie
 ....
 SMH	...	reliability	...
 SML	...	3	...
+SMH	...	reliability	...
 SML	...	0	...
 ....
 |============================================================
@@ -1252,6 +1376,7 @@ SMF	...	1	...
 ....
 SFH	...	adduct_ion	...
 SMF	...	[M+H]1+	...
+SFH	...	adduct_ion	...
 SMF	...	[M+2Na]2+	...
 ....
 |============================================================
@@ -1381,6 +1506,7 @@ SMF	...	38648.0	...
 ....
 SFH	...	opt_global_cv_value	...
 SMF	...	opt_assay[1]_my_value=My value	...
+SFH	...	opt_global_cv_value	...
 SMF	...	opt_global_another_value=some other value	...
 ....
 |============================================================
@@ -1560,7 +1686,7 @@ SME	...	[M+H]+	...
 
 [cols="20,80",]
 |============================================================
-|*Description* |_No description available._
+|*Description* |The experimental mass/charge value for the precursor ion. If multiple adduct forms have been combined into a single identification event/search, then a single value e.g. for the protonated form SHOULD be reported here.
 |*Type* |Double
 |*Mandatory* |True
 |*Is Nullable:* |*FALSE*
@@ -1696,6 +1822,7 @@ SME	...	1	...
 ....
 SEH	...	opt_global_cv_value	...
 SME	...	opt_assay[1]_my_value=My value	...
+SEH	...	opt_global_cv_value	...
 SME	...	opt_global_another_value=some other value	...
 ....
 |============================================================

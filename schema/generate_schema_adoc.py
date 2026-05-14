@@ -13,8 +13,8 @@ import argparse
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).parent
-SCHEMA_FILE = SCRIPT_DIR / 'mztabm.schema-2.1.0-M.json'
-DEFAULT_OUTPUT = SCRIPT_DIR / 'mzTab_m_schema.adoc'
+SCHEMA_FILE = SCRIPT_DIR / 'mzTab_2_1-M.json'
+DEFAULT_OUTPUT = SCRIPT_DIR / 'mzTab_2_1-M_schema.adoc'
 
 # Explicit sub-field ordering for nested objects where schema order
 # does not match the specification document order.
@@ -214,6 +214,16 @@ def get_regex_pattern(prop: dict) -> str:
     return ''
 
 
+def _is_preformatted(ex: str) -> bool:
+    """Return True if the example is already a fully formatted section line.
+
+    Pre-formatted examples start with a recognised section prefix followed by a
+    tab character (e.g. 'MTD\t', 'SML\t') and MUST be emitted verbatim.
+    """
+    prefixes = ('MTD\t', 'SML\t', 'SMH\t', 'SMF\t', 'SFH\t', 'SME\t', 'SEH\t', 'COM\t')
+    return any(ex.startswith(p) for p in prefixes)
+
+
 def _normalize_example(raw) -> str:
     """Convert a raw example value to a display string.
 
@@ -290,13 +300,18 @@ def write_field_entry(
         key = field_name.replace('[1-n]', '[1]').replace('{identifier}', 'global').replace('*', 'cv_value')
         lines.append('|*Example* a|')
         lines.append('....')
-        if section_prefix == 'MTD':
-            for ex in examples:
+        for ex in examples:
+            if _is_preformatted(ex):
+                # Already a full section line (possibly multi-line): emit verbatim.
+                for line in ex.split('\n'):
+                    if line.strip():
+                        lines.append(line)
+            elif section_prefix == 'MTD':
                 lines.append(f'MTD\t{key}\t{ex}')
-        else:
-            # For table sections (SML/SMF/SME) show column header + value row
-            lines.append(f'{section_prefix.replace("SML","SMH").replace("SMF","SFH").replace("SME","SEH")}\t...\t{key}\t...')
-            for ex in examples:
+            else:
+                # For table sections (SML/SMF/SME) show column header + value row
+                hdr = section_prefix.replace('SML', 'SMH').replace('SMF', 'SFH').replace('SME', 'SEH')
+                lines.append(f'{hdr}\t...\t{key}\t...')
                 lines.append(f'{section_prefix}\t...\t{ex}\t...')
         lines.append('....')
 
@@ -329,13 +344,18 @@ def process_nested_object(
 
     if obj_level:
         sub_name, sub_prop = obj_level[0]
-        # Build a merged property: description/type/examples from sub_prop, fallback to meta_prop
+        # Build a merged property: description/type/examples from sub_prop, fallback to meta_prop.
+        # The object-level `examples` on ref_def (multi-line MTD block) take priority over
+        # any individual sub-property example because they show the complete picture.
         merged = dict(meta_prop)
         if sub_prop.get('description'):
             merged['description'] = sub_prop['description']
         if sub_prop.get('anyOf'):
             merged['anyOf'] = sub_prop['anyOf']
-        if sub_prop.get('examples'):
+        # Prefer the object-level example block; fall back to the sub-property's own examples.
+        if ref_def.get('examples'):
+            merged['examples'] = ref_def['examples']
+        elif sub_prop.get('examples'):
             merged['examples'] = sub_prop['examples']
         merged['validation_policy'] = sub_prop.get(
             'validation_policy', meta_prop.get('validation_policy', {})
@@ -344,6 +364,11 @@ def process_nested_object(
             lines, f'{meta_field_name}[1-n]', merged, 'MTD', schema_defs,
             prop_key=meta_field_name,
         )
+    elif ref_def.get('description'):
+        # No indexed top-level value (e.g. Instrument, MsRun): emit the object description
+        # as a section preamble so readers know what the sub-fields belong to.
+        lines.append(ref_def['description'])
+        lines.append('')
 
     # Determine sub-field iteration order: use explicit spec order if defined,
     # otherwise fall back to schema property order.

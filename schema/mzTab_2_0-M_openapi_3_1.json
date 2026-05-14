@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "description": "This is the mzTab-M reference implementation and validation API service.",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "title": "mzTab-M reference implementation and validation API.",
     "contact": {
       "email": "nils.hoffmann@cebitec.uni-bielefeld.de"
