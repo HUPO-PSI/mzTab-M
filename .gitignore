@@ -1,6 +1,17 @@
 # Build artifacts
 *.jar
 
+# Antora site output
+/build/
+
+# Node.js dependencies (Antora + extensions)
+/node_modules/
+/package-lock.json
+/.npm-cache/
+
+# Antora content cache
+/.cache/
+
 # Temporary files
 /tmp/
 

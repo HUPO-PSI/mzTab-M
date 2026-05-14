@@ -3,8 +3,59 @@ on:
   release:
     types: [created]
 
+# Required for the GitHub Pages deployment job below.
+# NOTE: After merging this workflow, change the GitHub Pages source in the
+# repository Settings → Pages from "Deploy from branch (main, /docs)" to
+# "GitHub Actions". The old Jekyll site under docs/ will then be superseded.
+permissions:
+  contents: read
+
 jobs:
   build-spec-workflow:
     uses: HUPO-PSI/mzTab-M/.github/workflows/ci.yml@main
+
   test-examples-workflow:
     uses: HUPO-PSI/mzTab-M/.github/workflows/validate.yml@main
+
+  publish-site:
+    name: Build and publish Antora site
+    needs: build-spec-workflow
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Full history lets Antora resolve git metadata used in page attributes.
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          # Cache speeds up subsequent runs once package-lock.json is committed.
+          cache: npm
+
+      - name: Install Antora and extensions
+        # Use "npm install" on first run (no lockfile yet).
+        # Once package-lock.json is committed, switch this to "npm ci" for
+        # reproducible, faster installs.
+        run: npm install
+
+      - name: Build Antora site
+        run: npx antora docs/antora-playbook.yml
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/site/
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
