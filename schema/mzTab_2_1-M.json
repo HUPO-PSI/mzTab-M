@@ -1,4 +1,6 @@
 {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/HUPO-PSI/mzTab-M/main/schema/mzTab_2_1-M.json",
   "$defs": {
     "Assay": {
       "properties": {
@@ -5947,7 +5949,7 @@
       ]
     }
   },
-  "description": "    mzTab-M is intended as a reporting standard for quantitative results\n    from metabolomics/lipodomics approaches.\n\n    This format is further intended to provide local LIMS systems\n    as well as MS metabolomics repositories a simple way to share\n    and combine basic information. The mzTab-M format consists of four\n    cross-referenced data tables:\n\n    * Metadata (MTD),\n    * Small Molecule (SML),\n    * Small Molecule Feature (SMF) and the\n    * Small Molecule Evidence (SME).\n\nThe MTD and SML tables are mandatory, and for a file to contain any evidence about\nhow molecules were quantified or identified by software,\nthen all four tables must be present. The tables must follow the order\nMTD, SML, SMF and SME, with a blank line separating each table.\n\nThe structure of each table, in terms of the rows and columns\nthat must be present is\ntightly specified and formally defined and explained in\nthe mzTab-M specification document.\nmzTab-M files MUST have one Metadata (MTD) section and\none Small Molecule (SML) Section. In practice, we expect that most files SHOULD also\ninclude one Small Molecule Feature (SMF) section,\nand one Small Molecule Evidence (SME) Section.\nFiles lacking SMF and SME sections can only present summary data\nabout quantified molecules, without any evidence trail for\nhow those values were derived.\nIt will be left to reading software to determine whether\nadditional validation will be\nrequested such that SMF and SME tables MUST be present.",
+  "description": "mzTab-M is intended as a reporting standard for quantitative results\n    from metabolomics/lipodomics approaches.\n\n    This format is further intended to provide local LIMS systems\n    as well as MS metabolomics repositories a simple way to share\n    and combine basic information. The mzTab-M format consists of four\n    cross-referenced data tables:\n\n    * Metadata (MTD),\n    * Small Molecule (SML),\n    * Small Molecule Feature (SMF) and the\n    * Small Molecule Evidence (SME).\n\nThe MTD and SML tables are mandatory, and for a file to contain any evidence about\nhow molecules were quantified or identified by software,\nthen all four tables must be present. The tables must follow the order\nMTD, SML, SMF and SME, with a blank line separating each table.\n\nThe structure of each table, in terms of the rows and columns\nthat must be present is\ntightly specified and formally defined and explained in\nthe mzTab-M specification document.\nmzTab-M files MUST have one Metadata (MTD) section and\none Small Molecule (SML) Section. In practice, we expect that most files SHOULD also\ninclude one Small Molecule Feature (SMF) section,\nand one Small Molecule Evidence (SME) Section.\nFiles lacking SMF and SME sections can only present summary data\nabout quantified molecules, without any evidence trail for\nhow those values were derived.\nIt will be left to reading software to determine whether\nadditional validation will be\nrequested such that SMF and SME tables MUST be present.",
   "properties": {
     "metadata": {
       "allow_multiple": false,
@@ -6102,6 +6104,6 @@
       }
     }
   },
-  "title": "MzTabM",
+  "title": "mzTab-M",
   "type": "object"
 }
