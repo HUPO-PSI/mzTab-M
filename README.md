@@ -143,6 +143,7 @@ list](https://lists.cebitec.uni-bielefeld.de/mailman3/postorius/lists/mztabm.ceb
     reporting checklist to mzTab-M metadata.
 -   Semantic validation using [Custom mapping file for
     lipidomics](https://github.com/lipidomics-standards-initiative/).
+-   Contributing and building the spec: please check [the README.adoc](specification_documents/README.adoc)    
 -   **Help wanted**
     -   Add export of mzTab-M from Skyline.
     -   Finalize the [Python mzTab-M
