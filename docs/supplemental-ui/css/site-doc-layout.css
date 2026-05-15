@@ -908,3 +908,8 @@ html.dark-theme nav.nav-menu.adt-nav-tree-only .nav-item.is-current-page > .nav-
 .body.adt-body {
   min-height: 0;
 }
+
+/* Full-width content column: override the default bundle's media-query max-width on .doc */
+.doc {
+  max-width: 100% !important;
+}
