@@ -20,7 +20,7 @@ content:
       # In CI the working tree matches HEAD, so this is harmless there too.
       worktrees: .
       start_path: docs/mztabm
-      edit_url: 'https://github.com/HUPO-PSI/mzTab-M/edit/${ANTORA_EDIT_BRANCH}/{path}'
+      edit_url: 'https://github.com/HUPO-PSI/mzTab-M/edit/{refname}/{path}'
 
 ui:
   bundle:
