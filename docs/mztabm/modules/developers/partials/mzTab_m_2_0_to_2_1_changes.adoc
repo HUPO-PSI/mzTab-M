@@ -1,0 +1,4350 @@
+== Summary
+
+[cols="4,1,1,1,1,1",options="header"]
+|===
+| Section | v2.0 elements | v2.1 elements | Added | Removed | Changed
+
+| Metadata (MTD) Section | 67 | 75 | 10 | 2 | 65
+
+| Small Molecule (SML) Section | 17 | 17 | 0 | 0 | 17
+
+| Small Molecule Feature (SMF) Section | 12 | 12 | 0 | 0 | 12
+
+| Small Molecule Evidence (SME) Section | 19 | 19 | 0 | 0 | 19
+
+|===
+
+== Metadata (MTD) Section
+
+=== 🟢 Added in v2.1
+
+[cols="20,~,10,10,10",options="header"]
+|===
+| Column/Field | Description | Type | Mandatory | Nullable
+
+| `contact[1-n]-orcid`
+a| The contact's orcid id, without https prefix.
+| Regex +
+---- +
+^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]{1}$ +
+----
+| False
+| —
+
+| `ms_run[1-n]-parameters[1-n]`
+a| Additional parameters of the assay, separated by bars.
+| Parameter List
+| False
+| —
+
+| `assay[1-n]-protocol_refs[1-n]`
+a| The protocol(s) referenced by this assay.
+| Integer List
+| False
+| —
+
+| `assay[1-n]-parameters[1-n]`
+a| Additional parameters of the assay, separated by bars.
+| Parameter List
+| False
+| —
+
+| `study_variable[1-n]-ms_run_refs[1-n]`
+a| The ms run(s) referenced by this study variable.
+| Integer List
+| False
+| —
+
+| `study_variable[1-n]-group_refs[1-n]`
+a| The study variable group this study variable belongs to.
+| Integer List
+| False
+| —
+
+| `protocol[1-n]-name`
+a| The protocol name.
+| String
+| *True*
+| —
+
+| `protocol[1-n]-type`
+a| The protocol type, as defined by the parameter.
+| Parameter
+| *True*
+| —
+
+| `protocol[1-n]-description`
+a| Description of the protocol.
+| String
+| False
+| —
+
+| `protocol[1-n]-parameters[1-n]`
+a| The protocol parameters.
+| Parameter List
+| False
+| —
+
+|===
+
+=== 🔴 Removed in v2.1
+
+[cols="20,~,10,10,10",options="header"]
+|===
+| Column/Field | Description | Type | Mandatory | Nullable
+
+| `ms_run[1-n]-usi_identifier`
+a| An identifier for the MS run based on the Universal Spectrum Identifier (USI) specification. +
+Implied within the USI is an MS run identifier. Every deposited MS run can be referenced with a shortened form: `mzspec:<collection>:<msRun>`. More info on the standard can be found: https://www.psidev.info/usi. +
+Since an MS run may be represented in several formats (with potentially slightly different data associated with the spectrum), a format suffix MAY be specified (e.g. `mzspec:<collection>:<msRun>.RAW`) to signify that a specific file type is meant. +
+If specified, the format suffix should align with the ms_run[1-n]-format parameter and the ms_run[1-n]-location suffix defined in the metadata section.
+| String
+| False
+| —
+
+| `study_variable[1-n]-group_ref`
+a| A reference to the study_variable_group that this study variable belongs to, allowing study variables to be linked to the experimental design factors they represent.
+| \{STUDY_VARIABLE_GROUP_ID}
+| *True*
+| —
+
+|===
+
+=== Element Details
+
+==== `mzTab-version`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The version of the mzTab file. The suffix MUST be "-M" for mzTab for metabolomics (mzTab-M).*
+a| *Version number of the mzTab format used. +
+ +
+Format: `major.minor.patch-variant` +
+Must end with "-M" suffix for metabolomics variant. +
+ +
+Used to ensure compatibility and processing correctness.*
+
+| Type
+a| *Regex +
+.... +
+\d{2}\.\d{0}\.\d{0}-M +
+....*
+a| *Regex +
+---- +
+^\d{1}\.\d{1}\.\d{1}-[A-Z]{1}$ +
+----*
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD mzTab-version  2.0.0-M
+....
+a| ....
+----
+MTD	mzTab-version	2.0.0-M
+MTD	mzTab-version	2.1.0-M
+----
+....
+
+|===
+
+==== `mzTab-ID`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The ID of the mzTab file, this could be supplied by the repository from which it is downloaded or a local identifier from the lab producing the file. It is not intended to be a globally unique ID but carry some locally useful meaning.*
+a| *Unique identifier for the mzTab-M document. +
+REQUIRED. Can be: +
+- Repository accession number (e.g., MTBLS214) +
+- Laboratory internal identifier +
+- Study-specific identifier +
+NOT intended as a globally unique identifier, +
+but SHOULD have local meaning within its context.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD mzTab-ID MTBL1234
+....
+a| ....
+----
+MTD	mzTab-ID	MTBLS214
+MTD	mzTab-ID	LAB001_2023
+----
+....
+
+|===
+
+==== `title`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The file’s human readable title.*
+a| *Human-readable title of the experiment or study. +
+OPTIONAL. SHOULD be: +
+- Concise but informative +
+- Reflect the main focus of the study +
+- Unique within a collection of related studies*
+
+| Type
+a| String
+a| String
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD title Effects of Rapamycin on metabolite profile
+....
+a| ....
+----
+MTD	title	Metabolomic Analysis of Human Plasma in Diabetes Type 2
+MTD	title	Lipidomics Study of Brain Tissue in Alzheimer's Disease
+----
+....
+
+|===
+
+==== `description`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The file’s human readable description.*
+a| *Detailed description of the experiment or study. +
+OPTIONAL. SHOULD include: +
+- Study objectives +
+- Experimental design overview +
+- Key methodological approaches +
+- Any unique aspects of the study +
+Provides context for understanding the data and its significance.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD description An experiment investigating the effects of Il-6.
+....
+a| ....
+----
+MTD	description	Investigation of metabolic changes in human plasma samples from type 2 diabetes patients compared to healthy controls. Study includes both fasting and post-prandial measurements.
+MTD	description	Analysis of lipid profiles in brain tissue samples examining the relationship between specific lipid species and Alzheimer's disease progression.
+----
+....
+
+|===
+
+==== `sample_processing[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A list of parameters describing a sample processing, preparation or handling step similar to a biological or analytical methods report. The order of the sample_processing items should reflect the order these processing steps were performed in. If multiple parameters are given for a step these MUST be separated by a “\{vbar}”. If derivatization was performed, it MUST be reported here as a general step, e.g. 'silylation' and the actual derivatization agens MUST be specified in the <<derivatization_agent1-n>> part.*
+a| *Parameters specifying sample processing that was applied within one step.*
+
+| Type
+a| Parameter List
+a| Parameter List
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD sample_processing[1] [MSIO, MSIO:0000107, metabolism quenching using precooled 60 percent methanol ammonium bicarbonate buffer,]
+MTD sample_processing[2] [MSIO, MSIO:0000146, centrifugation,]
+MTD sample_processing[3] [MSIO, MSIO:0000141, metabolite extraction,]
+MTD sample_processing[4] [MSIO, MSIO:0000141, silylation,]\{vbar}[MSIO, MSIO:0000116, oximation,]
+....
+a| ....
+----
+MTD	sample_processing[1]	[MSIO, MSIO:0000107, metabolism quenching using precooled 60 percent methanol ammonium bicarbonate buffer,]
+MTD	sample_processing[2]	[MSIO, MSIO:0000146, centrifugation,]
+MTD	sample_processing[3]	[MSIO, MSIO:0000141, metabolite extraction,]
+MTD	sample_processing[4]	[MSIO, MSIO:0000141, silylation,]
+----
+....
+
+|===
+
+==== `instrument[1-n]-name`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The name of the instrument used in the experiment. Multiple instruments are numbered 1..n.*
+a| *The instrument's name.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD instrument[1]-name [MS, MS:1000449, LTQ Orbitrap,]
+....
+a| —
+
+|===
+
+==== `instrument[1-n]-source`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The instrument's source used in the experiment. Multiple instruments are numbered [1-n].*
+a| *The instrument's ion source.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD instrument[1]-source [MS, MS:1000073, ESI,]
+…
+MTD instrument[2]-source [MS, MS:1000598, ETD,]
+....
+a| —
+
+|===
+
+==== `instrument[1-n]-analyzer[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The instrument’s analyzer type used in the experiment. Multiple instruments are numbered [1-n].*
+a| *The instrument's mass analyzer, as defined by the parameter.*
+
+| Type
+a| *Parameter*
+a| *Parameter List*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD instrument[1]-analyzer[1] [MS, MS:1000291, linear ion trap,]
+…
+MTD instrument[2]-analyzer[1] [MS, MS:1000484, orbitrap,]
+....
+a| —
+
+|===
+
+==== `instrument[1-n]-detector`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The instrument's detector type used in the experiment. Multiple instruments are numbered [1-n].*
+a| *The instrument's mass analyzer, as defined by the parameter.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD instrument[1]-detector [MS, MS:1000253, electron multiplier,]
+…
+MTD instrument[2]-detector [MS, MS:1000348, focal plane collector,]
+....
+a| —
+
+|===
+
+==== `software[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *Software used to analyze the data and obtain the reported results. The parameter’s value SHOULD contain the software’s version. The order (numbering) should reflect the order in which the tools were used.*
+a| *The software utilized.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | *True* | *False*
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD software[1] [MS, MS:1002879, Progenesis QI, 3.0]
+....
+a| ....
+----
+MTD	software[1]	[MS, MS:1002879, Progenesis QI, 3.0]
+MTD	software[1]-setting	Fragment tolerance = 0.1 Da
+…
+MTD	software[2]-setting	Parent tolerance = 0.5 Da
+----
+....
+
+|===
+
+==== `software[1-n]-setting[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A software setting used. This field MAY occur multiple times for a single software. The value of this field is deliberately set as a String, since there currently do not exist CV terms for every possible setting.*
+a| *A software setting used. This field MAY occur multiple times for a single software. The value of this field is deliberately set as a String, since there currently do not exist cvParams for every possible setting.*
+
+| Type
+a| *String*
+a| *String List*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD software[1]-setting Fragment tolerance = 0.1 Da
+…
+MTD software[2]-setting Parent tolerance = 0.5 Da
+....
+a| —
+
+|===
+
+==== `publication[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A publication associated with this file. Several publications can be given by indicating the number in the square brackets after “publication”. PubMed ids must be prefixed by “pubmed:”, DOIs by “doi:”. Multiple identifiers MUST be separated by “\{vbar}”.*
+a| *The publication item ids referenced by this publication.*
+
+| Type
+a| *String*
+a| *String List*
+
+| Mandatory | *False* | *True*
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD publication[1] pubmed:21063943\{vbar}doi:10.1007/978-1-60761-987-1_6
+MTD publication[2] pubmed:20615486\{vbar}doi:10.1016/j.jprot.2010.06.008
+....
+a| ....
+----
+MTD	publication[1]	pubmed:21063943\{vbar}doi:10.1007/978-1-60761-987-1_6
+MTD	publication[2]	pubmed:20615486\{vbar}doi:10.1016/j.jprot.2010.06.008
+----
+....
+
+|===
+
+==== `contact[1-n]-name`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The contact's name. Several contacts can be given by indicating the number in the square brackets after "contact". A contact has to be supplied in the format [first name] [initials] [last name] (see example).*
+a| *The contact's name.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD contact[1]-name James D. Watson
+…
+MTD contact[2]-name Francis Crick
+....
+a| —
+
+|===
+
+==== `contact[1-n]-affiliation`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The contact’s affiliation.*
+a| *The contact's affiliation.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD contact[1]-affiliation Cambridge University, UK
+MTD contact[2]-affiliation Cambridge University, UK
+....
+a| —
+
+|===
+
+==== `contact[1-n]-email`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The contact’s e-mail address.*
+a| *The contact's e-mail address.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD contact[1]-email watson@cam.ac.uk
+…
+MTD contact[2]-email crick@cam.ac.uk
+....
+a| —
+
+|===
+
+==== `uri[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A URI pointing to the file's source data (e.g., a  MetaboLights records).*
+a| *The URI pointing to the external resource.*
+
+| Type
+a| URI
+a| URI
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD uri[1] https://www.ebi.ac.uk/metabolights/MTBLS517
+....
+a| ....
+----
+MTD	uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517
+…
+MTD	external_study_uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt
+----
+....
+
+|===
+
+==== `external_study_uri[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A URI pointing to an external file with more details about the study design (e.g., an ISA-TAB file).*
+a| *The URI pointing to the external resource.*
+
+| Type
+a| URI
+a| URI
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD external_study_uri[1] https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt
+....
+a| ....
+----
+MTD	uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517
+…
+MTD	external_study_uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt
+----
+....
+
+|===
+
+==== `quantification_method`
+
+NOTE: ⚠️ Changed fields: Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| The quantification method used in the experiment reported in the file.
+a| The quantification method used in the experiment reported in the file.
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD quantification_method [MS, MS:1001834, LC-MS label-free quantitation analysis, ]
+MTD quantification_method [MS, MS:1001838, SRM quantitation analysis, ]
+....
+a| —
+
+|===
+
+==== `sample[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A name for each sample to serve as a list of the samples that MUST be reported in the following tables. Samples MUST be reported if a statistical design is being captured (i.e. bio or tech replicates). If the type of replicates are not known, samples SHOULD NOT be reported.*
+a| *The sample's name.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD sample[1] individual number 1
+MTD sample[2] individual number 2
+....
+a| ....
+----
+COM	Experiment where all samples consisted of the same two species
+MTD	sample[1]	individual number 1
+MTD	sample[1]-species[1]	[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]
+MTD	sample[1]-tissue[1]	[BTO, BTO:0000759, liver, ]
+MTD	sample[1]-cell_type[1]	[CL, CL:0000182, hepatocyte, ]
+MTD	sample[1]-disease[1]	[DOID, DOID:684, hepatocellular carcinoma, ]
+MTD	sample[1]-disease[2]	[DOID, DOID:9451, alcoholic fatty liver, ]
+MTD	sample[1]-description	Hepatocellular carcinoma samples.
+MTD	sample[1]-custom[1]	[,,Extraction date, 2011-12-21]
+MTD	sample[1]-custom[2]	[,,Extraction reason, liver biopsy]
+MTD	sample[2]	individual number 2
+MTD	sample[2]-species[1]	[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]
+MTD	sample[2]-tissue[1]	[BTO, BTO:0000759, liver, ]
+MTD	sample[2]-cell_type[1]	[CL, CL:0000182, hepatocyte, ]
+MTD	sample[2]-description	Healthy control samples.
+----
+....
+
+|===
+
+==== `sample[1-n]-species[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The respective species of the samples analysed. For more complex cases, such as metagenomics, optional columns and userParams should be used.*
+a| *Biological species information on the sample.*
+
+| Type
+a| *Parameter*
+a| *Parameter List*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+COM Experiment where all samples consisted of the same two species
+MTD sample[1]-species[1] [NCBITaxon, NCBITaxon:9606, Homo sapiens, ]
+MTD sample[2]-species[1] [NCBITaxon, NCBITaxon:39767, Human rhinovirus 11, ]
+COM Experiment where two samples from different species (combinations)
+COM were analysed as biological replicates.
+MTD sample[1]-species[1] [NCBITaxon, NCBITaxon:9606, Homo sapiens, ]
+MTD sample[1]-species[2] [NCBITaxon, NCBITaxon:39767, Human rhinovirus 11, ]
+MTD sample[2]-species[1] [NCBITaxon, NCBITaxon:9606, Homo sapiens, ]
+MTD sample[2]-species[2] [NCBITaxon, NCBITaxon:12130, Human rhinovirus 2, ]
+....
+a| —
+
+|===
+
+==== `sample[1-n]-tissue[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The respective tissue(s) of the sample.*
+a| *Biological tissue information on the sample.*
+
+| Type
+a| *Parameter*
+a| *Parameter List*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD sample[1]-tissue[1] [BTO, BTO:0000759, liver, ]
+....
+a| —
+
+|===
+
+==== `sample[1-n]-cell_type[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The respective cell type(s) of the sample.*
+a| *Biological cell type information on the sample.*
+
+| Type
+a| *Parameter*
+a| *Parameter List*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD sample[1]-cell_type[1] [CL, CL:0000182, hepatocyte, ]
+....
+a| —
+
+|===
+
+==== `sample[1-n]-disease[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The respective disease(s) of the sample.*
+a| *Disease information on the sample.*
+
+| Type
+a| *Parameter*
+a| *Parameter List*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD sample[1]-disease[1] [DOID, DOID:684, hepatocellular carcinoma, ]
+MTD sample[1]-disease[2] [DOID, DOID:9451, alcoholic fatty liver, ]
+....
+a| —
+
+|===
+
+==== `sample[1-n]-description`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A human readable description of the sample.*
+a| *A free form description of the sample.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD sample[1]-description Hepatocellular carcinoma samples.
+MTD sample[2]-description Healthy control samples.
+....
+a| —
+
+|===
+
+==== `sample[1-n]-custom[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *Parameters describing the sample’s additional properties. Dates MUST be provided in ISO-8601 format.*
+a| *Additional user or cv parameters.*
+
+| Type
+a| *Parameter*
+a| *Parameter List*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD sample[1]-custom[1] [,,Extraction date, 2011-12-21]
+MTD sample[1]-custom[2] [,,Extraction reason, liver biopsy]
+....
+a| —
+
+|===
+
+==== `ms_run[1-n]-location`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the [1-n] cardinality is referenced elsewhere. If pre-fractionation has been performed, then [1-n] ms_runs SHOULD be created per assay.*
+a| *The msRun's location URI.*
+
+| Type
+a| URI
+a| URI
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD ms_run[1]-location file:///C:/path/to/my/file
+…
+MTD ms_run[1]-location ftp://ftp.ebi.ac.uk/path/to/file
+....
+a| —
+
+|===
+
+==== `ms_run[1-n]-instrument_ref`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *If different instruments are used in different runs, this attribute can be used to link a specific instrument to a specific run.*
+a| *Sample reference.*
+
+| Type
+a| Integer
+a| Integer
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD ms_run[1]-instrument_ref instrument[1]
+....
+a| —
+
+|===
+
+==== `ms_run[1-n]-format`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A parameter specifying the data format of the external MS data file. If ms_run[1-n]-format is present, ms_run[1-n]-id_format SHOULD also be present, following the parameters specified in Table 1.*
+a| *The format of the MS run file.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD ms_run[1]-format [MS, MS:1000584, mzML file, ]
+MTD ms_run[1]-id_format [MS, MS:1000530, mzML unique identifier, ]
+…
+MTD ms_run[2]-format [MS, MS:1001062, Mascot MGF file, ]
+MTD ms_run[2]-id_format [MS, MS:1000774, multiple peak list nativeID format, ]
+....
+a| —
+
+|===
+
+==== `ms_run[1-n]-id_format`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *Parameter specifying the id format used in the external data file. If ms_run[1-n]-id_format is present, ms_run[1-n]-format SHOULD also be present.*
+a| *The format of the IDs in the MS run file.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD ms_run[1]-format [MS, MS:1000584, mzML file, ]
+MTD ms_run[1]-id_format [MS, MS:1000530, mzML unique identifier, ]
+…
+MTD ms_run[2]-format [MS, MS:1001062, Mascot MGF file, ]
+MTD ms_run[2]-id_format [MS, MS:1000774, multiple peak list nativeID format, ]
+....
+a| —
+
+|===
+
+==== `ms_run[1-n]-usi_identifier` 🔴 _(Removed in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| An identifier for the MS run based on the Universal Spectrum Identifier (USI) specification. +
+Implied within the USI is an MS run identifier. Every deposited MS run can be referenced with a shortened form: `mzspec:<collection>:<msRun>`. More info on the standard can be found: https://www.psidev.info/usi. +
+Since an MS run may be represented in several formats (with potentially slightly different data associated with the spectrum), a format suffix MAY be specified (e.g. `mzspec:<collection>:<msRun>.RAW`) to signify that a specific file type is meant. +
+If specified, the format suffix should align with the ms_run[1-n]-format parameter and the ms_run[1-n]-location suffix defined in the metadata section.
+a| _(not present)_
+
+| Type
+a| String
+a| _(not present)_
+
+| Mandatory | False | _(not present)_
+
+| Nullable | — | _(not present)_
+
+| Example
+a| ....
+MTD ms_run[1]-usi_identifier mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09
+....
+a| _(not present)_
+
+|===
+
+==== `ms_run[1-n]-fragmentation_method[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The type(s) of fragmentation used in a given ms run.*
+a| *The fragmentation methods applied during this msRun.*
+
+| Type
+a| *Parameter*
+a| *Parameter List*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD ms_run[1]-fragmentation_method[1] [MS, MS:1000133, CID, ]
+…
+MTD ms_run[1]-fragmentation_method[2] [MS, MS:1000422, HCD, ]
+....
+a| —
+
+|===
+
+==== `ms_run[1-n]-scan_polarity[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The polarity mode of a given run. Usually only one value SHOULD be given here except for the case of mixed polarity runs.*
+a| *The scan polarity/polarities used during this msRun.*
+
+| Type
+a| *Parameter*
+a| *Parameter List*
+
+| Mandatory | *True* | *False*
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD ms_run[1]-scan_polarity[1] [MS, MS:1000130, positive scan, ]
+OR
+MTD ms_run[1]-scan_polarity[1] [MS, MS:1000129, negative scan, ]
+OR (For mixed polarity in one run)
+MTD ms_run[1]-scan_polarity[1] [MS, MS:1000130, positive scan, ]
+MTD ms_run[1]-scan_polarity[2] [MS, MS:1000129, negative scan, ]
+....
+a| —
+
+|===
+
+==== `ms_run[1-n]-hash`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *Hash value of the corresponding external MS data file defined in ms_run[1-n]-location. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.*
+a| *The file hash value of this msRun's data file.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD ms_run[1]-hash_method [MS, MS:1000569, SHA-1, ]
+MTD ms_run[1]-hash de9f2c7fd25e1b3afad3e85a0bd17d9b100db4b3
+....
+a| —
+
+|===
+
+==== `ms_run[1-n]-hash_method`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A parameter specifying the hash methods used to generate the String in ms_run[1-n]-hash. Specifics of the hash method used MAY follow the definitions of the mzML format. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.*
+a| *The method used to calculate the hash.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD ms_run[1]-hash_method [MS, MS:1000569, SHA-1, ]
+MTD ms_run[1]-hash de9f2c7fd25e1b3afad3e85a0bd17d9b100db4b3
+....
+a| —
+
+|===
+
+==== `assay[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A name for each assay, to serve as a list of the assays that MUST be reported in the following tables.*
+a| *The assay name.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD assay[1] first assay
+MTD assay[2] second assay
+....
+a| ....
+----
+MTD	assay[1]	first assay
+MTD	assay[1]-custom[1]	[MS, , Assay operator, Fred Blogs]
+MTD	assay[1]-external_uri	https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt?STUDYASSAY=a_e04_c18pos.txt
+MTD	assay[1]-sample_ref	sample[1]
+MTD	assay[1]-ms_run_ref	ms_run[1]
+----
+....
+
+|===
+
+==== `assay[1-n]-custom[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *Additional parameters or values for a given assay.*
+a| *Additional user or cv parameters.*
+
+| Type
+a| *Parameter*
+a| *Parameter List*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD assay[1]-custom[1] [MS, , Assay operator, Fred Blogs]
+....
+a| —
+
+|===
+
+==== `assay[1-n]-external_uri`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A reference to further information about the assay, for example via a reference to an object within an ISA-TAB file.*
+a| *An external URI to further information about this assay.*
+
+| Type
+a| URI
+a| URI
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD assay[1]-external_uri https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt?STUDYASSAY=a_e04_c18pos.txt
+....
+a| —
+
+|===
+
+==== `assay[1-n]-sample_ref`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *An association from a given assay to the sample analysed.*
+a| *Sample reference.*
+
+| Type
+a| *\{SAMPLE_ID}*
+a| *Integer*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD assay[1]-sample_ref sample[1]
+MTD assay[2]-sample_ref sample[2]
+....
+a| —
+
+|===
+
+==== `assay[1-n]-ms_run_ref`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *An association from a given assay to the source MS run. All assays MUST reference exactly one ms_run unless a workflow with pre-fractionation is being encoded, in which case each assay MUST reference _n_ ms_runs where _n_ fractions have been collected. +
+ +
+Multiple assays SHOULD reference the same ms_run to capture multiplexed experimental designs.*
+a| *The ms run(s) referenced by this assay.*
+
+| Type
+a| *\{MS_RUN_ID}*
+a| *Integer List*
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD assay[1]-ms_run_ref ms_run[1]
+MTD assay[1]-ms_run_ref ms_run[2]
+....
+a| —
+
+|===
+
+==== `study_variable[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A name for each study variable (experimental condition or factor), to serve as a list of the study variables that MUST be reported in the following tables. For software that does not capture study variables, a single study variable MUST be reported, linking to all assays. This single study variable MUST have the identifier “undefined“.*
+a| *The study variable value. Encoded according to the datatype declared on the referenced study_variable_group: either a literal value (for xsd:* datatypes) or a Parameter (for the Parameter datatype, e.g. `[NO, NO:12345, Male,]` or `[,,Male,]`).*
+
+| Type
+a| *String*
+a| *Study Variable List*
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD study_variable[1] “control”
+MTD study_variable[2] “1 minute”
+MTD study_variable[13] “Wildtype”
+....
+a| ....
+----
+MTD	study_variable[1]	control
+MTD	study_variable[1]-assay_refs	assay[1]\{vbar} assay[2]\{vbar} assay[3]
+MTD	study_variable-average_function	[MS, MS:1002883, median, ]
+MTD	study_variable-variation_function	[MS, MS:1002885, standard error, ]
+MTD	study_variable[1]-description	Group B (spike-in 0.74 fmol/uL)
+MTD	study_variable[2]	1 minute 0.5mg rapamycin
+----
+....
+
+|===
+
+==== `study_variable[1-n]-assay_refs`
+
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *Bar-separated references to the IDs of assays grouped in the study variable.*
+a| *The assays referenced by this study variable.*
+
+| Type
+a| *\{ASSAY_ID}, ...*
+a| *Integer List*
+
+| Mandatory | *True* | *False*
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD study_variable[1]-assay_refs assay[1]\{vbar} assay[2]\{vbar} assay[3]
+....
+a| —
+
+|===
+
+==== `study_variable[1-n]-description`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A textual description of the study variable.*
+a| *A free-form description of this study variable.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | *True* | *False*
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD study_variable[1]-description Group B (spike-in 0.74 fmol/uL)
+....
+a| —
+
+|===
+
+==== `study_variable[1-n]-group_ref` 🔴 _(Removed in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| A reference to the study_variable_group that this study variable belongs to, allowing study variables to be linked to the experimental design factors they represent.
+a| _(not present)_
+
+| Type
+a| \{STUDY_VARIABLE_GROUP_ID}
+a| _(not present)_
+
+| Mandatory | True | _(not present)_
+
+| Nullable | — | _(not present)_
+
+| Example
+a| ....
+MTD study_variable[1]-group_ref study_variable_group[1]
+MTD study_variable[2]-group_ref study_variable_group[1]
+MTD study_variable[3]-group_ref study_variable_group[2]
+....
+a| _(not present)_
+
+|===
+
+==== `study_variable_group[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A parameter defining the group to which the study variable belongs. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter or a user-defined parameter. At least one study_variable_group MUST be defined. For software that does not capture study variables, a single study_variable_group MUST be reported, linking to the single study variable. This single study_variable_group MUST have the identifier “undefined”. Added in mzTab-M 2.1.*
+a| *The study variable group name.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD study_variable_group[1] [,,sex,]
+MTD study_variable_group[2] [EFO, EFO:0004953, date of diagnosis, ]
+....
+a| ....
+----
+MTD	study_variable_group[1]	[PATO, PATO:0000383, sex, ]
+MTD	study_variable_group[1]-description	Sex of the individual
+MTD	study_variable_group[1]-type	[STATO, STATO:0000252, categorical variable, ]
+MTD	study_variable_group[1]-datatype	xsd:string
+MTD	study_variable_group[2]	[PATO, PATO:0000384, timepoint, ]
+MTD	study_variable_group[2]-description	Time after treatment
+MTD	study_variable_group[2]-type	[STATO, STATO:0000228, ordinal variable, ]
+MTD	study_variable_group[2]-datatype	xsd:integer
+MTD	study_variable_group[2]-unit	[UO, UO:0000033, day, ]
+MTD	study_variable[1]	Female_0day
+MTD	study_variable[1]-group_ref	study_variable_group[1]
+MTD	study_variable[1]-assay_refs	assay[1]\{vbar}assay[2]\{vbar}assay[3]
+MTD	study_variable[2]	Female_1day
+MTD	study_variable[2]-group_ref	study_variable_group[2]
+MTD	study_variable[2]-assay_refs	assay[4]\{vbar}assay[5]\{vbar}assay[6]
+----
+....
+
+|===
+
+==== `study_variable_group[1-n]-description`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A textual description of the study variable group.*
+a| *Description of the study variable group.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | *True (if study_variable_group is defined)* | *False*
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD study_variable_group[1]-description Sex of the individual
+....
+a| —
+
+|===
+
+==== `study_variable_group[1-n]-type`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of the examples below. While the `type` also has implications for how the variables are encoded/decoded, that information goes into the `study_variable_group[1-n]-datatype`. +
+ +
+ The following data types are supported: +
+ +
+* **categorical** – `[STATO, STATO:0000252, categorical variable]` is a variable that can only assume a finite number of values without inherent ordering. In programming languages often represented as enums, factors (in R), or strings. +
+ +
+* **ordinal** – `[STATO, STATO:0000228, ordinal variable]` Ordered variable where the sequence matters but intervals between levels are undefined. These values represent categories with a defined sequence or ranking. Example: disease severity (mild, moderate, severe), confidence levels (low, medium, high). +
+ +
+* **continuous** – `[STATO, STATO:0000251, continuous variable]` is a variable that can take any value within a range on a continuous scale. Example: temperature, height, concentration, time. +
+ +
+Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).*
+a| *The study variable group type, as defined by the parameter.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD study_variable_group[1]-type [STATO, STATO:0000252, categorical variable]
+MTD study_variable_group[2]-type [STATO, STATO:0000228, ordinal variable]
+MTD study_variable_group[3]-type [STATO, STATO:0000251, continuous variable]
+....
+a| —
+
+|===
+
+==== `study_variable_group[1-n]-datatype`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The datatype of the group variable, which determines how they can be encoded and parsed in mzTab-M files, and how the values could be handled in programming languages. +
+ +
+Producers of mzTab-M 2.1.0 SHOULD provide a `datatype` for each `study_variable_group` to simplify interpretation by downstream consumers of the format. The field is not mandatory, but its presence removes ambiguity about how the associated values are encoded and should be parsed. +
+ +
+The following datatypes are supported: +
+ +
+* xsd:string – Character string. +
+* xsd:integer – Arbitrary‑size integer. +
+* xsd:decimal – Arbitrary‑precision decimal number. +
+* xsd:boolean – Boolean value (`true` / `false`). +
+* xsd:date – Calendar date, encoded in ISO 8601 format (`YYYY-MM-DD`). +
+* xsd:time – Time of day, encoded in ISO 8601 format (`hh:mm:ss`, optional fractional seconds and timezone). +
+* xsd:dateTime – Combined date and time, encoded in ISO 8601 format (`YYYY-MM-DDThh:mm:ss`, with optional fractional seconds and timezone, e.g. `YYYY-MM-DDThh:mm:ssZ`). +
+* xsd:anyURI – A Uniform Resource Identifier reference. +
+ +
+Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).*
+a| *The datatype of the group variable, which determines how they can be encoded and parsed in mzTab-M files, and how the values could be handled in programming languages. +
+ +
+Producers of mzTab-M 2.1.0 SHOULD provide a `datatype` for each `study_variable_group` to simplify interpretation by downstream consumers of the format. The field is not mandatory, but its presence removes ambiguity about how the associated values are encoded and should be parsed. +
+ +
+The following datatypes are supported: +
+ +
+* xsd:string – Character string. +
+* xsd:integer – Arbitrary‑size integer. +
+* xsd:decimal – Arbitrary‑precision decimal number. +
+* xsd:boolean – Boolean value (`true` / `false`). +
+* xsd:date – Calendar date, encoded in ISO 8601 format (`YYYY-MM-DD`). +
+* xsd:time – Time of day, encoded in ISO 8601 format (`hh:mm:ss`, optional fractional seconds and timezone). +
+* xsd:dateTime – Combined date and time, encoded in ISO 8601 format (`YYYY-MM-DDThh:mm:ss`, with optional fractional seconds and timezone, e.g. `YYYY-MM-DDThh:mm:ssZ`). +
+* xsd:anyURI – A Uniform Resource Identifier reference. +
+* Parameter – The values of the linked study_variables are reported as a Parameter (user-defined or CV Parameter), using the standard mzTab-M Parameter syntax `[CV, accession, name, value]`. +
+ +
+Writers MUST ensure that the values of the `study_variable` entries belonging to the same `study_variable_group` all have the same type (e.g. string, number, ...) and use the same convention of reporting the value directly or as a Parameter, consistent with the `datatype` declared on the group. If the `study_variable_group` defines the `datatype` as `Parameter`, the CVParam qualifying the `study_variable_group` itself can be of a different CV origin than the CVParams used in the linked `study_variable` values. +
+ +
+Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).*
+
+| Type
+a| *String (constrained)*
+a| *Parameter*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD study_variable_group[1]-datatype xsd:string
+MTD study_variable_group[2]-datatype xsd:decimal
+MTD study_variable_group[3]-datatype xsd:date
+....
+a| ....
+----
+MTD	study_variable_group[1]-datatype	....
+MTD	study_variable_group[1]-datatype	xsd:string
+MTD	study_variable_group[2]-datatype	xsd:decimal
+MTD	study_variable_group[3]-datatype	xsd:date
+MTD	study_variable_group[4]-datatype	Parameter
+COM	plain string value:
+MTD	study_variable[1]	Male
+MTD	study_variable[1]-group_ref	study_variable_group[1]
+COM	user-defined Parameter value:
+MTD	study_variable[2]	[,,Male,]
+MTD	study_variable[2]-group_ref	study_variable_group[4]
+COM	CV Parameter value:
+MTD	study_variable[3]	[NCIT, NCIT:C20197, Male, ]
+MTD	study_variable[3]-group_ref	study_variable_group[4]
+----
+....
+
+|===
+
+==== `study_variable_group[1-n]-unit`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.). This SHOULD only be used for numeric or scalar values.*
+a| *The study variable group unit, as defined by the parameter.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD study_variable_group[1]-unit [UO, UO:0000033, day, ]
+MTD study_variable_group[2]-unit [UO, UO:0000010, second, ]
+....
+a| —
+
+|===
+
+==== `study_variable[1-n]-average_function`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The function used to calculate the study variable quantification value and the operation used is not arithmetic mean (default) e.g. “geometric mean”, “median”. The 1-n refers to different study variables.*
+a| *The function used to calculate the study variable quantification value and the operation used is not arithmetic mean (default). e.g. geometric mean, median.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD study_variable-average_function [MS, MS:1002883, median, ]
+....
+a| —
+
+|===
+
+==== `study_variable[1-n]-variation_function`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default) e.g. “standard error”.*
+a| *The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default). e.g. standard error.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD study_variable-variation_function [MS, MS:1002885, standard error, ]
+....
+a| —
+
+|===
+
+==== `custom[1-n]`
+
+NOTE: ⚠️ Changed fields: Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| Any additional parameters describing the analysis reported.
+a| Any additional parameters describing the analysis reported.
+
+| Type
+a| *Parameter*
+a| *Parameter List*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD custom[1] [,,MS operator, Florian]
+....
+a| ....
+----
+MTD	custom	[MS, MS:1000001, custom param, value]
+----
+....
+
+|===
+
+==== `cv[1-n]-label`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A string describing the labels of the controlled vocabularies/ontologies used in the mzTab file as a short-hand e.g. "MS" for PSI-MS.*
+a| *The abbreviated CV label.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD cv[1]-label MS
+....
+a| —
+
+|===
+
+==== `cv[1-n]-full_name`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A string describing the full names of the controlled vocabularies/ontologies used in the mzTab file.*
+a| *The full name of this CV, for humans.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD cv[1]-full_name PSI-MS controlled vocabulary
+....
+a| —
+
+|===
+
+==== `cv[1-n]-version`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A string describing the version of the controlled vocabularies/ontologies used in the mzTab file.*
+a| *The CV version used when the file was generated.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD cv[1]-version 4.1.11
+....
+a| —
+
+|===
+
+==== `cv[1-n]-uri`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A string containing the URIs of the controlled vocabularies/ontologies used in the mzTab file. Note: For OBO ontologies, always use an OBO PURL rather than raw repository links to ensure long-term stability. For other ontology formats, please use the fully qualified PURL pointing to the ontology file.*
+a| *A URI to the CV definition.*
+
+| Type
+a| *String*
+a| *URI*
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD cv[1]-uri https://purl.obolibrary.org/obo/ms.obo
+....
+a| —
+
+|===
+
+==== `database[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The description of databases used. For cases, where a known database has not been used for identification, a userParam SHOULD be inserted to describe any identification performed e.g. de novo. +
+ +
+If no identification has been performed at all then "no database" should be inserted followed by null.*
+a| *The database name.*
+
+| Type
+a| *Param*
+a| *Database List*
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD database[1] [MIRIAM, MIR:00100079, HMDB, ]
+MTD database[2] [,, "de novo", ]
+MTD database[3] [MIRIAM, MIR:00000002, CHEBI, ]
+MTD database[4] [,, "customDB", ]
+OR
+MTD database[5] [,, "no database", null ]
+....
+a| ....
+----
+MTD	database[1]	[MIRIAM, MIR:00100079, HMDB, ]
+MTD	database[1]-prefix	hmdb
+MTD	database[1]-version	3.6
+MTD	database[1]-uri	https://www.hmdb.ca
+MTD	database[2]	[,, "de novo", ]
+MTD	database[2]-prefix	dn
+MTD	database[2]-version	Unknown
+MTD	database[2]-uri	null
+MTD	database[3]	[,, "no database", null ]
+MTD	database[3]-prefix	null
+MTD	database[3]-version	Unknown
+MTD	database[3]-uri	null
+----
+....
+
+|===
+
+==== `database[1-n]-prefix`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The prefix used in the “identifier” column of data tables. For the “no database” case "null" must be used.*
+a| *The prefix used in the “identifier” column of data tables. For the 'no database' case 'null' must be used.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD database[1]-prefix hmdb
+MTD database[2]-prefix dn
+MTD database[3]-prefix chebi
+MTD database[4]-prefix cust
+OR
+MTD database[5]-prefix null
+....
+a| —
+
+|===
+
+==== `database[1-n]-version`
+
+NOTE: ⚠️ Changed fields: Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| The database version is mandatory where identification has been performed. This may be a formal version number e.g. “1.4.1”, a date of access “2016-10-27” (ISO-8601 format) or “Unknown” if there is no suitable version that can be annotated.
+a| The database version is mandatory where identification has been performed. This may be a formal version number e.g. “1.4.1”, a date of access “2016-10-27” (ISO-8601 format) or “Unknown” if there is no suitable version that can be annotated.
+
+| Type
+a| String
+a| String
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD database[1]-version 3.6
+OR
+MTD database[2]-version Unknown
+....
+a| —
+
+|===
+
+==== `database[1-n]-uri`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The URI to the database. For the “no database” case, "null" must be reported.*
+a| *The URI to the database. For the “no database” case, 'null' must be reported.*
+
+| Type
+a| *URI*
+a| *String*
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD database[1]-uri http://www.hmdb.ca/
+OR
+MTD database[5]-uri null
+....
+a| —
+
+|===
+
+==== `derivatization_agent[1-n]`
+
+NOTE: ⚠️ Changed fields: Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| A description of derivatization agents applied to small molecules, using userParams or CV terms where possible.
+a| A description of derivatization agents applied to small molecules, using userParams or CV terms where possible.
+
+| Type
+a| *Param*
+a| *Parameter List*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD derivatization_agent[1] [XLMOD, XLMOD:07014, N-methyl-N-t-butyldimethylsilyltrifluoroacetamide, ]
+....
+a| ....
+----
+MTD	derivatization_agent[1]	[XLMOD, XLMOD:07014, N-methyl-N-t-butyldimethylsilyltrifluoroacetamide, ]
+----
+....
+
+|===
+
+==== `small_molecule-quantification_unit`
+
+NOTE: ⚠️ Changed fields: Description, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *Defines what type of units are reported in the small molecule summary quantification / abundance fields.*
+a| *Defines what type of units are reported in the small molecule summary quantification / abundance fields*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD small_molecule-quantification_unit [MS, MS:1002887, Progenesis QI normalised abundance, ]
+....
+a| ....
+----
+MTD	small_molecule-quantification_unit	[MS, MS:1001113, peak area, ]
+----
+....
+
+|===
+
+==== `small_molecule_feature-quantification_unit`
+
+NOTE: ⚠️ Changed fields: Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| Defines what type of units are reported in the small molecule feature quantification / abundance fields.
+a| Defines what type of units are reported in the small molecule feature quantification / abundance fields.
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | *True (if SMF section is being reported)* | *False*
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD small_molecule_feature-quantification_unit [MS, MS:1002887, Progenesis QI normalised abundance, ]
+....
+a| ....
+----
+MTD	small_molecule_feature-quantification_unit	[MS, MS:1001113, peak area, ]
+----
+....
+
+|===
+
+==== `small_molecule-identification_reliability`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The system used for giving reliability / confidence codes to small molecule identifications MUST be specified if not using the default codes (see <<reliability>> and for details).*
+a| *The system used for giving reliability / confidence codes to small molecule identifications MUST be specified if not using the default codes.*
+
+| Type
+a| *Param*
+a| *Parameter*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD small_molecule-identification_reliability [MS, MS:1002896, compound identification confidence level, ]
+or
+MTD small_molecule-identification_reliability [MS, MS:1002955, hr-ms compound identification confidence level, ]
+....
+a| ....
+----
+MTD	small_molecule-identification_reliability	[MS, MS:1000932, identification reliability, ]
+----
+....
+
+|===
+
+==== `id_confidence_measure[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The type of small molecule confidence measures or scores MUST be reported as a CV parameter [1-n]. The CV parameter definition should formally state whether the ordering is high to low or vice versa. The order of the scores SHOULD reflect their importance for the identification and be used to determine the identification’s rank.*
+a| *Small molecule identification confidence metrics.<br/>Scoring System +
+- Use CV parameters numbered `[1-n]` +
+- Define score direction (high-to-low or low-to-high) +
+- Order by importance for identification ranking +
+ +
+Scores determine confidence in molecular identifications*
+
+| Type
+a| *Parameter*
+a| *Parameter List*
+
+| Mandatory | True | True
+
+| Nullable | — | —
+
+| Example
+a| ....
+id_confidence_measure[1]	[MS,MS:1002889,Progenesis MetaScope Score,]
+id_confidence_measure[2]	[MS,MS:1002890,fragmentation score,]
+id_confidence_measure[3]	[MS,MS:1002891,isotopic fit score,]
+....
+a| ....
+----
+MTD	id_confidence_measure[1]	[MS,MS:1002890,fragmentation score,]
+MTD	id_confidence_measure[2]	[MS,MS:1002891,retention time score,]
+----
+....
+
+|===
+
+==== `colunit-small_molecule`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *Defines the used unit for a column in the small molecule section. The format of the value has to be \{column name}=\{Parameter defining the unit} +
+ +
+This field MUST NOT be used to define a unit for quantification columns. The unit used for small molecule quantification values MUST be set in small_molecule-quantification_unit.*
+a| *Unit definitions for small molecule data columns. +
+ +
+Format +
+- Pattern: `{column_name}={unit_parameter}` +
+- Use CV parameters for units when possible +
+ +
+Important Notes +
+- Not for quantification columns +
+- Use `small_molecule-quantification_unit` for quantification values*
+
+| Type
+a| *String*
+a| *Column Parameter Mapping List*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD colunit-small_molecule opt_global_cv_MS:MS:1002954_collisional_cross_sectional_area=[UO,UO:00003241, square angstrom,]
+....
+a| ....
+----
+MTD	colunit-small_molecule	retention_time=[UO,UO:0000031,minute,]
+MTD	colunit-small_molecule	mass=[UO,UO:0000221,dalton,]
+----
+....
+
+|===
+
+==== `colunit-small_molecule_feature`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *Defines the used unit for a column in the small molecule feature section. The format of the value has to be \{column name}=\{Parameter defining the unit} +
+ +
+This field MUST NOT be used to define a unit for quantification columns. The unit used for small molecule quantification values MUST be set in small_molecule_feature-quantification_unit.*
+a| *Defines the used unit for a column in the small molecule feature section. The format of the value has to be {column name}={Parameter defining the unit}. This field MUST NOT be used to define a unit for quantification columns. The unit used for small molecule quantification values MUST be set in small_molecule_feature-quantification_unit.*
+
+| Type
+a| *String*
+a| *Column Parameter Mapping List*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD colunit-small_molecule_feature opt_ms_run[1]_cv_MS:MS:1002476_ion_mobility_drift_time=[UO,UO:0000031, minute,]
+....
+a| ....
+----
+MTD	colunit-small_molecule_feature	retention_time=[UO, UO:0000031, minute, ]
+----
+....
+
+|===
+
+==== `colunit-small_molecule_evidence`
+
+NOTE: ⚠️ Changed fields: Description, Type, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *Defines the used unit for a column in the small molecule evidence section. The format of the value has to be \{column name}=\{Parameter defining the unit}.*
+a| *Defines the used unit for a column in the small molecule evidence section. The format of the value has to be {column name}={Parameter defining the unit}.*
+
+| Type
+a| *String*
+a| *Column Parameter Mapping List*
+
+| Mandatory | False | False
+
+| Nullable | — | —
+
+| Example
+a| ....
+MTD colunit-small_molecule_evidence opt_global_mass_error=[UO, UO:0000169, parts per million, ]
+....
+a| ....
+----
+MTD	colunit-small_molecule_evidence	retention_time=[UO, UO:0000031, minute, ]
+----
+....
+
+|===
+
+==== `contact[1-n]-orcid` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| The contact's orcid id, without https prefix.
+
+| Type
+a| _(not present)_
+a| Regex +
+---- +
+^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]{1}$ +
+----
+
+| Mandatory | _(not present)_ | False
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| —
+
+|===
+
+==== `ms_run[1-n]-parameters[1-n]` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| Additional parameters of the assay, separated by bars.
+
+| Type
+a| _(not present)_
+a| Parameter List
+
+| Mandatory | _(not present)_ | False
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| ....
+----
+MTD	ms_run[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, LTQ Orbitrap,]]
+----
+....
+
+|===
+
+==== `assay[1-n]-protocol_refs[1-n]` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| The protocol(s) referenced by this assay.
+
+| Type
+a| _(not present)_
+a| Integer List
+
+| Mandatory | _(not present)_ | False
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| ....
+----
+MTD	assay[1]-protocol_ref	protocol[1]\{vbar} protocol[2]
+----
+....
+
+|===
+
+==== `assay[1-n]-parameters[1-n]` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| Additional parameters of the assay, separated by bars.
+
+| Type
+a| _(not present)_
+a| Parameter List
+
+| Mandatory | _(not present)_ | False
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| ....
+----
+MTD	assay[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, LTQ Orbitrap,]]
+----
+....
+
+|===
+
+==== `study_variable[1-n]-ms_run_refs[1-n]` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| The ms run(s) referenced by this study variable.
+
+| Type
+a| _(not present)_
+a| Integer List
+
+| Mandatory | _(not present)_ | False
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| ....
+----
+MTD	study_variable[1]-ms_run_ref	ms_run[1]\{vbar} ms_run[2]
+----
+....
+
+|===
+
+==== `study_variable[1-n]-group_refs[1-n]` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| The study variable group this study variable belongs to.
+
+| Type
+a| _(not present)_
+a| Integer List
+
+| Mandatory | _(not present)_ | False
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| ....
+----
+MTD	study_variable[1]-group_ref	study_variable_group[1]\{vbar} study_variable_group[2]
+----
+....
+
+|===
+
+==== `protocol[1-n]-name` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| The protocol name.
+
+| Type
+a| _(not present)_
+a| String
+
+| Mandatory | _(not present)_ | True
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| —
+
+|===
+
+==== `protocol[1-n]-type` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| The protocol type, as defined by the parameter.
+
+| Type
+a| _(not present)_
+a| Parameter
+
+| Mandatory | _(not present)_ | True
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| —
+
+|===
+
+==== `protocol[1-n]-description` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| Description of the protocol.
+
+| Type
+a| _(not present)_
+a| String
+
+| Mandatory | _(not present)_ | False
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| —
+
+|===
+
+==== `protocol[1-n]-parameters[1-n]` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| The protocol parameters.
+
+| Type
+a| _(not present)_
+a| Parameter List
+
+| Mandatory | _(not present)_ | False
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| —
+
+|===
+
+== Small Molecule (SML) Section
+
+=== Element Details
+
+==== `SML_ID`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A within file unique identifier for the small molecule.*
+a| *A within file unique identifier for the small molecule summary.*
+
+| Type
+a| Integer
+a| Integer
+
+| Mandatory | — | *True*
+
+| Nullable | False | False
+
+| Example
+a| ....
+SMH SML_ID …
+SML 1 …
+SML 2 …
+....
+a| ....
+----
+SMH	...	SML_ID	...
+SML	...	1	...
+----
+....
+
+|===
+
+==== `SMF_ID_REFS`
+
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *References to all the features on which quantitation has been based (SMF elements) via referencing SMF_ID values. Multiple values SHOULD be provided as a “\{vbar}” separated list. This MAY be null only if this is a Summary file.*
+a| *References to the small molecule features (SMF elements) via referencing SMF_ID values. Multiple values MAY be provided as a \{vbar} separated list to indicate which features were used to aggregate the SML row.*
+
+| Type
+a| *\{SMF_ID} list*
+a| *Integer List*
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH SML_ID SMF_ID_REFS
+SML 1 2\{vbar}3\{vbar}11…
+....
+a| ....
+----
+SMH	...	SMF_ID_REFS	...
+SML	...	2\{vbar}3\{vbar}11	...
+----
+....
+
+|===
+
+==== `database_identifier`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A list of “\{vbar}” separated possible identifiers for the small molecule; multiple values MUST only be provided to indicate ambiguity in the identification of the molecule and not to demonstrate different identifier types for the same molecule. Alternative identifiers for the same molecule MAY be provided as optional columns. +
+ +
+The database identifier must be preceded by the resource description (prefix) followed by a colon, as specified in the metadata section. +
+ +
+A null value MAY be provided if the identification is sufficiently ambiguous as to be meaningless for reporting or the small molecule has not been identified.*
+a| *A list of \{vbar} separated possible identifiers for the small molecule; multiple values MUST only be provided to indicate ambiguity in the identification of the molecule and not to demonstrate different identifier types for the same molecule. Alternative identifiers for the same molecule MAY be provided as optional columns. The database identifier must be preceded by the resource description (prefix) followed by a colon, as specified in the metadata section. A null value MAY be provided if the identification is sufficiently ambiguous as to be meaningless for reporting or the small molecule has not been identified.*
+
+| Type
+a| String List
+a| String List
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH SML_ID database_identifier …
+SML 1 CID:00027395 …
+SML 2 HMDB:HMDB0001847
+SML 3 null
+....
+a| ....
+----
+SMH	...	database_identifier	...
+SML	...	CID:00027395\{vbar}HMDB:HMDB0001847	...
+----
+....
+
+|===
+
+==== `chemical_formula`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A list of “\{vbar}” separated potential chemical formulae of the reported compound. The number of values provided MUST match the number of entities reported under “database_identifier”, even if this leads to redundant reporting of information (i.e. if ambiguity can be resolved in the chemical formula), and the validation software will throw an error if the number of “\{vbar}” symbols does not match. “null” values between bars are allowed. +
+ +
+This should be specified in Hill notation <<hill-1900,(EA Hill 1900)>>, i.e. elements in the order C, H and then alphabetically all other elements. Counts of one may be omitted. Elements should be capitalized properly to avoid confusion (e.g., “CO” vs. “Co”). The chemical formula reported should refer to the neutral form. +
+ +
+*Example* N-acetylglucosamine would be encoded by the string “C8H15NO6”*
+a| *The chemical formula of the identified compound e.g. in a database, assumed to match the theoretical mass to charge (in some cases this will be the derivatized form, including adducts and protons). This should be specified in Hill notation (EA Hill 1900), i.e. elements in the order C, H and then alphabetically all other elements. Counts of one may be omitted. Elements should be capitalized properly to avoid confusion (e.g., “CO” vs. “Co”). The chemical formula reported should refer to the neutral form. Charge state is reported by the charge field in the SME and SMF section. +
+Example N-acetylglucosamine would be encoded by the string “C8H15NO6”*
+
+| Type
+a| String List
+a| String List
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH SML_ID … chemical_formula …
+SML 1 … C17H20N4O2 …
+....
+a| ....
+----
+SMH	...	chemical_formula	...
+SML	...	C17H20N4O2	...
+----
+....
+
+|===
+
+==== `smiles`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A list of “\{vbar}” separated potential molecule structures in the simplified molecular-input line-entry system (SMILES) for the small molecule. The number of values provided MUST match the number of entities reported under “database_identifier”, and the validation software will throw an error if the number of “\{vbar}” symbols does not match. “null” values between bars are allowed.*
+a| *The potential molecule’s structure in the simplified molecular-input line-entry system (SMILES) for the small molecule.*
+
+| Type
+a| String List
+a| String List
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH SML_ID … chemical_formula smiles …
+SML 1 … C17H20N4O2 C1=CC=C(C=C1)CCNC(=O)CCNNC(=O)C2=CC=NC=C2 …
+....
+a| ....
+----
+SMH	...	smiles	...
+SML	...	C1=CC=C(C=C1)CCNC(=O)CCNNC(=O)C2=CC=NC=C2	...
+----
+....
+
+|===
+
+==== `inchi`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A list of “\{vbar}” separated potential standard IUPAC International Chemical Identifier (InChI) of the given substance. +
+ +
+The number of values provided MUST match the number of entities reported under “database_identifier”, even if this leads to redundant information being reported (i.e. if ambiguity can be resolved in the InChi), and the validation software will throw an error if the number of “\{vbar}” symbols does not match. “null” values between bars are allowed.*
+a| *A standard IUPAC International Chemical Identifier (InChI) for the given substance.*
+
+| Type
+a| String List
+a| String List
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH SML_ID … chemical_formula … inchi …
+SML 1 … C17H20N4O2 … InChI=1S/C17H20N4O2/c22-16(19-12-6-14-4-2-1-3-5-14)9-13-20-21-17(23)15-7-10-18-11-8-15/h1-5,7-8,10-11,20H,6,9,12-13H2,(H,19,22)(H,21,23) …
+....
+a| ....
+----
+SMH	...	inchi	...
+SML	...	InChI=1S/C17H20N4O2/c22-16(19-12-6-14-4-2-1-3-5-14)9-13-20-21-17(23)15-7-10-18-11-8-15/h1-5,7-8,10-11,20H,6,9,12-13H2,(H,19,22)(H,21,23)	...
+----
+....
+
+|===
+
+==== `chemical_name`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A list of “\{vbar}” separated possible chemical/common names for the small molecule, or general description if a chemical name is unavailable. Multiple names are only to demonstrate ambiguity in the identification. The number of values provided MUST match the number of entities reported under “database_identifier”, and the validation software will throw an error if the number of “\{vbar}” symbols does not match. “null” values between bars are allowed.*
+a| *The small molecule’s chemical/common name, or general description if a chemical name is unavailable.*
+
+| Type
+a| String List
+a| String List
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH SML_ID … description …
+SML 1 … N-(2-phenylethyl)-3-[2-(pyridine-4-carbonyl)hydrazinyl]propanamide…
+....
+a| ....
+----
+SMH	...	chemical_name	...
+SML	...	N-(2-phenylethyl)-3-[2-(pyridine-4-carbonyl)hydrazinyl]propanamide	...
+----
+....
+
+|===
+
+==== `uri`
+
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A URI pointing to the small molecule’s entry in a reference database (e.g., the small molecule’s HMDB or KEGG entry). The number of values provided MUST match the number of entities reported under “database_identifier”, and the validation software will throw an error if the number of “\{vbar}” symbols does not match. “null” values between bars are allowed.*
+a| *A URI pointing to the small molecule’s entry in a database (e.g., the small molecule’s HMDB, Chebi or KEGG entry).*
+
+| Type
+a| *URI List*
+a| *String List*
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH SML_ID … uri …
+SML 1 … http://www.genome.jp/dbget-bin/www_bget?cpd:C00031 …
+SML 2 … http://www.hmdb.ca/metabolites/HMDB0001847 …
+SML 3 … http://identifiers.org/hmdb/HMDB0001847 …
+....
+a| ....
+----
+SMH	...	uri	...
+SML	...	http://www.genome.jp/dbget-bin/www_bget?cpd:C00031	...
+SML	...	http://www.hmdb.ca/metabolites/HMDB0001847	...
+----
+....
+
+|===
+
+==== `theoretical_neutral_mass`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The small molecule’s precursor’s theoretical neutral mass. +
+ +
+The number of values provided MUST match the number of entities reported under “database_identifier”, and the validation software will throw an error if the number of “\{vbar}” symbols does not match. “null” values (in general and between bars) are allowed for molecules that have not been identified only, or for molecules where the neutral mass cannot be calculated. In these cases, the SML entry SHOULD reference features in which exp_mass_to_charge values are captured.*
+a| *The theoretical neutral mass of the small molecule. This should be calculated from the chemical formula.*
+
+| Type
+a| Double List
+a| Double List
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH SML_ID … theoretical_neutral_mass …
+SML 1 … 1234.5 …
+....
+a| ....
+----
+SMH	...	theoretical_neutral_mass	...
+SML	...	1234.5	...
+----
+....
+
+|===
+
+==== `adduct_ions`
+
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A “\{vbar}” separated list of detected adducts for this this molecule, following the general style in the 2013 IUPAC recommendations on http://dx.doi.org/10.1351/PAC-REC-06-04-06[terms relating to MS] e.g. `[M+H]1+`, `[M+Na]1+`, `[M+NH4]1+`, `[M-H]1-`, `[M+Cl]1-`, `[M+H]1+`. If the adduct classification is ambiguous with regards to identification evidence it MAY be null.*
+a| *A \{vbar} separated list of the detected adduct ion forms for this small molecule. The terms should follow the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-.*
+
+| Type
+a| *Regex List +
+.... +
+\[\d*M([+-][\w\d]+)*\]\d*[+-] +
+....*
+a| *Regex List +
+---- +
+^\[\d*M([+-][\w\d]+)*\]\d*[+-]$ +
+----*
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH SML_ID … adduct_ions …
+SML 1 … [M+H]1+ \{vbar} [M+Na]1+ …
+....
+a| ....
+----
+SMH	...	adduct_ions	...
+SML	...	[M+H]1+\{vbar}[M+Na]1+	...
+----
+....
+
+|===
+
+==== `reliability`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The reliability of the given small molecule identification. This must be supplied by the resource and MUST be reported as an integer between 1-4: +
+ +
+. identified metabolite (1) +
+. putatively annotated compound (2) +
+. putatively characterized compound class (3) +
+. unknown compound (4) +
+ +
+These MAY be replaced using a suitable CV term in the metadata section e.g. to use MSI recommendation levels (see <<small_molecule-identification_reliability>> for details). +
+ +
+The following CV terms are already available within the PSI MS CV. Future schemes may be implemented by extending the PSI MS CV with new terms and associated levels. +
+ +
+The MSI has recently discussed an extension of the original four level scheme into a five level scheme https://www.ncbi.nlm.nih.gov/pubmed/29748461[MS:1002896] (compound identification confidence level) with levels +
+ +
+["arabic", start=0] +
+. isolated, pure compound, full stereochemistry (0) +
+. reference standard match or full 2D structure (1) +
+. unambiguous diagnostic evidence (literature, database) (2) +
+. most likely structure, including isomers, substance class or substructure match (3) +
+. unknown compound (4) +
+ +
+For high-resolution MS, the following term and its levels may be used: https://www.ncbi.nlm.nih.gov/pubmed/24476540[MS:1002955] (hr-ms compound identification confidence level) with levels +
+ +
+["arabic", start=1] +
+. confirmed structure (1) +
+. probable structure (2) +
+[loweralpha] +
+.. unambiguous ms library match (2a) +
+.. diagnostic evidence (2b) +
+. tentative candidates (3) +
+. unequivocal molecular formula (4) +
+. exact mass (5) +
+ +
+A String data type is set to allow for different systems to be specified in the metadata section.*
+a| *The reliability of the given small molecule identification. This must be supplied by the resource and should be reported as an integer between 1-4: +
+ +
+1: identified, rigorous. ... +
+2: identified. ... +
+3: putatively characterized class. ... +
+4: unknown. ...*
+
+| Type
+a| String
+a| String
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH identifier … reliability …
+SML 1 … 3 …
+or
+MTD small_molecule-identification_reliability [MS, MS:1002896, compound identification confidence level,]
+…
+SMH identifier … reliability …
+SML 1 … 0 …
+or
+MTD small_molecule-identification_reliability [MS, MS:1002955, hr-ms compound identification confidence level,]
+…
+SMH identifier … reliability …
+SML 1 … 2a …
+....
+a| ....
+----
+SMH	...	reliability	...
+SML	...	3	...
+SML	...	0	...
+----
+....
+
+|===
+
+==== `best_id_confidence_measure`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The approach or database search that identified this small molecule with highest confidence.*
+a| *The small molecule confidence measure/score of the best identification for this small molecule summary. The type of the value is defined by the best_id_confidence_measure CV parameter. The value is reported in the best_id_confidence_value column.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH SML_ID … best_ id_confidence_measure …
+SML 1 … [MS, MS:1001477, SpectraST,] …
+....
+a| ....
+----
+SMH	...	best_id_confidence_measure	...
+SML	...	[MS, MS:1001477, SpectraST,,]	...
+----
+....
+
+|===
+
+==== `best_id_confidence_value`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Nullable, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The best confidence measure in identification (for this type of score) for the given small molecule across all assays. The type of score MUST be defined in the metadata section. If the small molecule was not identified by the specified search engine, “null” MUST be reported. If the confidence measure does not report a numerical confidence value, “null” SHOULD be reported.*
+a| *The small molecule confidence measure/score value of the best identification for this small molecule summary.*
+
+| Type
+a| Double
+a| Double
+
+| Mandatory | — | *True*
+
+| Nullable | *True* | *False*
+
+| Example
+a| ....
+SMH SML_ID … best_id_confidence_value …
+SML 1 … 0.7 …
+....
+a| ....
+----
+SMH	...	best_id_confidence_value	...
+SML	...	0.85	...
+----
+....
+
+|===
+
+==== `abundance_assay[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The small molecule’s abundance in every assay described in the metadata section MUST be reported. Null or zero values may be reported as appropriate. "null" SHOULD be used to report missing quantities, while zero SHOULD be used to indicate a present but not reliably quantifiable value (e.g. below a minimum noise threshold).*
+a| *The small molecule’s abundance in every assay described in the metadata section MUST be reported. Null or zero values may be reported as appropriate.*
+
+| Type
+a| *Double*
+a| *Double List*
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH SML_ID … abundance_assay[1] …
+SML 1 … 0.3 …
+....
+a| ....
+----
+SMH	...	abundance_assay	...
+SML	...	12340	...
+----
+....
+
+|===
+
+==== `abundance_study_variable[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The small molecule’s abundance in all the study variables described in the metadata section (study_variable[1-n]_average_function), calculated using the method as described in the Metadata section (default = arithmetic mean across assays). Null or zero values may be reported as appropriate. "null" SHOULD be used to report missing quantities, while zero SHOULD be used to indicate a present but not reliably quantifiable value (e.g. below a minimum noise threshold).*
+a| *The small molecule’s abundance in every study variable described in the metadata section. Null or zero values may be reported as appropriate.*
+
+| Type
+a| *Double*
+a| *Double List*
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH SML_ID … abundance_study_variable[1] …
+SML 1 … 0.3 …
+....
+a| ....
+----
+SMH	...	abundance_study_variable	...
+SML	...	1230	...
+----
+....
+
+|===
+
+==== `abundance_variation_study_variable[1-n]`
+
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A measure of the variability of the study variable abundance measurement, calculated using the method as described in the metadata section (study_variable[1-n]_average_function), with a  default = arithmethic co-efficient of variation of the small molecule’s abundance in the given study variable.*
+a| *The small molecule’s abundance variation in every study variable described in the metadata section. Null or zero values may be reported as appropriate.*
+
+| Type
+a| *Double*
+a| *Double List*
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH SML_ID … abundance_study_variable[1] abundance_variation_study_variable[1]…
+SML 1 … 0.3 0.04 …
+....
+a| ....
+----
+SMH	...	abundance_variation_study_variable	...
+SML	...	0.2	...
+----
+....
+
+|===
+
+==== `opt_\{identifier}_*`
+
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *Additional columns can be added to the end of the small molecule table. These column headers MUST start with the prefix “opt_” followed by the \{identifier} of the object they reference: assay, study variable, MS run or “global” (if the value relates to all replicates). Column names MUST only contain the following characters: ‘A’-‘Z’, ‘a’-‘z’, ‘0’-‘9’, ‘_’, ‘-’, ‘[’, ‘]’, and ‘:’. CV parameter accessions MAY be used for optional columns following the format: pass:[opt_{identifier}_cv_{accession}_{parameter name}]. Spaces within the parameter’s name MUST be replaced by ‘_’.*
+a| *Additional columns can be added to the end of the small molecule table. These column headers MUST start with the prefix “opt_” followed by the {identifier} of the object they reference: assay, study variable, MS run or “global” (if the value relates to all replicates). Column names MUST only contain the following characters: 'A'-'Z', 'a'-'z', '0'-'9', '', '-', '[', ']', and ':'. CV parameter accessions MAY be used for optional columns following the format: opt{identifier}_cv_{accession}_{parameter name}. Spaces within the parameter's name MUST be replaced by '_'.*
+
+| Type
+a| *Column*
+a| *Optional Column*
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH SML_ID … opt_assay[1]_my_value … opt_global_another_value
+SML 1 … My value … some other value
+....
+a| ....
+----
+SMH	...	opt_global_cv_value	...
+SML	...	opt_global_cv_MS:1002217_decoy_peptide=null	...
+----
+....
+
+|===
+
+== Small Molecule Feature (SMF) Section
+
+=== Element Details
+
+==== `SMF_ID`
+
+NOTE: ⚠️ Changed fields: Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| A within file unique identifier for the small molecule feature.
+a| A within file unique identifier for the small molecule feature.
+
+| Type
+a| Integer
+a| Integer
+
+| Mandatory | — | *True*
+
+| Nullable | False | False
+
+| Example
+a| ....
+SFH SMF_ID …
+SMF 1 …
+SMF 2 …
+....
+a| ....
+----
+SFH	...	SMF_ID	...
+SMF	...	1	...
+----
+....
+
+|===
+
+==== `SME_ID_REFS`
+
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *References to the identification evidence (SME elements) via referencing SME_ID values. Multiple values MAY be provided as a “\{vbar}” separated list to indicate ambiguity in the identification or to indicate that different types of data supported the identifiction (see SME_ID_REF_ambiguity_code). For the case of a consensus approach where multiple adduct forms are used to infer the SML ID, different features should just reference the same SME_ID value(s).*
+a| *References to the identification evidence (SME elements) via referencing SME_ID values. Multiple values MAY be provided as a \{vbar} separated list to indicate ambiguity in the identification or to indicate that different types of data supported the identifiction (see sme_id_ref_ambiguity_code). For the case of a consensus approach where multiple adduct forms are used to infer the SML ID, different features should just reference the same SME_ID value(s).*
+
+| Type
+a| *\{SME_ID} list*
+a| *Integer List*
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SFH SMF_ID SME_ID_REFS
+SMF 1 5\{vbar}6\{vbar}12…
+....
+a| ....
+----
+SFH	...	SME_ID_REFS	...
+SMF	...	5\{vbar}6\{vbar}12	...
+----
+....
+
+|===
+
+==== `SME_ID_REF_ambiguity_code`
+
+NOTE: ⚠️ Changed fields: Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| If multiple values are given under SME_ID_REFS, one of the following codes MUST be provided. 1=Ambiguous identification; 2=Only different evidence streams for the same molecule with no ambiguity; 3=Both ambiguous identification and multiple evidence streams. If there are no or one value under SME_ID_REFs, this MUST be reported as null.
+a| If multiple values are given under SME_ID_REFS, one of the following codes MUST be provided. 1=Ambiguous identification; 2=Only different evidence streams for the same molecule with no ambiguity; 3=Both ambiguous identification and multiple evidence streams. If there are no or one value under SME_ID_REFs, this MUST be reported as null.
+
+| Type
+a| Integer
+a| Integer
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SFH SMF_ID SME_ID_REFS SME_ID_REF_ambiguity_code
+SMF 1 5\{vbar}6\{vbar}12… 1
+....
+a| ....
+----
+SFH	...	SME_ID_REF_ambiguity_code	...
+SMF	...	1	...
+----
+....
+
+|===
+
+==== `adduct_ion`
+
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The assumed classification of this molecule's adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. `[M+H]1+`, `[M+Na]1+`, `[M+NH4]1+`, `[M-H]1-`, `[M+Cl]1-`, `[M+H]1+`.*
+a| *The assumed classification of this molecule’s adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-.*
+
+| Type
+a| *Regex +
+.... +
+\[\d*M([+-][\w\d]+)*\]\d*[+-] +
+....*
+a| *String*
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SFH SMF_ID … adduct_ion …
+SMF 1 … [M+H]+ …
+SMF 2 … [M+2Na]2+ …
+....
+a| ....
+----
+SFH	...	adduct_ion	...
+SMF	...	[M+H]1+	...
+SMF	...	[M+2Na]2+	...
+----
+....
+
+|===
+
+==== `isotopomer`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *If de-isotoping has not been performed, then the isotopomer quantified MUST be reported here e.g. “+1”, “+2”, “13C peak” using CV terms, otherwise (i.e. for approaches where SMF rows are de-isotoped features) this MUST be null.*
+a| *If de-isotoping has not been performed, then the isotopomer quantified MUST be reported here e.g. “+1”, “+2”, “13C peak” using CV terms, otherwise (i.e. for approaches were SMF rows are de-isotoped features) this MUST be null.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SFH SMF_ID … isotopomer …
+SMF 1 … [MS,MS:1002957,”isotopomer MS peak”,”13C peak”]…
+....
+a| ....
+----
+SFH	...	isotopomer	...
+SMF	...	[MS,MS:1002957,”isotopomer MS peak”,”13C peak”]	...
+----
+....
+
+|===
+
+==== `exp_mass_to_charge`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The __exp__erimental mass/charge value for the feature, by default assumed to be the mean across assays or a representative value. For approaches that report isotopomers as SMF rows, then the m/z of the isotopomer MUST be reported here.*
+a| *The experimental mass/charge value for the feature, by default assumed to be the mean across assays or a representative value. For approaches that report isotopomers as SMF rows, then the m/z of the isotopomer MUST be reported here.*
+
+| Type
+a| Double
+a| Double
+
+| Mandatory | — | *True*
+
+| Nullable | False | False
+
+| Example
+a| ....
+SFH SMF_ID … exp_mass_to_charge …
+SMF 1 … 1234.5 …
+....
+a| ....
+----
+SFH	...	exp_mass_to_charge	...
+SMF	...	1234.5	...
+----
+....
+
+|===
+
+==== `charge`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Nullable, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The feature’s charge value using positive integers both for positive and negative polarity modes. Is nullable in the SMF table but if identification is precised the charge is expected to expected to be known.*
+a| *The feature’s charge value using positive integers both for positive and negative polarity modes.*
+
+| Type
+a| Integer
+a| Integer
+
+| Mandatory | — | *False*
+
+| Nullable | *True* | *False*
+
+| Example
+a| ....
+SFH SMF_ID … charge …
+SMF 1 … 1 …
+....
+a| ....
+----
+SFH	...	charge	...
+SMF	...	1	...
+----
+....
+
+|===
+
+==== `retention_time_in_seconds`
+
+NOTE: ⚠️ Changed fields: Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| The apex of the feature on the retention time axis, in a Master or aggregate MS run. Retention time MUST be reported in seconds. Retention time values for individual MS runs (i.e. before alignment) MAY be reported as optional columns. Retention time SHOULD only be null in the case of direct infusion MS or other techniques where a retention time value is absent or unknown. Relative retention time or retention time index values MAY be reported as optional columns, and could be considered for inclusion in future versions of mzTab as appropriate.
+a| The apex of the feature on the retention time axis, in a Master or aggregate MS run. Retention time MUST be reported in seconds. Retention time values for individual MS runs (i.e. before alignment) MAY be reported as optional columns. Retention time SHOULD only be null in the case of direct infusion MS or other techniques where a retention time value is absent or unknown. Relative retention time or retention time index values MAY be reported as optional columns, and could be considered for inclusion in future versions of mzTab as appropriate.
+
+| Type
+a| Double
+a| Double
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SFH SMF_ID … retention_time_in_seconds …
+SMF 1 … 1345.7 …
+....
+a| ....
+----
+SFH	...	retention_time_in_seconds	...
+SMF	...	1345.7	...
+----
+....
+
+|===
+
+==== `retention_time_in_seconds_start`
+
+NOTE: ⚠️ Changed fields: Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| The start time of the feature on the retention time axis, in a Master or aggregate MS run. Retention time MUST be reported in seconds. Retention time start and end SHOULD only be null in the case of direct infusion MS or other techniques where a retention time value is absent or unknown and MAY be reported in optional columns.
+a| The start time of the feature on the retention time axis, in a Master or aggregate MS run. Retention time MUST be reported in seconds. Retention time start and end SHOULD only be null in the case of direct infusion MS or other techniques where a retention time value is absent or unknown and MAY be reported in optional columns.
+
+| Type
+a| Double
+a| Double
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SFH SMF_ID … retention_time_in_seconds_start …
+SMF 1 … 1327.0 …
+....
+a| ....
+----
+SFH	...	retention_time_in_seconds_start	...
+SMF	...	1327	...
+----
+....
+
+|===
+
+==== `retention_time_in_seconds_end`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The end time of the feature on the retention time axis, in a Master or aggregate MS run. Retention time MUST be reported in seconds. Retention time start and end SHOULD only be null in the case of direct infusion MS or other techniques where a retention time value is absent or unknown and MAY be reported in optional columns..*
+a| *The end time of the feature on the retention time axis, in a Master or aggregate MS run. Retention time MUST be reported in seconds. Retention time start and end SHOULD only be null in the case of direct infusion MS or other techniques where a retention time value is absent or unknown and MAY be reported in optional columns.*
+
+| Type
+a| Double
+a| Double
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SFH SMF_ID … retention_time_in_seconds_end …
+SMF 1 … 1327.8 …
+....
+a| ....
+----
+SFH	...	retention_time_in_seconds_end	...
+SMF	...	1327.8	...
+----
+....
+
+|===
+
+==== `abundance_assay[1-n]`
+
+NOTE: ⚠️ Changed fields: Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| The feature’s abundance in every assay described in the metadata section MUST be reported. Null or zero values may be reported as appropriate.
+a| The feature’s abundance in every assay described in the metadata section MUST be reported. Null or zero values may be reported as appropriate.
+
+| Type
+a| *Double*
+a| *Double List*
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SMH SML_ID … abundance_assay[1] …
+SMF 1 … 38648 …
+....
+a| ....
+----
+SFH	...	abundance_assay	...
+SMF	...	38648	...
+----
+....
+
+|===
+
+==== `opt_\{identifier}_*`
+
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *Additional columns can be added to the end of the small molecule feature table. These column headers MUST start with the prefix “opt_” followed by the \{identifier} of the object they reference: assay, study variable, MS run or “global” (if the value relates to all replicates). Column names MUST only contain the following characters: ‘A’-‘Z’, ‘a’-‘z’, ‘0’-‘9’, ‘_’, ‘-’, ‘[’, ‘]’, and ‘:’. CV parameter accessions MAY be used for optional columns following the format: pass:[opt_{identifier}_cv_{accession}_{parameter name}]. Spaces within the parameter’s name MUST be replaced by ‘_’.*
+a| *Additional columns can be added to the end of the small molecule feature table. These column headers MUST start with the prefix “opt_” followed by the {identifier} of the object they reference: assay, study variable, MS run or “global” (if the value relates to all replicates). Column names MUST only contain the following characters: 'A'-'Z', 'a'-'z', '0'-'9', '', '-', '[', ']', and ':'. CV parameter accessions MAY be used for optional columns following the format: opt{identifier}_cv_{accession}_parameter name}. Spaces within the parameter's name MUST be replaced by '_'.*
+
+| Type
+a| *Column*
+a| *Optional Column*
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SFH SMF_ID … opt_assay[1]_my_value … opt_global_another_value
+SMF 1 … My value … some other value
+....
+a| ....
+----
+SFH	...	opt_global_cv_value	...
+SMF	...	opt_assay[1]_my_value=My value	...
+SMF	...	opt_global_another_value=some other value	...
+----
+....
+
+|===
+
+== Small Molecule Evidence (SME) Section
+
+=== Element Details
+
+==== `SME_ID`
+
+NOTE: ⚠️ Changed fields: Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| A within file unique identifier for the small molecule evidence result.
+a| A within file unique identifier for the small molecule evidence result.
+
+| Type
+a| Integer
+a| Integer
+
+| Mandatory | — | *True*
+
+| Nullable | False | False
+
+| Example
+a| ....
+SEH SME_ID …
+SME 1 …
+....
+a| ....
+----
+SEH	...	SME_ID	...
+SME	...	1	...
+----
+....
+
+|===
+
+==== `evidence_input_id`
+
+NOTE: ⚠️ Changed fields: Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| A within file unique identifier for the input data used to support this identification e.g. fragment spectrum, RT and m/z pair, isotope profile that was used for the identification process, to serve as a grouping mechanism, whereby multiple rows of results from the same input data share the same ID. The identifiers may be human readable but should not be assumed to be interpretable. For example, if fragmentation spectra have been searched then the ID may be the spectrum reference, or for accurate mass search, the ms_run[2]:458.75.
+a| A within file unique identifier for the input data used to support this identification e.g. fragment spectrum, RT and m/z pair, isotope profile that was used for the identification process, to serve as a grouping mechanism, whereby multiple rows of results from the same input data share the same ID. The identifiers may be human readable but should not be assumed to be interpretable. For example, if fragmentation spectra have been searched then the ID may be the spectrum reference, or for accurate mass search, the ms_run[2]:458.75.
+
+| Type
+a| String
+a| String
+
+| Mandatory | — | *True*
+
+| Nullable | False | False
+
+| Example
+a| ....
+SEH SME_ID evidence_input_id …
+SME 1 ms_run[1]:mass=278.65;rt=376.5
+SME 2 ms_run[1]:mass=278.65;rt=376.5
+SME 3 ms_run[1]:mass=278.65;rt=376.5
+(in this example three identifications were made from the same accurate mass/RT library search)
+....
+a| ....
+----
+SEH	...	evidence_input_id	...
+SME	...	ms_run[1]:mass=278.65;rt=376.5	...
+----
+....
+
+|===
+
+==== `database_identifier`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The putative identification for the small molecule sourced from an external database, using the same prefix specified in database[1-n]-prefix. +
+ +
+This could include additionally a chemical class or an identifier to a spectral library entity, even if its actual identity is unknown. +
+ +
+For the “no database” case, "null" must be used. The unprefixed use of "null" is prohibited for any other case. +
+If no putative identification can be reported for a particular database, it MUST be reported as the database prefix followed by null.*
+a| *The putative identification for the small molecule sourced from an external database, using the same prefix specified in database[1-n]-prefix.  This could include additionally a chemical class or an identifier to a spectral library entity, even if its actual identity is unknown.  For the “no database” case, 'null' must be used. The unprefixed use of 'null' is prohibited for any other case. If no putative identification can be reported for a particular database, it MUST be reported as the database prefix followed by null.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | — | *True*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SEH SME_ID identifier …
+SME 1 CID:00027395 …
+SME 2 HMDB:HMDB12345 …
+SME 3 CID:null …
+....
+a| ....
+----
+SEH	...	database_identifier	...
+SME	...	CID:00027395	...
+----
+....
+
+|===
+
+==== `chemical_formula`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The chemical formula of the identified compound e.g. in a database, assumed to match the theoretical mass to charge (in some cases this will be the derivatized form, including adducts and protons). +
+ +
+This should be specified in Hill notation <<hill-1900,(EA Hill 1900)>>, i.e. elements in the order C, H and then alphabetically all other elements. Counts of one may be omitted. Elements should be capitalized properly to avoid confusion (e.g., “CO” vs. “Co”). The chemical formula reported should refer to the neutral form. Charge state is reported by the charge field. +
+ +
+*Example* N-acetylglucosamine would be encoded by the string “C8H15NO6”*
+a| *The chemical formula of the identified compound e.g. in a database, assumed to match the theoretical mass to charge (in some cases this will be the derivatized form, including adducts and protons).  This should be specified in Hill notation (EA Hill 1900), i.e. elements in the order C, H and then alphabetically all other elements. Counts of one may be omitted. Elements should be capitalized properly to avoid confusion (e.g., “CO” vs. “Co”). The chemical formula reported should refer to the neutral form. Charge state is reported by the charge field.  Example N-acetylglucosamine would be encoded by the string “C8H15NO6”*
+
+| Type
+a| String
+a| String
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SEH SME_ID … chemical_formula …
+SME 1 … C17H20N4O2 …
+....
+a| ....
+----
+SEH	...	chemical_formula	...
+SME	...	C17H20N4O2	...
+----
+....
+
+|===
+
+==== `smiles`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The potential molecule’s structure in the simplified molecular-input line-entry system (SMILES) for the small molecule.*
+a| *The potential molecule's structure in the simplified molecular-input line-entry system (SMILES) for the small molecule.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SEH SME_ID … chemical_formula smiles …
+SML 1 … C17H20N4O2 C1=CC=C(C=C1)CCNC(=O)CCNNC(=O)C2=CC=NC=C2 …
+....
+a| ....
+----
+SEH	...	smiles	...
+SME	...	C1=CC=C(C=C1)CCNC(=O)CCNNC(=O)C2=CC=NC=C2	...
+----
+....
+
+|===
+
+==== `inchi`
+
+NOTE: ⚠️ Changed fields: Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| A standard IUPAC International Chemical Identifier (InChI) for the given substance.
+a| A standard IUPAC International Chemical Identifier (InChI) for the given substance.
+
+| Type
+a| String
+a| String
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SEH SME_ID … chemical_formula … inchi …
+SML 1 … C17H20N4O2 … InChI=1S/C17H20N4O2/c22-16(19-12-6-14-4-2-1-3-5-14)9-13-20-21-17(23)15-7-10-18-11-8-15/h1-5,7-8,10-11,20H,6,9,12-13H2,(H,19,22)(H,21,23) …
+....
+a| ....
+----
+SEH	...	inchi	...
+SME	...	InChI=1S/C17H20N4O2/c22-16(19-12-6-14-4-2-1-3-5-14)9-13-20-21-17(23)15-7-10-18-11-8-15/h1-5,7-8,10-11,20H,6,9,12-13H2,(H,19,22)(H,21,23)	...
+----
+....
+
+|===
+
+==== `chemical_name`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The small molecule’s chemical/common name, or general description if a chemical name is unavailable.*
+a| *The small molecule's chemical/common name, or general description if a chemical name is unavailable.*
+
+| Type
+a| String
+a| String
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SEH SME_ID … chemical_name …
+SML 1 … N-(2-phenylethyl)-3-[2-(pyridine-4-carbonyl)hydrazinyl]propanamide…
+....
+a| ....
+----
+SEH	...	chemical_name	...
+SME	...	N-(2-phenylethyl)-3-[2-(pyridine-4-carbonyl)hydrazinyl]propanamide	...
+----
+....
+
+|===
+
+==== `uri`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *A URI pointing to the small molecule’s entry in a database (e.g., the small molecule’s HMDB, Chebi or KEGG entry).*
+a| *A URI pointing to the small molecule's entry in a database (e.g., the small molecule's HMDB, Chebi or KEGG entry).*
+
+| Type
+a| URI
+a| URI
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SEH SME_ID … uri …
+SME 1 … http://www.hmdb.ca/metabolites/HMDB00054
+....
+a| ....
+----
+SEH	...	uri	...
+SME	...	http://www.hmdb.ca/metabolites/HMDB00054	...
+----
+....
+
+|===
+
+==== `derivatized_form`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *If a derivatized form has been analysed by MS, then the functional group attached to the molecule should be reported here using suitable userParam or CV terms as appropriate.*
+a| *The derivatized form of the small molecule, if the identification was based on a specific derivative (e.g. 2 TMS). This MUST be specified using CV terms (where possible) otherwise “null”.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+COM This example shows a triple substitution with a TMS group (3TMS)
+SMH database_identifier … derivatized_form …
+SML CID:00027395 … [CHEBI, CHEBI:51088, trimethylsilyl group, 3] …
+....
+a| ....
+----
+SEH	...	derivatized_form	...
+SME	...	[CHEBI, CHEBI:51088, trimethylsilyl group, 3]	...
+----
+....
+
+|===
+
+==== `adduct_ion`
+
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The assumed classification of this molecule's adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. `[M+H]+`, `[M+Na]1+`, `[M+NH4]1+`, `[M-H]1-`, `[M+Cl]1-`. If the adduct classification is ambiguous with regards to identification evidence it MAY be null.*
+a| *The assumed classification of this molecule’s adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-. If the adduct classification is ambiguous with regards to identification evidence it MAY be null.*
+
+| Type
+a| *Regex +
+.... +
+\[\d*M([+-][\w\d]+)*\]\d*[+-] +
+....*
+a| *Regex +
+---- +
+^\[\d*M([+-][\w\d]+)*\]\d*[+-]$ +
+----*
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SEH SME_ID … adduct_ion …
+SME 1 … [M+H]+ …
+SME 2 … [M+2Na]2+ …
+OR (for negative mode):
+SME 1 … [M-H]- …
+SME 2 … [M+Cl]- …
+....
+a| ....
+----
+SEH	...	adduct_ion	...
+SME	...	[M+H]+	...
+----
+....
+
+|===
+
+==== `exp_mass_to_charge`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The __exp__erimental mass/charge value for the precursor ion. If multiple adduct forms have been combined into a single identification event/search, then a single value e.g. for the protonated form SHOULD be reported here.*
+a| *The experimental mass/charge value for the precursor ion. If multiple adduct forms have been combined into a single identification event/search, then a single value e.g. for the protonated form SHOULD be reported here.*
+
+| Type
+a| Double
+a| Double
+
+| Mandatory | — | *True*
+
+| Nullable | False | False
+
+| Example
+a| ....
+SEH SME_ID … exp_mass_to_charge …
+SME 1 … 1234.5 …
+....
+a| ....
+----
+SEH	...	exp_mass_to_charge	...
+SME	...	1234.5	...
+----
+....
+
+|===
+
+==== `charge`
+
+NOTE: ⚠️ Changed fields: Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| The small molecule evidence's charge value using positive integers both for positive and negative polarity modes.
+a| The small molecule evidence's charge value using positive integers both for positive and negative polarity modes.
+
+| Type
+a| Integer
+a| Integer
+
+| Mandatory | — | *True*
+
+| Nullable | False | False
+
+| Example
+a| ....
+SEH SME_ID … charge …
+SME 1 … 1 …
+....
+a| ....
+----
+SEH	...	charge	...
+SME	...	1	...
+----
+....
+
+|===
+
+==== `theoretical_mass_to_charge`
+
+NOTE: ⚠️ Changed fields: Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| The theoretical mass/charge value for the small molecule or the database mass/charge value (for a spectral library match).
+a| The theoretical mass/charge value for the small molecule or the database mass/charge value (for a spectral library match).
+
+| Type
+a| Double
+a| Double
+
+| Mandatory | — | *True*
+
+| Nullable | False | False
+
+| Example
+a| ....
+SEH SME_ID … theoretical_mass_to_charge …
+SME 1 … 1234.71 …
+....
+a| ....
+----
+SEH	...	theoretical_mass_to_charge	...
+SME	...	1234.71	...
+----
+....
+
+|===
+
+==== `spectra_ref`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:\{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a “\{vbar}” delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra  in advance of the search to make identifications. +
+ +
+If a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.*
+a| *Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a \{vbar} delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.  If a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.*
+
+| Type
+a| String List
+a| String List
+
+| Mandatory | — | *True*
+
+| Nullable | False | False
+
+| Example
+a| ....
+SEH SME_ID … spectra_ref …
+SME 1 … ms_run[1]:index=5 …
+....
+a| ....
+----
+SEH	...	spectra_ref	...
+SME	...	ms_run[1]:index=5\{vbar}ms_run[2]:index=3	...
+----
+....
+
+|===
+
+==== `identification_method`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The database search, search engine or process that was used to identify this small molecule e.g. the name of software, database or manual curation etc. If manual validation has been performed quality, the following CV term SHOULD be used: "quality estimation by manual validation" MS:1001058.*
+a| *The search engine or algorithm used for the identification. This SHOULD be specified using CV terms.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | — | *True*
+
+| Nullable | False | False
+
+| Example
+a| ....
+SEH SME_ID … identification_method…
+SME 1 … [MS, MS:1001477, SpectraST,] …
+....
+a| ....
+----
+SEH	...	identification_method	...
+SME	...	[MS, MS:1001477, SpectraST,]	...
+----
+....
+
+|===
+
+==== `ms_level`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The highest MS level used to inform identification e.g. MS1 (accurate mass only) = “ms level=1” or from an MS2 fragmentation spectrum = “ms level=2”. For direct fragmentation or data independent approaches where fragmentation data is used, appropriate CV terms SHOULD be used .*
+a| *The MS level of the spectrum used for the identification. This SHOULD be specified using CV terms.*
+
+| Type
+a| Parameter
+a| Parameter
+
+| Mandatory | — | *True*
+
+| Nullable | False | False
+
+| Example
+a| ....
+SEH SME_ID … ms_level …
+SME 1 … [MS, MS:1000511, ms level, 2] …
+....
+a| ....
+----
+SEH	...	ms_level	...
+SME	...	[MS, MS:1000511, ms level, 2]	...
+----
+....
+
+|===
+
+==== `id_confidence_measure[1-n]`
+
+NOTE: ⚠️ Changed fields: Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| Any statistical value or score for the identification. The metadata section reports the type of score used, as id_confidence_measure[1-n] of type Param.
+a| Any statistical value or score for the identification. The metadata section reports the type of score used, as id_confidence_measure[1-n] of type Param.
+
+| Type
+a| *Double*
+a| *Double List*
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+MTD id_confidence_measure[1] [MS, MS:1001419, SpectraST:discriminant score F,]
+…
+SEH SME_ID … id_confidence_measure[1] …
+SME 1 … 0.7 …
+....
+a| ....
+----
+SEH	...	id_confidence_measure	...
+SME	...	0.7	...
+----
+....
+
+|===
+
+==== `rank`
+
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *The rank of this identification from this approach as increasing integers from 1 (best ranked identification). Ties (equal score) are represented by using the same rank – defaults to 1 if there is no ranking system used.*
+a| *The rank of this identification from this approach as increasing integers from 1 (best ranked identification). Ties (equal score) are represented by using the same rank - defaults to 1 if there is no ranking system used.*
+
+| Type
+a| Integer
+a| Integer
+
+| Mandatory | — | *True*
+
+| Nullable | False | False
+
+| Example
+a| ....
+SEH SME_ID … rank …
+SME 1 … 1 …
+....
+a| ....
+----
+SEH	...	rank	...
+SME	...	1	...
+----
+....
+
+|===
+
+==== `opt_\{identifier}_*`
+
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| *Additional columns can be added to the end of the small molecule evidence table. These column headers MUST start with the prefix “opt_” followed by the \{identifier} of the object they reference: assay, study variable, MS run or “global” (if the value relates to all replicates). Column names MUST only contain the following characters: ‘A’-‘Z’, ‘a’-‘z’, ‘0’-‘9’, ‘_’, ‘-’, ‘[’, ‘]’, and ‘:’. CV parameter accessions MAY be used for optional columns following the format: pass:[opt_{identifier}_cv_{accession}_{parameter name}]. Spaces within the parameter’s name MUST be replaced by ‘_’.*
+a| *Additional columns can be added to the end of the small molecule evidence table. These column headers MUST start with the prefix “opt_” followed by the {identifier} of the object they reference: assay, study variable, MS run or “global” (if the value relates to all replicates). Column names MUST only contain the following characters: 'A'-'Z', 'a'-'z', '0'-'9', '_', '-', '[', ']', and ':'. CV parameter accessions MAY be used for optional columns following the format: opt_{identifier}_cv_{accession}_{parameter name}. Spaces within the parameter's name MUST be replaced by '_'.*
+
+| Type
+a| *Column*
+a| *Optional Column*
+
+| Mandatory | — | *False*
+
+| Nullable | True | True
+
+| Example
+a| ....
+SEH SME_ID … opt_assay[1]_my_value … opt_global_another_value
+SML 1 … My value … some other value
+....
+a| ....
+----
+SEH	...	opt_global_cv_value	...
+SME	...	opt_assay[1]_my_value=My value	...
+SME	...	opt_global_another_value=some other value	...
+----
+....
+
+|===

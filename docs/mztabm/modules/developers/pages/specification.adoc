@@ -3,4 +3,4 @@
 :xrefstyle: short
 :figure-caption: Figure
 
-include::partial$mzTab_format_specification.adoc[]
+include::partial$mzTab_format_specification_2_1-M.adoc[]
