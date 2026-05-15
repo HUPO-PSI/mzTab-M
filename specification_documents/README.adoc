@@ -84,13 +84,80 @@ additionally requires PyYAML:
 pip install pyyaml
 ----
 
+==== Updating the Antora Documentation Partials
+
+The Antora documentation site (`docs/mztabm/`) includes the field reference and
+the specification as AsciiDoc _partials_.  These partials are pre-processed
+versions of the canonical source files and **must be regenerated** whenever
+`schema/mzTab_2_1-M.json` or
+`specification_documents/mzTab_format_specification_2_1-M.adoc` change.
+
+Use the `gen-docs.sh` helper script in the repository root:
+
+[source,bash]
+----
+# Regenerate all documents (schema reference, specification partial, and changes comparison)
+./gen-docs.sh
+
+# Regenerate only the schema reference (after JSON schema edits)
+./gen-docs.sh --schema
+
+# Regenerate only the specification partial (after spec document edits)
+./gen-docs.sh --spec
+
+# Regenerate only the v2.0→v2.1 element comparison document
+./gen-docs.sh --changes
+----
+
+Each mode produces the following output files:
+
+[cols="1,3",options="header"]
+|===
+| Flag | Output files
+
+| `--schema`
+a|
+* `docs/mztabm/modules/developers/partials/mzTab_m_2_1_schema.adoc` (Antora partial)
+* `specification_documents/mzTab_m_2_1_schema.adoc` (include target for the standalone spec)
+
+| `--spec`
+| `docs/mztabm/modules/developers/partials/mzTab_format_specification.adoc`
+
+| `--changes`
+a|
+* `specification_documents/mzTab_m_2_0_to_2_1_changes.adoc` (standalone comparison document)
+* `docs/mztabm/modules/developers/partials/mzTab_m_2_0_to_2_1_changes.adoc` (Antora partial)
+|===
+
+The `--changes` mode requires `compare_adoc_specs.py` (repository root) and compares
+`specification_documents/mzTab_m_2_0_schema.adoc` (v2.0 reference) against
+`docs/mztabm/modules/developers/partials/mzTab_m_2_1_schema.adoc` (current v2.1 field reference).
+Run `--schema` first if the JSON schema was updated before running `--changes`.
+
+After running the script, commit the updated files:
+
+[source,bash]
+----
+git add docs/mztabm/modules/developers/partials/mzTab_m_2_1_schema.adoc \
+        docs/mztabm/modules/developers/partials/mzTab_format_specification.adoc \
+        docs/mztabm/modules/developers/partials/mzTab_m_2_0_to_2_1_changes.adoc \
+        specification_documents/mzTab_m_2_1_schema.adoc \
+        specification_documents/mzTab_m_2_0_to_2_1_changes.adoc
+git commit -m "docs: regenerate Antora partials"
+git push
+----
+
+See the *Documentation Workflow* section in the top-level `README.md` for the
+full site-preview and release instructions.
+
 === Working with AsciiDoc
 
 * Homepage: http://asciidoctor.org/
 
 ==== Prerequisites
 If you want to edit the AsciiDoc documents (*.adoc) in this directory,
-you can use any text editor application available on your platform.
+you can use any text editor application available on your platform. 
+Alternatively, GitHub also offers native rendering of AsciiDoc.
 
 However, we recommend to use Atom as an editor (https://atom.io/) together 
 with the AsciiDoc Preview extension (https://atom.io/packages/asciidoc-preview).

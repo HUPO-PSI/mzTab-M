@@ -2,5 +2,6 @@
 * xref:index.adoc[Overview]
 * xref:specification.adoc[Specification 2.1]
 * xref:schema.adoc[Schema Reference]
+* xref:changes.adoc[v2.0 → v2.1 Changes]
 * xref:implementations.adoc[Implementations]
 * xref:contributing.adoc[Contributing]

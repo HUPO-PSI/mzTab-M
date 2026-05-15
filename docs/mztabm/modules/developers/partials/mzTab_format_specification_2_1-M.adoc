@@ -1,30 +1,3 @@
-= mzTab-M: exchange format for metabolomics results
-:stylesheet: style.css
-:sectnums:
-:toc: left
-:doctype: book
-//only works on some backends, not HTML
-:showcomments:
-//use style like Section 1 when referencing within the document.
-:xrefstyle: short
-:figure-caption: Figure
-:pdf-page-size: A4
-
-//GitHub specific settings
-ifdef::env-github[]
-:tip-caption: :bulb:
-:note-caption: :information_source:
-:important-caption: :heavy_exclamation_mark:
-:caution-caption: :fire:
-:warning-caption: :warning:
-endif::[]
-
-:commit-hash: UNDEFINED
-:build-date: UNDEFINED
-:document-version: 2.1.0-InDevelopment July 2025 (DEVELOPMENT)
-
-//disable section numbering
-:!sectnums:
 [preface]
 == Preface
 _Status of This Document_

@@ -229,13 +229,32 @@ def _normalize_example(raw) -> str:
 
     Nested lists represent multi-value (bar-separated) fields:
       [2, 3, 11]  →  '2|3|11'
+
+    '{BAR}' is the portable placeholder for a literal pipe character in
+    schema example strings.  It is replaced with a bare '|' here; pipe
+    escaping for AsciiDoc output is handled separately by _escape_pipes()
+    at the point where lines are written to the example block.
+    Any legacy '\\|' AsciiDoc escaping in the raw data is also normalised
+    to bare '|' for the same reason.
     """
     if isinstance(raw, list):
-        return '|'.join(str(v) for v in raw)
+        return '|'.join(_normalize_example(v) for v in raw)
     if isinstance(raw, float):
         # Show without trailing zeros where possible
         return f'{raw:g}'
-    return str(raw)
+    result = str(raw)
+    result = result.replace('{BAR}', '|').replace('\\|', '|')
+    return result
+
+
+def _escape_pipes(text: str) -> str:
+    r"""Escape bare pipe characters as \| for AsciiDoc table cell content.
+
+    Asciidoctor pre-processes \| → | at the table structure level before
+    block content is parsed, so this escape is effective inside both ----
+    listing blocks and .... passthrough blocks within a| table cells.
+    """
+    return text.replace('|', '\\|')
 
 
 def get_examples(prop: dict) -> list:
@@ -279,12 +298,15 @@ def write_field_entry(
     else:
         lines.append(f'|*Description* |{desc}')
 
-    # Type: show regex pattern in a literal block when applicable
+    # Type: show regex pattern in a listing block when applicable.
+    # Use ---- (listing block) rather than .... (literal block) so that any
+    # pipe characters in the pattern are not mis-parsed as table cell
+    # separators by Asciidoctor.js inside an a| table cell.
     if pattern and 'Regex' in type_str:
         lines.append(f'|*Type* a|{type_str}')
-        lines.append('....')
+        lines.append('----')
         lines.append(pattern)
-        lines.append('....')
+        lines.append('----')
     else:
         lines.append(f'|*Type* |{type_str}')
 
@@ -299,21 +321,29 @@ def write_field_entry(
     if examples:
         key = field_name.replace('[1-n]', '[1]').replace('{identifier}', 'global').replace('*', 'cv_value')
         lines.append('|*Example* a|')
-        lines.append('....')
+        # Use ---- (listing block) rather than .... (literal block): Asciidoctor.js
+        # correctly protects pipe characters from being interpreted as table cell
+        # separators only inside listing/source blocks within a| cells, not inside
+        # passthrough literal blocks.
+        lines.append('----')
+        # For table sections (SML/SMF/SME) emit the column header ONCE before all
+        # value rows.  The previous code emitted one header per example, which
+        # produced duplicate SMH/SFH/SEH lines when a field has multiple examples.
+        non_preformatted = [ex for ex in examples if not _is_preformatted(ex)]
+        if section_prefix != 'MTD' and non_preformatted:
+            hdr = section_prefix.replace('SML', 'SMH').replace('SMF', 'SFH').replace('SME', 'SEH')
+            lines.append(_escape_pipes(f'{hdr}\t...\t{key}\t...'))
         for ex in examples:
             if _is_preformatted(ex):
-                # Already a full section line (possibly multi-line): emit verbatim.
+                # Already a full section line (possibly multi-line): emit with pipes escaped.
                 for line in ex.split('\n'):
                     if line.strip():
-                        lines.append(line)
+                        lines.append(_escape_pipes(line))
             elif section_prefix == 'MTD':
-                lines.append(f'MTD\t{key}\t{ex}')
+                lines.append(_escape_pipes(f'MTD\t{key}\t{ex}'))
             else:
-                # For table sections (SML/SMF/SME) show column header + value row
-                hdr = section_prefix.replace('SML', 'SMH').replace('SMF', 'SFH').replace('SME', 'SEH')
-                lines.append(f'{hdr}\t...\t{key}\t...')
-                lines.append(f'{section_prefix}\t...\t{ex}\t...')
-        lines.append('....')
+                lines.append(_escape_pipes(f'{section_prefix}\t...\t{ex}\t...'))
+        lines.append('----')
 
     lines.append('|============================================================')
     lines.append('')

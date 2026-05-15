@@ -1,0 +1,17 @@
+= mzTab-M v2.0 → v2.1 Changes
+:sectnums:
+:xrefstyle: short
+
+This page documents every element that was added, removed, or modified between
+mzTab-M version 2.0 and version 2.1, across all four sections (MTD, SML, SMF, SME).
+
+The comparison is generated automatically from the v2.0 schema reference
+(`specification_documents/mzTab_m_2_0_schema.adoc`) and the current v2.1 field
+reference (`docs/…/partials/mzTab_m_2_1_schema.adoc`) by running:
+
+[source,bash]
+----
+./gen-docs.sh --changes
+----
+
+include::partial$mzTab_m_2_0_to_2_1_changes.adoc[]

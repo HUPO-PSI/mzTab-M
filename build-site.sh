@@ -50,11 +50,14 @@ else
   echo "==> node_modules present, skipping npm install (use --clean to force reinstall)."
 fi
 
+ANTORA_EDIT_BRANCH="${ANTORA_EDIT_BRANCH:-$(git -C "${SCRIPT_DIR}" rev-parse --abbrev-ref HEAD 2>/dev/null || echo HEAD)}"
+
 echo "==> Building Antora site..."
 docker run --rm \
   -u "$(id -u):$(id -g)" \
   -v "${SCRIPT_DIR}:/antora" \
   -w /antora \
+  -e ANTORA_EDIT_BRANCH \
   "${ANTORA_IMAGE}" \
   --cache-dir /antora/.cache/antora \
   antora-playbook.yml

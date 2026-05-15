@@ -1830,7 +1830,7 @@
             "value_constraint": null
           },
           "examples": [
-            "MTD\tstudy_variable[1]\tcontrol\nMTD\tstudy_variable[1]-assay_refs\tassay[1]| assay[2]| assay[3]\nMTD\tstudy_variable-average_function\t[MS, MS:1002883, median, ]\nMTD\tstudy_variable-variation_function\t[MS, MS:1002885, standard error, ]\nMTD\tstudy_variable[1]-description\tGroup B (spike-in 0.74 fmol/uL)\nMTD\tstudy_variable[2]\t1 minute"
+            "MTD\tstudy_variable[1]\tcontrol\nMTD\tstudy_variable[1]-assay_refs\tassay[1]\\|assay[2]\\|assay[3]\nMTD\tstudy_variable-average_function\t[MS, MS:1002883, median, ]\nMTD\tstudy_variable-variation_function\t[MS, MS:1002885, standard error, ]\nMTD\tstudy_variable[1]-description\tGroup B (spike-in 0.74 fmol/uL)\nMTD\tstudy_variable[2]\t1 minute"
           ]
         },
         "custom": {
@@ -3858,10 +3858,11 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a | delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.  If a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”. ",
+          "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a \\| delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.  If a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”. ",
           "examples": [
             [
-              "ms_run[1]:index=5"
+              "ms_run[1]:index=5",
+              "ms_run[2]:index=3"
             ]
           ],
           "ignore": false,
@@ -4190,12 +4191,10 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "References to the identification evidence (SME elements) via referencing SME_ID values. Multiple values MAY be provided as a | separated list to indicate ambiguity in the identification or to indicate that different types of data supported the identifiction (see sme_id_ref_ambiguity_code). For the case of a consensus approach where multiple adduct forms are used to infer the SML ID, different features should just reference the same SME_ID value(s).",
+          "description": "References to the identification evidence (SME elements) via referencing SME_ID values. Multiple values MAY be provided as a \\| separated list to indicate ambiguity in the identification or to indicate that different types of data supported the identifiction (see sme_id_ref_ambiguity_code). For the case of a consensus approach where multiple adduct forms are used to infer the SML ID, different features should just reference the same SME_ID value(s).",
           "examples": [
             [
-              5,
-              6,
-              12
+              "5|6|12"
             ]
           ],
           "ignore": false,
@@ -4685,12 +4684,10 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "References to the small molecule features (SMF elements) via referencing SMF_ID values. Multiple values MAY be provided as a | separated list to indicate which features were used to aggregate the SML row.",
+          "description": "References to the small molecule features (SMF elements) via referencing SMF_ID values. Multiple values MAY be provided as a \\| separated list to indicate which features were used to aggregate the SML row.",
           "examples": [
             [
-              2,
-              3,
-              11
+              "2|3|11"
             ]
           ],
           "ignore": false,
@@ -4723,16 +4720,11 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "A list of | separated possible identifiers for the small molecule; multiple values MUST only be provided to indicate ambiguity in the identification of the molecule and not to demonstrate different identifier types for the same molecule. Alternative identifiers for the same molecule MAY be provided as optional columns. The database identifier must be preceded by the resource description (prefix) followed by a colon, as specified in the metadata section. A null value MAY be provided if the identification is sufficiently ambiguous as to be meaningless for reporting or the small molecule has not been identified.",
+          "description": "A list of \\| separated possible identifiers for the small molecule; multiple values MUST only be provided to indicate ambiguity in the identification of the molecule and not to demonstrate different identifier types for the same molecule. Alternative identifiers for the same molecule MAY be provided as optional columns. The database identifier must be preceded by the resource description (prefix) followed by a colon, as specified in the metadata section. A null value MAY be provided if the identification is sufficiently ambiguous as to be meaningless for reporting or the small molecule has not been identified.",
           "examples": [
             [
-              "CID:00027395"
-            ],
-            [
+              "CID:00027395",
               "HMDB:HMDB0001847"
-            ],
-            [
-              "null"
             ]
           ],
           "ignore": false,
@@ -4995,7 +4987,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "A | separated list of the detected adduct ion forms for this small molecule. The terms should follow the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-.",
+          "description": "A \\| separated list of the detected adduct ion forms for this small molecule. The terms should follow the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-.",
           "examples": [
             [
               "[M+H]1+",
@@ -5439,7 +5431,7 @@
       },
       "title": "SpectraReference",
       "type": "object",
-      "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a “|” delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.\n\nIf a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.",
+      "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a \\| delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.\n\nIf a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.",
       "examples": [
         "SEH\tSME_ID\t…\tspectra_ref\t…\nSME\t1\t\t\tms_run[1]:index=5\t…"
       ]
@@ -5885,7 +5877,7 @@
       "type": "object",
       "description": "Specification of study_variable_group.\n(empty) name/parameter: A parameter defining the group to which study variables belong. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter (e.g., [OBI, OBI:0001667, organism development stage, ]) or a user-defined parameter (e.g., [,,sex,]). For software that does not capture study variables, a single study_variable_group MUST be reported, linking to the single study variable, and MUST have the identifier \"undefined\". Added in mzTab-M 2.1.\ndescription: A textual description of the study variable group.\ntype: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO:0000252, categorical variable], [STATO, STATO:0000228, ordinal variable], or [STATO, STATO:0000251, continuous variable].\ndatatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, xsd:anyURI, and Parameter (for values reported as user-defined or CV Parameters). Date, time and dateTime values MUST be encoded in ISO 8601 format. Writers MUST ensure that all study_variable values linked to the same study_variable_group share the declared datatype and reporting convention.\nunit: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).",
       "examples": [
-        "MTD\tstudy_variable_group[1]\t[PATO, PATO:0000383, sex, ]\nMTD\tstudy_variable_group[1]-description\tSex of the individual\nMTD\tstudy_variable_group[1]-type\t[STATO, STATO:0000252, categorical variable, ]\nMTD\tstudy_variable_group[1]-datatype\txsd:string\nMTD\tstudy_variable_group[2]\t[PATO, PATO:0000384, timepoint, ]\nMTD\tstudy_variable_group[2]-description\tTime after treatment\nMTD\tstudy_variable_group[2]-type\t[STATO, STATO:0000228, ordinal variable, ]\nMTD\tstudy_variable_group[2]-datatype\txsd:integer\nMTD\tstudy_variable_group[2]-unit\t[UO, UO:0000033, day, ]\nMTD\tstudy_variable[1]\tFemale_0day\nMTD\tstudy_variable[1]-group_ref\tstudy_variable_group[1]\nMTD\tstudy_variable[1]-assay_refs\tassay[1]| assay[2]| assay[3]\nMTD\tstudy_variable[2]\tFemale_1day\nMTD\tstudy_variable[2]-group_ref\tstudy_variable_group[2]\nMTD\tstudy_variable[2]-assay_refs\tassay[4]| assay[5]| assay[6]"
+        "MTD\tstudy_variable_group[1]\t[PATO, PATO:0000383, sex, ]\nMTD\tstudy_variable_group[1]-description\tSex of the individual\nMTD\tstudy_variable_group[1]-type\t[STATO, STATO:0000252, categorical variable, ]\nMTD\tstudy_variable_group[1]-datatype\txsd:string\nMTD\tstudy_variable_group[2]\t[PATO, PATO:0000384, timepoint, ]\nMTD\tstudy_variable_group[2]-description\tTime after treatment\nMTD\tstudy_variable_group[2]-type\t[STATO, STATO:0000228, ordinal variable, ]\nMTD\tstudy_variable_group[2]-datatype\txsd:integer\nMTD\tstudy_variable_group[2]-unit\t[UO, UO:0000033, day, ]\nMTD\tstudy_variable[1]\tFemale_0day\nMTD\tstudy_variable[1]-group_ref\tstudy_variable_group[1]\nMTD\tstudy_variable[1]-assay_refs\tassay[1]\\|assay[2]\\|assay[3]\nMTD\tstudy_variable[2]\tFemale_1day\nMTD\tstudy_variable[2]-group_ref\tstudy_variable_group[2]\nMTD\tstudy_variable[2]-assay_refs\tassay[4]|assay[5]|assay[6]"
       ]
     },
     "Uri": {

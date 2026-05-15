@@ -15,8 +15,7 @@ The schemas are located in the `schema/` directory of the repository:
 
 The field reference below is generated from `schema/mzTab_2_1-M.json` via `schema/generate_schema_adoc.py`.
 
-// TODO: include the generated schema reference once the generation pipeline is integrated into the Antora build.
-// include::partial$mzTab_m_schema.adoc[]
+include::partial$mzTab_m_schema.adoc[]
 
 Refer to `mzTab_m_schema.adoc` in the repository root for the current generated field reference, or run the generator:
 

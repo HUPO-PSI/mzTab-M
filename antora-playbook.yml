@@ -2,20 +2,37 @@ site:
   title: mzTab-M
   url: https://hupo-psi.github.io/mzTab-M
   start_page: mztabm::index.adoc
+  keys:
+    site_home_url: https://hupo-psi.github.io/mzTab-M
+    site_home_label: mzTab-M Home
+    header_doc_title: mzTab-M Specification
+    github_profile_url: https://github.com/HUPO-PSI/mzTab-M
 
 content:
   sources:
     - url: .
-      branches: HEAD
-      # worktrees: . allows Antora to pick up uncommitted changes during local preview.
+      # HEAD picks up the current branch (e.g. main / website during local dev).
+      # 'v*' automatically includes all release documentation branches (v2.1, v2.2, …)
+      # created by the release workflow.  If no v* branches exist yet the glob is
+      # silently ignored by Antora, so this is safe before the first release.
+      branches: [HEAD, 'v*']
+      # worktrees: . lets Antora read uncommitted changes during local preview.
       # In CI the working tree matches HEAD, so this is harmless there too.
       worktrees: .
       start_path: docs/mztabm
+      edit_url: 'https://github.com/HUPO-PSI/mzTab-M/edit/${ANTORA_EDIT_BRANCH}/{path}'
 
 ui:
   bundle:
     url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
     snapshot: true
+  supplemental_files: ./docs/supplemental-ui
+
+asciidoc:
+  attributes:
+    commit-hash: 'see git log'
+    build-date: 'see CI build'
+    document-version: '2.1 (In Development)'
 
 antora:
   extensions:
