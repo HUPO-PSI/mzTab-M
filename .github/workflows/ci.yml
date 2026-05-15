@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - main
+    types: [opened, synchronize, reopened, closed]
   workflow_call:
 
 env:
@@ -64,8 +65,9 @@ jobs:
   build-docs:
     name: Build Antora documentation
     needs: build-spec
-    # Skip in workflow_call context — release.yml has its own publish-site job
-    if: github.event_name != 'workflow_call'
+    # Skip in workflow_call context — release.yml has its own publish-site job.
+    # Also skip when a PR is closed without merging (no deployment value).
+    if: github.event_name != 'workflow_call' && !(github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == false)
     runs-on: ubuntu-24.04
 
     steps:
@@ -101,7 +103,7 @@ jobs:
             --attribute "build-date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
       - name: Upload GitHub Pages artifact
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
         uses: actions/upload-pages-artifact@v3
         with:
           path: build/site/
@@ -109,7 +111,7 @@ jobs:
   deploy-docs:
     name: Deploy documentation to GitHub Pages
     needs: build-docs
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     runs-on: ubuntu-24.04
     permissions:
       pages: write
