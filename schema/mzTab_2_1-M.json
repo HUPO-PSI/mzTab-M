@@ -5500,9 +5500,7 @@
             {
               "items": {
                 "type": "integer"
-              },
-              "type": "array"
-            },
+              }
             {
               "type": "null"
             }
@@ -5515,7 +5513,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": "study_variable_group",
-          "title": "Group Refs",
+          "title": "Group Ref",
           "validation_policy": {
             "enforcement_level": "required",
             "maximum": null,
@@ -5525,7 +5523,7 @@
             "value_constraint": "non-negative-integer"
           },
           "examples": [
-            "MTD\tstudy_variable[1]-group_ref\tstudy_variable_group[1]| study_variable_group[2]"
+            "MTD\tstudy_variable[1]-group_ref\tstudy_variable_group[1]"
           ]
         },
         "assay_refs": {
