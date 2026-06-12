@@ -1,6 +1,6 @@
-# mzTab-M
+# mzTab-M for Metabolomics
 
-## *Reporting MS-based Quantitative and Qualitative Metabolomics Results*
+## *Reporting MS-based Quantitative and Qualitative Results for Small Molecules*
 
 [![mzTab-M 2.0 Spec Build
 Workflow](https://github.com/HUPO-PSI/mzTab-M/actions/workflows/ci.yml/badge.svg)](https://github.com/HUPO-PSI/mzTab-M/actions/workflows/ci.yml)
