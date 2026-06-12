@@ -3746,7 +3746,7 @@
             "enforcement_level": "required",
             "maximum": null,
             "minimum": null,
-            "pattern": "^\\[\\d*M([+-][\\w\\d]+)*\\]\\d*[+-]$",
+            "pattern": "\\[\\d*M([+-][\\w\\d]+)*\\]\\d*[+-]",
             "required": null,
             "value_constraint": null
           }
@@ -4650,7 +4650,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "A within file unique identifier for the small molecule summary.",
+          "description": "A within file unique identifier for the small molecule.",
           "examples": [
             1
           ],
@@ -4666,7 +4666,7 @@
             "maximum": null,
             "minimum": null,
             "pattern": null,
-            "required": true,
+            "required": null,
             "value_constraint": "non-negative-integer"
           }
         },
@@ -4684,10 +4684,12 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "References to the small molecule features (SMF elements) via referencing SMF_ID values. Multiple values MAY be provided as a \\| separated list to indicate which features were used to aggregate the SML row.",
+          "description": "References to all the features on which quantitation has been based (SMF elements) via referencing SMF_ID values. Multiple values SHOULD be provided as a \\| separated list. This MAY be null only if this is a Summary file.",
           "examples": [
             [
-              "2|3|11"
+              "2",
+              "3",
+              "11"
             ]
           ],
           "ignore": false,
@@ -4720,11 +4722,12 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "A list of \\| separated possible identifiers for the small molecule; multiple values MUST only be provided to indicate ambiguity in the identification of the molecule and not to demonstrate different identifier types for the same molecule. Alternative identifiers for the same molecule MAY be provided as optional columns. The database identifier must be preceded by the resource description (prefix) followed by a colon, as specified in the metadata section. A null value MAY be provided if the identification is sufficiently ambiguous as to be meaningless for reporting or the small molecule has not been identified.",
+          "description": "A list of \\| separated possible identifiers for the small molecule; multiple values MUST only be provided to indicate ambiguity in the identification of the molecule and not to demonstrate different identifier types for the same molecule. Alternative identifiers for the same molecule MAY be provided as optional columns. \n The database identifier must be preceded by the resource description (prefix) followed by a colon, as specified in the metadata section. \n A null value MAY be provided if the identification is sufficiently ambiguous as to be meaningless for reporting or the small molecule has not been identified.",
           "examples": [
             [
               "CID:00027395",
-              "HMDB:HMDB0001847"
+              "HMDB:HMDB0001847",
+              "null"
             ]
           ],
           "ignore": false,
@@ -4757,7 +4760,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The chemical formula of the identified compound e.g. in a database, assumed to match the theoretical mass to charge (in some cases this will be the derivatized form, including adducts and protons). This should be specified in Hill notation (EA Hill 1900), i.e. elements in the order C, H and then alphabetically all other elements. Counts of one may be omitted. Elements should be capitalized properly to avoid confusion (e.g., “CO” vs. “Co”). The chemical formula reported should refer to the neutral form. Charge state is reported by the charge field in the SME and SMF section.\nExample N-acetylglucosamine would be encoded by the string “C8H15NO6”",
+          "description": "A list of \\| separated potential chemical formulae of the reported compound. The number of values provided MUST match the number of entities reported under “database_identifier”, even if this leads to redundant reporting of information (i.e. if ambiguity can be resolved in the chemical formula), and the validation software will throw an error if the number of \\| symbols does not match. “null” values between bars are allowed. \n This should be specified in Hill notation (EA Hill 1900), i.e. elements in the order C, H and then alphabetically all other elements. Counts of one may be omitted. Elements should be capitalized properly to avoid confusion (e.g., “CO” vs. “Co”). The chemical formula reported should refer to the neutral form.\nExample N-acetylglucosamine would be encoded by the string “C8H15NO6”",
           "examples": [
             [
               "C17H20N4O2"
@@ -4793,7 +4796,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The potential molecule’s structure in the simplified molecular-input line-entry system (SMILES) for the small molecule.",
+          "description": "A list of \\| separated potential molecule structures in the simplified molecular-input line-entry system (SMILES) for the small molecule. The number of values provided MUST match the number of entities reported under “database_identifier”, and the validation software will throw an error if the number of \\| symbols does not match. “null” values between bars are allowed.",
           "examples": [
             [
               "C1=CC=C(C=C1)CCNC(=O)CCNNC(=O)C2=CC=NC=C2"
@@ -4829,7 +4832,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "A standard IUPAC International Chemical Identifier (InChI) for the given substance.",
+          "description": "A list of \\| separated potential standard IUPAC International Chemical Identifier (InChI) of the given substance.\n\n The number of values provided MUST match the number of entities reported under “database_identifier”, even if this leads to redundant information being reported (i.e. if ambiguity can be resolved in the InChi), and the validation software will throw an error if the number of \\| symbols does not match. “null” values between bars are allowed.",
           "examples": [
             [
               "InChI=1S/C17H20N4O2/c22-16(19-12-6-14-4-2-1-3-5-14)9-13-20-21-17(23)15-7-10-18-11-8-15/h1-5,7-8,10-11,20H,6,9,12-13H2,(H,19,22)(H,21,23)"
@@ -4865,7 +4868,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The small molecule’s chemical/common name, or general description if a chemical name is unavailable.",
+          "description": "A list of \\| separated possible chemical/common names for the small molecule, or general description if a chemical name is unavailable. Multiple names are only to demonstrate ambiguity in the identification. The number of values provided MUST match the number of entities reported under “database_identifier”, and the validation software will throw an error if the number of \\| symbols does not match. “null” values between bars are allowed.",
           "examples": [
             [
               "N-(2-phenylethyl)-3-[2-(pyridine-4-carbonyl)hydrazinyl]propanamide"
@@ -4901,7 +4904,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "A URI pointing to the small molecule’s entry in a database (e.g., the small molecule’s HMDB, Chebi or KEGG entry).",
+          "description": "A URI pointing to the small molecule’s entry in a reference database (e.g., the small molecule’s HMDB, Chebi or KEGG entry). The number of values provided MUST match the number of entities reported under “database_identifier”, and the validation software will throw an error if the number of \\|symbols does not match. “null” values between bars are allowed.",
           "examples": [
             [
               "http://www.genome.jp/dbget-bin/www_bget?cpd:C00031"
@@ -4950,7 +4953,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The theoretical neutral mass of the small molecule. This should be calculated from the chemical formula.",
+          "description": "The small molecule’s precursor’s theoretical neutral mass.\n\nThe number of values provided MUST match the number of entities reported under “database_identifier”, and the validation software will throw an error if the number of \\| symbols does not match. “null” values (in general and between bars) are allowed for molecules that have not been identified only, or for molecules where the neutral mass cannot be calculated. In these cases, the SML entry SHOULD reference features in which exp_mass_to_charge values are captured.",
           "examples": [
             [
               1234.5
@@ -4987,7 +4990,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "A \\| separated list of the detected adduct ion forms for this small molecule. The terms should follow the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-.",
+          "description": "A \\| separated list of detected adducts for this this molecule, following the general style in the 2013 IUPAC recommendations on <a href='http://dx.doi.org/10.1351/PAC-REC-06-04-06'>terms relating to MS</a> e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-, [M+H]1+. If the adduct classification is ambiguous with regards to identification evidence it MAY be null.",
           "examples": [
             [
               "[M+H]1+",
@@ -5021,7 +5024,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The reliability of the given small molecule identification. This must be supplied by the resource and should be reported as an integer between 1-4:\n\n1: identified, rigorous. ...\n2: identified. ...\n3: putatively characterized class. ...\n4: unknown. ...",
+          "description": "The reliability of the given small molecule identification. This must be supplied by the resource and MUST be reported as an integer between 1-4:\n\n- identified metabolite (1)\n- putatively annotated compound (2)\n- putatively characterized class (3)\n- unknown compound (4)\n\n These MAY be replaced using a suitable CV term in the metadata section e.g. to use MSI recommendation levels (see <a href='https://hupo-psi.github.io/mzTab-M/mztabm/2.1/developers/changes.html#small_molecule-identification_reliability'>small_molecule-identification_reliability</a> for details).\n\nThe following CV terms are already available within the PSI MS CV. Future schemes may be implemented by extending the PSI MS CV with new terms and associated levels.\n\nThe MSI has recently discussed an extension of the original four level scheme into a five level scheme <a href='https://pubmed.ncbi.nlm.nih.gov/29748461/'>MS:1002896</a> (compound identification confidence level) with levels\n\n- isolated, pure compound, full stereochemistry (0)\n- reference standard match or full 2D structure (1) \n- unambiguous diagnostic evidence (literature, database) (2)\n- most likely structure, including isomers, substance class or substructure match (3)\n- unknown compound (4)\n\n For high-resolution MS, the following term and its levels may be used: <a href='https://pubmed.ncbi.nlm.nih.gov/24476540/'>MS:1002955</a> (hrr-ms compound identification confidence level) with levels\n\n- confirmed structure (1)\n- probable structure (2)\n\t - unambiguous ms library match (2a)\n\t - diagnostic evidence (2b)\n- tentative candidate (3)\n- unequivocal molecular formula (4)\n- exact mass (5)\n\n A String data type is set to allow for different systems to be specified in the metadata section.",
           "examples": [
             "3",
             "0",
@@ -5054,9 +5057,9 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The small molecule confidence measure/score of the best identification for this small molecule summary. The type of the value is defined by the best_id_confidence_measure CV parameter. The value is reported in the best_id_confidence_value column.",
+          "description": "The approach or database search that identified this small molecule with highest confidence.",
           "examples": [
-            "[MS, MS:1001477, SpectraST,,]"
+            "[MS, MS:1001477, SpectraST,]"
           ],
           "ignore": false,
           "list_concatenation_str": null,
@@ -5085,9 +5088,9 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The small molecule confidence measure/score value of the best identification for this small molecule summary.",
+          "description": "The best confidence measure in identification (for this type of score) for the given small molecule across all assays. The type of score MUST be defined in the metadata section. If the small molecule was not identified by the specified search engine, “null” MUST be reported. If the confidence measure does not report a numerical confidence value, “null” SHOULD be reported.",
           "examples": [
-            0.85
+            0.7
           ],
           "ignore": false,
           "list_concatenation_str": null,
@@ -5101,7 +5104,7 @@
             "maximum": null,
             "minimum": null,
             "pattern": null,
-            "required": true,
+            "required": false,
             "value_constraint": null
           }
         },
@@ -5126,10 +5129,10 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The small molecule’s abundance in every assay described in the metadata section MUST be reported. Null or zero values may be reported as appropriate.",
+          "description": "The small molecule’s abundance in every assay described in the metadata section MUST be reported. Null or zero values may be reported as appropriate. \"null\" SHOULD be used to report missing quantities, while zero SHOULD be used to indicate a present but not reliably quantifiable value (e.g. below a minimum noise threshold).",
           "examples": [
             [
-              12340.0
+              0.3
             ]
           ],
           "ignore": false,
@@ -5169,10 +5172,10 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The small molecule’s abundance in every study variable described in the metadata section. Null or zero values may be reported as appropriate.",
+          "description": "The small molecule’s abundance in all the study variables described in the metadata section (study_variable[1-n]_average_function), calculated using the method as described in the Metadata section (default = arithmetic mean across assays). Null or zero values may be reported as appropriate. \"null\" SHOULD be used to report missing quantities, while zero SHOULD be used to indicate a present but not reliably quantifiable value (e.g. below a minimum noise threshold).",
           "examples": [
             [
-              1230.0
+              0.3
             ]
           ],
           "ignore": false,
@@ -5212,10 +5215,11 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The small molecule’s abundance variation in every study variable described in the metadata section. Null or zero values may be reported as appropriate.",
+          "description": "TA measure of the variability of the study variable abundance measurement, calculated using the method as described in the metadata section (study_variable[1-n]_average_function), with a default = arithmethic co-efficient of variation of the small molecule’s abundance in the given study variable.",
           "examples": [
             [
-              0.2
+              0.3,
+              0.04
             ]
           ],
           "ignore": false,
