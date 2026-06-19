@@ -1387,12 +1387,13 @@ The order of columns MUST follow the order specified below. All table columns MU
 |============================================================
 |*Description* |A within file unique identifier for the small molecule feature.
 |*Type* |Integer
-|*Mandatory* |True
+|*Mandatory* |False
 |*Is Nullable:* |*FALSE*
 |*Example* a|
 ----
 SFH	...	SMF_ID	...
 SMF	...	1	...
+SMF	...	2	...
 ----
 |============================================================
 
@@ -1433,8 +1434,11 @@ SMF	...	1	...
 
 [cols="20,80",]
 |============================================================
-|*Description* |The assumed classification of this molecule’s adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-.
-|*Type* |String
+|*Description* |The assumed classification of this molecule’s adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-. [M+H]1+.
+|*Type* a|Regex
+----
+\[\d*M([-][\w\d])\]\d*[+-]
+----
 |*Mandatory* |False
 |*Is Nullable:* |*TRUE*
 |*Example* a|
@@ -1450,7 +1454,7 @@ SMF	...	[M+2Na]2+	...
 
 [cols="20,80",]
 |============================================================
-|*Description* |If de-isotoping has not been performed, then the isotopomer quantified MUST be reported here e.g. “+1”, “+2”, “13C peak” using CV terms, otherwise (i.e. for approaches were SMF rows are de-isotoped features) this MUST be null.
+|*Description* |If de-isotoping has not been performed, then the isotopomer quantified MUST be reported here e.g. “+1”, “+2”, “13C peak” using CV terms, otherwise (i.e. for approaches where SMF rows are de-isotoped features) this MUST be null.
 |*Type* |Parameter
 |*Mandatory* |False
 |*Is Nullable:* |*TRUE*
@@ -1468,7 +1472,7 @@ SMF	...	[MS,MS:1002957,”isotopomer MS peak”,”13C peak”]	...
 |============================================================
 |*Description* |The experimental mass/charge value for the feature, by default assumed to be the mean across assays or a representative value. For approaches that report isotopomers as SMF rows, then the m/z of the isotopomer MUST be reported here.
 |*Type* |Double
-|*Mandatory* |True
+|*Mandatory* |False
 |*Is Nullable:* |*FALSE*
 |*Example* a|
 ----
@@ -1482,7 +1486,7 @@ SMF	...	1234.5	...
 
 [cols="20,80",]
 |============================================================
-|*Description* |The feature’s charge value using positive integers both for positive and negative polarity modes.
+|*Description* |The feature’s charge value using positive integers both for positive and negative polarity modes. Is nullable in the SMF table but if identification is precised the charge is expected to expected to be known.
 |*Type* |Integer
 |*Mandatory* |False
 |*Is Nullable:* |*FALSE*

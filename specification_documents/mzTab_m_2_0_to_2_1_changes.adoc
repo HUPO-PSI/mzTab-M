@@ -3315,7 +3315,7 @@ a| A within file unique identifier for the small molecule feature.
 a| Integer
 a| Integer
 
-| Mandatory | — | *True*
+| Mandatory | — | *False*
 
 | Nullable | False | False
 
@@ -3329,6 +3329,7 @@ a| ....
 ----
 SFH	...	SMF_ID	...
 SMF	...	1	...
+SMF	...	2	...
 ----
 ....
 
@@ -3412,14 +3413,17 @@ NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
 
 | Description
 a| *The assumed classification of this molecule's adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. `[M+H]1+`, `[M+Na]1+`, `[M+NH4]1+`, `[M-H]1-`, `[M+Cl]1-`, `[M+H]1+`.*
-a| *The assumed classification of this molecule’s adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-.*
+a| *The assumed classification of this molecule’s adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-. [M+H]1+.*
 
 | Type
 a| *Regex +
 .... +
 \[\d*M([+-][\w\d]+)*\]\d*[+-] +
 ....*
-a| *String*
+a| *Regex +
+---- +
+\[\d*M([-][\w\d])\]\d*[+-] +
+----*
 
 | Mandatory | — | *False*
 
@@ -3443,15 +3447,15 @@ SMF	...	[M+2Na]2+	...
 
 ==== `isotopomer`
 
-NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+NOTE: ⚠️ Changed fields: Mandatory, Example
 
 [cols="15,~,~",options="header"]
 |===
 | Field | v2.0 | v2.1
 
 | Description
-a| *If de-isotoping has not been performed, then the isotopomer quantified MUST be reported here e.g. “+1”, “+2”, “13C peak” using CV terms, otherwise (i.e. for approaches where SMF rows are de-isotoped features) this MUST be null.*
-a| *If de-isotoping has not been performed, then the isotopomer quantified MUST be reported here e.g. “+1”, “+2”, “13C peak” using CV terms, otherwise (i.e. for approaches were SMF rows are de-isotoped features) this MUST be null.*
+a| If de-isotoping has not been performed, then the isotopomer quantified MUST be reported here e.g. “+1”, “+2”, “13C peak” using CV terms, otherwise (i.e. for approaches where SMF rows are de-isotoped features) this MUST be null.
+a| If de-isotoping has not been performed, then the isotopomer quantified MUST be reported here e.g. “+1”, “+2”, “13C peak” using CV terms, otherwise (i.e. for approaches where SMF rows are de-isotoped features) this MUST be null.
 
 | Type
 a| Parameter
@@ -3491,7 +3495,7 @@ a| *The experimental mass/charge value for the feature, by default assumed to be
 a| Double
 a| Double
 
-| Mandatory | — | *True*
+| Mandatory | — | *False*
 
 | Nullable | False | False
 
@@ -3511,15 +3515,15 @@ SMF	...	1234.5	...
 
 ==== `charge`
 
-NOTE: ⚠️ Changed fields: Description, Mandatory, Nullable, Example
+NOTE: ⚠️ Changed fields: Mandatory, Nullable, Example
 
 [cols="15,~,~",options="header"]
 |===
 | Field | v2.0 | v2.1
 
 | Description
-a| *The feature’s charge value using positive integers both for positive and negative polarity modes. Is nullable in the SMF table but if identification is precised the charge is expected to expected to be known.*
-a| *The feature’s charge value using positive integers both for positive and negative polarity modes.*
+a| The feature’s charge value using positive integers both for positive and negative polarity modes. Is nullable in the SMF table but if identification is precised the charge is expected to expected to be known.
+a| The feature’s charge value using positive integers both for positive and negative polarity modes. Is nullable in the SMF table but if identification is precised the charge is expected to expected to be known.
 
 | Type
 a| Integer

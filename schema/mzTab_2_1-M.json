@@ -4159,7 +4159,8 @@
           "default": null,
           "description": "A within file unique identifier for the small molecule feature.",
           "examples": [
-            1
+            1,
+            2
           ],
           "ignore": false,
           "list_concatenation_str": null,
@@ -4173,7 +4174,7 @@
             "maximum": null,
             "minimum": null,
             "pattern": null,
-            "required": true,
+            "required": false,
             "value_constraint": "non-negative-integer"
           }
         },
@@ -4247,7 +4248,8 @@
         "adduct_ion": {
           "anyOf": [
             {
-              "type": "string"
+              "type": "string",
+              "pattern": "\\[\\d*M([-][\\w\\d])\\]\\d*[+-]"
             },
             {
               "type": "null"
@@ -4255,7 +4257,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The assumed classification of this molecule’s adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-. ",
+          "description": "The assumed classification of this molecule’s adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-. [M+H]1+. ",
           "examples": [
             "[M+H]1+",
             "[M+2Na]2+"
@@ -4287,7 +4289,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "If de-isotoping has not been performed, then the isotopomer quantified MUST be reported here e.g. “+1”, “+2”, “13C peak” using CV terms, otherwise (i.e. for approaches were SMF rows are de-isotoped features) this MUST be null.",
+          "description": "If de-isotoping has not been performed, then the isotopomer quantified MUST be reported here e.g. “+1”, “+2”, “13C peak” using CV terms, otherwise (i.e. for approaches where SMF rows are de-isotoped features) this MUST be null.",
           "examples": [
             "[MS,MS:1002957,”isotopomer MS peak”,”13C peak”]"
           ],
@@ -4334,7 +4336,7 @@
             "maximum": null,
             "minimum": null,
             "pattern": null,
-            "required": true,
+            "required": false,
             "value_constraint": null
           }
         },
@@ -4349,7 +4351,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The feature’s charge value using positive integers both for positive and negative polarity modes.",
+          "description": "The feature’s charge value using positive integers both for positive and negative polarity modes. Is nullable in the SMF table but if identification is precised the charge is expected to expected to be known.",
           "examples": [
             1
           ],
