@@ -113,7 +113,7 @@ def get_type_string(prop: dict) -> str:
 
 
 def array_items_to_type(items: dict, vp: dict) -> str:
-    """Determine the type string for an array by examining its items schema."""
+    """Determine the type string for an array by examining its items' schema."""
     if '$ref' in items:
         ref_name = items['$ref'].split('/')[-1]
         if ref_name == 'OptColumnMapping':
@@ -302,7 +302,7 @@ def write_field_entry(
     # Type: show regex pattern in a listing block when applicable.
     # Use ---- (listing block) rather than .... (literal block) so that any
     # pipe characters in the pattern are not mis-parsed as table cell
-    # separators by Asciidoctor.js inside an a| table cell.
+    # separators by Asciidoctor.js inside an "a"| table cell.
     if pattern and 'Regex' in type_str:
         lines.append(f'|*Type* a|{type_str}')
         lines.append('----')

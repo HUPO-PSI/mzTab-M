@@ -29,7 +29,7 @@ MTD study_variable_group[3]-datatype	xsd:string
 COM Study Variables Definition
 COM Female control at 0 days
 MTD study_variable[1]	Female_0day_WT
-MTD study_variable[1]-description	Female, wildtype, control timepoint
+MTD study_variable[1]-description	Female, wild type, control timepoint
 MTD study_variable[1]-group_ref	study_variable_group[1]
 MTD study_variable[1]-assay_refs	assay[1]|assay[2]|assay[3]
 

@@ -35,7 +35,7 @@ When you use mzTab format version 1.0.0, please cite the following publication:
   > Specification document ([HTML](https://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.html),[DOCX](https://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.docx),[PDF](https://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.pdf))
 
 **Example Files**
-Several example of the format can be download from the next link [here](https://github.com/HUPO-PSI/mzTab/tree/master/examples/2_0-Metabolomics_Release)
+Several example of the format can be downloaded from the next link [here](https://github.com/HUPO-PSI/mzTab/tree/master/examples/2_0-Metabolomics_Release)
 
 Detailed explanation of all examples can be found [here](https://github.com/HUPO-PSI/mzTab/wiki/Examples)
 
@@ -51,10 +51,10 @@ When you use jmzTab-m library, please cite the following publication:
 
   > Specification document ([DOCX](https://github.com/HUPO-PSI/mzTab/raw/master/specification_document-releases/1_0-Proteomics-Release/mzTab_format_specification.docx), [PDF](https://github.com/HUPO-PSI/mzTab/raw/master/specification_document-releases/1_0-Proteomics-Release/mzTab_format_specification.pdf))
 
-  > The 20 minute guide to mzTab ([DOCX](https://github.com/HUPO-PSI/mzTab/raw/master/specification_document-releases/1_0-Proteomics-Release/20minute_guide_mzTab.docx), [PDF](https://github.com/HUPO-PSI/mzTab/raw/master/specification_document-releases/1_0-Proteomics-Release/20minute_guide_mzTab.pdf))
+  > The 20-minutes guide to mzTab ([DOCX](https://github.com/HUPO-PSI/mzTab/raw/master/specification_document-releases/1_0-Proteomics-Release/20minute_guide_mzTab.docx), [PDF](https://github.com/HUPO-PSI/mzTab/raw/master/specification_document-releases/1_0-Proteomics-Release/20minute_guide_mzTab.pdf))
 
 **Example Files**
-Several example of the format can be download from the next link [examples.zip](http://www.ebi.ac.uk/pride/resources/tools/jmztab/latest/examples.zip)
+Several example of the format can be downloaded from the next link [examples.zip](http://www.ebi.ac.uk/pride/resources/tools/jmztab/latest/examples.zip)
 
 Detailed explanation of all examples can be found [here](../../wiki/Examples)
 
