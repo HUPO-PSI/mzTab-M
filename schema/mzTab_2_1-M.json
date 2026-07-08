@@ -1885,7 +1885,7 @@
             "MTD\tcv[1]-label\tMS",
             "MTD\tcv[1]-full_name\tPSI Mass Spectrometry Ontology",
             "MTD\tcv[1]-version\t4.1.0",
-            "MTD\tcv[1]-uri\thttp://purl.obolibrary.org/obo/ms.obo"
+            "MTD\tcv[1]-uri\thttps://purl.obolibrary.org/obo/ms.obo"
           ],
           "ignore": false,
           "list_concatenation_str": null,
@@ -2014,7 +2014,7 @@
           "examples": [
             "MTD\tdatabase[1]\t[MS, MS:1002992, HMDB, 4.0]",
             "MTD\tdatabase[1]-prefix\tHMDB",
-            "MTD\tdatabase[1]-uri\thttp://www.hmdb.ca/metabolites/"
+            "MTD\tdatabase[1]-uri\thttps://www.hmdb.ca/metabolites/"
           ],
           "ignore": false,
           "list_concatenation_str": null,
@@ -3671,7 +3671,7 @@
           "default": null,
           "description": "A URI pointing to the small molecule's entry in a database (e.g., the small molecule's HMDB, Chebi or KEGG entry).",
           "examples": [
-            "http://www.hmdb.ca/metabolites/HMDB00054"
+            "https://www.hmdb.ca/metabolites/HMDB00054"
           ],
           "ignore": false,
           "list_concatenation_str": null,
@@ -4904,13 +4904,13 @@
           "description": "A URI pointing to the small molecule’s entry in a database (e.g., the small molecule’s HMDB, Chebi or KEGG entry).",
           "examples": [
             [
-              "http://www.genome.jp/dbget-bin/www_bget?cpd:C00031"
+              "https://www.genome.jp/dbget-bin/www_bget?cpd:C00031"
             ],
             [
-              "http://www.hmdb.ca/metabolites/HMDB0001847"
+              "https://www.hmdb.ca/metabolites/HMDB0001847"
             ],
             [
-              "http://identifiers.org/hmdb/HMDB0001847"
+              "https://identifiers.org/hmdb/HMDB0001847"
             ]
           ],
           "ignore": false,
