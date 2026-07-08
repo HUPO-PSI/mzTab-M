@@ -267,6 +267,38 @@ def get_examples(prop: dict) -> list:
     return result
 
 
+def insert_example_blocks(lines: list, examples: dict):
+    """Insert example blocks before the closing table delimiter for selected fields."""
+    for field_name, example in examples.items():
+        marker = f'==== {field_name}'
+        start_idx = None
+        for idx, line in enumerate(lines):
+            if line == marker:
+                start_idx = idx
+                break
+        if start_idx is None:
+            continue
+
+        delim_count = 0
+        insert_idx = None
+        for idx in range(start_idx + 1, len(lines)):
+            if lines[idx].strip() == '|============================================================':
+                delim_count += 1
+                if delim_count == 2:
+                    insert_idx = idx
+                    break
+        if insert_idx is None:
+            continue
+
+        block = [
+            '|*Example* a|',
+            '----',
+            example,
+            '----',
+        ]
+        lines[insert_idx:insert_idx] = block
+
+
 def write_field_entry(
     lines: list,
     field_name: str,
@@ -567,6 +599,30 @@ def write_table_section(
     lines.append('')
     lines.append(intro)
     lines.append('')
+    if row_prefix == 'SML':
+        lines.append('A minimal example row looks like this:')
+        lines.append('')
+        lines.append('----')
+        lines.append('SMH\tSML_ID\tdatabase_identifier\tchemical_name\treliability\tabundance_assay[1]')
+        lines.append('SML\t1\tCHEBI:15377\tProline\t[,,high,]\t123.4')
+        lines.append('----')
+        lines.append('')
+    elif row_prefix == 'SMF':
+        lines.append('A minimal example row looks like this:')
+        lines.append('')
+        lines.append('----')
+        lines.append('SFH\tSMF_ID\tSME_ID_REFS\texp_mass_to_charge\tcharge\tretention_time_in_seconds')
+        lines.append('SMF\t1\t1\t123.45\t1\t420')
+        lines.append('----')
+        lines.append('')
+    elif row_prefix == 'SME':
+        lines.append('A minimal example row looks like this:')
+        lines.append('')
+        lines.append('----')
+        lines.append('SEH\tSME_ID\tevidence_input_id\tchemical_name\texp_mass_to_charge\tcharge')
+        lines.append('SME\t1\tScan=12345\tProline\t123.45\t1')
+        lines.append('----')
+        lines.append('')
     lines.append(
         'The order of columns MUST follow the order specified below. '
         'All table columns MUST be Tab separated. '
