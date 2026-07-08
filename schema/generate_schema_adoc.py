@@ -628,6 +628,13 @@ def main():
         'organised by section and ordered by mzTab-M section hierarchy. '
         'Each field entry includes a description, type, mandatory status, and example usage.',
         '',
+        'To read this reference quickly, keep the following conventions in mind:',
+        '',
+        '* `[1-n]` indicates a repeatable field with an index that should be replaced with a concrete number such as `[1]`.',
+        '* `Parameter` values follow the mzTab syntax `[CV label, accession, name, value]` and empty fields stay empty.',
+        '* Mandatory means the field MUST be present in a conforming mzTab file; optional fields MAY be omitted.',
+        '* In the table-based sections, missing values SHOULD be represented as `null`.',
+        '',
         '[[sections]]',
         '=== Sections',
         '',
