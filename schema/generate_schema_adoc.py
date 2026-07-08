@@ -57,6 +57,7 @@ NON_NULLABLE_FIELDS = {
 def load_schema(schema_file: Path) -> dict:
     with open(schema_file) as f:
         return json.load(f)
+    return None
 
 
 def make_anchor(name: str) -> str:
@@ -68,7 +69,7 @@ def make_anchor(name: str) -> str:
     return anchor.lower().rstrip('-_')
 
 
-def get_type_string(prop: dict, schema_defs: dict) -> str:
+def get_type_string(prop: dict) -> str:
     """Determine the human-readable type string for a property."""
     vp = prop.get('validation_policy', {})
     value_constraint = vp.get('value_constraint', '')
@@ -279,7 +280,7 @@ def write_field_entry(
     """Append the AsciiDoc block for a single field to *lines*."""
     anchor = (anchor_prefix + '-' if anchor_prefix else '') + make_anchor(field_name)
     desc = get_description(prop)
-    type_str = get_type_string(prop, schema_defs)
+    type_str = get_type_string(prop)
     mandatory = is_mandatory(prop)
     pattern = get_regex_pattern(prop)
     examples = get_examples(prop)

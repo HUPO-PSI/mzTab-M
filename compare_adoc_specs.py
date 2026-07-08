@@ -65,6 +65,9 @@ def _identify_section(header: str) -> Optional[str]:
 # ---------------------------------------------------------------------------
 @dataclass
 class Element:
+    def __init__(self):
+        pass
+
     name: str           # raw header text, e.g. "mzTab-version"
     description: str = ""
     type_: str = ""
@@ -262,7 +265,7 @@ def _adoc_cell(text: str) -> str:
     text = text.replace("|", "{vbar}")
     # Soft line-break: AsciiDoc ' +\n' continues within a cell
     lines = [l.rstrip() for l in text.splitlines()]
-    return (" +\n").join(lines).strip() or "—"
+    return " +\n".join(lines).strip() or "—"
 
 
 def _adoc_example_block(text: str) -> str:
