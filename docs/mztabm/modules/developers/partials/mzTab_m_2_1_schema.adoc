@@ -12,7 +12,10 @@ To read this reference quickly, keep the following conventions in mind:
 [[sections]]
 === Sections
 
-The mzTab-M format consists of four cross-referenced data tables: metadata (MTD), Small Molecule (SML), Small Molecule Feature (SMF), and Small Molecule Evidence (SME). The MTD and SML tables are mandatory. SMF and SME sections SHOULD also be included to capture full identification evidence.
+The mzTab-M format consists of four cross-referenced data tables: metadata (MTD), Small Molecule (SML), Small Molecule Feature (SMF), and Small Molecule Evidence (SME).
+The MTD and SML tables are mandatory.
+SMF and SME sections SHOULD also be included to capture full identification evidence.
+Each table section is introduced by a header line and each row is tab-separated.
 
 [[metadata-section]]
 === Metadata Section
