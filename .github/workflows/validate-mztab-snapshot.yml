@@ -122,20 +122,19 @@ jobs:
       matrix:
         # Only example files that require mzTab-M 2.1 features live under
         # examples/2.1/. They are validated with the jmzTab-m 1.0.7-SNAPSHOT CLI.
-        # NOTE: two files are expected to fail until the jmzTab-m fork catches up
-        # with the 2.1 spec:
-        #   - example_study_variable_group.mztab: the snapshot validator does not
-        #     yet recognise the top-down study_variable_group-study_variable_refs
-        #     field (it still implements the old study_variable-group_ref).
-        #   - xcms+MsIO_0.0.11_MTBLS4381_onlySMF.mztab: trips a validator
-        #     opt-column key-collision bug (opt_global_mzmin / opt_global_mzmax).
-        # This job is continue-on-error, so those two do not block merges.
+        # Files under examples/2.1/pending-validator/ are intentionally NOT
+        # validated here (the glob does not recurse): the snapshot validator
+        # cannot handle them yet. Currently that is example_study_variable_group.mztab
+        # (the validator lacks the top-down study_variable_group-study_variable_refs
+        # field); re-add it once the jmzTab-m fork supports the field.
+        #
+        # NOTE: xcms+MsIO_0.0.11_MTBLS4381_onlySMF.mztab is still validated and is
+        # expected to fail — it trips a validator opt-column key-collision bug
+        # (opt_global_mzmin / opt_global_mzmax). This job is continue-on-error, so
+        # it does not block merges.
         include:
           - name: xcms
             pattern: "examples/2.1/xcms*"
-            extra_args: ""
-          - name: study-variable-group
-            pattern: "examples/2.1/example_study_variable_group*"
             extra_args: ""
           - name: allMZTAB
             pattern: "examples/2.1/*.mztab"
