@@ -22,15 +22,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id"
         },
         "name": {
           "allow_multiple": false,
@@ -50,22 +42,14 @@
           "non_indexed_list_value": false,
           "object_level_value": true,
           "referenced_field_name": null,
-          "title": "Name",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Name"
         },
         "custom": {
           "allow_multiple": false,
           "anyOf": [
             {
               "items": {
-                "$ref": "#/$defs/Parameter"
+                "$ref": "#/$defs/ExtendedParameter"
               },
               "type": "array"
             },
@@ -73,7 +57,7 @@
               "type": "null"
             }
           ],
-          "default": [],
+          "default": null,
           "description": "Additional user or cv parameters.",
           "ignore": false,
           "list_concatenation_str": null,
@@ -81,15 +65,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Custom",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Custom"
         },
         "external_uri": {
           "allow_multiple": false,
@@ -109,15 +85,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "External Uri",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": "any-url"
-          }
+          "title": "External Uri"
         },
         "sample_ref": {
           "allow_multiple": false,
@@ -137,15 +105,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": "sample",
-          "title": "Sample Ref",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Sample Ref"
         },
         "ms_run_ref": {
           "allow_multiple": false,
@@ -168,15 +128,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": "ms_run",
-          "title": "Ms Run Refs",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": 1,
-            "pattern": null,
-            "required": true,
-            "value_constraint": "non-negative-integer"
-          }
+          "title": "Ms Run Refs"
         },
         "protocol_refs": {
           "allow_multiple": false,
@@ -200,19 +152,11 @@
           "object_level_value": false,
           "referenced_field_name": "protocol",
           "title": "Protocol Refs",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": "non-negative-integer"
-          },
           "examples": [
             "MTD\tassay[1]-protocol_ref\tprotocol[1]| protocol[2]"
           ]
         },
-        "parameters": {
+        "parameter": {
           "allow_multiple": false,
           "anyOf": [
             {
@@ -228,20 +172,12 @@
           "default": null,
           "description": "Additional parameters of the assay, separated by bars.",
           "ignore": false,
-          "list_concatenation_str": "|",
+          "list_concatenation_str": null,
           "mztab_example": null,
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Parameters",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          },
+          "title": "Parameter",
           "examples": [
             "MTD\tassay[1]-parameter[1]\t[MS, MS:1000031, instrument model, [MS, MS:1000449, LTQ Orbitrap,]]"
           ]
@@ -256,6 +192,29 @@
     },
     "CV": {
       "properties": {
+        "custom": {
+          "allow_multiple": false,
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ExtendedParameter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Additional parameters for the field, separated by bars.",
+          "ignore": false,
+          "list_concatenation_str": null,
+          "mztab_example": null,
+          "non_indexed_list_value": false,
+          "object_level_value": false,
+          "referenced_field_name": null,
+          "title": "Custom"
+        },
         "id": {
           "allow_multiple": false,
           "anyOf": [
@@ -274,15 +233,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id"
         },
         "label": {
           "allow_multiple": false,
@@ -302,15 +253,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Label",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Label"
         },
         "full_name": {
           "allow_multiple": false,
@@ -330,15 +273,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Full Name",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Full Name"
         },
         "version": {
           "allow_multiple": false,
@@ -358,15 +293,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Version",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Version"
         },
         "uri": {
           "allow_multiple": false,
@@ -386,15 +313,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Uri",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": "any-url"
-          }
+          "title": "Uri"
         }
       },
       "title": "CV",
@@ -424,15 +343,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Column Name",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Column Name"
         },
         "param": {
           "allow_multiple": false,
@@ -452,15 +363,7 @@
           "non_indexed_list_value": false,
           "object_level_value": true,
           "referenced_field_name": null,
-          "title": "Param",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Param"
         }
       },
       "title": "ColumnParameterMapping",
@@ -484,15 +387,7 @@
           "object_level_value": false,
           "referenced_field_name": null,
           "title": "Prefix",
-          "type": "string",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": "COM",
-            "required": true,
-            "value_constraint": null
-          }
+          "type": "string"
         },
         "msg": {
           "allow_multiple": false,
@@ -512,15 +407,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Msg",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Msg"
         },
         "line_number": {
           "allow_multiple": false,
@@ -540,15 +427,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Line Number",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": "positive-integer"
-          }
+          "title": "Line Number"
         }
       },
       "title": "Comment",
@@ -559,6 +438,29 @@
     },
     "Contact": {
       "properties": {
+        "custom": {
+          "allow_multiple": false,
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ExtendedParameter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Additional parameters for the field, separated by bars.",
+          "ignore": false,
+          "list_concatenation_str": null,
+          "mztab_example": null,
+          "non_indexed_list_value": false,
+          "object_level_value": false,
+          "referenced_field_name": null,
+          "title": "Custom"
+        },
         "id": {
           "allow_multiple": false,
           "anyOf": [
@@ -577,15 +479,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id"
         },
         "name": {
           "allow_multiple": false,
@@ -605,15 +499,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Name",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Name"
         },
         "affiliation": {
           "allow_multiple": false,
@@ -633,15 +519,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Affiliation",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Affiliation"
         },
         "email": {
           "allow_multiple": false,
@@ -661,15 +539,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Email",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": "email"
-          }
+          "title": "Email"
         },
         "orcid": {
           "allow_multiple": false,
@@ -689,15 +559,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Orcid",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]{1}$",
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Orcid"
         }
       },
       "title": "Contact",
@@ -709,6 +571,29 @@
     },
     "Database": {
       "properties": {
+        "custom": {
+          "allow_multiple": false,
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ExtendedParameter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Additional parameters for the field, separated by bars.",
+          "ignore": false,
+          "list_concatenation_str": null,
+          "mztab_example": null,
+          "non_indexed_list_value": false,
+          "object_level_value": false,
+          "referenced_field_name": null,
+          "title": "Custom"
+        },
         "id": {
           "allow_multiple": false,
           "anyOf": [
@@ -727,15 +612,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id"
         },
         "param": {
           "$ref": "#/$defs/Parameter",
@@ -748,15 +625,7 @@
           "non_indexed_list_value": false,
           "object_level_value": true,
           "referenced_field_name": null,
-          "title": "Param",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Param"
         },
         "prefix": {
           "allow_multiple": false,
@@ -776,15 +645,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Prefix",
-          "validation_policy": {
-            "enforcement_level": "recommended",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Prefix"
         },
         "version": {
           "allow_multiple": false,
@@ -804,15 +665,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Version",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Version"
         },
         "uri": {
           "allow_multiple": false,
@@ -832,15 +685,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Uri",
-          "validation_policy": {
-            "enforcement_level": "recommended",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Uri"
         }
       },
       "title": "Database",
@@ -870,15 +715,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id"
         },
         "cv_label": {
           "allow_multiple": false,
@@ -898,15 +735,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Cv Label",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Cv Label"
         },
         "cv_accession": {
           "allow_multiple": false,
@@ -926,15 +755,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Cv Accession",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": "curie"
-          }
+          "title": "Cv Accession"
         },
         "name": {
           "allow_multiple": false,
@@ -954,15 +775,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Name",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Name"
         },
         "value": {
           "allow_multiple": false,
@@ -985,15 +798,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Value",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Value"
         }
       },
       "title": "ExtendedParameter",
@@ -1005,6 +810,29 @@
     },
     "Instrument": {
       "properties": {
+        "custom": {
+          "allow_multiple": false,
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ExtendedParameter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Additional parameters for the field, separated by bars.",
+          "ignore": false,
+          "list_concatenation_str": null,
+          "mztab_example": null,
+          "non_indexed_list_value": false,
+          "object_level_value": false,
+          "referenced_field_name": null,
+          "title": "Custom"
+        },
         "id": {
           "allow_multiple": false,
           "anyOf": [
@@ -1023,15 +851,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id"
         },
         "name": {
           "allow_multiple": false,
@@ -1051,15 +871,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Name",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Name"
         },
         "source": {
           "allow_multiple": false,
@@ -1079,15 +891,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Source",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Source"
         },
         "analyzer": {
           "allow_multiple": false,
@@ -1110,15 +914,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Analyzer",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Analyzer"
         },
         "detector": {
           "allow_multiple": false,
@@ -1138,15 +934,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Detector",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Detector"
         }
       },
       "title": "Instrument",
@@ -1179,15 +967,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Prefix",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": "MTD",
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Prefix"
         },
         "mzTab-version": {
           "allow_multiple": false,
@@ -1211,15 +991,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Mztab Version",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": "^\\d{1}\\.\\d{1}\\.\\d{1}-[A-Z]{1}$",
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Mztab Version"
         },
         "mzTab-ID": {
           "allow_multiple": false,
@@ -1244,15 +1016,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Mztab Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Mztab Id"
         },
         "title": {
           "allow_multiple": false,
@@ -1276,15 +1040,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Title",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Title"
         },
         "description": {
           "allow_multiple": false,
@@ -1308,15 +1064,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Description",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Description"
         },
         "contact": {
           "allow_multiple": false,
@@ -1344,15 +1092,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Contact",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Contact"
         },
         "publication": {
           "allow_multiple": false,
@@ -1379,15 +1119,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Publication",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Publication"
         },
         "uri": {
           "allow_multiple": false,
@@ -1411,14 +1143,6 @@
           "object_level_value": false,
           "referenced_field_name": null,
           "title": "Uri",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          },
           "examples": [
             "MTD\turi[1]\thttps://www.ebi.ac.uk/metabolights/MTBLS517"
           ]
@@ -1445,14 +1169,6 @@
           "object_level_value": false,
           "referenced_field_name": null,
           "title": "External Study Uri",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          },
           "examples": [
             "MTD\texternal_study_uri[1]\thttps://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt"
           ]
@@ -1483,15 +1199,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Instrument",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Instrument"
         },
         "quantification_method": {
           "allow_multiple": false,
@@ -1511,15 +1219,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Quantification Method",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Quantification Method"
         },
         "sample": {
           "allow_multiple": false,
@@ -1543,14 +1243,6 @@
           "object_level_value": false,
           "referenced_field_name": null,
           "title": "Sample",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          },
           "examples": [
             "COM\tExperiment where all samples consisted of the same two species\nMTD\tsample[1]\tindividual number 1\nMTD\tsample[1]-species[1]\t[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]\nMTD\tsample[1]-tissue[1]\t[BTO, BTO:0000759, liver, ]\nMTD\tsample[1]-cell_type[1]\t[CL, CL:0000182, hepatocyte, ]\nMTD\tsample[1]-disease[1]\t[DOID, DOID:684, hepatocellular carcinoma, ]\nMTD\tsample[1]-disease[2]\t[DOID, DOID:9451, alcoholic fatty liver, ]\nMTD\tsample[1]-description\tHepatocellular carcinoma samples.\nMTD\tsample[1]-custom[1]\t[,,Extraction date, 2011-12-21]\nMTD\tsample[1]-custom[2]\t[,,Extraction reason, liver biopsy]\nMTD\tsample[2]\tindividual number 2\nMTD\tsample[2]-species[1]\t[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]\nMTD\tsample[2]-tissue[1]\t[BTO, BTO:0000759, liver, ]\nMTD\tsample[2]-cell_type[1]\t[CL, CL:0000182, hepatocyte, ]\nMTD\tsample[2]-description\tHealthy control samples."
           ]
@@ -1582,15 +1274,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Protocol",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Protocol"
         },
         "sample_processing": {
           "allow_multiple": false,
@@ -1618,15 +1302,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Sample Processing",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Sample Processing"
         },
         "software": {
           "allow_multiple": false,
@@ -1653,15 +1329,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Software",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": 1,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Software"
         },
         "derivatization_agent": {
           "allow_multiple": false,
@@ -1687,15 +1355,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Derivatization Agent",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Derivatization Agent"
         },
         "ms_run": {
           "allow_multiple": false,
@@ -1719,14 +1379,6 @@
           "object_level_value": false,
           "referenced_field_name": null,
           "title": "Ms Run",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": 1,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          },
           "examples": [
             "COM\tlocation can be a local or remote URI\nMTD\tms_run[1]-location\tfile:///C:/path/to/my/file.mzML\nMTD\tms_run[1]-instrument_ref\tinstrument[1]\nMTD\tms_run[1]-format\t[MS, MS:1000584, mzML file, ]\nMTD\tms_run[1]-id_format\t[MS, MS:1000530, mzML unique identifier, ]\nMTD\tms_run[1]-fragmentation_method[1]\t[MS, MS:1000133, CID, ]\nCOM\tfor mixed polarity scan scenarios\nMTD\tms_run[1]-scan_polarity[1]\t[MS, MS:1000130, positive scan, ]\nMTD\tms_run[1]-scan_polarity[2]\t[MS, MS:1000129, negative scan, ]\nMTD\tms_run[1]-hash_method\t[MS, MS:1000569, SHA-1, ]\nMTD\tms_run[1]-hash\tde9f2c7fd25e1b3afad3e85a0bd17d9b100db4b3"
           ]
@@ -1753,14 +1405,6 @@
           "object_level_value": false,
           "referenced_field_name": null,
           "title": "Assay",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": 1,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          },
           "examples": [
             "MTD\tassay[1]\tfirst assay\nMTD\tassay[1]-custom[1]\t[MS, , Assay operator, Fred Blogs]\nMTD\tassay[1]-sample_ref\tsample[1]\nMTD\tassay[1]-ms_run_ref\tms_run[1]\nMTD\tassay[1]-external_uri\thttps://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt?STUDYASSAY=a_e04_c18pos.txt\nMTD\tassay[2]\tsecond assay\nMTD\tassay[2]-sample_ref\tsample[2]"
           ]
@@ -1787,14 +1431,6 @@
           "object_level_value": false,
           "referenced_field_name": null,
           "title": "Study Variable Group",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          },
           "examples": [
             "MTD\tstudy_variable_group[1]\t[PATO, PATO:0000383, sex, ]\nMTD\tstudy_variable_group[1]-description\tSex of the individual\nMTD\tstudy_variable_group[1]-type\t[STATO, STATO:0000252, categorical variable]\nMTD\tstudy_variable_group[1]-datatype\txsd:string\nMTD\tstudy_variable_group[2]\t[,,timepoint,]\nMTD\tstudy_variable_group[2]-description\tTime after treatment\nMTD\tstudy_variable_group[2]-type\t[STATO, STATO:0000228, ordinal variable]\nMTD\tstudy_variable_group[2]-datatype\txsd:integer\nMTD\tstudy_variable_group[2]-unit\t[UO, UO:0000033, day, ]"
           ]
@@ -1821,14 +1457,6 @@
           "object_level_value": false,
           "referenced_field_name": null,
           "title": "Study Variable",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": 1,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          },
           "examples": [
             "MTD\tstudy_variable[1]\tcontrol\nMTD\tstudy_variable[1]-assay_refs\tassay[1]\\|assay[2]\\|assay[3]\nMTD\tstudy_variable-average_function\t[MS, MS:1002883, median, ]\nMTD\tstudy_variable-variation_function\t[MS, MS:1002885, standard error, ]\nMTD\tstudy_variable[1]-description\tGroup B (spike-in 0.74 fmol/uL)\nMTD\tstudy_variable[2]\t1 minute"
           ]
@@ -1838,7 +1466,7 @@
           "anyOf": [
             {
               "items": {
-                "$ref": "#/$defs/Parameter"
+                "$ref": "#/$defs/ExtendedParameter"
               },
               "type": "array"
             },
@@ -1857,15 +1485,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Custom",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Custom"
         },
         "cv": {
           "allow_multiple": false,
@@ -1893,15 +1513,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Cv",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": 1,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Cv"
         },
         "small_molecule-quantification_unit": {
           "allow_multiple": false,
@@ -1924,15 +1536,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Small Molecule Quantification Unit",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Small Molecule Quantification Unit"
         },
         "small_molecule_feature-quantification_unit": {
           "allow_multiple": false,
@@ -1955,15 +1559,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Small Molecule Feature Quantification Unit",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Small Molecule Feature Quantification Unit"
         },
         "small_molecule-identification_reliability": {
           "allow_multiple": false,
@@ -1986,15 +1582,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Small Molecule Identification Reliability",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Small Molecule Identification Reliability"
         },
         "database": {
           "allow_multiple": false,
@@ -2022,15 +1610,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Database",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": 1,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Database"
         },
         "id_confidence_measure": {
           "allow_multiple": false,
@@ -2057,15 +1637,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id Confidence Measure",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": 1,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Id Confidence Measure"
         },
         "colunit-small_molecule": {
           "allow_multiple": false,
@@ -2092,15 +1664,7 @@
           "non_indexed_list_value": true,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Colunit Small Molecule",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Colunit Small Molecule"
         },
         "colunit-small_molecule_feature": {
           "allow_multiple": false,
@@ -2126,15 +1690,7 @@
           "non_indexed_list_value": true,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Colunit Small Molecule Feature",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Colunit Small Molecule Feature"
         },
         "colunit-small_molecule_evidence": {
           "allow_multiple": false,
@@ -2160,15 +1716,7 @@
           "non_indexed_list_value": true,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Colunit Small Molecule Evidence",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Colunit Small Molecule Evidence"
         }
       },
       "required": [
@@ -2183,6 +1731,29 @@
     },
     "MsRun": {
       "properties": {
+        "custom": {
+          "allow_multiple": false,
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ExtendedParameter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Additional user or cv parameters.",
+          "ignore": false,
+          "list_concatenation_str": null,
+          "mztab_example": null,
+          "non_indexed_list_value": false,
+          "object_level_value": false,
+          "referenced_field_name": null,
+          "title": "Custom"
+        },
         "id": {
           "allow_multiple": false,
           "anyOf": [
@@ -2201,15 +1772,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id"
         },
         "name": {
           "allow_multiple": false,
@@ -2229,15 +1792,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Name",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Name"
         },
         "location": {
           "allow_multiple": false,
@@ -2257,15 +1812,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Location",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": "any-url"
-          }
+          "title": "Location"
         },
         "instrument_ref": {
           "allow_multiple": false,
@@ -2285,15 +1832,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": "instrument",
-          "title": "Instrument Ref",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Instrument Ref"
         },
         "format": {
           "allow_multiple": false,
@@ -2313,15 +1852,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Format",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Format"
         },
         "id_format": {
           "allow_multiple": false,
@@ -2341,15 +1872,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id Format",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id Format"
         },
         "fragmentation_method": {
           "allow_multiple": false,
@@ -2372,15 +1895,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Fragmentation Method",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Fragmentation Method"
         },
         "scan_polarity": {
           "allow_multiple": false,
@@ -2403,15 +1918,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Scan Polarity",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Scan Polarity"
         },
         "hash": {
           "allow_multiple": false,
@@ -2431,15 +1938,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Hash",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Hash"
         },
         "hash_method": {
           "allow_multiple": false,
@@ -2459,17 +1958,9 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Hash Method",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Hash Method"
         },
-        "parameters": {
+        "parameter": {
           "allow_multiple": false,
           "anyOf": [
             {
@@ -2485,20 +1976,12 @@
           "default": null,
           "description": "Additional parameters of the assay, separated by bars.",
           "ignore": false,
-          "list_concatenation_str": "|",
+          "list_concatenation_str": null,
           "mztab_example": null,
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Parameters",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          },
+          "title": "Parameter",
           "examples": [
             "MTD\tms_run[1]-parameter[1]\t[MS, MS:1000031, instrument model, [MS, MS:1000449, LTQ Orbitrap,]]"
           ]
@@ -2534,15 +2017,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Identifier",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": "^global|ms_run\\[\\d+\\]|assay\\[\\d+\\]|study_variable\\[\\d+\\]",
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Identifier"
         },
         "param": {
           "allow_multiple": false,
@@ -2562,15 +2037,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Param",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": false,
-            "value_constraint": null
-          }
+          "title": "Param"
         },
         "value": {
           "allow_multiple": false,
@@ -2590,15 +2057,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Value",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Value"
         }
       },
       "title": "OptColumnMapping",
@@ -2628,15 +2087,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id"
         },
         "cv_label": {
           "allow_multiple": false,
@@ -2656,15 +2107,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Cv Label",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Cv Label"
         },
         "cv_accession": {
           "allow_multiple": false,
@@ -2684,21 +2127,16 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Cv Accession",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": "curie"
-          }
+          "title": "Cv Accession"
         },
         "name": {
           "allow_multiple": false,
           "anyOf": [
             {
               "type": "string"
+            },
+            {
+              "type": "null"
             }
           ],
           "default": "",
@@ -2709,21 +2147,16 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Name",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Name"
         },
         "value": {
           "allow_multiple": false,
           "anyOf": [
             {
               "type": "string"
+            },
+            {
+              "type": "null"
             }
           ],
           "default": "",
@@ -2734,15 +2167,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Value",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Value"
         }
       },
       "title": "Parameter",
@@ -2772,15 +2197,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id"
         },
         "name": {
           "allow_multiple": false,
@@ -2800,15 +2217,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Name",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Name"
         },
         "type": {
           "allow_multiple": false,
@@ -2828,15 +2237,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Type",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Type"
         },
         "description": {
           "allow_multiple": false,
@@ -2856,17 +2257,9 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Description",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Description"
         },
-        "parameters": {
+        "parameter": {
           "allow_multiple": false,
           "anyOf": [
             {
@@ -2882,20 +2275,12 @@
           "default": null,
           "description": "The protocol parameters.",
           "ignore": false,
-          "list_concatenation_str": "|",
+          "list_concatenation_str": null,
           "mztab_example": null,
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Parameters",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Parameter"
         }
       },
       "title": "Protocol",
@@ -2925,15 +2310,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id"
         },
         "publication_items": {
           "allow_multiple": false,
@@ -2956,15 +2333,30 @@
           "non_indexed_list_value": false,
           "object_level_value": true,
           "referenced_field_name": null,
-          "title": "Publication Items",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": 1,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Publication Items"
+        },
+        "custom": {
+          "allow_multiple": false,
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ExtendedParameter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Additional user or cv parameters.",
+          "ignore": false,
+          "list_concatenation_str": null,
+          "mztab_example": null,
+          "non_indexed_list_value": false,
+          "object_level_value": false,
+          "referenced_field_name": null,
+          "title": "Custom"
         }
       },
       "title": "Publication",
@@ -2999,15 +2391,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Type",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": "doi|pubmed|uri",
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Type"
         },
         "accession": {
           "allow_multiple": false,
@@ -3027,15 +2411,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Accession",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Accession"
         }
       },
       "title": "PublicationItem",
@@ -3062,15 +2438,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id"
         },
         "name": {
           "allow_multiple": false,
@@ -3090,22 +2458,14 @@
           "non_indexed_list_value": false,
           "object_level_value": true,
           "referenced_field_name": null,
-          "title": "Name",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Name"
         },
         "custom": {
           "allow_multiple": false,
           "anyOf": [
             {
               "items": {
-                "$ref": "#/$defs/Parameter"
+                "$ref": "#/$defs/ExtendedParameter"
               },
               "type": "array"
             },
@@ -3121,15 +2481,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Custom",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Custom"
         },
         "species": {
           "allow_multiple": false,
@@ -3152,15 +2504,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Species",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Species"
         },
         "tissue": {
           "allow_multiple": false,
@@ -3183,15 +2527,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Tissue",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Tissue"
         },
         "cell_type": {
           "allow_multiple": false,
@@ -3214,15 +2550,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Cell Type",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Cell Type"
         },
         "disease": {
           "allow_multiple": false,
@@ -3245,15 +2573,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Disease",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Disease"
         },
         "description": {
           "allow_multiple": false,
@@ -3273,15 +2593,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Description",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Description"
         }
       },
       "title": "Sample",
@@ -3311,15 +2623,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id"
         },
         "sample_processing": {
           "allow_multiple": false,
@@ -3342,15 +2646,7 @@
           "non_indexed_list_value": false,
           "object_level_value": true,
           "referenced_field_name": null,
-          "title": "Sample Processing",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Sample Processing"
         }
       },
       "title": "SampleProcessing",
@@ -3374,14 +2670,6 @@
           "referenced_section": null,
           "title": "Prefix",
           "type": "string",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": "SME",
-            "required": true,
-            "value_constraint": null
-          },
           "examples": [
             "SME\t1\t…"
           ]
@@ -3398,14 +2686,6 @@
           "referenced_section": null,
           "title": "Header Prefix",
           "type": "string",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": "SEH",
-            "required": true,
-            "value_constraint": null
-          },
           "examples": [
             "SEH\tSME_ID\t…"
           ]
@@ -3431,15 +2711,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Comment",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Comment"
         },
         "sme_id": {
           "anyOf": [
@@ -3462,15 +2734,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Sme Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Sme Id"
         },
         "evidence_input_id": {
           "anyOf": [
@@ -3493,15 +2757,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Evidence Input Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Evidence Input Id"
         },
         "database_identifier": {
           "anyOf": [
@@ -3524,15 +2780,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Database Identifier",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Database Identifier"
         },
         "chemical_formula": {
           "anyOf": [
@@ -3555,15 +2803,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Chemical Formula",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Chemical Formula"
         },
         "smiles": {
           "anyOf": [
@@ -3586,15 +2826,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Smiles",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Smiles"
         },
         "inchi": {
           "anyOf": [
@@ -3617,15 +2849,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Inchi",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Inchi"
         },
         "chemical_name": {
           "anyOf": [
@@ -3648,15 +2872,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Chemical Name",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Chemical Name"
         },
         "uri": {
           "anyOf": [
@@ -3679,15 +2895,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Uri",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": "any-url"
-          }
+          "title": "Uri"
         },
         "derivatized_form": {
           "anyOf": [
@@ -3710,15 +2918,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Derivatized Form",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Derivatized Form"
         },
         "adduct_ion": {
           "anyOf": [
@@ -3741,15 +2941,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Adduct Ion",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": "^\\[\\d*M([+-][\\w\\d]+)*\\]\\d*[+-]$",
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Adduct Ion"
         },
         "exp_mass_to_charge": {
           "anyOf": [
@@ -3772,14 +2964,6 @@
           "referenced_field_name": null,
           "referenced_section": null,
           "title": "Exp Mass To Charge",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          },
           "description": "The experimental mass/charge value for the precursor ion. If multiple adduct forms have been combined into a single identification event/search, then a single value e.g. for the protonated form SHOULD be reported here."
         },
         "charge": {
@@ -3803,15 +2987,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Charge",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Charge"
         },
         "theoretical_mass_to_charge": {
           "anyOf": [
@@ -3834,15 +3010,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Theoretical Mass To Charge",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Theoretical Mass To Charge"
         },
         "spectra_ref": {
           "anyOf": [
@@ -3871,15 +3039,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Spectra References",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": 1,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Spectra Reference"
         },
         "identification_method": {
           "anyOf": [
@@ -3902,15 +3062,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Identification Method",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Identification Method"
         },
         "ms_level": {
           "anyOf": [
@@ -3933,15 +3085,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Ms Level",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Ms Level"
         },
         "id_confidence_measure": {
           "anyOf": [
@@ -3976,15 +3120,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Id Confidence Measure",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id Confidence Measure"
         },
         "rank": {
           "anyOf": [
@@ -4007,15 +3143,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Rank",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": "positive-integer"
-          }
+          "title": "Rank"
         },
         "opt": {
           "anyOf": [
@@ -4042,15 +3170,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Opt",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Opt"
         }
       },
       "title": "SmallMoleculeEvidence",
@@ -4079,14 +3199,6 @@
           "referenced_field_name": null,
           "referenced_section": null,
           "title": "Prefix",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": "SMF",
-            "required": true,
-            "value_constraint": null
-          },
           "examples": [
             "SMF 1 …"
           ]
@@ -4103,14 +3215,6 @@
           "referenced_section": null,
           "title": "Header Prefix",
           "type": "string",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": "SFH",
-            "required": true,
-            "value_constraint": null
-          },
           "examples": [
             "SFH\tSMF_ID\t…"
           ]
@@ -4136,15 +3240,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Comment",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Comment"
         },
         "smf_id": {
           "anyOf": [
@@ -4167,15 +3263,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Smf Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": "non-negative-integer"
-          }
+          "title": "Smf Id"
         },
         "sme_id_refs": {
           "anyOf": [
@@ -4203,15 +3291,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Sme Id Refs",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": 1,
-            "pattern": null,
-            "required": null,
-            "value_constraint": "non-negative-integer"
-          }
+          "title": "Sme Id Refs"
         },
         "sme_id_ref_ambiguity_code": {
           "anyOf": [
@@ -4234,15 +3314,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Sme Id Ref Ambiguity Code",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": 3,
-            "minimum": 1,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Sme Id Ref Ambiguity Code"
         },
         "adduct_ion": {
           "anyOf": [
@@ -4266,15 +3338,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Adduct Ion",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Adduct Ion"
         },
         "isotopomer": {
           "anyOf": [
@@ -4297,15 +3361,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Isotopomer",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Isotopomer"
         },
         "exp_mass_to_charge": {
           "anyOf": [
@@ -4328,15 +3384,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Exp Mass To Charge",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Exp Mass To Charge"
         },
         "charge": {
           "anyOf": [
@@ -4359,15 +3407,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Charge",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": false,
-            "value_constraint": null
-          }
+          "title": "Charge"
         },
         "retention_time_in_seconds": {
           "anyOf": [
@@ -4390,15 +3430,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Retention Time In Seconds",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Retention Time In Seconds"
         },
         "retention_time_in_seconds_start": {
           "anyOf": [
@@ -4421,15 +3453,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Retention Time In Seconds Start",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Retention Time In Seconds Start"
         },
         "retention_time_in_seconds_end": {
           "anyOf": [
@@ -4452,15 +3476,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Retention Time In Seconds End",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Retention Time In Seconds End"
         },
         "abundance_assay": {
           "anyOf": [
@@ -4495,15 +3511,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Abundance Assay",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Abundance Assay"
         },
         "opt": {
           "anyOf": [
@@ -4530,15 +3538,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Opt",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Opt"
         }
       },
       "title": "SmallMoleculeFeature",
@@ -4565,14 +3565,6 @@
           "referenced_field_name": null,
           "referenced_section": null,
           "title": "Prefix",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": "SML",
-            "required": true,
-            "value_constraint": null
-          },
           "examples": [
             "SML 1 …"
           ]
@@ -4596,14 +3588,6 @@
           "referenced_field_name": null,
           "referenced_section": null,
           "title": "Header Prefix",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": "SMH",
-            "required": true,
-            "value_constraint": null
-          },
           "examples": [
             "SMH\tSML_ID …"
           ]
@@ -4629,15 +3613,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Comment",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Comment"
         },
         "sml_id": {
           "anyOf": [
@@ -4660,15 +3636,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Sml Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": "non-negative-integer"
-          }
+          "title": "Sml Id"
         },
         "smf_id_refs": {
           "anyOf": [
@@ -4696,15 +3664,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Smf Id Refs",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": "non-negative-integer"
-          }
+          "title": "Smf Id Refs"
         },
         "database_identifier": {
           "anyOf": [
@@ -4733,15 +3693,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Database Identifier",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Database Identifier"
         },
         "chemical_formula": {
           "anyOf": [
@@ -4769,15 +3721,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Chemical Formula",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Chemical Formula"
         },
         "smiles": {
           "anyOf": [
@@ -4805,15 +3749,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Smiles",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Smiles"
         },
         "inchi": {
           "anyOf": [
@@ -4841,15 +3777,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Inchi",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Inchi"
         },
         "chemical_name": {
           "anyOf": [
@@ -4877,15 +3805,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Chemical Name",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Chemical Name"
         },
         "uri": {
           "anyOf": [
@@ -4919,15 +3839,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Uri",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": 1,
-            "pattern": null,
-            "required": null,
-            "value_constraint": "any-url"
-          }
+          "title": "Uri"
         },
         "theoretical_neutral_mass": {
           "anyOf": [
@@ -4962,21 +3874,12 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Theoretical Neutral Mass",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Theoretical Neutral Mass"
         },
         "adduct_ions": {
           "anyOf": [
             {
               "items": {
-                "pattern": "^\\[\\d*M([+-][\\w\\d]+)*\\]\\d*[+-]$",
                 "type": "string"
               },
               "type": "array"
@@ -5000,15 +3903,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Adduct Ions",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Adduct Ions"
         },
         "reliability": {
           "anyOf": [
@@ -5033,15 +3928,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Reliability",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Reliability"
         },
         "best_id_confidence_measure": {
           "anyOf": [
@@ -5064,15 +3951,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Best Id Confidence Measure",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Best Id Confidence Measure"
         },
         "best_id_confidence_value": {
           "anyOf": [
@@ -5095,15 +3974,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Best Id Confidence Value",
-          "validation_policy": {
-            "enforcement_level": "recommended",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Best Id Confidence Value"
         },
         "abundance_assay": {
           "anyOf": [
@@ -5138,15 +4009,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Abundance Assay",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Abundance Assay"
         },
         "abundance_study_variable": {
           "anyOf": [
@@ -5181,15 +4044,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Abundance Study Variable",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Abundance Study Variable"
         },
         "abundance_variation_study_variable": {
           "anyOf": [
@@ -5224,15 +4079,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Abundance Variation Study Variable",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Abundance Variation Study Variable"
         },
         "opt": {
           "anyOf": [
@@ -5258,15 +4105,7 @@
           "mztab_example": null,
           "referenced_field_name": null,
           "referenced_section": null,
-          "title": "Opt",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Opt"
         }
       },
       "title": "SmallMoleculeSummary",
@@ -5275,6 +4114,29 @@
     },
     "Software": {
       "properties": {
+        "custom": {
+          "allow_multiple": false,
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ExtendedParameter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Additional user or cv parameters.",
+          "ignore": false,
+          "list_concatenation_str": null,
+          "mztab_example": null,
+          "non_indexed_list_value": false,
+          "object_level_value": false,
+          "referenced_field_name": null,
+          "title": "Custom"
+        },
         "id": {
           "allow_multiple": false,
           "anyOf": [
@@ -5293,15 +4155,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id"
         },
         "parameter": {
           "allow_multiple": false,
@@ -5321,15 +4175,7 @@
           "non_indexed_list_value": false,
           "object_level_value": true,
           "referenced_field_name": null,
-          "title": "Parameter",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Parameter"
         },
         "setting": {
           "allow_multiple": false,
@@ -5352,15 +4198,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Setting",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Setting"
         }
       },
       "title": "Software",
@@ -5390,15 +4228,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Ms Run Ref",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": "positive-integer"
-          }
+          "title": "Ms Run Ref"
         },
         "reference": {
           "allow_multiple": false,
@@ -5418,15 +4248,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Reference",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Reference"
         }
       },
       "title": "SpectraReference",
@@ -5438,6 +4260,29 @@
     },
     "StudyVariable": {
       "properties": {
+        "custom": {
+          "allow_multiple": false,
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ExtendedParameter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Additional user or cv parameters.",
+          "ignore": false,
+          "list_concatenation_str": null,
+          "mztab_example": null,
+          "non_indexed_list_value": false,
+          "object_level_value": false,
+          "referenced_field_name": null,
+          "title": "Custom"
+        },
         "id": {
           "allow_multiple": false,
           "anyOf": [
@@ -5456,24 +4301,19 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id"
         },
         "name": {
           "allow_multiple": false,
-          "oneOf": [
+          "anyOf": [
             {
               "type": "string"
             },
             {
               "$ref": "#/$defs/Parameter"
+            },
+            {
+              "type": "null"
             }
           ],
           "default": null,
@@ -5484,15 +4324,7 @@
           "non_indexed_list_value": false,
           "object_level_value": true,
           "referenced_field_name": null,
-          "title": "Name",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Name"
         },
         "group_refs": {
           "allow_multiple": false,
@@ -5516,14 +4348,6 @@
           "object_level_value": false,
           "referenced_field_name": "study_variable_group",
           "title": "Group Refs",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": "non-negative-integer"
-          },
           "examples": [
             "MTD\tstudy_variable[1]-group_ref\tstudy_variable_group[1]| study_variable_group[2]"
           ]
@@ -5549,15 +4373,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": "assay",
-          "title": "Assay Refs",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": "non-negative-integer"
-          }
+          "title": "Assay Refs"
         },
         "ms_run_refs": {
           "allow_multiple": false,
@@ -5581,14 +4397,6 @@
           "object_level_value": false,
           "referenced_field_name": "ms_run",
           "title": "Ms Run Refs",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": "non-negative-integer"
-          },
           "examples": [
             "MTD\tstudy_variable[1]-ms_run_ref\tms_run[1]| ms_run[2]"
           ]
@@ -5611,15 +4419,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Average Function",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Average Function"
         },
         "variation_function": {
           "allow_multiple": false,
@@ -5639,15 +4439,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Variation Function",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Variation Function"
         },
         "description": {
           "allow_multiple": false,
@@ -5667,15 +4459,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Description",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Description"
         }
       },
       "title": "StudyVariable",
@@ -5687,6 +4471,29 @@
     },
     "StudyVariableGroup": {
       "properties": {
+        "custom": {
+          "allow_multiple": false,
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ExtendedParameter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Additional user or cv parameters.",
+          "ignore": false,
+          "list_concatenation_str": null,
+          "mztab_example": null,
+          "non_indexed_list_value": false,
+          "object_level_value": false,
+          "referenced_field_name": null,
+          "title": "Custom"
+        },
         "id": {
           "allow_multiple": false,
           "anyOf": [
@@ -5706,14 +4513,6 @@
           "object_level_value": false,
           "referenced_field_name": null,
           "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          },
           "description": "The unique identifier for this study variable group."
         },
         "name": {
@@ -5734,15 +4533,7 @@
           "non_indexed_list_value": false,
           "object_level_value": true,
           "referenced_field_name": null,
-          "title": "Name",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": true,
-            "value_constraint": null
-          }
+          "title": "Name"
         },
         "description": {
           "allow_multiple": false,
@@ -5762,15 +4553,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Description",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Description"
         },
         "type": {
           "allow_multiple": false,
@@ -5790,15 +4573,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Type",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Type"
         },
         "datatype": {
           "allow_multiple": false,
@@ -5832,14 +4607,6 @@
           "object_level_value": false,
           "referenced_field_name": null,
           "title": "Datatype",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }, 
           "examples": [
             "....\nMTD\tstudy_variable_group[1]-datatype\txsd:string\nMTD\tstudy_variable_group[2]-datatype\txsd:decimal\nMTD\tstudy_variable_group[3]-datatype\txsd:date\nMTD\tstudy_variable_group[4]-datatype\tParameter\n\nCOM\tplain string value:\nMTD\tstudy_variable[1]\tMale\nMTD\tstudy_variable[1]-group_ref\tstudy_variable_group[1]\n\nCOM\tuser-defined Parameter value:\nMTD\tstudy_variable[2]\t[,,Male,]\nMTD\tstudy_variable[2]-group_ref\tstudy_variable_group[4]\n\nCOM\tCV Parameter value:\nMTD\tstudy_variable[3]\t[NCIT, NCIT:C20197, Male, ]\nMTD\tstudy_variable[3]-group_ref\tstudy_variable_group[4]\n...."
           ]
@@ -5862,15 +4629,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Unit",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Unit"
         }
       },
       "title": "StudyVariableGroup",
@@ -5900,15 +4659,7 @@
           "non_indexed_list_value": false,
           "object_level_value": false,
           "referenced_field_name": null,
-          "title": "Id",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": null
-          }
+          "title": "Id"
         },
         "value": {
           "allow_multiple": false,
@@ -5928,15 +4679,7 @@
           "non_indexed_list_value": false,
           "object_level_value": true,
           "referenced_field_name": null,
-          "title": "Value",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": "any-url"
-          }
+          "title": "Value"
         }
       },
       "title": "Uri",
@@ -5967,15 +4710,7 @@
       "non_indexed_list_value": false,
       "object_level_value": false,
       "referenced_field_name": null,
-      "title": "Metadata",
-      "validation_policy": {
-        "enforcement_level": "required",
-        "maximum": null,
-        "minimum": null,
-        "pattern": null,
-        "required": true,
-        "value_constraint": null
-      }
+      "title": "Metadata"
     },
     "smallMoleculeSummary": {
       "allow_multiple": false,
@@ -5998,15 +4733,7 @@
       "non_indexed_list_value": false,
       "object_level_value": false,
       "referenced_field_name": null,
-      "title": "Small Molecule Summary",
-      "validation_policy": {
-        "enforcement_level": "recommended",
-        "maximum": null,
-        "minimum": 1,
-        "pattern": null,
-        "required": true,
-        "value_constraint": null
-      }
+      "title": "Small Molecule Summary"
     },
     "smallMoleculeFeature": {
       "allow_multiple": false,
@@ -6029,15 +4756,7 @@
       "non_indexed_list_value": false,
       "object_level_value": false,
       "referenced_field_name": null,
-      "title": "Small Molecule Feature",
-      "validation_policy": {
-        "enforcement_level": "recommended",
-        "maximum": null,
-        "minimum": 1,
-        "pattern": null,
-        "required": true,
-        "value_constraint": null
-      }
+      "title": "Small Molecule Feature"
     },
     "smallMoleculeEvidence": {
       "allow_multiple": false,
@@ -6060,15 +4779,7 @@
       "non_indexed_list_value": false,
       "object_level_value": false,
       "referenced_field_name": null,
-      "title": "Small Molecule Evidence",
-      "validation_policy": {
-        "enforcement_level": "recommended",
-        "maximum": null,
-        "minimum": 1,
-        "pattern": null,
-        "required": true,
-        "value_constraint": null
-      }
+      "title": "Small Molecule Evidence"
     },
     "comment": {
       "allow_multiple": false,
@@ -6091,15 +4802,7 @@
       "non_indexed_list_value": false,
       "object_level_value": false,
       "referenced_field_name": null,
-      "title": "Comment",
-      "validation_policy": {
-        "enforcement_level": "required",
-        "maximum": null,
-        "minimum": null,
-        "pattern": null,
-        "required": null,
-        "value_constraint": null
-      }
+      "title": "Comment"
     }
   },
   "title": "mzTab-M",
