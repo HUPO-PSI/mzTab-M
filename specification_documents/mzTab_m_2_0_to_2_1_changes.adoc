@@ -18,7 +18,7 @@ Element-by-element comparison of all four mzTab-M sections (MTD, SML, SMF, SME) 
 |===
 | Section | v2.0 elements | v2.1 elements | Added | Removed | Changed
 
-| Metadata (MTD) Section | 67 | 75 | 10 | 2 | 65
+| Metadata (MTD) Section | 62 | 75 | 15 | 2 | 60
 
 | Small Molecule (SML) Section | 17 | 17 | 0 | 0 | 17
 
@@ -69,6 +69,54 @@ a| The ms run(s) referenced by this study variable.
 | False
 | —
 
+| `study_variable_group[1-n]`
+a| The study variable group name.
+| Parameter
+| *True*
+| —
+
+| `study_variable_group[1-n]-description`
+a| Description of the study variable group.
+| String
+| False
+| —
+
+| `study_variable_group[1-n]-type`
+a| The study variable group type, as defined by the parameter.
+| Parameter
+| False
+| —
+
+| `study_variable_group[1-n]-datatype`
+a| The datatype of the group variable, which determines how they can be encoded and parsed in mzTab-M files, and how the values could be handled in programming languages. +
+ +
+Producers of mzTab-M 2.1.0 SHOULD provide a `datatype` for each `study_variable_group` to simplify interpretation by downstream consumers of the format. The field is not mandatory, but its presence removes ambiguity about how the associated values are encoded and should be parsed. +
+ +
+The following datatypes are supported: +
+ +
+* xsd:string – Character string. +
+* xsd:integer – Arbitrary‑size integer. +
+* xsd:decimal – Arbitrary‑precision decimal number. +
+* xsd:boolean – Boolean value (`true` / `false`). +
+* xsd:date – Calendar date, encoded in ISO 8601 format (`YYYY-MM-DD`). +
+* xsd:time – Time of day, encoded in ISO 8601 format (`hh:mm:ss`, optional fractional seconds and timezone). +
+* xsd:dateTime – Combined date and time, encoded in ISO 8601 format (`YYYY-MM-DDThh:mm:ss`, with optional fractional seconds and timezone, e.g. `YYYY-MM-DDThh:mm:ssZ`). +
+* xsd:anyURI – A Uniform Resource Identifier reference. +
+* Parameter – The values of the linked study_variables are reported as a Parameter (user-defined or CV Parameter), using the standard mzTab-M Parameter syntax `[CV, accession, name, value]`. +
+ +
+Writers MUST ensure that the values of the `study_variable` entries belonging to the same `study_variable_group` all have the same type (e.g. string, number, ...) and use the same convention of reporting the value directly or as a Parameter, consistent with the `datatype` declared on the group. If the `study_variable_group` defines the `datatype` as `Parameter`, the CVParam qualifying the `study_variable_group` itself can be of a different CV origin than the CVParams used in the linked `study_variable` values. +
+ +
+Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).
+| Parameter
+| False
+| —
+
+| `study_variable_group[1-n]-unit`
+a| The study variable group unit, as defined by the parameter.
+| Parameter
+| False
+| —
+
 | `study_variable_group[1-n]-study_variable_refs[1-n]`
 a| Bar-separated references to the study variables that belong to this study variable group. This is the sole link between study variables and their group: each study variable MUST be referenced by exactly one study variable group.
 | Integer List
@@ -116,10 +164,10 @@ If specified, the format suffix should align with the ms_run[1-n]-format paramet
 | False
 | —
 
-| `study_variable[1-n]-group_ref`
-a| A reference to the study_variable_group that this study variable belongs to, allowing study variables to be linked to the experimental design factors they represent.
-| \{STUDY_VARIABLE_GROUP_ID}
-| *True*
+| `study_variable[1-n]-factors`
+a| Additional parameters or factors, separated by bars, that are known about study variables allowing the capture of more complex, such as nested designs.
+| Param List
+| False
 | —
 
 |===
@@ -1472,256 +1520,6 @@ a| —
 
 |===
 
-==== `study_variable[1-n]-group_ref` 🔴 _(Removed in v2.1)_
-
-[cols="15,~,~",options="header"]
-|===
-| Field | v2.0 | v2.1
-
-| Description
-a| A reference to the study_variable_group that this study variable belongs to, allowing study variables to be linked to the experimental design factors they represent.
-a| _(not present)_
-
-| Type
-a| \{STUDY_VARIABLE_GROUP_ID}
-a| _(not present)_
-
-| Mandatory | True | _(not present)_
-
-| Nullable | — | _(not present)_
-
-| Example
-a| ....
-MTD study_variable[1]-group_ref study_variable_group[1]
-MTD study_variable[2]-group_ref study_variable_group[1]
-MTD study_variable[3]-group_ref study_variable_group[2]
-....
-a| _(not present)_
-
-|===
-
-==== `study_variable_group[1-n]`
-
-NOTE: ⚠️ Changed fields: Description, Example
-
-[cols="15,~,~",options="header"]
-|===
-| Field | v2.0 | v2.1
-
-| Description
-a| *A parameter defining the group to which the study variable belongs. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter or a user-defined parameter. At least one study_variable_group MUST be defined. For software that does not capture study variables, a single study_variable_group MUST be reported, linking to the single study variable. This single study_variable_group MUST have the identifier “undefined”. Added in mzTab-M 2.1.*
-a| *The study variable group name.*
-
-| Type
-a| Parameter
-a| Parameter
-
-| Mandatory | True | True
-
-| Nullable | — | —
-
-| Example
-a| ....
-MTD study_variable_group[1] [,,sex,]
-MTD study_variable_group[2] [EFO, EFO:0004953, date of diagnosis, ]
-....
-a| ....
-----
-MTD	study_variable_group[1]	[PATO, PATO:0000383, sex, ]
-MTD	study_variable_group[1]-description	Sex of the individual
-MTD	study_variable_group[1]-type	[STATO, STATO:0000252, categorical variable, ]
-MTD	study_variable_group[1]-datatype	xsd:string
-MTD	study_variable_group[1]-study_variable_refs	study_variable[1]
-MTD	study_variable_group[2]	[PATO, PATO:0000384, timepoint, ]
-MTD	study_variable_group[2]-description	Time after treatment
-MTD	study_variable_group[2]-type	[STATO, STATO:0000228, ordinal variable, ]
-MTD	study_variable_group[2]-datatype	xsd:integer
-MTD	study_variable_group[2]-unit	[UO, UO:0000033, day, ]
-MTD	study_variable_group[2]-study_variable_refs	study_variable[2]
-MTD	study_variable[1]	Female_0day
-MTD	study_variable[1]-assay_refs	assay[1]\{vbar} assay[2]\{vbar} assay[3]
-MTD	study_variable[2]	Female_1day
-MTD	study_variable[2]-assay_refs	assay[4]\{vbar} assay[5]\{vbar} assay[6]
-----
-....
-
-|===
-
-==== `study_variable_group[1-n]-description`
-
-NOTE: ⚠️ Changed fields: Description, Mandatory, Example
-
-[cols="15,~,~",options="header"]
-|===
-| Field | v2.0 | v2.1
-
-| Description
-a| *A textual description of the study variable group.*
-a| *Description of the study variable group.*
-
-| Type
-a| String
-a| String
-
-| Mandatory | *True (if study_variable_group is defined)* | *False*
-
-| Nullable | — | —
-
-| Example
-a| ....
-MTD study_variable_group[1]-description Sex of the individual
-....
-a| —
-
-|===
-
-==== `study_variable_group[1-n]-type`
-
-NOTE: ⚠️ Changed fields: Description, Example
-
-[cols="15,~,~",options="header"]
-|===
-| Field | v2.0 | v2.1
-
-| Description
-a| *The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of the examples below. While the `type` also has implications for how the variables are encoded/decoded, that information goes into the `study_variable_group[1-n]-datatype`. +
- +
- The following data types are supported: +
- +
-* **categorical** – `[STATO, STATO:0000252, categorical variable]` is a variable that can only assume a finite number of values without inherent ordering. In programming languages often represented as enums, factors (in R), or strings. +
- +
-* **ordinal** – `[STATO, STATO:0000228, ordinal variable]` Ordered variable where the sequence matters but intervals between levels are undefined. These values represent categories with a defined sequence or ranking. Example: disease severity (mild, moderate, severe), confidence levels (low, medium, high). +
- +
-* **continuous** – `[STATO, STATO:0000251, continuous variable]` is a variable that can take any value within a range on a continuous scale. Example: temperature, height, concentration, time. +
- +
-Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).*
-a| *The study variable group type, as defined by the parameter.*
-
-| Type
-a| Parameter
-a| Parameter
-
-| Mandatory | False | False
-
-| Nullable | — | —
-
-| Example
-a| ....
-MTD study_variable_group[1]-type [STATO, STATO:0000252, categorical variable]
-MTD study_variable_group[2]-type [STATO, STATO:0000228, ordinal variable]
-MTD study_variable_group[3]-type [STATO, STATO:0000251, continuous variable]
-....
-a| —
-
-|===
-
-==== `study_variable_group[1-n]-datatype`
-
-NOTE: ⚠️ Changed fields: Description, Type, Example
-
-[cols="15,~,~",options="header"]
-|===
-| Field | v2.0 | v2.1
-
-| Description
-a| *The datatype of the group variable, which determines how they can be encoded and parsed in mzTab-M files, and how the values could be handled in programming languages. +
- +
-Producers of mzTab-M 2.1.0 SHOULD provide a `datatype` for each `study_variable_group` to simplify interpretation by downstream consumers of the format. The field is not mandatory, but its presence removes ambiguity about how the associated values are encoded and should be parsed. +
- +
-The following datatypes are supported: +
- +
-* xsd:string – Character string. +
-* xsd:integer – Arbitrary‑size integer. +
-* xsd:decimal – Arbitrary‑precision decimal number. +
-* xsd:boolean – Boolean value (`true` / `false`). +
-* xsd:date – Calendar date, encoded in ISO 8601 format (`YYYY-MM-DD`). +
-* xsd:time – Time of day, encoded in ISO 8601 format (`hh:mm:ss`, optional fractional seconds and timezone). +
-* xsd:dateTime – Combined date and time, encoded in ISO 8601 format (`YYYY-MM-DDThh:mm:ss`, with optional fractional seconds and timezone, e.g. `YYYY-MM-DDThh:mm:ssZ`). +
-* xsd:anyURI – A Uniform Resource Identifier reference. +
- +
-Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).*
-a| *The datatype of the group variable, which determines how they can be encoded and parsed in mzTab-M files, and how the values could be handled in programming languages. +
- +
-Producers of mzTab-M 2.1.0 SHOULD provide a `datatype` for each `study_variable_group` to simplify interpretation by downstream consumers of the format. The field is not mandatory, but its presence removes ambiguity about how the associated values are encoded and should be parsed. +
- +
-The following datatypes are supported: +
- +
-* xsd:string – Character string. +
-* xsd:integer – Arbitrary‑size integer. +
-* xsd:decimal – Arbitrary‑precision decimal number. +
-* xsd:boolean – Boolean value (`true` / `false`). +
-* xsd:date – Calendar date, encoded in ISO 8601 format (`YYYY-MM-DD`). +
-* xsd:time – Time of day, encoded in ISO 8601 format (`hh:mm:ss`, optional fractional seconds and timezone). +
-* xsd:dateTime – Combined date and time, encoded in ISO 8601 format (`YYYY-MM-DDThh:mm:ss`, with optional fractional seconds and timezone, e.g. `YYYY-MM-DDThh:mm:ssZ`). +
-* xsd:anyURI – A Uniform Resource Identifier reference. +
-* Parameter – The values of the linked study_variables are reported as a Parameter (user-defined or CV Parameter), using the standard mzTab-M Parameter syntax `[CV, accession, name, value]`. +
- +
-Writers MUST ensure that the values of the `study_variable` entries belonging to the same `study_variable_group` all have the same type (e.g. string, number, ...) and use the same convention of reporting the value directly or as a Parameter, consistent with the `datatype` declared on the group. If the `study_variable_group` defines the `datatype` as `Parameter`, the CVParam qualifying the `study_variable_group` itself can be of a different CV origin than the CVParams used in the linked `study_variable` values. +
- +
-Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).*
-
-| Type
-a| *String (constrained)*
-a| *Parameter*
-
-| Mandatory | False | False
-
-| Nullable | — | —
-
-| Example
-a| ....
-MTD study_variable_group[1]-datatype xsd:string
-MTD study_variable_group[2]-datatype xsd:decimal
-MTD study_variable_group[3]-datatype xsd:date
-....
-a| ....
-----
-MTD	study_variable_group[1]-datatype	....
-MTD	study_variable_group[1]-datatype	xsd:string
-MTD	study_variable_group[4]-datatype	Parameter
-COM	each group lists its member study variables (top-down link):
-MTD	study_variable_group[1]-study_variable_refs	study_variable[1]
-MTD	study_variable_group[4]-study_variable_refs	study_variable[2]\{vbar} study_variable[3]
-COM	plain string value:
-MTD	study_variable[1]	Male
-COM	user-defined Parameter value:
-MTD	study_variable[2]	[,,Male,]
-COM	CV Parameter value:
-MTD	study_variable[3]	[NCIT, NCIT:C20197, Male, ]
-----
-....
-
-|===
-
-==== `study_variable_group[1-n]-unit`
-
-NOTE: ⚠️ Changed fields: Description, Example
-
-[cols="15,~,~",options="header"]
-|===
-| Field | v2.0 | v2.1
-
-| Description
-a| *An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.). This SHOULD only be used for numeric or scalar values.*
-a| *The study variable group unit, as defined by the parameter.*
-
-| Type
-a| Parameter
-a| Parameter
-
-| Mandatory | False | False
-
-| Nullable | — | —
-
-| Example
-a| ....
-MTD study_variable_group[1]-unit [UO, UO:0000033, day, ]
-MTD study_variable_group[2]-unit [UO, UO:0000010, second, ]
-....
-a| —
-
-|===
-
 ==== `study_variable[1-n]-average_function`
 
 NOTE: ⚠️ Changed fields: Description, Example
@@ -1775,6 +1573,32 @@ a| ....
 MTD study_variable-variation_function [MS, MS:1002885, standard error, ]
 ....
 a| —
+
+|===
+
+==== `study_variable[1-n]-factors` 🔴 _(Removed in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| Additional parameters or factors, separated by bars, that are known about study variables allowing the capture of more complex, such as nested designs.
+a| _(not present)_
+
+| Type
+a| Param List
+a| _(not present)_
+
+| Mandatory | False | _(not present)_
+
+| Nullable | — | _(not present)_
+
+| Example
+a| ....
+MTD study_variable[1]-factors [,,rapamycin dose,0.5mg]
+....
+a| _(not present)_
 
 |===
 
@@ -2480,6 +2304,177 @@ a| ....
 MTD	study_variable[1]-ms_run_ref	ms_run[1]\{vbar} ms_run[2]
 ----
 ....
+
+|===
+
+==== `study_variable_group[1-n]` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| The study variable group name.
+
+| Type
+a| _(not present)_
+a| Parameter
+
+| Mandatory | _(not present)_ | True
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| ....
+----
+MTD	study_variable_group[1]	[PATO, PATO:0000383, sex, ]
+MTD	study_variable_group[1]-description	Sex of the individual
+MTD	study_variable_group[1]-type	[STATO, STATO:0000252, categorical variable, ]
+MTD	study_variable_group[1]-datatype	xsd:string
+MTD	study_variable_group[1]-study_variable_refs	study_variable[1]
+MTD	study_variable_group[2]	[PATO, PATO:0000384, timepoint, ]
+MTD	study_variable_group[2]-description	Time after treatment
+MTD	study_variable_group[2]-type	[STATO, STATO:0000228, ordinal variable, ]
+MTD	study_variable_group[2]-datatype	xsd:integer
+MTD	study_variable_group[2]-unit	[UO, UO:0000033, day, ]
+MTD	study_variable_group[2]-study_variable_refs	study_variable[2]
+MTD	study_variable[1]	Female_0day
+MTD	study_variable[1]-assay_refs	assay[1]\{vbar} assay[2]\{vbar} assay[3]
+MTD	study_variable[2]	Female_1day
+MTD	study_variable[2]-assay_refs	assay[4]\{vbar} assay[5]\{vbar} assay[6]
+----
+....
+
+|===
+
+==== `study_variable_group[1-n]-description` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| Description of the study variable group.
+
+| Type
+a| _(not present)_
+a| String
+
+| Mandatory | _(not present)_ | False
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| —
+
+|===
+
+==== `study_variable_group[1-n]-type` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| The study variable group type, as defined by the parameter.
+
+| Type
+a| _(not present)_
+a| Parameter
+
+| Mandatory | _(not present)_ | False
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| —
+
+|===
+
+==== `study_variable_group[1-n]-datatype` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| The datatype of the group variable, which determines how they can be encoded and parsed in mzTab-M files, and how the values could be handled in programming languages. +
+ +
+Producers of mzTab-M 2.1.0 SHOULD provide a `datatype` for each `study_variable_group` to simplify interpretation by downstream consumers of the format. The field is not mandatory, but its presence removes ambiguity about how the associated values are encoded and should be parsed. +
+ +
+The following datatypes are supported: +
+ +
+* xsd:string – Character string. +
+* xsd:integer – Arbitrary‑size integer. +
+* xsd:decimal – Arbitrary‑precision decimal number. +
+* xsd:boolean – Boolean value (`true` / `false`). +
+* xsd:date – Calendar date, encoded in ISO 8601 format (`YYYY-MM-DD`). +
+* xsd:time – Time of day, encoded in ISO 8601 format (`hh:mm:ss`, optional fractional seconds and timezone). +
+* xsd:dateTime – Combined date and time, encoded in ISO 8601 format (`YYYY-MM-DDThh:mm:ss`, with optional fractional seconds and timezone, e.g. `YYYY-MM-DDThh:mm:ssZ`). +
+* xsd:anyURI – A Uniform Resource Identifier reference. +
+* Parameter – The values of the linked study_variables are reported as a Parameter (user-defined or CV Parameter), using the standard mzTab-M Parameter syntax `[CV, accession, name, value]`. +
+ +
+Writers MUST ensure that the values of the `study_variable` entries belonging to the same `study_variable_group` all have the same type (e.g. string, number, ...) and use the same convention of reporting the value directly or as a Parameter, consistent with the `datatype` declared on the group. If the `study_variable_group` defines the `datatype` as `Parameter`, the CVParam qualifying the `study_variable_group` itself can be of a different CV origin than the CVParams used in the linked `study_variable` values. +
+ +
+Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).
+
+| Type
+a| _(not present)_
+a| Parameter
+
+| Mandatory | _(not present)_ | False
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| ....
+----
+MTD	study_variable_group[1]-datatype	....
+MTD	study_variable_group[1]-datatype	xsd:string
+MTD	study_variable_group[4]-datatype	Parameter
+COM	each group lists its member study variables (top-down link):
+MTD	study_variable_group[1]-study_variable_refs	study_variable[1]
+MTD	study_variable_group[4]-study_variable_refs	study_variable[2]\{vbar} study_variable[3]
+COM	plain string value:
+MTD	study_variable[1]	Male
+COM	user-defined Parameter value:
+MTD	study_variable[2]	[,,Male,]
+COM	CV Parameter value:
+MTD	study_variable[3]	[NCIT, NCIT:C20197, Male, ]
+----
+....
+
+|===
+
+==== `study_variable_group[1-n]-unit` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| The study variable group unit, as defined by the parameter.
+
+| Type
+a| _(not present)_
+a| Parameter
+
+| Mandatory | _(not present)_ | False
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| —
 
 |===
 
