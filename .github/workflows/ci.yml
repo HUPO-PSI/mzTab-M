@@ -7,6 +7,8 @@ on:
   pull_request:
     branches:
       - main
+    types: [opened, synchronize, reopened, closed]
+  workflow_call:
 
 env:
   DOC_IN: "${{ github.workspace }}/specification_documents"
@@ -59,3 +61,66 @@ jobs:
             output/${{ env.RELEASE_DIR }}/*.html
             output/${{ env.RELEASE_DIR }}/*.docx
           retention-days: 90
+
+  build-docs:
+    name: Build Antora documentation
+    needs: build-spec
+    # Skip in workflow_call context — release.yml has its own publish-site job.
+    # Also skip when a PR is closed without merging (no deployment value).
+    if: github.event_name != 'workflow_call' && !(github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == false)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout repository (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch all remote branches
+        run: git fetch --all
+
+      - name: Create local tracking branches for existing release versions
+        run: |
+          for branch in $(git branch -r | grep 'origin/v' | sed 's|.*origin/||'); do
+            git branch "$branch" "origin/$branch" 2>/dev/null || true
+          done
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install Antora and extensions
+        run: npm ci
+
+      - name: Build Antora site
+        env:
+          ANTORA_EDIT_BRANCH: main
+        run: |
+          npx antora antora-playbook.yml \
+            --attribute "commit-hash=${{ github.sha }}" \
+            --attribute "build-date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+      - name: Upload GitHub Pages artifact
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/site/
+
+  deploy-docs:
+    name: Deploy documentation to GitHub Pages
+    needs: build-docs
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

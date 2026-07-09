@@ -1,0 +1,49 @@
+= Validation Profiles
+
+Validation profiles define which fields are mandatory, recommended, or optional for a given reporting scenario.
+They allow the validator to give precise, context-sensitive feedback rather than applying a single fixed rule set to all files.
+
+NOTE: Validation profiles are under active development for mzTab-M 2.1.
+The definitions below reflect the current working draft; they may change before the 2.1 release.
+
+== Profile Definitions
+
+=== Summary Mode
+
+Applies when `mzTab-mode` is `Summary`.
+Only the MTD and SML sections are required.
+SMF and SME sections are permitted but not required.
+
+This profile suits use cases where only consolidated, assay-level results are available (e.g., exported from a quantification tool without feature-level detail).
+
+=== Complete Mode
+
+Applies when `mzTab-mode` is `Complete`.
+MTD, SML, SMF, and SME sections are all required.
+All cross-references between sections must be fully resolved.
+
+This profile is required for MetaboLights submission and for datasets where full identification evidence traceability is expected.
+
+== Identification Confidence Levels
+
+Both profiles apply the PSI-MS identification confidence level vocabulary:
+
+[cols="1,2,3"]
+|===
+|Level |PSI-MS term |Meaning
+
+|1 |MS:1002955 |Unambiguous molecular structure and adduct
+|2a |MS:1002956 |Probable structure via library match
+|2b |MS:1002957 |Probable structure via in silico prediction
+|3 |MS:1002958 |Putative molecular class
+|4 |MS:1002959 |Unknown
+|===
+
+See the xref:developers:specification.adoc[specification] for full rules on how confidence levels interact with mandatory fields.
+
+== Mapping Files
+
+Profile-specific field mappings are defined as XML documents in `schema/`:
+
+* `schema/mzTab_2_1-M_mapping.xml` — general field validation mapping
+* `schema/mzTab_2_1-M_metabolights_mapping.xml` — MetaboLights submission constraints

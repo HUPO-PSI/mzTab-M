@@ -1,0 +1,915 @@
+/* antora-doc-layout: layered after antora default UI and site-extra.css (dark theme).
+   Source Sans 3, a doc mast (breadcrumbs) instead of a separate in-article toolbar,
+   and a sidebar with component label + page navigation tree. */
+
+:root {
+  --adt-mast-h: 2.75rem;
+  --adt-mast-total: calc(3.5rem + var(--adt-mast-h));
+  --adt-font: "Source Sans 3", system-ui, "Segoe UI", sans-serif;
+  /* Component + version breadcrumb kickers (same color for both) */
+  --adt-bc-kicker-fg: #1976d2;
+  --adt-bc-kicker-bg: rgba(0, 0, 0, 0.04);
+  --adt-bc-kicker-border: #ddd;
+  /* Top bar: all controls (logo hit-area, title, theme, org GitHub) share one line height */
+  --adt-header-ctrl: 2.5rem;
+  /* Light theme (default): light header strip — not a black bar */
+  --adt-header-bar-bg: #f2f3f5;
+  --adt-header-bar-fg: #1a1a1a;
+  --adt-header-bar-border: #d8d8d8;
+  --adt-header-bar-hover: rgba(0, 0, 0, 0.07);
+  /* Raster/SVG VCS marks (white in file): invert for light top bar. */
+  --adt-header-vcs-icon-filter: brightness(0) opacity(0.92);
+  /* Top rails (nav is outside main; .content is main > .content):
+     - --adt-global-rail-top: shared baseline (nav + main row).
+     - --adt-content-rail-top: optional *extra* top padding for .content only (0 = nav and .content
+       stay aligned; theme hackers can offset the article/TOC without moving the left nav). */
+  --adt-global-rail-top: 1rem;
+  --adt-content-rail-top: 0rem;
+  /* Horizontal rail: one value for .adt-doc-mast, breadcrumb home hit-area, and left nav. Stock UI
+     uses calc(var(--toolbar-height) / 4) for the old in-article toolbar; the mast + sidebar must
+     share the *same* inset so the home icon, component title, and first tree column line up. */
+  --adt-mast-pad-h: 1rem;
+  --adt-global-rail-hpad: var(--adt-mast-pad-h);
+}
+
+html.dark-theme {
+  --adt-bc-kicker-fg: #8ec5ff;
+  --adt-bc-kicker-bg: rgba(255, 255, 255, 0.06);
+  --adt-bc-kicker-border: rgba(255, 255, 255, 0.12);
+  /* Dark header: keep white foreground on dark bar (GitHub mark stays white; no filter) */
+  --adt-header-bar-bg: #141517;
+  --adt-header-bar-fg: #f1f3f5;
+  --adt-header-bar-border: #2c2e33;
+  --adt-header-bar-hover: rgba(255, 255, 255, 0.1);
+  --adt-header-vcs-icon-filter: none;
+}
+
+html {
+  font-family: var(--adt-font);
+}
+
+/* Default UI: body { padding-top: var(--navbar-height) } for a fixed, separate top .navbar. FTN uses
+   a single in-flow .header; that padding leaves an empty 3.5rem gap—remove it. */
+html body {
+  padding-top: 0 !important;
+}
+
+body,
+button,
+input,
+select,
+optgroup,
+textarea,
+.navbar,
+.navbar-item,
+.breadcrumbs,
+.doc,
+footer.footer {
+  font-family: var(--adt-font) !important;
+}
+
+code,
+kbd,
+pre,
+.spectrum,
+.doc .conum {
+  /* Keep a distinct monospace; Roboto still loads from the default bundle */
+  font-family: "Roboto Mono", ui-monospace, monospace;
+}
+
+/* ——— Top bar: light strip in “light” theme, dark strip in dark theme ——— */
+.header.adt-header {
+  display: block;
+  color: var(--adt-header-bar-fg);
+  box-sizing: border-box;
+  /* Mast has its own fill and bottom border; top row is .adt-site-navbar (sticky + opaque). */
+  background: transparent;
+}
+
+/* Sticky first row: must be solid so page content does not show through on scroll. */
+.adt-site-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  width: 100%;
+  min-height: 3.5rem;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 0 0.6rem 0 0.5rem;
+  column-gap: 0.75rem;
+  background: var(--adt-header-bar-bg) !important;
+  color: inherit;
+  border-bottom: 1px solid var(--adt-header-bar-border);
+}
+
+.header.adt-header .adt-topbar,
+.header.adt-header .adt-topbar .navbar-end {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-left: auto;
+}
+
+.adt-header-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  column-gap: 0.15rem;
+  min-height: var(--adt-header-ctrl);
+}
+
+/* Keep the end links visible: no Bulma burger for this project */
+.header.adt-header .navbar-menu.adt-topbar {
+  display: flex !important;
+  flex: 0 0 auto;
+  max-height: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  overflow: visible;
+}
+
+.header.adt-header .adt-topbar,
+.header.adt-header .adt-topbar .navbar-end {
+  color: inherit;
+  background: transparent;
+}
+
+/* Brand: food truck mark (→ main site) + “Documentation” (→ docs home) */
+.adt-header-brand {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  min-width: 0;
+  flex: 1 1 auto;
+  min-height: var(--adt-header-ctrl);
+  column-gap: 0.15rem;
+}
+
+.adt-header-logo-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: var(--adt-header-ctrl);
+  height: var(--adt-header-ctrl);
+  min-width: var(--adt-header-ctrl);
+  min-height: var(--adt-header-ctrl);
+  padding: 0;
+  line-height: 0;
+  border-radius: 0.2rem;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.adt-header-logo-item:hover,
+.adt-header-logo-item:focus {
+  background: var(--adt-header-bar-hover);
+  outline: none;
+}
+
+.adt-header-logo {
+  display: block;
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+/* logo.svg uses currentColor; raster <img> does not inherit — default paint reads as dark on dark bar */
+html.dark-theme .adt-header-logo {
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+}
+
+a.adt-header-title,
+.navbar-item.adt-header-title {
+  color: var(--adt-header-bar-fg) !important;
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: 0.01em;
+  padding: 0 0.4rem 0 0.15rem;
+  min-height: var(--adt-header-ctrl);
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+a.adt-header-title:hover,
+a.adt-header-title:focus {
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+/* Header end controls (GitHub, theme) — one shape; beats site-extra .theme-toggle:hover colors. */
+.header.adt-header .navbar .navbar-end .adt-header-icon-btn {
+  min-width: var(--adt-header-ctrl) !important;
+  min-height: var(--adt-header-ctrl) !important;
+  width: var(--adt-header-ctrl) !important;
+  height: var(--adt-header-ctrl) !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 0.2rem;
+  text-decoration: none;
+  color: var(--adt-header-bar-fg) !important;
+  background: transparent !important;
+  cursor: pointer;
+}
+
+/* :focus (mouse click) would keep the “hover” fill until click-away—use :focus-visible for keyboard. */
+.header.adt-header .navbar .navbar-end .adt-header-icon-btn:hover {
+  background: var(--adt-header-bar-hover) !important;
+  text-decoration: none;
+}
+
+.header.adt-header .navbar .navbar-end .adt-header-icon-btn:focus {
+  outline: none;
+  background: transparent !important;
+}
+
+.header.adt-header .navbar .navbar-end .adt-header-icon-btn:focus-visible {
+  background: var(--adt-header-bar-hover) !important;
+  outline: 2px solid var(--adt-header-bar-fg);
+  outline-offset: 2px;
+}
+
+/* VCS mark in file is white: filter on light top bar, none on dark. */
+.adt-header-vcs .adt-header-vcs-img,
+.adt-header-icon-btn.adt-header-vcs .adt-header-vcs-img {
+  width: 24px;
+  height: 24px;
+  display: block;
+  object-fit: contain;
+  flex-shrink: 0;
+  pointer-events: none;
+  filter: var(--adt-header-vcs-icon-filter, none);
+}
+
+.header.adt-header .adt-header-icon-btn .theme-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.header.adt-header .adt-header-icon-btn .theme-icon path,
+.header.adt-header .adt-header-icon-btn .theme-icon circle {
+  fill: none;
+}
+
+@media screen and (min-width: 1024px) {
+  .adt-header .adt-topbar,
+  .adt-header .adt-topbar .navbar-end {
+    flex: 0 0 auto;
+  }
+  .adt-header-brand {
+    min-width: 0;
+  }
+}
+
+/* ——— Doc mast: component, version, breadcrumb trail, edit — not in the content column ——— */
+.adt-doc-mast {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--adt-mast-h);
+  padding: 0.35rem var(--adt-mast-pad-h) 0.35rem var(--adt-mast-pad-h);
+  position: sticky;
+  top: 3.5rem;
+  z-index: 3;
+  background: #f5f5f5;
+  border-bottom: 1px solid #e1e1e1;
+  box-sizing: border-box;
+}
+
+html.dark-theme .adt-doc-mast {
+  background: #1a1a1a;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.adt-doc-mast .nav-toggle {
+  flex: 0 0 auto;
+  align-self: center;
+}
+
+@media screen and (min-width: 1024px) {
+  .adt-doc-mast .nav-toggle {
+    display: none;
+  }
+}
+
+.adt-doc-mast-center {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Left nav: in-flow column fills the same height as main; tree uses overflow only when needed. */
+@media screen and (min-width: 1024px) {
+  .body.adt-body {
+    align-items: stretch;
+    min-height: var(--body-min-height);
+  }
+
+  .nav-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-self: stretch !important;
+    min-height: 0 !important;
+  }
+
+  .nav {
+    position: static !important;
+    top: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  .nav .panels {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  .nav-panel-menu {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow-y: auto !important;
+  }
+}
+
+.nav-panel-menu,
+.nav-panel-explore .components {
+  overflow-y: auto !important;
+}
+
+/* Mobile overlay: account for the mast in addition to the main navbar */
+@media screen and (max-width: 1023.5px) {
+  .nav-container {
+    top: var(--adt-mast-total) !important;
+  }
+
+  .nav {
+    top: 2.5rem;
+    height: calc(100vh - var(--adt-mast-total) - 2.5rem);
+  }
+}
+
+/* Article column no longer has the old toolbar; avoid extra top gap if any */
+.adt-article {
+  min-width: 0;
+}
+
+/* Inset article + in-page TOC. padding-top = global + optional content-only rail. */
+.adt-article .content {
+  padding-top: calc(var(--adt-global-rail-top) + var(--adt-content-rail-top));
+  box-sizing: border-box;
+}
+
+/* ——— Content rail: TOC h3 (Antora’s fake height/flex) ——— */
+.adt-article .content .toc .toc-menu h3 {
+  display: block;
+  height: auto;
+  min-height: 0;
+  flex-direction: unset;
+  justify-content: unset;
+  /* Top inset is .content’s padding; only label↔list gap */
+  margin: 0;
+  padding: 0 0 0.25rem 0;
+}
+
+/* ——— Page title (Edit link lives in the mast next to the breadcrumb trail) ——— */
+/* Antora: .doc h1 { margin: 1rem 0 0 } still matches the layout h1 (not only .doc > h1:first-child).
+   Zero it here so the only top inset is .content’s padding. */
+.doc .adt-page-header,
+.adt-article .adt-page-header {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.75rem 1rem;
+  min-width: 0;
+  margin-top: 0;
+  margin-bottom: 0.35rem;
+  padding-top: 0;
+}
+
+.doc .adt-page-header h1.page.adt-page-title,
+.adt-article .adt-page-header h1.page.adt-page-title {
+  margin: 0;
+  padding: 0;
+}
+
+.doc .adt-page-title,
+.adt-article .adt-page-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 480px) {
+  .doc .adt-page-title,
+  .adt-article .adt-page-title {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+}
+
+/* ——— Breadcrumb row in mast ——— */
+.adt-breadcrumbs {
+  display: block;
+  width: 100%;
+  font-size: 0.85rem;
+  line-height: 1.25;
+}
+
+.adt-breadcrumbs > ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.4rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.adt-breadcrumbs > ul > li {
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.adt-breadcrumb-masthead {
+  flex: 0 0 auto;
+}
+
+/* Trail segments: borrow doc-style link weight (don’t paint parent li +li gray — that hid link color) */
+.adt-breadcrumb-trail {
+  display: flex;
+  align-items: center;
+  min-height: 1.5rem;
+  line-height: 1.4;
+  font-size: 0.9rem;
+  max-width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.adt-breadcrumb-trail .adt-breadcrumb-trail-link {
+  color: #1565c0;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.adt-breadcrumb-trail .adt-breadcrumb-trail-link:hover {
+  text-decoration: underline;
+}
+
+.adt-breadcrumb-trail--current .adt-breadcrumb-trail-link,
+.adt-breadcrumb-trail--current .adt-breadcrumb-trail-text,
+.adt-breadcrumb-trail-text {
+  color: #212121;
+  font-weight: 600;
+}
+
+html.dark-theme .adt-breadcrumb-trail .adt-breadcrumb-trail-link {
+  color: #4dabf7;
+}
+
+html.dark-theme .adt-breadcrumb-trail--current .adt-breadcrumb-trail-link,
+html.dark-theme .adt-breadcrumb-trail--current .adt-breadcrumb-trail-text,
+html.dark-theme .adt-breadcrumb-trail-text {
+  color: #e6e6e6;
+}
+
+/* “Edit” next to page trail (compact label vs. old in-article “Edit this page”) */
+.adt-breadcrumb-edit {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  margin-left: 0.1rem;
+  list-style: none;
+}
+
+.adt-breadcrumb-edit .adt-edit-inline-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.2rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #1565c0;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.adt-breadcrumb-edit .adt-edit-inline-link:hover {
+  text-decoration: underline;
+}
+
+html.dark-theme .adt-breadcrumb-edit .adt-edit-inline-link {
+  color: #4dabf7;
+}
+
+/* White VCS assets: dark silhouette on light mast; full color on dark mast */
+.adt-breadcrumb-edit .adt-edit-vcs-img {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  object-fit: contain;
+  filter: brightness(0) opacity(0.55);
+  vertical-align: middle;
+}
+
+html.dark-theme .adt-breadcrumb-edit .adt-edit-vcs-img {
+  filter: none;
+  opacity: 0.95;
+}
+
+.adt-bc-menu-item a,
+.adt-bc-menu-item a.adt-cmp-version-pill {
+  text-decoration: none;
+}
+
+.adt-breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+/* Default UI adds `/` after every .breadcrumbs li and uses display:inline — breaks component dropdown */
+.adt-breadcrumbs .adt-bc-dropdown li,
+.breadcrumbs.adt-breadcrumbs .adt-bc-dropdown li {
+  display: block !important;
+}
+
+.adt-breadcrumbs .adt-bc-dropdown li::after,
+.breadcrumbs.adt-breadcrumbs .adt-bc-dropdown li::after {
+  content: none !important;
+  padding: 0 !important;
+}
+
+.adt-breadcrumb-home {
+  flex: 0 0 auto;
+  list-style: none;
+}
+
+.adt-breadcrumb-home-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.2rem;
+  color: #1976d2;
+  text-decoration: none;
+  vertical-align: middle;
+}
+
+.adt-breadcrumb-home-link:hover {
+  background: rgba(0, 0, 0, 0.06);
+  text-decoration: none;
+}
+
+html.dark-theme .adt-breadcrumb-home-link {
+  color: #8ec5ff;
+}
+
+html.dark-theme .adt-breadcrumb-home-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.adt-breadcrumb-home-icon {
+  display: block;
+}
+
+.adt-bc-sep {
+  user-select: none;
+  color: #666;
+  font-weight: 500;
+  padding: 0 0.1rem;
+}
+
+html.dark-theme .adt-bc-sep {
+  color: #7a7a7a;
+}
+
+.adt-bc-cluster {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.3rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.adt-bc-menu {
+  position: relative;
+  display: inline-block;
+  min-width: 0;
+}
+
+.adt-bc-kicker {
+  display: inline-flex;
+  align-items: center;
+  max-width: 12rem;
+  min-height: 1.5rem;
+  margin: 0;
+  padding: 0.15rem 0.4rem;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+  color: var(--adt-bc-kicker-fg);
+  background: var(--adt-bc-kicker-bg);
+  border: 1px solid var(--adt-bc-kicker-border);
+  border-radius: 0.2rem;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 1;
+}
+
+.adt-bc-kicker-version {
+  max-width: 7rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* [hidden] must win over #adt-bc-proj / #adt-bc-ver (ID + display:block !important from layout fixes) */
+.adt-bc-dropdown[hidden],
+#adt-bc-proj[hidden],
+#adt-bc-ver[hidden],
+.adt-bc-dropdown--components[hidden],
+.adt-bc-dropdown--version[hidden] {
+  display: none !important;
+}
+
+.adt-bc-dropdown {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  margin: 0.2rem 0 0 0;
+  min-width: 10rem;
+  max-width: 20rem;
+  max-height: 16rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 20;
+  padding: 0.2rem 0;
+  list-style: none;
+  display: block !important;
+  flex-wrap: nowrap !important;
+  flex-direction: column !important;
+  columns: 1 !important;
+  white-space: normal;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 0.2rem;
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.12);
+  box-sizing: border-box;
+}
+
+/* Single column, full-width rows (override bundle / spectrum flex or multi-col creep) */
+.adt-bc-dropdown--components,
+.adt-bc-dropdown--version,
+#adt-bc-proj,
+#adt-bc-ver {
+  display: block !important;
+  width: max-content;
+  min-width: min(100%, 12rem);
+  max-width: min(100vw - 1.5rem, 24rem) !important;
+}
+
+.adt-bc-dropdown--components > li,
+.adt-bc-dropdown--version > li,
+#adt-bc-proj > li,
+#adt-bc-ver > li {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  float: none !important;
+  clear: both !important;
+  box-sizing: border-box;
+}
+
+#adt-bc-proj .adt-bc-menu-item a {
+  display: block !important;
+  width: 100%;
+  box-sizing: border-box;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+#adt-bc-ver .adt-bc-menu-item a {
+  display: block !important;
+  width: 100%;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html.dark-theme .adt-bc-dropdown {
+  background: #1a1a1a;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.45);
+}
+
+.adt-bc-menu-item a {
+  display: block;
+  padding: 0.4rem 0.65rem;
+  font-size: 0.8rem;
+  line-height: 1.2;
+  color: #191919;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html.dark-theme .adt-bc-menu-item a {
+  color: #e6e6e6;
+}
+
+.adt-bc-menu-item a.is-current,
+.adt-bc-menu-item a.is-current:hover {
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+html.dark-theme .adt-bc-menu-item a.is-current {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.adt-bc-version-pill.is-missing {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ——— Nav: insets = mast horizontal padding so the tree lines up with .adt-breadcrumb-home.
+   The base ui-bundle’s .nav-menu still sets padding: … calc(toolbar-height/4); dark-theme or load
+   order can restore that, so this rule is !important. Panel wrappers must not add a second inset. ——— */
+body.adt-body .nav .nav-panel-menu {
+  padding-left: 0;
+  padding-right: 0;
+  box-sizing: border-box;
+}
+
+body.adt-body .nav nav.nav-menu.nav-tree-only,
+body.adt-body .nav nav.nav-menu.adt-nav-tree-only,
+nav.nav-menu.nav-tree-only,
+nav.nav-menu.adt-nav-tree-only {
+  box-sizing: border-box;
+  padding: var(--adt-global-rail-top) var(--adt-global-rail-hpad) 0.5rem
+    var(--adt-global-rail-hpad) !important;
+}
+
+/* Component label is <p class="adt-nav-component-title"> — not a heading; avoids .nav-menu h3.title / .doc h3. */
+.adt-nav-component-title {
+  margin: 0 0 0.4rem 0;
+  padding: 0.12rem 0;
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  color: #2d2d2d;
+}
+
+/* ——— Sidebar: component root + tree; hide legacy explore ——— */
+
+.adt-nav-component-title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.adt-nav-component-title a:hover {
+  text-decoration: underline;
+}
+
+/* Dark nav link color (site-extra.css is overwritten by sync-antora-dark-theme.cjs) */
+html.dark-theme .nav .adt-nav-component-title,
+html.dark-theme .nav .adt-nav-component-title a {
+  color: #d7d8da;
+}
+
+/* Page tree: smaller + lighter + muted vs. component title.
+   — Antora draws the caret in a 1em×nav-line-height column; without matching left
+     padding on .nav-link/.nav-text, wrapped lines align to the li edge and sit left
+     of the first line. Reserve the same column on every row so folder labels, leaf
+     links, and multi-line text share one text origin. */
+nav.nav-menu.nav-tree-only .nav-item,
+nav.nav-menu.adt-nav-tree-only .nav-item {
+  position: relative;
+}
+
+/* Same label column for links (leaves) and .nav-text (section title without link). */
+nav.nav-menu.nav-tree-only .nav-item > .nav-link,
+nav.nav-menu.adt-nav-tree-only .nav-item > .nav-link,
+nav.nav-menu.nav-tree-only .nav-item > .nav-text,
+nav.nav-menu.adt-nav-tree-only .nav-item > .nav-text {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-height: 0;
+  margin: 0;
+  text-indent: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  padding: 0.12rem 0.35rem 0.12rem calc(var(--nav-line-height) * 1em + 0.2rem);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: #6a6a6a;
+}
+
+nav.nav-menu.nav-tree-only .nav-item.is-current-page > .nav-link,
+nav.nav-menu.adt-nav-tree-only .nav-item.is-current-page > .nav-link,
+nav.nav-menu.nav-tree-only .nav-item.is-current-page > .nav-link .nav-text,
+nav.nav-menu.adt-nav-tree-only .nav-item.is-current-page > .nav-link .nav-text {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+html.dark-theme nav.nav-menu.nav-tree-only .nav-item > .nav-link,
+html.dark-theme nav.nav-menu.adt-nav-tree-only .nav-item > .nav-link,
+html.dark-theme nav.nav-menu.nav-tree-only .nav-item > .nav-text,
+html.dark-theme nav.nav-menu.adt-nav-tree-only .nav-item > .nav-text {
+  color: #8f9194;
+}
+
+html.dark-theme nav.nav-menu.nav-tree-only .nav-item.is-current-page > .nav-link,
+html.dark-theme nav.nav-menu.adt-nav-tree-only .nav-item.is-current-page > .nav-link,
+html.dark-theme nav.nav-menu.nav-tree-only .nav-item.is-current-page > .nav-link .nav-text,
+html.dark-theme nav.nav-menu.adt-nav-tree-only .nav-item.is-current-page > .nav-link .nav-text {
+  color: #d4d4d4;
+  font-weight: 500;
+}
+
+.nav-panel-explore {
+  display: none !important;
+}
+
+.adt-panels-solo {
+  min-height: 0;
+}
+
+.nav-tree-only .nav-menu-toggle,
+.adt-nav-tree-only .nav-menu-toggle {
+  display: none !important;
+}
+
+/* Don’t need dimmed “inactive” state when only one panel exists */
+.nav-panel-menu.is-active {
+  opacity: 1 !important;
+}
+
+.nav-panel-menu.is-active::after {
+  content: none !important;
+  display: none !important;
+}
+
+.nav-panel-menu {
+  height: 100% !important;
+}
+
+/* ——— Layout ——— */
+.body.adt-body {
+  min-height: 0;
+}
+
+/* Full-width content column: override the default bundle's media-query max-width on .doc */
+.doc {
+  max-width: 100% !important;
+}

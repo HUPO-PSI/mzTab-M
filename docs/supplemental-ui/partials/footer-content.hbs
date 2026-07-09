@@ -1,0 +1,12 @@
+<footer class="footer">
+  <p>
+    Built with <a href="https://antora.org" target="_blank" rel="noopener">Antora</a>{{#if antoraVersion}} <span class="antora-version">({{antoraVersion}})</span>{{/if}}.
+    UI:
+    {{#if site.keys.uiBundleName}}
+    <a href="{{site.keys.uiBundleUrl}}" target="_blank" rel="noopener">{{site.keys.uiBundleName}}</a>
+    {{else}}
+    <a href="https://github.com/antora-supplemental/antora-dark-theme" target="_blank" rel="noopener">antora-dark-theme</a>
+    {{/if}}
+    (MIT){{#if site.keys.footer_note}}. <span class="site-footer-note">{{{site.keys.footer_note}}}</span>{{/if}}.
+  </p>
+</footer>

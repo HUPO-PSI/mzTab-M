@@ -1,0 +1,33 @@
+= Implementations
+
+== jmzTab-m (Java)
+
+https://github.com/lifs-tools/jmztab-m[jmzTab-m] is the reference implementation for mzTab-M in Java.
+It provides:
+
+* A fully typed domain model generated from the OpenAPI schema
+* A parser and writer for mzTab-M files
+* A validation engine that checks files against the specification and xref:validation:profiles.adoc[validation profiles]
+* A REST API web application for online validation (see xref:validation:web-validator.adoc[])
+
+=== Maven / Gradle dependency
+
+[source,xml,subs="attributes+"]
+----
+<dependency>
+  <groupId>de.isas.mztab</groupId>
+  <artifactId>jmztabm-io</artifactId>
+  <version>LATEST</version>
+</dependency>
+----
+
+See the https://github.com/lifs-tools/jmztab-m[jmzTab-m repository] for the current release version and usage examples.
+
+== Generated Clients (Other Languages)
+
+Using https://openapi-generator.tech/[openapi-generator] with `schema/mzTab_2_1-M_openapi.json`, domain model clients can be generated for Python, R, JavaScript, and other languages.
+These clients cover the metadata object model; full parsing and writing support requires additional implementation work.
+
+== Contributing an Implementation
+
+If you have developed an mzTab-M reader, writer, or validator for a language or framework not listed here, please open an issue or pull request on the https://github.com/HUPO-PSI/mzTab-M[mzTab-M repository] to have it listed.

@@ -1,0 +1,13 @@
+= mzTab-M for Users
+
+This section covers everything you need to know to work with mzTab-M files as a researcher or data analyst — from understanding the format structure to running validation and submitting data to repositories.
+
+== Where to Start
+
+* xref:getting-started.adoc[] — install the tools and create or validate your first mzTab-M file.
+* xref:file-format.adoc[] — understand the four sections that make up an mzTab-M file (MTD, SML, SMF, SME).
+* xref:examples.adoc[] — browse annotated example files for common experimental scenarios.
+
+== Tools
+
+The https://github.com/lifs-tools/jmztab-m[jmzTab-m] reference library and the xref:validation:web-validator.adoc[web validator] are the primary tools for reading, writing, and validating mzTab-M files.

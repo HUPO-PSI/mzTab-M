@@ -1,0 +1,910 @@
+/* Dark mode styles for Antora default UI */
+html.dark-theme,
+html.dark-theme body {
+  background-color: #1a1b1e;
+  color: #c1c2c5;
+}
+
+html.dark-theme a {
+  color: #4dabf7;
+}
+
+html.dark-theme a:hover,
+html.dark-theme a:focus {
+  color: #74c0fc;
+}
+
+html.dark-theme .navbar {
+  background-color: #141517;
+  color: #f1f3f5;
+}
+
+html.dark-theme .navbar a,
+html.dark-theme .navbar .navbar-item,
+html.dark-theme .navbar .navbar-link {
+  color: #f1f3f5;
+}
+
+html.dark-theme .navbar .navbar-item:hover,
+html.dark-theme .navbar .navbar-link:hover {
+  background-color: #1f2125;
+}
+
+/* Topbar nav area matches navbar for consistent strip (like light theme) */
+html.dark-theme .navbar .navbar-menu {
+  background-color: #141517;
+  border-color: #373a40;
+}
+
+/* Dropdown panel distinct from navbar so it reads as a menu */
+html.dark-theme .navbar .navbar-dropdown {
+  background-color: #25262b;
+  border-color: #373a40;
+}
+
+/* Dropdown item hover same as regular navbar item hover */
+html.dark-theme .navbar .navbar-dropdown .navbar-item:hover {
+  background-color: #1f2125;
+}
+
+html.dark-theme .navbar .button,
+html.dark-theme .navbar .button.is-primary {
+  background-color: #2c2e33;
+  border-color: #373a40;
+  color: #f1f3f5;
+}
+
+html.dark-theme .navbar .button:hover,
+html.dark-theme .navbar .button.is-primary:hover {
+  background-color: #3b3d42;
+}
+
+html.dark-theme .nav,
+html.dark-theme .nav-panel-menu,
+html.dark-theme .nav-panel-explore,
+html.dark-theme .toolbar {
+  background-color: #25262b;
+  border-color: #373a40;
+  color: #c1c2c5;
+}
+
+/* TOC sidebar transparent so it inherits page background (easier to theme) */
+html.dark-theme .toc.sidebar {
+  background-color: transparent;
+  border-color: #373a40;
+  color: #c1c2c5;
+}
+
+html.dark-theme .nav .title,
+html.dark-theme .nav .title a,
+html.dark-theme .nav .nav-link,
+html.dark-theme .nav .nav-text,
+html.dark-theme .toc.sidebar,
+html.dark-theme .toc.sidebar a {
+  color: #c1c2c5;
+}
+
+html.dark-theme .toc .title,
+html.dark-theme .toc .title a,
+html.dark-theme .toc .toc-menu h3 {
+  color: #ffffff;
+}
+
+html.dark-theme .nav .nav-item.is-current-page>.nav-link {
+  color: #ffffff;
+}
+
+html.dark-theme .content,
+html.dark-theme .doc {
+  color: #c1c2c5;
+}
+
+html.dark-theme .doc h1,
+html.dark-theme .doc h2,
+html.dark-theme .doc h3,
+html.dark-theme .doc h4,
+html.dark-theme .doc h5,
+html.dark-theme .doc h6,
+html.dark-theme .doc .title,
+html.dark-theme .doc .heading {
+  color: #ffffff;
+}
+
+html.dark-theme .doc .sect1,
+html.dark-theme .doc .sect2,
+html.dark-theme .doc .sect3,
+html.dark-theme .doc .sect4 {
+  border-color: #373a40;
+}
+
+html.dark-theme .admonitionblock,
+html.dark-theme .exampleblock:not(.tile),
+html.dark-theme .sidebarblock,
+html.dark-theme .quoteblock,
+html.dark-theme .literalblock,
+html.dark-theme .listingblock,
+html.dark-theme .openblock:not(.cards),
+html.dark-theme .tableblock {
+  background-color: #25262b;
+  border-color: #373a40;
+}
+
+/* All block types - more specific selectors for Antora */
+html.dark-theme .doc .sidebarblock,
+html.dark-theme .doc .sidebarblock>.content {
+  background-color: #25262b !important;
+  background: #25262b !important;
+  border-color: #373a40;
+}
+
+html.dark-theme .doc .exampleblock:not(.tile),
+html.dark-theme .doc .exampleblock:not(.tile) > .content {
+  background-color: #1f2125 !important;
+  background: #1f2125 !important;
+  border-color: #373a40;
+}
+
+html.dark-theme .doc .quoteblock,
+html.dark-theme .doc .quoteblock blockquote,
+html.dark-theme .doc .quoteblock>blockquote {
+  background-color: #1f2125 !important;
+  background: #1f2125 !important;
+  border-color: #4dabf7;
+}
+
+html.dark-theme .doc .quoteblock .attribution,
+html.dark-theme .doc .quoteblock cite {
+  color: #909296;
+}
+
+html.dark-theme .doc .verseblock,
+html.dark-theme .doc .verseblock pre,
+html.dark-theme .doc .verseblock>pre {
+  background-color: #1f2125 !important;
+  background: #1f2125 !important;
+  border-color: #373a40;
+  color: #c1c2c5;
+}
+
+html.dark-theme .doc .literalblock,
+html.dark-theme .doc .literalblock>.content,
+html.dark-theme .doc .literalblock pre {
+  background-color: #141517 !important;
+  background: #141517 !important;
+  border-color: #373a40;
+}
+
+html.dark-theme .doc .listingblock,
+html.dark-theme .doc .listingblock>.content {
+  background-color: #141517 !important;
+  background: #141517 !important;
+  border-color: #373a40;
+}
+
+html.dark-theme .doc .openblock:not(.cards),
+html.dark-theme .doc .openblock:not(.cards) > .content {
+  background-color: transparent !important;
+  background: transparent !important;
+  border-color: #373a40;
+}
+
+/* Collapsible blocks (details/summary) */
+html.dark-theme .doc details,
+html.dark-theme .doc details[open],
+html.dark-theme .doc .exampleblock.is-collapsible,
+html.dark-theme .doc details>summary {
+  background-color: #1f2125 !important;
+  background: #1f2125 !important;
+  border-color: #373a40;
+  color: #c1c2c5;
+}
+
+html.dark-theme .doc details>summary {
+  cursor: pointer;
+}
+
+html.dark-theme .doc details>.content {
+  background-color: #1f2125 !important;
+  background: #1f2125 !important;
+}
+
+/* Block titles */
+html.dark-theme .doc .sidebarblock>.content>.title,
+html.dark-theme .doc .exampleblock>.content>.title,
+html.dark-theme .doc .quoteblock>.title,
+html.dark-theme .doc .verseblock>.title,
+html.dark-theme .doc .literalblock>.title,
+html.dark-theme .doc .listingblock>.title,
+html.dark-theme .doc .openblock>.title {
+  color: #ffffff;
+}
+
+/* Admonition blocks - more specific selectors */
+html.dark-theme .doc .admonitionblock,
+html.dark-theme .doc .admonitionblock>table,
+html.dark-theme .doc .admonitionblock>table>tbody>tr,
+html.dark-theme .doc .admonitionblock>table>tbody>tr>td,
+html.dark-theme .doc .admonitionblock>table>tbody>tr>td.content,
+html.dark-theme .doc .admonitionblock>table>tbody>tr>td.icon {
+  background-color: #25262b !important;
+  background: #25262b !important;
+}
+
+html.dark-theme .doc .admonitionblock td.content {
+  color: #c1c2c5;
+}
+
+html.dark-theme .doc .admonitionblock .title {
+  color: #ffffff;
+}
+
+/* Specific admonition types with subtle accent colors */
+html.dark-theme .doc .admonitionblock.tip>table,
+html.dark-theme .doc .admonitionblock.tip>table>tbody>tr,
+html.dark-theme .doc .admonitionblock.tip>table>tbody>tr>td {
+  background-color: #1a2a1a !important;
+  background: #1a2a1a !important;
+}
+
+html.dark-theme .doc .admonitionblock.note>table,
+html.dark-theme .doc .admonitionblock.note>table>tbody>tr,
+html.dark-theme .doc .admonitionblock.note>table>tbody>tr>td {
+  background-color: #1a1a2a !important;
+  background: #1a1a2a !important;
+}
+
+html.dark-theme .doc .admonitionblock.warning>table,
+html.dark-theme .doc .admonitionblock.warning>table>tbody>tr,
+html.dark-theme .doc .admonitionblock.warning>table>tbody>tr>td {
+  background-color: #2a2a1a !important;
+  background: #2a2a1a !important;
+}
+
+html.dark-theme .doc .admonitionblock.caution>table,
+html.dark-theme .doc .admonitionblock.caution>table>tbody>tr,
+html.dark-theme .doc .admonitionblock.caution>table>tbody>tr>td {
+  background-color: #2a1a1a !important;
+  background: #2a1a1a !important;
+}
+
+html.dark-theme .doc .admonitionblock.important>table,
+html.dark-theme .doc .admonitionblock.important>table>tbody>tr,
+html.dark-theme .doc .admonitionblock.important>table>tbody>tr>td {
+  background-color: #2a1a2a !important;
+  background: #2a1a2a !important;
+}
+
+html.dark-theme .quoteblock blockquote,
+html.dark-theme .quoteblock p {
+  color: #adb5bd;
+}
+
+html.dark-theme code,
+html.dark-theme pre,
+html.dark-theme pre code {
+  background-color: #141517;
+  color: #e9ecef;
+  border-color: #373a40;
+}
+
+/* Code blocks - more specific selectors for Antora */
+html.dark-theme .doc code,
+html.dark-theme .doc pre,
+html.dark-theme .doc .listingblock pre,
+html.dark-theme .doc .listingblock pre.highlight,
+html.dark-theme .doc .listingblock pre.highlight code,
+html.dark-theme .doc .literalblock pre,
+html.dark-theme .doc pre.content,
+html.dark-theme .doc pre.pygments,
+html.dark-theme .doc pre.rouge,
+html.dark-theme .doc pre.CodeMirror,
+html.dark-theme .doc .highlight pre,
+html.dark-theme .doc .highlight code {
+  background-color: #141517 !important;
+  color: #e9ecef;
+  border-color: #373a40;
+}
+
+html.dark-theme .doc .listingblock .content,
+html.dark-theme .doc .literalblock .content {
+  background-color: #141517;
+}
+
+/* Inline code */
+html.dark-theme .doc p code,
+html.dark-theme .doc td code,
+html.dark-theme .doc li code {
+  background-color: #2c2e33;
+  color: #ff6b6b;
+  border-color: #373a40;
+}
+
+/* Syntax highlighting colors for dark mode */
+html.dark-theme .doc .hljs,
+html.dark-theme .doc .highlight {
+  background-color: #141517 !important;
+}
+
+html.dark-theme .doc .hljs-keyword,
+html.dark-theme .doc .hljs-selector-tag,
+html.dark-theme .doc .hljs-literal,
+html.dark-theme .doc .hljs-section,
+html.dark-theme .doc .hljs-link {
+  color: #c678dd;
+}
+
+html.dark-theme .doc .hljs-string,
+html.dark-theme .doc .hljs-title,
+html.dark-theme .doc .hljs-name,
+html.dark-theme .doc .hljs-type,
+html.dark-theme .doc .hljs-attribute,
+html.dark-theme .doc .hljs-symbol,
+html.dark-theme .doc .hljs-bullet,
+html.dark-theme .doc .hljs-addition,
+html.dark-theme .doc .hljs-variable,
+html.dark-theme .doc .hljs-template-tag,
+html.dark-theme .doc .hljs-template-variable {
+  color: #98c379;
+}
+
+html.dark-theme .doc .hljs-comment,
+html.dark-theme .doc .hljs-quote,
+html.dark-theme .doc .hljs-deletion,
+html.dark-theme .doc .hljs-meta {
+  color: #5c6370;
+}
+
+html.dark-theme .doc .hljs-number,
+html.dark-theme .doc .hljs-regexp,
+html.dark-theme .doc .hljs-literal,
+html.dark-theme .doc .hljs-link {
+  color: #d19a66;
+}
+
+html.dark-theme .doc .hljs-built_in,
+html.dark-theme .doc .hljs-builtin-name {
+  color: #e6c07b;
+}
+
+html.dark-theme .doc .hljs-function {
+  color: #61afef;
+}
+
+html.dark-theme table {
+  border-color: #373a40;
+}
+
+html.dark-theme table thead,
+html.dark-theme table tfoot {
+  background-color: #1f2125;
+}
+
+html.dark-theme table tbody tr:nth-child(even) {
+  background-color: #1f2125;
+}
+
+html.dark-theme .footer {
+  background-color: #141517;
+  color: #909296;
+}
+
+html.dark-theme .footer a {
+  color: #f1f3f5;
+}
+
+html.dark-theme #search-input {
+  background-color: #2c2e33;
+  color: #ffffff;
+  border-color: #373a40;
+}
+
+html.dark-theme .home-link {
+  color: #ffffff;
+}
+
+/* Toggle button styles */
+.theme-toggle {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  font-size: 0.9rem;
+  height: 100%;
+}
+
+.navbar .theme-toggle {
+  text-transform: none;
+}
+
+.theme-toggle:hover {
+  background-color: #1f2125;
+}
+
+.theme-toggle .theme-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.theme-toggle .theme-icon path,
+.theme-toggle .theme-icon circle {
+  fill: none;
+}
+
+/* Hide default Download button until JS replaces it (prevents flash on load) */
+.navbar .navbar-end a.button.is-primary[href="#"] {
+  visibility: hidden;
+}
+
+/* VCS repo logo (replaces nonfunctional Download button) — true 1:1 square, compact */
+.navbar .vcs-repo-logo {
+  padding: 0 0.5rem 0 0;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.navbar .vcs-repo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  color: inherit;
+  opacity: 0.9;
+}
+
+.navbar .vcs-repo-link:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+html.dark-theme .navbar .vcs-repo-link:hover {
+  background-color: #1f2125;
+}
+
+/* Logo: strict 1:1 placeholder; img loads SVG (white icons for dark navbar) */
+.navbar .vcs-logo {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  max-width: 24px;
+  max-height: 24px;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar .vcs-logo-img {
+  width: 24px;
+  height: 24px;
+  display: block;
+  object-fit: contain;
+}
+
+/* Light theme: if you change the navbar to a light top bar, uncomment below so the (white) logo stays visible. */
+html:not(.dark-theme) .navbar .vcs-logo-img {
+  /* filter: invert(1); */
+}
+
+/* Dark mode icon fixes for navigation panels */
+/* Use masks to force icons to absolute colors so they don't break if base SVG colors change */
+html.dark-theme .nav-toggle,
+html.dark-theme .home-link,
+html.dark-theme .nav-item-toggle,
+html.dark-theme .nav-menu-toggle {
+  background-image: none !important;
+  background-color: #c1c2c5; /* Hardcoded light grey to match theme text */
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  filter: none !important;
+}
+
+html.dark-theme .nav-toggle {
+  -webkit-mask-image: url(../img/menu.svg);
+  mask-image: url(../img/menu.svg);
+  -webkit-mask-size: 49%;
+  mask-size: 49%;
+}
+
+html.dark-theme .home-link {
+  -webkit-mask-image: url(../img/home-o.svg);
+  mask-image: url(../img/home-o.svg);
+  -webkit-mask-size: normal;
+  mask-size: normal;
+}
+
+html.dark-theme .nav-item-toggle {
+  -webkit-mask-image: url(../img/caret.svg);
+  mask-image: url(../img/caret.svg);
+  -webkit-mask-size: 50%;
+  mask-size: 50%;
+  opacity: 0.8;
+}
+
+html.dark-theme .nav-menu-toggle {
+  -webkit-mask-image: url(../img/octicons-16.svg#view-unfold);
+  mask-image: url(../img/octicons-16.svg#view-unfold);
+  -webkit-mask-size: 100%;
+  mask-size: 100%;
+}
+
+/* Component/version selector in navigation */
+html.dark-theme .nav-panel-explore .context .version {
+  color: #e9ecef;
+  background-color: #2c2e33;
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #373a40;
+}
+
+html.dark-theme .nav-panel-explore .context .version:hover {
+  color: #ffffff;
+  background-color: #3b3d42;
+  border-color: #4dabf7;
+}
+
+/* Chevron icon in component/version selector */
+html.dark-theme .nav-panel-explore .context .version::after {
+  background-image: none !important;
+  background-color: #ffffff; /* Brighter white for the context selector */
+  -webkit-mask: url(../img/chevron.svg) no-repeat 100%/auto 100%;
+  mask: url(../img/chevron.svg) no-repeat 100%/auto 100%;
+  filter: none !important;
+}
+
+/* Component/version dropdown menu and parent containers */
+html.dark-theme .nav-panel-explore .components,
+html.dark-theme .nav-panel-explore .component,
+html.dark-theme .nav-panel-explore .component-menu,
+html.dark-theme .nav-panel-explore .versions,
+html.dark-theme .nav-panel-explore .component-menu ul,
+html.dark-theme .nav-panel-explore .versions ul,
+html.dark-theme .nav-panel-explore .context div {
+  background-color: #25262b;
+  color: #c1c2c5;
+}
+
+html.dark-theme .nav-panel-explore .component-menu a,
+html.dark-theme .nav-panel-explore .versions a {
+  color: #e9ecef;
+  background-color: #2c2e33;
+  padding: 0.25rem 0.6rem;
+  margin: 0.15rem 0;
+  display: block;
+  border-radius: 0.25rem;
+  border: 1px solid #373a40;
+  transition: all 0.2s ease;
+}
+
+html.dark-theme .nav-panel-explore .component-menu a:hover,
+html.dark-theme .nav-panel-explore .versions a:hover,
+html.dark-theme .nav-panel-explore .component-menu li:hover,
+html.dark-theme .nav-panel-explore .versions li:hover {
+  background-color: #3b3d42;
+  color: #ffffff;
+  border-color: #4dabf7;
+}
+
+html.dark-theme .nav-panel-explore .component-menu .is-current,
+html.dark-theme .nav-panel-explore .versions .is-current {
+  background-color: #141517;
+  color: #4dabf7;
+  font-weight: 600;
+  border-color: #4dabf7;
+}
+
+/* Reduce strong inner shadow on component/version dropdown */
+html.dark-theme .nav-panel-explore .components,
+html.dark-theme .nav-panel-explore .component,
+html.dark-theme .nav-panel-explore .versions {
+  box-shadow: none;
+}
+
+html.dark-theme .nav-panel-explore .context .selector {
+  box-shadow: none;
+}
+
+html.dark-theme .nav-panel-explore .context .selector .components {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Float group layout for alternating content */
+.float-group::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.float-group .left {
+  float: left;
+  max-width: 45%;
+  margin-right: 2rem;
+  margin-bottom: 1rem;
+}
+
+.float-group .right {
+  float: right;
+  max-width: 45%;
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+.float-group .right.text-right {
+  text-align: right;
+}
+
+/* Keyboard, button, and menu macros */
+html.dark-theme kbd {
+  background-color: #2c2e33;
+  color: #e9ecef;
+  border-color: #495057;
+  box-shadow: 0 1px 0 #495057;
+}
+
+html.dark-theme .button,
+html.dark-theme .btn {
+  background-color: #2c2e33;
+  color: #e9ecef;
+  border-color: #495057;
+}
+
+html.dark-theme .menuseq,
+html.dark-theme .menu {
+  color: #c1c2c5;
+}
+
+html.dark-theme .menuseq .caret,
+html.dark-theme .menuseq .submenu::before {
+  color: #909296;
+}
+
+/* Tabs extension support */
+html.dark-theme .tabs ul {
+  background-color: #1f2125;
+  border-color: #373a40;
+}
+
+html.dark-theme .tabs ul li {
+  background-color: #25262b;
+  border-color: #373a40;
+  color: #c1c2c5;
+}
+
+html.dark-theme .tabs ul li.is-active,
+html.dark-theme .tabs ul li[aria-selected="true"] {
+  background-color: #141517;
+  color: #ffffff;
+  border-bottom-color: #141517;
+}
+
+html.dark-theme .tabs ul li:hover {
+  background-color: #2c2e33;
+  color: #ffffff;
+}
+
+html.dark-theme .tabpanel,
+html.dark-theme .tabs-content {
+  background-color: #141517;
+  border-color: #373a40;
+}
+
+/* STEM / Math rendering */
+html.dark-theme .stemblock,
+html.dark-theme .mathblock {
+  color: #e9ecef;
+}
+
+/* Icon roles */
+html.dark-theme .icon.red,
+html.dark-theme [role="red"] {
+  color: #ff6b6b;
+}
+
+html.dark-theme .icon.green,
+html.dark-theme [role="green"] {
+  color: #51cf66;
+}
+
+html.dark-theme .icon.yellow,
+html.dark-theme [role="yellow"] {
+  color: #fcc419;
+}
+
+html.dark-theme .icon.blue,
+html.dark-theme [role="blue"] {
+  color: #4dabf7;
+}
+
+/* Video embeds wrapper */
+html.dark-theme .videoblock {
+  background-color: transparent;
+}
+
+/* Left nav insets: match toolbar .home-link (margin = toolbar-height / 4) so tree lines up
+   with the breadcrumb row home control on wide layouts (stock default UI is 0.75rem).
+   Skip .nav-tree-only / .adt-nav-tree-only: horizontal inset is set in site-doc-layout.css
+   on .nav-panel-menu + vertical-only padding on the nav (avoids cascade conflicts). */
+.nav-menu:not(.nav-tree-only):not(.adt-nav-tree-only) {
+  padding-left: calc(var(--toolbar-height) / 4);
+  padding-right: 0.75rem;
+}
+
+.nav-panel-explore .components {
+  padding-left: calc(var(--toolbar-height) / 4);
+  padding-right: 0.75rem;
+}
+
+/* Nav tree: one label column for every row (aligns multi-line and leaf vs. folder;
+   same idea as default UI nav.css; keeps older core bundles useful until upgraded). */
+.nav .nav-item {
+  position: relative;
+}
+
+.nav .nav-item > .nav-link,
+.nav .nav-item > .nav-text {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  text-indent: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  padding-left: calc(var(--nav-line-height) * 1em + 0.15em);
+}
+
+/* In-flow left nav: fill the column next to main, tree scrolls only when content overflows. */
+@media screen and (min-width: 1024px) {
+  .nav-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-self: stretch !important;
+    min-height: 0 !important;
+  }
+
+  .nav {
+    position: static !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  .nav .panels {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  .nav-panel-menu {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow-y: auto !important;
+  }
+}
+
+/* Bundle default uses overflow-y: scroll on nav panels; prefer scrollbar only when needed. */
+.nav-panel-menu,
+.nav-panel-explore .components {
+  overflow-y: auto !important;
+}
+
+/* Doc home: .openblock.cards + .exampleblock.tile
+   Bundled in supplemental site-extra.css so Antora prebuilds pick it up. */
+:root {
+  --doc-tile-radius: 0.5rem;
+  --doc-tile-border-color: var(--panel-border-color);
+  --doc-tile-background: var(--color-white);
+  --doc-tile-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.08);
+  --doc-tile-shadow-hover: 0 4px 8px -2px rgba(0, 0, 0, 0.1), 0 12px 24px -4px rgba(0, 0, 0, 0.12);
+  --doc-tile-transition: box-shadow 0.22s ease, transform 0.22s ease, border-color 0.22s ease;
+}
+
+.doc .openblock.cards {
+  margin: 1.5rem 0 0;
+}
+
+.doc .openblock.cards > .content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 1.25rem;
+  padding: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+/* Win over any later dark rules that set display/background on .openblock > .content */
+html.dark-theme .doc .openblock.cards > .content {
+  display: grid !important;
+  background: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.doc .openblock.cards .exampleblock.tile {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.doc .openblock.cards .exampleblock.tile > .content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-height: 7.5rem;
+  margin: 0;
+  background: var(--doc-tile-background);
+  border: 1px solid var(--doc-tile-border-color);
+  border-radius: var(--doc-tile-radius);
+  box-shadow: var(--doc-tile-shadow);
+  padding: 1.25rem 1.25rem 1rem;
+  transition: var(--doc-tile-transition);
+}
+
+.doc .openblock.cards .exampleblock.tile > .content > :last-child:not(:only-child) {
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .doc .openblock.cards .exampleblock.tile > .content:hover {
+    box-shadow: var(--doc-tile-shadow-hover);
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doc .openblock.cards .exampleblock.tile > .content {
+    transition: none;
+  }
+
+  .doc .openblock.cards .exampleblock.tile > .content:hover {
+    box-shadow: var(--doc-tile-shadow);
+    transform: none;
+  }
+}
+
+html.dark-theme {
+  --doc-tile-border-color: #3d4048;
+  --doc-tile-background: #1f2125;
+  --doc-tile-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 4px 16px rgba(0, 0, 0, 0.45);
+  --doc-tile-shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.4), 0 14px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Beat generic `html.dark-theme .doc .exampleblock > .content` !important for project tiles */
+html.dark-theme .doc .openblock.cards .exampleblock.tile > .content {
+  background: var(--doc-tile-background) !important;
+  background-color: var(--doc-tile-background) !important;
+  border-color: var(--doc-tile-border-color) !important;
+}
+
+@media print {
+  .doc .openblock.cards .exampleblock.tile > .content {
+    box-shadow: none !important;
+    transform: none !important;
+  }
+}

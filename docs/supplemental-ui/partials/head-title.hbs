@@ -1,0 +1,2 @@
+{{! Tab: most specific → least. site.keys: title_bar_section, title_bar_brand; else component title, site.title. }}
+<title>{{{detag (or page.title defaultPageTitle)}}} :: {{#if (lookup site.keys "title_bar_section")}}{{detag (lookup site.keys "title_bar_section")}}{{else}}{{detag page.component.title}}{{/if}} :: {{#if (lookup site.keys "title_bar_brand")}}{{detag (lookup site.keys "title_bar_brand")}}{{else}}{{detag site.title}}{{/if}}</title>

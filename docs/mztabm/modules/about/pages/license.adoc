@@ -1,0 +1,10 @@
+= License
+
+The mzTab-M specification, schema, and documentation are made available under the https://creativecommons.org/licenses/by/4.0/[Creative Commons Attribution 4.0 International (CC BY 4.0)] license.
+
+You are free to share and adapt the material for any purpose, provided appropriate credit is given.
+
+The reference implementation libraries (jmzTab-m) are published under the https://www.apache.org/licenses/LICENSE-2.0[Apache License 2.0].
+See the https://github.com/lifs-tools/jmztab-m/blob/master/LICENSE[jmzTab-m repository] for details.
+
+The full license text for the specification and schema is available in link:https://github.com/HUPO-PSI/mzTab-M/blob/main/LICENSE.txt[LICENSE.txt] in the repository.

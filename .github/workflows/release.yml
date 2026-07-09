@@ -3,8 +3,122 @@ on:
   release:
     types: [created]
 
+# Required permissions:
+#   contents:write – push the documentation version branch (v{MAJOR}.{MINOR})
+#   pages:write    – deploy to GitHub Pages (scoped to the publish-site job)
+#   id-token:write – OIDC token for the Pages deployment
+#
+# NOTE: After merging this workflow, change the GitHub Pages source in the
+# repository Settings → Pages from "Deploy from branch (main, /docs)" to
+# "GitHub Actions". The old Jekyll site under docs/ will then be superseded.
+permissions:
+  contents: write
+
 jobs:
   build-spec-workflow:
     uses: HUPO-PSI/mzTab-M/.github/workflows/ci.yml@main
+
   test-examples-workflow:
-    uses: HUPO-PSI/mzTab-M/.github/workflows/validate.yml@main
+    uses: HUPO-PSI/mzTab-M/.github/workflows/validate-mztab-stable.yml@main
+
+  create-doc-branch:
+    name: Create documentation version branch
+    runs-on: ubuntu-24.04
+    outputs:
+      doc_branch: ${{ steps.branch.outputs.doc_branch }}
+
+    steps:
+      - name: Checkout repository (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # Use a PAT or the default GITHUB_TOKEN with contents:write
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Derive documentation branch name
+        id: branch
+        run: |
+          # github.ref_name is the tag name, e.g. "v2.1.0"
+          TAG="${{ github.ref_name }}"
+          # Strip leading 'v' and the patch segment → "2.1"
+          MAJOR_MINOR="$(echo "${TAG#v}" | cut -d. -f1,2)"
+          DOC_BRANCH="v${MAJOR_MINOR}"
+          echo "doc_branch=${DOC_BRANCH}" >> "${GITHUB_OUTPUT}"
+          echo "Creating documentation branch: ${DOC_BRANCH} from tag ${TAG}"
+
+      - name: Create and push documentation version branch
+        run: |
+          DOC_BRANCH="${{ steps.branch.outputs.doc_branch }}"
+          TAG="${{ github.ref_name }}"
+
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
+          # Create the branch from the tagged commit (already checked out)
+          git checkout -b "${DOC_BRANCH}"
+
+          # Remove the prerelease marker so Antora treats this branch as the
+          # stable published version (e.g. "2.1" instead of "2.1-dev").
+          sed -i '/^prerelease:/d' docs/mztabm/antora.yml
+
+          git add docs/mztabm/antora.yml
+          git commit -m "release: mark ${TAG} as stable Antora documentation version"
+
+          git push origin "${DOC_BRANCH}"
+          echo "Pushed documentation branch: ${DOC_BRANCH}"
+
+  publish-site:
+    name: Build and publish Antora site
+    needs: [build-spec-workflow, create-doc-branch]
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch all remote branches (including the new doc branch)
+        run: git fetch --all
+
+      - name: Check out doc branch locally so Antora can resolve it
+        run: |
+          DOC_BRANCH="${{ needs.create-doc-branch.outputs.doc_branch }}"
+          # Make the remote branch available as a local branch so Antora's
+          # "url: ." source can see it via the 'v*' glob in antora-playbook.yml.
+          git checkout -b "${DOC_BRANCH}" "origin/${DOC_BRANCH}"
+          # Return to the release commit (HEAD) for the build
+          git checkout -
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install Antora and extensions
+        run: npm ci
+
+      - name: Build Antora site
+        env:
+          ANTORA_EDIT_BRANCH: main
+        run: |
+          npx antora antora-playbook.yml \
+            --attribute "commit-hash=${{ github.sha }}" \
+            --attribute "build-date=${{ github.event.release.created_at }}" \
+            --attribute "document-version=${{ github.ref_name }}"
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/site/
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

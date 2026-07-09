@@ -1,0 +1,63 @@
+<nav class="breadcrumbs adt-breadcrumbs" aria-label="Breadcrumb: component, version, and page path">
+  <ul>
+    {{#if page.componentVersion.url}}
+    <li class="adt-breadcrumb-home">
+      <a href="{{{relativize page.componentVersion.url}}}" class="adt-breadcrumb-home-link" title="Component start page" aria-label="Component start page">
+        <svg class="adt-breadcrumb-home-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+      </a>
+    </li>
+    {{/if}}
+    <li class="adt-breadcrumb-col adt-breadcrumb-masthead">
+      <div class="adt-bc-cluster" role="group" aria-label="Documentation component and version">
+        <div class="adt-bc-menu adt-bc-menu-project">
+          <button type="button" class="adt-bc-kicker" data-adt-toggle="adt-bc-proj" aria-haspopup="listbox" aria-expanded="false" aria-label="Switch documentation component">
+            <span class="adt-bc-kicker-label">{{#if page.component}}{{{page.component.title}}}{{else}}{{{site.title}}}{{/if}}</span>
+          </button>
+          <ul class="adt-bc-dropdown adt-bc-dropdown--components" id="adt-bc-proj" role="listbox" hidden>
+            {{#each site.components}}
+            <li role="none" class="adt-bc-menu-item">
+              <a href="{{{relativize ./url}}}" class="{{#if (eq this @root.page.component)}}is-current{{/if}}">{{{./title}}}</a>
+            </li>
+            {{/each}}
+          </ul>
+        </div>
+        <span class="adt-bc-sep" aria-hidden="true">|</span>
+        <div class="adt-bc-menu adt-bc-menu-version">
+          <button type="button" class="adt-bc-kicker" data-adt-toggle="adt-bc-ver" aria-haspopup="listbox" aria-expanded="false" aria-label="Select documentation version">
+            <span class="adt-bc-kicker-version">{{#if @root.page.componentVersion.displayVersion}}{{@root.page.componentVersion.displayVersion}}{{else if @root.page.version}}{{@root.page.version}}{{/if}}</span>
+          </button>
+          {{#if @root.page.versions}}
+          <ul class="adt-bc-dropdown adt-bc-dropdown--version" id="adt-bc-ver" role="listbox" hidden>
+            {{#each @root.page.versions}}
+            <li role="none" class="adt-bc-menu-item">
+              <a href="{{{relativize ./url}}}" class="adt-bc-version-pill{{#if (eq ./version @root.page.version)}} is-current{{/if}}{{#if ./missing}} is-missing{{/if}}"{{#if (eq ./version @root.page.version)}} aria-current="page"{{/if}}>{{./displayVersion}}</a>
+            </li>
+            {{/each}}
+          </ul>
+          {{else if @root.page.componentVersion}}
+          {{! Antora may omit page.versions on single-version sites — still show one option so the control is not “dead”/disabled. }}
+          <ul class="adt-bc-dropdown adt-bc-dropdown--version" id="adt-bc-ver" role="listbox" hidden>
+            <li role="none" class="adt-bc-menu-item">
+              <a href="{{{relativize @root.page.componentVersion.url}}}" class="adt-bc-version-pill is-current" aria-current="page">{{#if @root.page.componentVersion.displayVersion}}{{@root.page.componentVersion.displayVersion}}{{else}}{{@root.page.version}}{{/if}}</a>
+            </li>
+          </ul>
+          {{/if}}
+        </div>
+      </div>
+    </li>
+    {{#if page.breadcrumbs}}
+    {{#each page.breadcrumbs}}
+    <li class="adt-breadcrumb-trail{{#if @last}} adt-breadcrumb-trail--current{{/if}}">
+    {{~#if (and ./url (eq ./urlType 'internal'))~}}
+    <a class="adt-breadcrumb-trail-link" href="{{{relativize ./url}}}">{{{./content}}}</a>
+    {{~else~}}
+    <span class="adt-breadcrumb-trail-text">{{{./content}}}</span>
+    {{~/if~}}
+    </li>
+    {{/each}}
+    {{/if}}
+  {{> edit-breadcrumb}}
+  </ul>
+</nav>

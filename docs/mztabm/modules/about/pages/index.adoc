@@ -1,0 +1,36 @@
+= About mzTab-M
+
+== The Format
+
+mzTab-M is the community standard for reporting mass spectrometry-based small molecule metabolomics and lipidomics results.
+It was developed by the Metabolomics Working Group of the https://psidev.info[HUPO Proteomics Standards Initiative (PSI)] and ratified as PSI standard in 2019.
+
+The format extends the earlier mzTab 1.0 proteomics format to address the specific needs of metabolomics: multiple adduct forms of the same molecule, MS1-based identification, confidence level reporting, and structured linkage between summary, feature, and evidence rows.
+
+
+== The mzTab-M 2.1 Publication
+
+The ratification of mzTab-M 2.1 as part of the HUPO-PSI Document Process was accompanied by a peer-reviewed publication in _TODO_
+
+____
+TBD
+____
+
+== The mzTab-M 2.0 Publication
+
+The ratification of mzTab-M 2.0 as part of the HUPO-PSI Document Process was accompanied by a peer-reviewed publication in _Analytical Chemistry_:
+
+____
+Nils Hoffmann, Joel Rein, Timo Sachsenberg, Jürgen Hartler, Kenneth Haug, Gerhard Mayer, Oliver Alka, Saravanan Dayalan, Jake T. M. Pearce, Philippe Rocca-Serra, Da Qi, Martin Eisenacher, Yasset Perez-Riverol, Juan Antonio Vizcaíno, Reza M. Salek, Steffen Neumann, and Andrew R. Jones
+_mzTab-M: A Data Standard for Sharing Quantitative Results in Mass Spectrometry Metabolomics._
+Analytical Chemistry 2019, 91 (5), 3302–3310.
+https://pubs.acs.org/doi/10.1021/acs.analchem.8b04310[DOI: 10.1021/acs.analchem.8b04310] | https://www.ncbi.nlm.nih.gov/pubmed/30688441[ PubMed PMID: 30688441]
+____
+
+== HUPO-PSI
+
+The https://psidev.info[Human Proteome Organization Proteomics Standards Initiative] develops open, community-driven data standards for proteomics and metabolomics.
+mzTab-M is one of a family of PSI formats that includes mzML, mzIdentML, mzQuantML, and others.
+
+The PSI metabolomics working group is open to participation.
+See https://psidev.info/groups/metabolomics[psidev.info/groups/metabolomics] for contact details.

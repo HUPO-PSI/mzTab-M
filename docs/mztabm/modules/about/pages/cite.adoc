@@ -1,0 +1,39 @@
+= How to Cite
+
+== Citing mzTab-M 2.1
+
+When you use the mzTab-M 2.1 format in your work, please cite:
+
+____
+TBD
+____
+
+== Citing mzTab-M 2.0
+
+When you use the mzTab-M 2.0 format in your work, please cite:
+
+____
+N. Hoffmann et al.
+_mzTab-M: A Data Standard for Sharing Quantitative Results in Mass Spectrometry Metabolomics._
+Analytical Chemistry 2019, 91, 3302–3310.
+https://pubs.acs.org/doi/10.1021/acs.analchem.8b04310[DOI: 10.1021/acs.analchem.8b04310] | https://www.ncbi.nlm.nih.gov/pubmed/30688441[PubMed: 30688441]
+____
+
+== Citing jmzTab-m
+
+When you use the jmzTab-m library or web validator in your work, please cite:
+
+____
+Citation details TBD — see the https://github.com/lifs-tools/jmztab-m[jmzTab-m repository] for the current recommended citation.
+____
+
+== Citing mzTab 1.0 (Proteomics)
+
+If your work uses mzTab version 1.0 for proteomics, please cite:
+
+____
+J. Griss et al.
+_The mzTab Data Exchange Format: Communicating Mass-Spectrometry-Based Proteomics and Metabolomics Experimental Results to a Wider Audience._
+Molecular & Cellular Proteomics 2014, 13, 2765–2775.
+https://doi.org/10.1074/mcp.O113.036681[DOI: 10.1074/mcp.O113.036681] | https://www.ncbi.nlm.nih.gov/pubmed/24980485[PubMed: 24980485]
+____
