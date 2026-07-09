@@ -619,20 +619,6 @@ MTD	study_variable[1]-ms_run_ref	ms_run[1]\| ms_run[2]
 |*Mandatory* |False
 |============================================================
 
-[[study_variable1-n-group_refs1-n]]
-==== study_variable[1-n]-group_refs[1-n]
-
-[cols="20,80",]
-|============================================================
-|*Description* |The study variable group this study variable belongs to.
-|*Type* |Integer List
-|*Mandatory* |False
-|*Example* a|
-----
-MTD	study_variable[1]-group_ref	study_variable_group[1]\| study_variable_group[2]
-----
-|============================================================
-
 [[study_variable1-n-average_function]]
 ==== study_variable[1-n]-average_function
 
@@ -667,17 +653,17 @@ MTD	study_variable_group[1]	[PATO, PATO:0000383, sex, ]
 MTD	study_variable_group[1]-description	Sex of the individual
 MTD	study_variable_group[1]-type	[STATO, STATO:0000252, categorical variable, ]
 MTD	study_variable_group[1]-datatype	xsd:string
+MTD	study_variable_group[1]-study_variable_refs	study_variable[1]
 MTD	study_variable_group[2]	[PATO, PATO:0000384, timepoint, ]
 MTD	study_variable_group[2]-description	Time after treatment
 MTD	study_variable_group[2]-type	[STATO, STATO:0000228, ordinal variable, ]
 MTD	study_variable_group[2]-datatype	xsd:integer
 MTD	study_variable_group[2]-unit	[UO, UO:0000033, day, ]
+MTD	study_variable_group[2]-study_variable_refs	study_variable[2]
 MTD	study_variable[1]	Female_0day
-MTD	study_variable[1]-group_ref	study_variable_group[1]
-MTD	study_variable[1]-assay_refs	assay[1]\|assay[2]\|assay[3]
+MTD	study_variable[1]-assay_refs	assay[1]\| assay[2]\| assay[3]
 MTD	study_variable[2]	Female_1day
-MTD	study_variable[2]-group_ref	study_variable_group[2]
-MTD	study_variable[2]-assay_refs	assay[4]\|assay[5]\|assay[6]
+MTD	study_variable[2]-assay_refs	assay[4]\| assay[5]\| assay[6]
 ----
 |============================================================
 
@@ -732,21 +718,20 @@ Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type in
 ----
 MTD	study_variable_group[1]-datatype	....
 MTD	study_variable_group[1]-datatype	xsd:string
-MTD	study_variable_group[2]-datatype	xsd:decimal
-MTD	study_variable_group[3]-datatype	xsd:date
 MTD	study_variable_group[4]-datatype	Parameter
+
+COM	each group lists its member study variables (top-down link):
+MTD	study_variable_group[1]-study_variable_refs	study_variable[1]
+MTD	study_variable_group[4]-study_variable_refs	study_variable[2]\| study_variable[3]
 
 COM	plain string value:
 MTD	study_variable[1]	Male
-MTD	study_variable[1]-group_ref	study_variable_group[1]
 
 COM	user-defined Parameter value:
 MTD	study_variable[2]	[,,Male,]
-MTD	study_variable[2]-group_ref	study_variable_group[4]
 
 COM	CV Parameter value:
 MTD	study_variable[3]	[NCIT, NCIT:C20197, Male, ]
-MTD	study_variable[3]-group_ref	study_variable_group[4]
 ....
 ----
 |============================================================
@@ -759,6 +744,20 @@ MTD	study_variable[3]-group_ref	study_variable_group[4]
 |*Description* |The study variable group unit, as defined by the parameter.
 |*Type* |Parameter
 |*Mandatory* |False
+|============================================================
+
+[[study_variable_group1-n-study_variable_refs1-n]]
+==== study_variable_group[1-n]-study_variable_refs[1-n]
+
+[cols="20,80",]
+|============================================================
+|*Description* |Bar-separated references to the study variables that belong to this study variable group. This is the sole link between study variables and their group: each study variable MUST be referenced by exactly one study variable group.
+|*Type* |Integer List
+|*Mandatory* |False
+|*Example* a|
+----
+MTD	study_variable_group[1]-study_variable_refs	study_variable[1]\| study_variable[2]
+----
 |============================================================
 
 A protocol describing one or more steps of an experimental procedure, such as sample preparation, data acquisition or data processing. Protocols are referenced from Assay objects. Added in mzTab-M 2.1.

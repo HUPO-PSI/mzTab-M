@@ -22,8 +22,10 @@ DEFAULT_OUTPUT = SCRIPT_DIR / 'mzTab_2_1-M_schema.adoc'
 # Properties not listed here are appended after in schema order.
 SUB_FIELD_ORDER = {
     'Sample': ['name', 'species', 'tissue', 'cell_type', 'disease', 'description', 'custom'],
-    'StudyVariable': ['name', 'assay_refs', 'ms_run_refs', 'description', 'group_refs',
+    'StudyVariable': ['name', 'assay_refs', 'ms_run_refs', 'description',
                       'average_function', 'variation_function'],
+    'StudyVariableGroup': ['name', 'description', 'type', 'datatype', 'unit',
+                           'study_variable_refs'],
     'MsRun': ['location', 'instrument_ref', 'format', 'id_format',
               'fragmentation_method', 'scan_polarity', 'hash', 'hash_method', 'parameters'],
     'Assay': ['name', 'custom', 'external_uri', 'sample_ref', 'ms_run_ref',
