@@ -31,25 +31,25 @@ a| The contact's orcid id, without https prefix.
 | False
 | —
 
-| `ms_run[1-n]-parameters[1-n]`
+| `ms_run[1-n]-parameters`
 a| Additional parameters of the assay, separated by bars.
 | Parameter List
 | False
 | —
 
-| `assay[1-n]-protocol_refs[1-n]`
+| `assay[1-n]-protocol_refs`
 a| The protocol(s) referenced by this assay.
 | Integer List
 | False
 | —
 
-| `assay[1-n]-parameters[1-n]`
+| `assay[1-n]-parameters`
 a| Additional parameters of the assay, separated by bars.
 | Parameter List
 | False
 | —
 
-| `study_variable[1-n]-ms_run_refs[1-n]`
+| `study_variable[1-n]-ms_run_refs`
 a| The ms run(s) referenced by this study variable.
 | Integer List
 | False
@@ -103,7 +103,7 @@ a| The study variable group unit, as defined by the parameter.
 | False
 | —
 
-| `study_variable_group[1-n]-study_variable_refs[1-n]`
+| `study_variable_group[1-n]-study_variable_refs`
 a| Bar-separated references to the study variables that belong to this study variable group. This is the sole link between study variables and their group: each study variable MUST be referenced by exactly one study variable group.
 | Integer List
 | False
@@ -127,7 +127,7 @@ a| Description of the protocol.
 | False
 | —
 
-| `protocol[1-n]-parameters[1-n]`
+| `protocol[1-n]-parameters`
 a| The protocol parameters.
 | Parameter List
 | False
@@ -2181,7 +2181,7 @@ a| —
 
 |===
 
-==== `ms_run[1-n]-parameters[1-n]` 🟢 _(Added in v2.1)_
+==== `ms_run[1-n]-parameters` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2209,7 +2209,7 @@ MTD	ms_run[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, L
 
 |===
 
-==== `assay[1-n]-protocol_refs[1-n]` 🟢 _(Added in v2.1)_
+==== `assay[1-n]-protocol_refs` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2237,7 +2237,7 @@ MTD	assay[1]-protocol_ref	protocol[1]\{vbar} protocol[2]
 
 |===
 
-==== `assay[1-n]-parameters[1-n]` 🟢 _(Added in v2.1)_
+==== `assay[1-n]-parameters` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2265,7 +2265,7 @@ MTD	assay[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, LT
 
 |===
 
-==== `study_variable[1-n]-ms_run_refs[1-n]` 🟢 _(Added in v2.1)_
+==== `study_variable[1-n]-ms_run_refs` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2464,7 +2464,7 @@ a| —
 
 |===
 
-==== `study_variable_group[1-n]-study_variable_refs[1-n]` 🟢 _(Added in v2.1)_
+==== `study_variable_group[1-n]-study_variable_refs` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2564,7 +2564,7 @@ a| —
 
 |===
 
-==== `protocol[1-n]-parameters[1-n]` 🟢 _(Added in v2.1)_
+==== `protocol[1-n]-parameters` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===

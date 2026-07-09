@@ -466,8 +466,8 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |*Mandatory* |False
 |============================================================
 
-[[ms_run1-n-parameters1-n]]
-==== ms_run[1-n]-parameters[1-n]
+[[ms_run1-n-parameters]]
+==== ms_run[1-n]-parameters
 
 [cols="20,80",]
 |============================================================
@@ -528,8 +528,8 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |*Mandatory* |False
 |============================================================
 
-[[assay1-n-ms_run_ref1-n]]
-==== assay[1-n]-ms_run_ref[1-n]
+[[assay1-n-ms_run_ref]]
+==== assay[1-n]-ms_run_ref
 
 [cols="20,80",]
 |============================================================
@@ -538,8 +538,8 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |*Mandatory* |True
 |============================================================
 
-[[assay1-n-protocol_refs1-n]]
-==== assay[1-n]-protocol_refs[1-n]
+[[assay1-n-protocol_refs]]
+==== assay[1-n]-protocol_refs
 
 [cols="20,80",]
 |============================================================
@@ -552,8 +552,8 @@ MTD	assay[1]-protocol_ref	protocol[1]\| protocol[2]
 ----
 |============================================================
 
-[[assay1-n-parameters1-n]]
-==== assay[1-n]-parameters[1-n]
+[[assay1-n-parameters]]
+==== assay[1-n]-parameters
 
 [cols="20,80",]
 |============================================================
@@ -585,8 +585,8 @@ MTD	study_variable[2]	1 minute 0.5mg rapamycin
 ----
 |============================================================
 
-[[study_variable1-n-assay_refs1-n]]
-==== study_variable[1-n]-assay_refs[1-n]
+[[study_variable1-n-assay_refs]]
+==== study_variable[1-n]-assay_refs
 
 [cols="20,80",]
 |============================================================
@@ -595,8 +595,8 @@ MTD	study_variable[2]	1 minute 0.5mg rapamycin
 |*Mandatory* |False
 |============================================================
 
-[[study_variable1-n-ms_run_refs1-n]]
-==== study_variable[1-n]-ms_run_refs[1-n]
+[[study_variable1-n-ms_run_refs]]
+==== study_variable[1-n]-ms_run_refs
 
 [cols="20,80",]
 |============================================================
@@ -746,8 +746,8 @@ MTD	study_variable[3]	[NCIT, NCIT:C20197, Male, ]
 |*Mandatory* |False
 |============================================================
 
-[[study_variable_group1-n-study_variable_refs1-n]]
-==== study_variable_group[1-n]-study_variable_refs[1-n]
+[[study_variable_group1-n-study_variable_refs]]
+==== study_variable_group[1-n]-study_variable_refs
 
 [cols="20,80",]
 |============================================================
@@ -792,8 +792,8 @@ A protocol describing one or more steps of an experimental procedure, such as sa
 |*Mandatory* |False
 |============================================================
 
-[[protocol1-n-parameters1-n]]
-==== protocol[1-n]-parameters[1-n]
+[[protocol1-n-parameters]]
+==== protocol[1-n]-parameters
 
 [cols="20,80",]
 |============================================================
