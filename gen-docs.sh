@@ -4,7 +4,7 @@
 # Run this script whenever:
 #   - schema/mzTab_2_1-M.json is updated (regenerates the field reference)
 #   - specification_documents/mzTab_format_specification_2_1-M.adoc is updated
-#   - specification_documents/mzTab_m_2_0_schema.adoc or mzTab_m_schema.adoc
+#   - specification_documents/mzTab_m_2_0_schema.adoc or mzTab_m_2_1_schema.adoc
 #     is updated (regenerates the v2.0→v2.1 changes document)
 #
 # Usage:

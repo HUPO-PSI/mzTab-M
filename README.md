@@ -171,9 +171,10 @@ If you use **jmzTab-m**, please cite:
 
 ### JSON Schema - OpenAPI definition
 
-The main specification for mzTab-M is maintained in the form of an OpenAPI 3.1.1
-compatible YAML file `schema/mzTab_m_openapi.yml` You can edit, view and
-validate this file using either the swagger web editor at
+The main specification for mzTab-M is maintained as a JSON Schema (draft 2020-12)
+in `schema/mzTab_2_1-M.json`, with an OpenAPI 3.1.1 wrapper in
+`schema/mzTab_2_1-M_openapi.json` that references it. You can edit, view and
+validate the OpenAPI file using either the swagger web editor at
 <https://editor-next.swagger.io/> or using the docker container (instructions at
 <https://swagger.io/docs/open-source-tools/swagger-editor-next/#docker>):
 
@@ -231,8 +232,8 @@ change:
 
 | Partial | Source |
 |---|---|
-| `docs/mztabm/modules/developers/partials/mzTab_m_schema.adoc` | `schema/mzTab_2_1-M.json` |
-| `docs/mztabm/modules/developers/partials/mzTab_format_specification.adoc` | `specification_documents/mzTab_format_specification_2_1-M.adoc` |
+| `docs/mztabm/modules/developers/partials/mzTab_m_2_1_schema.adoc` | `schema/mzTab_2_1-M.json` |
+| `docs/mztabm/modules/developers/partials/mzTab_format_specification_2_1-M.adoc` | `specification_documents/mzTab_format_specification_2_1-M.adoc` |
 
 The helper script `gen-docs.sh` (repository root) automates both steps.
 
@@ -260,8 +261,8 @@ To regenerate both at once:
 Then stage and commit the updated partials:
 
 ``` bash
-git add docs/mztabm/modules/developers/partials/mzTab_m_schema.adoc \
-        docs/mztabm/modules/developers/partials/mzTab_format_specification.adoc
+git add docs/mztabm/modules/developers/partials/mzTab_m_2_1_schema.adoc \
+        docs/mztabm/modules/developers/partials/mzTab_format_specification_2_1-M.adoc
 git commit -m "docs: regenerate Antora partials"
 git push
 ```
