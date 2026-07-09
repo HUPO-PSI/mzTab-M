@@ -55,8 +55,8 @@ a| The ms run(s) referenced by this study variable.
 | False
 | —
 
-| `study_variable[1-n]-group_refs[1-n]`
-a| The study variable group this study variable belongs to.
+| `study_variable_group[1-n]-study_variable_refs[1-n]`
+a| Bar-separated references to the study variables that belong to this study variable group. This is the sole link between study variables and their group: each study variable MUST be referenced by exactly one study variable group.
 | Integer List
 | False
 | —
@@ -1517,17 +1517,17 @@ MTD	study_variable_group[1]	[PATO, PATO:0000383, sex, ]
 MTD	study_variable_group[1]-description	Sex of the individual
 MTD	study_variable_group[1]-type	[STATO, STATO:0000252, categorical variable, ]
 MTD	study_variable_group[1]-datatype	xsd:string
+MTD	study_variable_group[1]-study_variable_refs	study_variable[1]
 MTD	study_variable_group[2]	[PATO, PATO:0000384, timepoint, ]
 MTD	study_variable_group[2]-description	Time after treatment
 MTD	study_variable_group[2]-type	[STATO, STATO:0000228, ordinal variable, ]
 MTD	study_variable_group[2]-datatype	xsd:integer
 MTD	study_variable_group[2]-unit	[UO, UO:0000033, day, ]
+MTD	study_variable_group[2]-study_variable_refs	study_variable[2]
 MTD	study_variable[1]	Female_0day
-MTD	study_variable[1]-group_ref	study_variable_group[1]
-MTD	study_variable[1]-assay_refs	assay[1]\{vbar}assay[2]\{vbar}assay[3]
+MTD	study_variable[1]-assay_refs	assay[1]\{vbar} assay[2]\{vbar} assay[3]
 MTD	study_variable[2]	Female_1day
-MTD	study_variable[2]-group_ref	study_variable_group[2]
-MTD	study_variable[2]-assay_refs	assay[4]\{vbar}assay[5]\{vbar}assay[6]
+MTD	study_variable[2]-assay_refs	assay[4]\{vbar} assay[5]\{vbar} assay[6]
 ----
 ....
 
@@ -1664,18 +1664,16 @@ a| ....
 ----
 MTD	study_variable_group[1]-datatype	....
 MTD	study_variable_group[1]-datatype	xsd:string
-MTD	study_variable_group[2]-datatype	xsd:decimal
-MTD	study_variable_group[3]-datatype	xsd:date
 MTD	study_variable_group[4]-datatype	Parameter
+COM	each group lists its member study variables (top-down link):
+MTD	study_variable_group[1]-study_variable_refs	study_variable[1]
+MTD	study_variable_group[4]-study_variable_refs	study_variable[2]\{vbar} study_variable[3]
 COM	plain string value:
 MTD	study_variable[1]	Male
-MTD	study_variable[1]-group_ref	study_variable_group[1]
 COM	user-defined Parameter value:
 MTD	study_variable[2]	[,,Male,]
-MTD	study_variable[2]-group_ref	study_variable_group[4]
 COM	CV Parameter value:
 MTD	study_variable[3]	[NCIT, NCIT:C20197, Male, ]
-MTD	study_variable[3]-group_ref	study_variable_group[4]
 ----
 ....
 
@@ -2471,7 +2469,7 @@ MTD	study_variable[1]-ms_run_ref	ms_run[1]\{vbar} ms_run[2]
 
 |===
 
-==== `study_variable[1-n]-group_refs[1-n]` 🟢 _(Added in v2.1)_
+==== `study_variable_group[1-n]-study_variable_refs[1-n]` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2479,7 +2477,7 @@ MTD	study_variable[1]-ms_run_ref	ms_run[1]\{vbar} ms_run[2]
 
 | Description
 a| _(not present)_
-a| The study variable group this study variable belongs to.
+a| Bar-separated references to the study variables that belong to this study variable group. This is the sole link between study variables and their group: each study variable MUST be referenced by exactly one study variable group.
 
 | Type
 a| _(not present)_
@@ -2493,7 +2491,7 @@ a| Integer List
 a| _(not present)_
 a| ....
 ----
-MTD	study_variable[1]-group_ref	study_variable_group[1]\{vbar} study_variable_group[2]
+MTD	study_variable_group[1]-study_variable_refs	study_variable[1]\{vbar} study_variable[2]
 ----
 ....
 

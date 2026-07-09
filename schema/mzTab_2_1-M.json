@@ -1813,7 +1813,7 @@
             }
           ],
           "default": null,
-          "description": "Specification of study_variable. (empty) name: A name for each study variable (experimental condition or factor), to serve as a list of the study variables that MUST be reported in the following tables. For software that does not capture study variables, a single study variable MUST be reported, linking to all assays. This single study variable MUST have the identifier “undefined“. assay_refs: Bar-separated references to the IDs of assays grouped in the study variable. average_function: The function used to calculate the study variable quantification value and the operation used is not arithmetic mean (default) e.g. “geometric mean”, “median”. The 1-n refers to different study variables. variation_function: The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default) e.g. “standard error”. description: A textual description of the study variable. factors: Additional parameters or factors, separated by bars, that are known about study variables allowing the capture of more complex, such as nested designs. ",
+          "description": "Specification of study_variable. (empty) name: A name for each study variable (experimental condition or factor), to serve as a list of the study variables that MUST be reported in the following tables. For software that does not capture study variables, a single study variable MUST be reported, linking to all assays. This single study variable MUST have the identifier “undefined“. assay_refs: Bar-separated references to the IDs of assays grouped in the study variable. average_function: The function used to calculate the study variable quantification value and the operation used is not arithmetic mean (default) e.g. “geometric mean”, “median”. The 1-n refers to different study variables. variation_function: The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default) e.g. “standard error”. description: A textual description of the study variable. ",
           "ignore": false,
           "list_concatenation_str": null,
           "mztab_example": null,
@@ -5504,40 +5504,6 @@
             "value_constraint": null
           }
         },
-        "group_refs": {
-          "allow_multiple": false,
-          "anyOf": [
-            {
-              "items": {
-                "type": "integer"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "The study variable group this study variable belongs to.",
-          "ignore": false,
-          "list_concatenation_str": null,
-          "mztab_example": null,
-          "non_indexed_list_value": false,
-          "object_level_value": false,
-          "referenced_field_name": "study_variable_group",
-          "title": "Group Refs",
-          "validation_policy": {
-            "enforcement_level": "required",
-            "maximum": null,
-            "minimum": null,
-            "pattern": null,
-            "required": null,
-            "value_constraint": "non-negative-integer"
-          },
-          "examples": [
-            "MTD\tstudy_variable[1]-group_ref\tstudy_variable_group[1]| study_variable_group[2]"
-          ]
-        },
         "assay_refs": {
           "allow_multiple": false,
           "anyOf": [
@@ -5851,7 +5817,7 @@
             "value_constraint": null
           }, 
           "examples": [
-            "....\nMTD\tstudy_variable_group[1]-datatype\txsd:string\nMTD\tstudy_variable_group[2]-datatype\txsd:decimal\nMTD\tstudy_variable_group[3]-datatype\txsd:date\nMTD\tstudy_variable_group[4]-datatype\tParameter\n\nCOM\tplain string value:\nMTD\tstudy_variable[1]\tMale\nMTD\tstudy_variable[1]-group_ref\tstudy_variable_group[1]\n\nCOM\tuser-defined Parameter value:\nMTD\tstudy_variable[2]\t[,,Male,]\nMTD\tstudy_variable[2]-group_ref\tstudy_variable_group[4]\n\nCOM\tCV Parameter value:\nMTD\tstudy_variable[3]\t[NCIT, NCIT:C20197, Male, ]\nMTD\tstudy_variable[3]-group_ref\tstudy_variable_group[4]\n...."
+            "....\nMTD\tstudy_variable_group[1]-datatype\txsd:string\nMTD\tstudy_variable_group[4]-datatype\tParameter\n\nCOM\teach group lists its member study variables (top-down link):\nMTD\tstudy_variable_group[1]-study_variable_refs\tstudy_variable[1]\nMTD\tstudy_variable_group[4]-study_variable_refs\tstudy_variable[2]| study_variable[3]\n\nCOM\tplain string value:\nMTD\tstudy_variable[1]\tMale\n\nCOM\tuser-defined Parameter value:\nMTD\tstudy_variable[2]\t[,,Male,]\n\nCOM\tCV Parameter value:\nMTD\tstudy_variable[3]\t[NCIT, NCIT:C20197, Male, ]\n...."
           ]
         },
         "unit": {
@@ -5881,13 +5847,47 @@
             "required": null,
             "value_constraint": null
           }
+        },
+        "study_variable_refs": {
+          "allow_multiple": false,
+          "anyOf": [
+            {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bar-separated references to the study variables that belong to this study variable group. This is the sole link between study variables and their group: each study variable MUST be referenced by exactly one study variable group.",
+          "ignore": false,
+          "list_concatenation_str": "|",
+          "mztab_example": null,
+          "non_indexed_list_value": false,
+          "object_level_value": false,
+          "referenced_field_name": "study_variable",
+          "title": "Study Variable Refs",
+          "validation_policy": {
+            "enforcement_level": "required",
+            "maximum": null,
+            "minimum": null,
+            "pattern": null,
+            "required": null,
+            "value_constraint": "non-negative-integer"
+          },
+          "examples": [
+            "MTD\tstudy_variable_group[1]-study_variable_refs\tstudy_variable[1]| study_variable[2]"
+          ]
         }
       },
       "title": "StudyVariableGroup",
       "type": "object",
       "description": "Specification of study_variable_group.\n(empty) name/parameter: A parameter defining the group to which study variables belong. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter (e.g., [OBI, OBI:0001667, organism development stage, ]) or a user-defined parameter (e.g., [,,sex,]). For software that does not capture study variables, a single study_variable_group MUST be reported, linking to the single study variable, and MUST have the identifier \"undefined\". Added in mzTab-M 2.1.\ndescription: A textual description of the study variable group.\ntype: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO:0000252, categorical variable], [STATO, STATO:0000228, ordinal variable], or [STATO, STATO:0000251, continuous variable].\ndatatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, xsd:anyURI, and Parameter (for values reported as user-defined or CV Parameters). Date, time and dateTime values MUST be encoded in ISO 8601 format. Writers MUST ensure that all study_variable values linked to the same study_variable_group share the declared datatype and reporting convention.\nunit: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).",
       "examples": [
-        "MTD\tstudy_variable_group[1]\t[PATO, PATO:0000383, sex, ]\nMTD\tstudy_variable_group[1]-description\tSex of the individual\nMTD\tstudy_variable_group[1]-type\t[STATO, STATO:0000252, categorical variable, ]\nMTD\tstudy_variable_group[1]-datatype\txsd:string\nMTD\tstudy_variable_group[2]\t[PATO, PATO:0000384, timepoint, ]\nMTD\tstudy_variable_group[2]-description\tTime after treatment\nMTD\tstudy_variable_group[2]-type\t[STATO, STATO:0000228, ordinal variable, ]\nMTD\tstudy_variable_group[2]-datatype\txsd:integer\nMTD\tstudy_variable_group[2]-unit\t[UO, UO:0000033, day, ]\nMTD\tstudy_variable[1]\tFemale_0day\nMTD\tstudy_variable[1]-group_ref\tstudy_variable_group[1]\nMTD\tstudy_variable[1]-assay_refs\tassay[1]\\|assay[2]\\|assay[3]\nMTD\tstudy_variable[2]\tFemale_1day\nMTD\tstudy_variable[2]-group_ref\tstudy_variable_group[2]\nMTD\tstudy_variable[2]-assay_refs\tassay[4]|assay[5]|assay[6]"
+        "MTD\tstudy_variable_group[1]\t[PATO, PATO:0000383, sex, ]\nMTD\tstudy_variable_group[1]-description\tSex of the individual\nMTD\tstudy_variable_group[1]-type\t[STATO, STATO:0000252, categorical variable, ]\nMTD\tstudy_variable_group[1]-datatype\txsd:string\nMTD\tstudy_variable_group[1]-study_variable_refs\tstudy_variable[1]\nMTD\tstudy_variable_group[2]\t[PATO, PATO:0000384, timepoint, ]\nMTD\tstudy_variable_group[2]-description\tTime after treatment\nMTD\tstudy_variable_group[2]-type\t[STATO, STATO:0000228, ordinal variable, ]\nMTD\tstudy_variable_group[2]-datatype\txsd:integer\nMTD\tstudy_variable_group[2]-unit\t[UO, UO:0000033, day, ]\nMTD\tstudy_variable_group[2]-study_variable_refs\tstudy_variable[2]\nMTD\tstudy_variable[1]\tFemale_0day\nMTD\tstudy_variable[1]-assay_refs\tassay[1]| assay[2]| assay[3]\nMTD\tstudy_variable[2]\tFemale_1day\nMTD\tstudy_variable[2]-assay_refs\tassay[4]| assay[5]| assay[6]"
       ]
     },
     "Uri": {
