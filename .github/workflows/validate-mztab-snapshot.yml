@@ -1,4 +1,4 @@
-name: Validate v2.0.0 Snapshot
+name: Validate v2.1 (snapshot validator)
 
 on:
   push:
@@ -120,40 +120,26 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
+        # Only example files that require mzTab-M 2.1 features live under
+        # examples/2.1/. They are validated with the jmzTab-m 1.0.7-SNAPSHOT CLI.
+        # NOTE: two files are expected to fail until the jmzTab-m fork catches up
+        # with the 2.1 spec:
+        #   - example_study_variable_group.mztab: the snapshot validator does not
+        #     yet recognise the top-down study_variable_group-study_variable_refs
+        #     field (it still implements the old study_variable-group_ref).
+        #   - xcms+MsIO_0.0.11_MTBLS4381_onlySMF.mztab: trips a validator
+        #     opt-column key-collision bug (opt_global_mzmin / opt_global_mzmax).
+        # This job is continue-on-error, so those two do not block merges.
         include:
-          - name: LDA
-            pattern: "examples/LDA*"
-            extra_args: ""
-          - name: lipidcompass
-            pattern: "examples/lipidcompass*"
-            extra_args: ""
-          - name: Manual
-            pattern: "examples/manual*"
-            extra_args: ""
-          - name: masster
-            pattern: "examples/masster*"
-            extra_args: ""
-          - name: MetaboScape
-            pattern: "examples/MetaboScape*.json"
-            extra_args: "--fromJson"
-          - name: MS-DIAL
-            pattern: "examples/msdial*"
-            extra_args: ""
-          - name: mzmine
-            pattern: "examples/mzmine*"
-            extra_args: ""
-          - name: progenesis
-            pattern: "examples/progenesis*.json"
-            extra_args: "--fromJson"
           - name: xcms
-            pattern: "examples/xcms*"
-            extra_args: ""            
-          - name: allMZTAB
-            pattern: "examples/*.mztab"
+            pattern: "examples/2.1/xcms*"
             extra_args: ""
-          - name: allJSON
-            pattern: "examples/*.json"
-            extra_args: "--fromJson"
+          - name: study-variable-group
+            pattern: "examples/2.1/example_study_variable_group*"
+            extra_args: ""
+          - name: allMZTAB
+            pattern: "examples/2.1/*.mztab"
+            extra_args: ""
 
     name: Validate ${{ matrix.name }} files
     steps:

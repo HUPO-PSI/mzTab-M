@@ -55,39 +55,37 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
+        # Only mzTab-M 2.0.0-conformant example files live under examples/2.0/.
+        # They are validated with the released (stable) jmzTab-m CLI 1.0.6.
+        # Files that require 2.1 features live under examples/2.1/ and are
+        # validated by validate-mztab-snapshot.yml instead.
         include:
           - name: LDA
-            pattern: "examples/LDA*"
+            pattern: "examples/2.0/LDA*"
             extra_args: ""
           - name: lipidcompass
-            pattern: "examples/lipidcompass*"
+            pattern: "examples/2.0/lipidcompass*"
             extra_args: ""
           - name: Manual
-            pattern: "examples/manual*"
+            pattern: "examples/2.0/manual*"
             extra_args: ""
           - name: masster
-            pattern: "examples/masster*"
+            pattern: "examples/2.0/masster*"
             extra_args: ""
           - name: MetaboScape
-            pattern: "examples/MetaboScape*.json"
+            pattern: "examples/2.0/MetaboScape*.json"
             extra_args: "--fromJson"
           - name: MS-DIAL
-            pattern: "examples/msdial*"
-            extra_args: ""
-          - name: mzmine
-            pattern: "examples/mzmine*"
+            pattern: "examples/2.0/msdial*"
             extra_args: ""
           - name: progenesis
-            pattern: "examples/progenesis*.json"
+            pattern: "examples/2.0/progenesis*.json"
             extra_args: "--fromJson"
-          - name: xcms
-            pattern: "examples/xcms*"
-            extra_args: ""            
           - name: allMZTAB
-            pattern: "examples/*.mztab"
+            pattern: "examples/2.0/*.mztab"
             extra_args: ""
           - name: allJSON
-            pattern: "examples/*.json"
+            pattern: "examples/2.0/*.json"
             extra_args: "--fromJson"
 
     name: Validate ${{ matrix.name }} files
