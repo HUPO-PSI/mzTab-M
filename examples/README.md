@@ -18,14 +18,12 @@ that still validates under 2.0.0 stays in `2.0/`.
 
 ### `2.1/pending-validator/` — not validated in CI
 
-Files here use 2.1 features the jmzTab-m validator does not support yet, so they
-are deliberately excluded from validation (the CI glob does not recurse into this
+Valid 2.1 files the current jmzTab-m validator cannot handle yet, so they are
+deliberately excluded from validation (the CI glob does not recurse into this
 subfolder). Move a file back up into `2.1/` once the validator can handle it.
 
 - `example_study_variable_group.mztab` — the validator does not yet recognise the
   top-down `study_variable_group[1-n]-study_variable_refs` field.
-
-> Separately, `2.1/xcms+MsIO_0.0.11_MTBLS4381_onlySMF.mztab` *is* still validated
-> and is currently expected to fail — it trips a validator opt-column key-collision
-> bug (`opt_global_mzmin` / `opt_global_mzmax`). The 2.1 validation job is
-> `continue-on-error`, so this does not block merges.
+- `xcms+MsIO_0.0.11_MTBLS4381_onlySMF.mztab` — trips a validator opt-column
+  key-collision bug (`opt_global_mzmin` / `opt_global_mzmax`). The file itself is
+  valid; the two smaller xcms files with the same header validate cleanly.
