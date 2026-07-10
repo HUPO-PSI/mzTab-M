@@ -22,8 +22,10 @@ DEFAULT_OUTPUT = SCRIPT_DIR / 'mzTab_2_1-M_schema.adoc'
 # Properties not listed here are appended after in schema order.
 SUB_FIELD_ORDER = {
     'Sample': ['name', 'species', 'tissue', 'cell_type', 'disease', 'description', 'custom'],
-    'StudyVariable': ['name', 'assay_refs', 'ms_run_refs', 'description', 'group_refs',
+    'StudyVariable': ['name', 'assay_refs', 'ms_run_refs', 'description',
                       'average_function', 'variation_function'],
+    'StudyVariableGroup': ['name', 'description', 'type', 'datatype', 'unit',
+                           'study_variable_refs'],
     'MsRun': ['location', 'instrument_ref', 'format', 'id_format',
               'fragmentation_method', 'scan_polarity', 'hash', 'hash_method', 'parameters'],
     'Assay': ['name', 'custom', 'external_uri', 'sample_ref', 'ms_run_ref',
@@ -420,11 +422,15 @@ def process_nested_object(
         if sub_prop.get('object_level_value', False):
             continue
 
-        # If the sub-field is itself a list, add [1-n] suffix
+        # If the sub-field is a genuinely indexed list (e.g. species[1],
+        # scan_polarity[1], custom[1]), add a [1-n] suffix. Bar-separated value
+        # lists (list_concatenation_str set, e.g. assay_refs, ms_run_refs,
+        # study_variable_refs) are a single field whose value is the "|"-joined
+        # list, so they must NOT get a trailing [1-n].
         is_sub_list = any(
             a.get('type') == 'array' for a in sub_prop.get('anyOf', [])
         )
-        if is_sub_list:
+        if is_sub_list and not sub_prop.get('list_concatenation_str'):
             sub_field_name = f'{meta_field_name}[1-n]-{sub_name}[1-n]'
         else:
             sub_field_name = f'{meta_field_name}[1-n]-{sub_name}'
