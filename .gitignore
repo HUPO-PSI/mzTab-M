@@ -15,4 +15,7 @@
 # Temporary files
 /tmp/
 
+# jmzTab-m CLI conversion output (written next to the input by --fromJson)
+*.json.mztab
+
 .DS_Store
