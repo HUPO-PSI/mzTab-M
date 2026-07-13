@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate mzTab_m_schema.adoc from mztabm.schema-2.1.0-M.json
+"""Generate the mzTab-M schema AsciiDoc field reference from mzTab_2_1-M.json
 
 Produces an AsciiDoc reference document describing mzTab-M format elements,
 hierarchically ordered by mzTab-M section and element.
@@ -57,7 +57,7 @@ NON_NULLABLE_FIELDS = {
 
 
 def load_schema(schema_file: Path) -> dict:
-    with open(schema_file) as f:
+    with open(schema_file, encoding='utf-8') as f:
         return json.load(f)
 
 
@@ -472,6 +472,7 @@ def write_mtd_section(lines: list, schema: dict):
         # Core metadata
         ('direct',      'mzTab-version'),
         ('direct',      'mzTab-ID'),
+        ('direct',      'mzTab-profile'),
         ('direct',      'title'),
         ('direct',      'description'),
         # Sample processing
@@ -639,8 +640,39 @@ def main():
         'The mzTab-M format consists of four cross-referenced data tables: '
         'metadata (MTD), Small Molecule (SML), Small Molecule Feature (SMF), '
         'and Small Molecule Evidence (SME). '
-        'The MTD and SML tables are mandatory. '
-        'SMF and SME sections SHOULD also be included to capture full identification evidence.',
+        'The MTD section is always mandatory. The presence of the SML, SMF and '
+        'SME sections is governed by the file\'s profile, declared in the '
+        '`mzTab-profile` metadata field (see <<mztab-profile>>). '
+        'Five profiles are defined:',
+        '',
+        '[[table-profiles]]',
+        '.mzTab-M profiles and the tables each requires.',
+        '[cols="1,2,4",options="header",]',
+        '|============================================================',
+        '|Profile |Tables present |Purpose',
+        '|`M` |MTD |Metadata only. Declares the experimental design but reports '
+        'no molecules (e.g. a study-design exchange artefact or the starting '
+        'point of an analysis workflow).',
+        '|`M+S` |MTD + SML |Summarised results without a recoverable evidence '
+        'trail (equivalent to a supplementary results table). The SMF and SME '
+        'sections MUST NOT be present.',
+        '|`M+F` |MTD + SMF |Quantified features without identification (output of '
+        'preprocessing only). The SML and SME sections MUST NOT be present.',
+        '|`M+F+E` |MTD + SMF + SME |Quantified features with identification '
+        'evidence, but no aggregated summary. The SML section MUST NOT be '
+        'present. Every SME row MUST be referenced by at least one SMF row via '
+        'SME_ID_REFS.',
+        '|`M+S+F+E` |MTD + SML + SMF + SME |All four sections present. This is the '
+        'richest profile and corresponds to the structure recommended in '
+        'mzTab-M 2.0/2.1.',
+        '|============================================================',
+        '',
+        'Sections that ARE present MUST follow the table order MTD -> SML -> SMF '
+        '-> SME, with a blank line separating each. Sections that are NOT '
+        'required by the profile MUST be omitted entirely (no header line, no '
+        'rows). If the `mzTab-profile` field is absent (e.g. legacy mzTab-M 2.0 '
+        'files), validators MUST infer the profile from the tables present and '
+        'report it in the validation log.',
         '',
     ]
 
@@ -655,7 +687,9 @@ def main():
         schema=schema,
         intro=(
             'The small molecule section is table-based. '
-            'It MUST always come after the metadata section. '
+            'It MUST be present in profiles M+S and M+S+F+E, and MUST be absent '
+            'in profiles M, M+F and M+F+E (see <<table-profiles>>). '
+            'When present, it MUST always come after the metadata section. '
             'Each row reports one final quantified molecule result. '
             'All columns are MANDATORY except for "opt_" columns.'
         ),
@@ -671,7 +705,10 @@ def main():
         intro=(
             'The small molecule feature section is table-based, representing individual MS regions '
             '(generally the elution profile for all isotopomers from a single charge state). '
-            'It MUST always come after the Small Molecule Section. '
+            'It MUST be present in profiles M+F, M+F+E and M+S+F+E, and MUST be '
+            'absent in profiles M and M+S (see <<table-profiles>>). '
+            'When present, it MUST always come after the Small Molecule Section '
+            '(or after the metadata section when no Small Molecule Section is present). '
             'All columns are MANDATORY except for "opt_" columns.'
         ),
     )
@@ -686,7 +723,9 @@ def main():
         intro=(
             'The small molecule evidence section is table-based, representing identification '
             'evidence for small molecules or features (e.g., database search results). '
-            'It MUST always come after the Small Molecule Feature Section. '
+            'It MUST be present in profiles M+F+E and M+S+F+E, and MUST be absent '
+            'in profiles M, M+S and M+F (see <<table-profiles>>). '
+            'When present, it MUST always come after the Small Molecule Feature Section. '
             'All columns are MANDATORY except for "opt_" columns.'
         ),
     )

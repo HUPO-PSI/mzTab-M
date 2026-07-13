@@ -27,3 +27,15 @@ subfolder). Move a file back up into `2.1/` once the validator can handle it.
 - `xcms+MsIO_0.0.11_MTBLS4381_onlySMF.mztab` — trips a validator opt-column
   key-collision bug (`opt_global_mzmin` / `opt_global_mzmax`). The file itself is
   valid; the two smaller xcms files with the same header validate cleanly.
+
+The following files demonstrate the `mzTab-profile` metadata field (one per
+profile). The published snapshot validator does not recognise `mzTab-profile`
+yet; move them up into `2.1/` once profile support is released:
+
+- `manual_null_MTD-only.mztab` — profile `M` (metadata only).
+- `lipidcompass-script_226ea96_MTD_SML_LCS-00001-01_v2.1.mztab` — profile `M+S`
+  (summary only).
+- `xcms+MsIO_0.0.11_MTBLS1820_onlySMF_v2.1.mztab` — profile `M+F` (features only,
+  no synthetic summary row).
+- `manual_null_null_lipidomics_v2.1.mztab` — profile `M+F+E` (features + evidence,
+  no summary).

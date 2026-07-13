@@ -21,7 +21,7 @@ Add any other context or screenshots about the feature request here. If your req
 
 **Submitter Tasks**
 - [ ] Provide a pull request (Please add the link)
-- [ ] Schema: Update mzTab_m_openapi.yml ([View File](https://github.com/HUPO-PSI/mzTab-M/blob/d1851e2781d0de12c5103d864188cd05d74f33c1/schema/mzTab_m_openapi.yml))
+- [ ] Schema: Update schema/mzTab_2_1-M.json (and the OpenAPI wrapper schema/mzTab_2_1-M_openapi.json) ([View File](https://github.com/HUPO-PSI/mzTab-M/blob/main/schema/mzTab_2_1-M.json))
 - [ ] Specification: Update mzTab_format_specification_2_1-M.adoc with an example ([View File](https://github.com/HUPO-PSI/mzTab-M/blob/d1851e2781d0de12c5103d864188cd05d74f33c1/specification_documents/mzTab_format_specification_2_1-M.adoc))
 - [ ] Example files: if possible, modify an existing or add a new example file ([Existing example files](https://github.com/HUPO-PSI/mzTab-M/tree/main/examples))
 

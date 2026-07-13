@@ -118,6 +118,7 @@ The first stable version of mzTab (version 1.0) was developed primarily by the P
 
 The first stable version of mzTab-M for Metabolomics (version 2.0.0) was developed to support the reporting of results from MS-based metabolomics experiments.
 mzTab-M 2.1.0 clarifies several aspects, and introduces the `study_variable_group` element to support multi-factorial experimental designs. As a consequence, the `study_variable[1-n]-factors` field has been removed: the experimental factors it was intended to capture are now represented explicitly through `study_variable_group[1-n]` and its sub-fields (`-description`, `-type`, `-datatype`, `-unit`), together with the `study_variable_group[1-n]-study_variable_refs` field by which each group lists the study variables that belong to it. The `-datatype` sub-field supports the standard XSD primitive types as well as `Parameter`, allowing study variable values to be reported as user-defined or CV Parameters when categorical factors are best expressed by ontology terms.
+mzTab-M 2.1.0 also introduces _profiles_ (see <<profiles>>): an optional `mzTab-profile` metadata field that declares which of the four tables a file contains. This allows intermediate analysis outputs — for example feature-only files from preprocessing, or files carrying identification evidence but no aggregated summary — to be valid mzTab-M. Files that do not declare a profile remain valid: their profile is inferred from the tables present, preserving backwards compatibility with mzTab-M 2.0.0.
 
 WARNING: Some elements have been altered, some have been removed.
 We have tried to maintain backwards-compatibility with mzTab-M 2.0.0 as much as possible.
@@ -275,11 +276,27 @@ It is common in metabolomics workflows to use both positive and negative ionisat
 [[referencing-evidence-for-small-molecule-identifications]]
 === Referencing evidence for small molecule identifications
 
-Evidence for small molecule identification is captured by reference from the SML table via features (SMFs) down to the final table - Small Molecule Evidence (SME) elements. It is possible to have a legal mzTab-M file that does not contain any features (SML summary level only). In this case, detailed information about small molecule evidence cannot be provided. It is generally RECOMMENDED to include data at the SML, SMF and SME levels.
+Evidence for small molecule identification is captured by reference from the SML table via features (SMFs) down to the final table - Small Molecule Evidence (SME) elements. It is possible to have a legal mzTab-M file that does not contain any features (a summary-level file, profile `M+S`); equally, a file MAY contain features and evidence but no summary (profiles `M+F` and `M+F+E`). Which cross-references are expected therefore depends on the file's profile (see <<profiles>>). It is generally RECOMMENDED, where the full evidence trail is available, to report data at the SML, SMF and SME levels (profile `M+S+F+E`).
 
 SMF elements should reference down to all evidence elements (SME rows) that support the identification of that particular feature.
 
 If features (SMF elements) have been grouped prior to evidence collation, then different groups SMF elements SHOULD reference the same SME elements redundantly.
+
+The cross-reference obligations under each profile are summarised below.
+
+[[table-profile-crossrefs]]
+.Cross-reference rules per profile. `SMF_ID_REFS` links each SML row to its features; `SME_ID_REFS` links each SMF row to its evidence.
+[cols="1,2,2",options="header",]
+|===============================================================================
+|Profile |SML -> SMF (`SMF_ID_REFS`) |SMF -> SME (`SME_ID_REFS`)
+|`M` |n/a (no SML table) |n/a (no SMF table)
+|`M+S` |MUST be null for every SML row (no SMF table to reference) |n/a (no SMF table)
+|`M+F` |n/a (no SML table) |MUST be null for every SMF row (no SME table to reference)
+|`M+F+E` |n/a (no SML table) |MUST contain at least one valid SME_ID for every SMF row that has been identified; MAY be null for unidentified features
+|`M+S+F+E` |MUST contain at least one valid SMF_ID per SML row |as `M+F+E`
+|===============================================================================
+
+The `SME_ID_REF_ambiguity_code` on an SMF row MUST be null whenever that row's `SME_ID_REFS` is null — that is, in every profile without an SME section (`M`, `M+S`, `M+F`). It is used only to disambiguate SMF rows that reference more than one SME element.
 
 [[figure-2]]
 image::img/media/figure2.png[image,width=100%,pdfwidth=100%,scaledwidth=100%, title=" A) The summary level (SML) reports the final assumed identification, allowing for ambiguity by “|” separated results in the relevant columns. B) The feature level (SMF) does not explicitly report identifications but references down to the SME level. Ambiguity is propagated via referencing multiple SME elements (rows) with different identification results. C) One SME element (one row) represents a single possible identification from some input evidence. Multiple identifications from the same input data share the same value for evidence_input_id. Ambiguity is captured by different rows for the same input data."]
@@ -418,6 +435,57 @@ URIs MUST follow the format defined in https://tools.ietf.org/html/rfc3986[RFC 3
 * *Versioning* +
 To support a future evolution of the format, an mzTab file MUST report its version. From version 2.0.0-M onwards, we intend to use https://semver.org/[semantic versioning]. This means that increasing the last digit of the version (the _patch_ level) indicates backwards compatible fixes to the specification that require no adaptation of consumers or producers of the format. A change in the middle digit of the version (the _minor_ level) indicates new features that are backwards compatible to existing software but will require updates for new producers and consumers to make use of those features. Finally, a change in the first digit of the version (the _major_ level) indicates breaking changes in the format that require changes in any producing or consuming software to support features of that version.
 
+[[profiles]]
+=== Profiles
+
+An mzTab-M file MUST contain a Metadata (MTD) section. The presence of the Small Molecule (SML), Small Molecule Feature (SMF) and Small Molecule Evidence (SME) sections is governed by the file's _profile_, declared in the `mzTab-profile` metadata field (see <<mztab-profile>>). A profile declares which tables are present in the file, and thereby which validation rule set applies. Five profiles are defined; the definitive list, and the tables each profile requires, is given in <<table-profiles>>.
+
+Sections that ARE present MUST follow the table order MTD -> SML -> SMF -> SME, with a blank line separating each. Sections that are NOT required by the declared profile MUST be omitted entirely — no header line and no rows. An empty table (header line only, no rows) is NOT a substitute for omitting the section.
+
+If the `mzTab-profile` field is absent — for example in mzTab-M 2.0 files, or files written before profiles were introduced — validators MUST infer the profile from the tables present and report the inferred profile in the validation log. New files SHOULD set `mzTab-profile` explicitly.
+
+[[profile-metadata-requirements]]
+==== Metadata fields whose requirement depends on the profile
+
+Some metadata (MTD) fields are only meaningful when a particular table is present. Each such field is therefore MANDATORY in the profiles that include the corresponding table, and OPTIONAL — tolerated but not required — in the others. The rule is stated once per field, in terms of the table it depends on:
+
+[cols="2,3",options="header",]
+|===============================================================================
+|MTD field |Required when…
+|`quantification_method` |the file reports quantified molecules — an SML or SMF section is present (`M+S`, `M+F`, `M+F+E`, `M+S+F+E`)
+|`small_molecule-quantification_unit` |the SML section is present (`M+S`, `M+S+F+E`)
+|`small_molecule_feature-quantification_unit` |the SMF section is present (`M+F`, `M+F+E`, `M+S+F+E`)
+|`id_confidence_measure[1-n]` |the SME section is present (`M+F+E`, `M+S+F+E`)
+|`database[1-n]` |identification has been performed — an SME section is present, or SML rows carry identifiers
+|===============================================================================
+
+In profiles that do not include the relevant table these fields are OPTIONAL. If such a field is nevertheless present in a file whose profile does not include the corresponding table, a validator SHOULD accept the file but emit an informational message noting the profile/content mismatch (for example, a `small_molecule-quantification_unit` in an `M+F` file, which has no SML section for it to describe).
+
+[[profiles-not-supported]]
+==== Profiles that are explicitly not supported
+
+Two table combinations are prohibited because they would contain cross-references that cannot be resolved:
+
+* *M+E* (MTD + SME, evidence without features). SME rows are addressable only through `SME_ID_REFS` on SMF rows; an evidence-only file would therefore contain unreachable evidence. There is no realistic workflow that produces SME without SMF: even direct-infusion identification produces a feature-equivalent observation (a single mass at a single retention "time", with `retention_time_in_seconds` null), which mzTab-M models as an SMF row.
+* *M+S+E* (MTD + SML + SME, no SMF). SML can reference SMF rows via `SMF_ID_REFS`, but SME is not directly addressable from SML. Allowing this combination would create evidence with no validated cross-reference path from the summary.
+
+The combination *M+S+F* (MTD + SML + SMF, no SME) is permitted but discouraged. It corresponds to the summary-with-features pattern tolerated in earlier versions. Producers writing summary-only output SHOULD instead declare profile `M+S` and omit the SMF section; producers with feature-level data SHOULD use `M+S+F+E` with at least one SME row per identified SMF. `M+S+F` is retained only for backwards compatibility and is NOT RECOMMENDED for new production.
+
+[[profile-lattice]]
+==== Profile inclusion lattice
+
+Each profile is a strict subset of the ones above it: any file valid under a given profile satisfies the structural expectations of the profiles it contains. Validators MAY be configured to accept a minimum richness (e.g. "`M+F` or richer") by checking the file against the profile that minimally covers its declared content.
+
+....
+                  M+S+F+E     (strict superset of all others)
+                 /       \
+              M+S+F      M+F+E
+             /     \       |
+          M+S      M+F -----+
+             \      |
+              \     |
+                 M
+....
 
 include::mzTab_m_2_1_schema.adoc[]
 
