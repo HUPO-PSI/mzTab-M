@@ -62,7 +62,7 @@ def transform(obj):
 
     result = {}
 
-    # Collect existing examples array (may be empty).
+    # Collect existing examples array (can be empty).
     existing_examples = list(obj.get("examples") or [])
 
     # Convert singular OpenAPI `example` → prepend to examples list.

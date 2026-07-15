@@ -59,6 +59,7 @@ NON_NULLABLE_FIELDS = {
 def load_schema(schema_file: Path) -> dict:
     with open(schema_file) as f:
         return json.load(f)
+    return None
 
 
 def make_anchor(name: str) -> str:
@@ -70,7 +71,7 @@ def make_anchor(name: str) -> str:
     return anchor.lower().rstrip('-_')
 
 
-def get_type_string(prop: dict, schema_defs: dict) -> str:
+def get_type_string(prop: dict) -> str:
     """Determine the human-readable type string for a property."""
     vp = prop.get('validation_policy', {})
     value_constraint = vp.get('value_constraint', '')
@@ -114,7 +115,7 @@ def get_type_string(prop: dict, schema_defs: dict) -> str:
 
 
 def array_items_to_type(items: dict, vp: dict) -> str:
-    """Determine the type string for an array by examining its items schema."""
+    """Determine the type string for an array by examining its items' schema."""
     if '$ref' in items:
         ref_name = items['$ref'].split('/')[-1]
         if ref_name == 'OptColumnMapping':
@@ -268,6 +269,38 @@ def get_examples(prop: dict) -> list:
     return result
 
 
+def insert_example_blocks(lines: list, examples: dict):
+    """Insert example blocks before the closing table delimiter for selected fields."""
+    for field_name, example in examples.items():
+        marker = f'==== {field_name}'
+        start_idx = None
+        for idx, line in enumerate(lines):
+            if line == marker:
+                start_idx = idx
+                break
+        if start_idx is None:
+            continue
+
+        delim_count = 0
+        insert_idx = None
+        for idx in range(start_idx + 1, len(lines)):
+            if lines[idx].strip() == '|============================================================':
+                delim_count += 1
+                if delim_count == 2:
+                    insert_idx = idx
+                    break
+        if insert_idx is None:
+            continue
+
+        block = [
+            '|*Example* a|',
+            '----',
+            example,
+            '----',
+        ]
+        lines[insert_idx:insert_idx] = block
+
+
 def write_field_entry(
     lines: list,
     field_name: str,
@@ -281,7 +314,7 @@ def write_field_entry(
     """Append the AsciiDoc block for a single field to *lines*."""
     anchor = (anchor_prefix + '-' if anchor_prefix else '') + make_anchor(field_name)
     desc = get_description(prop)
-    type_str = get_type_string(prop, schema_defs)
+    type_str = get_type_string(prop)
     mandatory = is_mandatory(prop)
     pattern = get_regex_pattern(prop)
     examples = get_examples(prop)
@@ -303,7 +336,7 @@ def write_field_entry(
     # Type: show regex pattern in a listing block when applicable.
     # Use ---- (listing block) rather than .... (literal block) so that any
     # pipe characters in the pattern are not mis-parsed as table cell
-    # separators by Asciidoctor.js inside an a| table cell.
+    # separators by Asciidoctor.js inside an "a"| table cell.
     if pattern and 'Regex' in type_str:
         lines.append(f'|*Type* a|{type_str}')
         lines.append('----')
@@ -572,6 +605,30 @@ def write_table_section(
     lines.append('')
     lines.append(intro)
     lines.append('')
+    if row_prefix == 'SML':
+        lines.append('A minimal example row looks like this:')
+        lines.append('')
+        lines.append('----')
+        lines.append('SMH\tSML_ID\tdatabase_identifier\tchemical_name\treliability\tabundance_assay[1]')
+        lines.append('SML\t1\tCHEBI:15377\tProline\t[,,high,]\t123.4')
+        lines.append('----')
+        lines.append('')
+    elif row_prefix == 'SMF':
+        lines.append('A minimal example row looks like this:')
+        lines.append('')
+        lines.append('----')
+        lines.append('SFH\tSMF_ID\tSME_ID_REFS\texp_mass_to_charge\tcharge\tretention_time_in_seconds')
+        lines.append('SMF\t1\t1\t123.45\t1\t420')
+        lines.append('----')
+        lines.append('')
+    elif row_prefix == 'SME':
+        lines.append('A minimal example row looks like this:')
+        lines.append('')
+        lines.append('----')
+        lines.append('SEH\tSME_ID\tevidence_input_id\tchemical_name\texp_mass_to_charge\tcharge')
+        lines.append('SME\t1\tScan=12345\tProline\t123.45\t1')
+        lines.append('----')
+        lines.append('')
     lines.append(
         'The order of columns MUST follow the order specified below. '
         'All table columns MUST be Tab separated. '
@@ -633,6 +690,13 @@ def main():
         'organised by section and ordered by mzTab-M section hierarchy. '
         'Each field entry includes a description, type, mandatory status, and example usage.',
         '',
+        'To read this reference quickly, keep the following conventions in mind:',
+        '',
+        '* `[1-n]` indicates a repeatable field with an index that should be replaced with a concrete number such as `[1]`.',
+        '* `Parameter` values follow the mzTab syntax `[CV label, accession, name, value]` and empty fields stay empty.',
+        '* Mandatory means the field MUST be present in a conforming mzTab file; optional fields MAY be omitted.',
+        '* In the table-based sections, missing values SHOULD be represented as `null`.',
+        '',
         '[[sections]]',
         '=== Sections',
         '',
@@ -640,7 +704,8 @@ def main():
         'metadata (MTD), Small Molecule (SML), Small Molecule Feature (SMF), '
         'and Small Molecule Evidence (SME). '
         'The MTD and SML tables are mandatory. '
-        'SMF and SME sections SHOULD also be included to capture full identification evidence.',
+        'SMF and SME sections SHOULD also be included to capture full identification evidence. '
+        'Each table section is introduced by a header line and each row is tab-separated.',
         '',
     ]
 
@@ -690,6 +755,56 @@ def main():
             'All columns are MANDATORY except for "opt_" columns.'
         ),
     )
+
+    examples = {
+        'instrument[1-n]-name': 'MTD\tinstrument[1]-name\t[MS, MS:1000121, Q Exactive, ]',
+        'instrument[1-n]-source': 'MTD\tinstrument[1]-source\t[MS, MS:1000073, electrospray ionization, ]',
+        'instrument[1-n]-analyzer[1-n]': 'MTD\tinstrument[1]-analyzer[1]\t[MS, MS:1000285, Orbitrap, ]',
+        'instrument[1-n]-detector': 'MTD\tinstrument[1]-detector\t[MS, MS:1000253, electron multiplier, ]',
+        'software[1-n]-setting[1-n]': 'MTD\tsoftware[1]-setting[1]\tMass tolerance = 5 ppm',
+        'contact[1-n]-name': 'MTD\tcontact[1]-name\tJane D. Doe',
+        'contact[1-n]-affiliation': 'MTD\tcontact[1]-affiliation\tUniversity of Example',
+        'contact[1-n]-email': 'MTD\tcontact[1]-email\tjane.doe@example.org',
+        'contact[1-n]-orcid': 'MTD\tcontact[1]-orcid\t0000-0002-1825-0097',
+        'quantification_method': 'MTD\tquantification_method\t[MS, MS:1001838, label-free quantification, ]',
+        'sample[1-n]-species[1-n]': 'MTD\tsample[1]-species[1]\t[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]',
+        'sample[1-n]-tissue[1-n]': 'MTD\tsample[1]-tissue[1]\t[BTO, BTO:0000141, blood plasma, ]',
+        'sample[1-n]-cell_type[1-n]': 'MTD\tsample[1]-cell_type[1]\t[CL, CL:0000084, T cell, ]',
+        'sample[1-n]-disease[1-n]': 'MTD\tsample[1]-disease[1]\t[DOID, DOID:9351, diabetes mellitus type 2, ]',
+        'sample[1-n]-description': 'MTD\tsample[1]-description\tHuman plasma sample from a healthy control donor',
+        'sample[1-n]-custom[1-n]': 'MTD\tsample[1]-custom[1]\tSample preparation batch A',
+        'ms_run[1-n]-location': 'MTD\tms_run[1]-location\tfile:///data/run01.mzML',
+        'ms_run[1-n]-instrument_ref': 'MTD\tms_run[1]-instrument_ref\tinstrument[1]',
+        'ms_run[1-n]-format': 'MTD\tms_run[1]-format\t[MS, MS:1000584, mzML file, ]',
+        'ms_run[1-n]-id_format': 'MTD\tms_run[1]-id_format\t[MS, MS:1001530, mzML unique identifier, ]',
+        'ms_run[1-n]-fragmentation_method[1-n]': 'MTD\tms_run[1]-fragmentation_method[1]\t[MS, MS:1000133, CID, ]',
+        'ms_run[1-n]-scan_polarity[1-n]': 'MTD\tms_run[1]-scan_polarity[1]\t[MS, MS:1000130, positive scan, ]',
+        'ms_run[1-n]-hash': 'MTD\tms_run[1]-hash\tsha256:34f2d1f2f0e7c5d8a3b6c4d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7',
+        'ms_run[1-n]-hash_method': 'MTD\tms_run[1]-hash_method\t[MS, MS:1000569, SHA-256, ]',
+        'assay[1-n]-custom[1-n]': 'MTD\tassay[1]-custom[1]\ttechnical replicate 1',
+        'assay[1-n]-external_uri': 'MTD\tassay[1]-external_uri\thttps://example.org/assays/001',
+        'assay[1-n]-sample_ref': 'MTD\tassay[1]-sample_ref\tsample[1]',
+        'assay[1-n]-ms_run_ref[1-n]': 'MTD\tassay[1]-ms_run_ref[1]\tms_run[1]',
+        'study_variable[1-n]-assay_refs[1-n]': 'MTD\tstudy_variable[1]-assay_refs\tassay[1]|assay[2]',
+        'study_variable[1-n]-description': 'MTD\tstudy_variable[1]-description\tFemale subjects at day 0',
+        'study_variable[1-n]-average_function': 'MTD\tstudy_variable[1]-average_function\t[STATO, STATO:0000467, arithmetic mean, ]',
+        'study_variable[1-n]-variation_function': 'MTD\tstudy_variable[1]-variation_function\t[STATO, STATO:0000256, standard deviation, ]',
+        'study_variable_group[1-n]-description': 'MTD\tstudy_variable_group[1]-description\tBiological sex of the donor',
+        'study_variable_group[1-n]-type': 'MTD\tstudy_variable_group[1]-type\t[STATO, STATO:0000252, categorical variable, ]',
+        'study_variable_group[1-n]-unit': 'MTD\tstudy_variable_group[1]-unit\t[UO, UO:0000033, day, ]',
+        'protocol[1-n]-name': 'MTD\tprotocol[1]-name\tSample preparation',
+        'protocol[1-n]-type': 'MTD\tprotocol[1]-type\t[MSIO, MSIO:0000141, metabolite extraction, ]',
+        'protocol[1-n]-description': 'MTD\tprotocol[1]-description\tProteins were precipitated with cold methanol and the supernatant was collected.',
+        'protocol[1-n]-parameters[1-n]': 'MTD\tprotocol[1]-parameters[1]\t[MSIO, MSIO:0000442, solvent composition, methanol:water 8:2]',
+        'cv[1-n]-label': 'MTD\tcv[1]-label\tMS',
+        'cv[1-n]-full_name': 'MTD\tcv[1]-full_name\tPSI-MS controlled vocabulary',
+        'cv[1-n]-version': 'MTD\tcv[1]-version\t4.1.195',
+        'cv[1-n]-uri': 'MTD\tcv[1]-uri\thttps://github.com/HUPO-PSI/psi-ms-CV',
+        'database[1-n]-prefix': 'MTD\tdatabase[1]-prefix\tCHEBI',
+        'database[1-n]-version': 'MTD\tdatabase[1]-version\t2025-04-17',
+        'database[1-n]-uri': 'MTD\tdatabase[1]-uri\thttps://www.ebi.ac.uk/chebi/'
+    }
+    insert_example_blocks(lines, examples)
 
     output_path = Path(args.output)
     with open(output_path, 'w', encoding='utf-8') as f:

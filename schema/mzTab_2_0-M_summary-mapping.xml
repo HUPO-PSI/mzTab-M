@@ -12,7 +12,7 @@ Note that the JXPath library does not include the MzTab object as an explicit ro
 Special considerations: a rule with AND as cvTermsCombinationLogic can have at most one term child with allowChildren = true to avoid nonsensical term expansion and combination.
 Alternative term roots should either be expressed as OR (for choose any, even from the expanded term roots when allowChildren = true) or XOR to require EXACTLY one of the term roots' children to be present.
 -->
-<CvMapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.psidev.info/files/validator/CvMapping.xsd" modelName="mzTab_m_swagger.yml" modelURI="https://raw.githubusercontent.com/nilshoffmann/jmzTab-m/master/api/src/main/resources/mzTab_m_swagger.yml" modelVersion="2.0.0">
+<CvMapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://www.psidev.info/files/validator/CvMapping.xsd" modelName="mzTab_m_swagger.yml" modelURI="https://raw.githubusercontent.com/nilshoffmann/jmzTab-m/master/api/src/main/resources/mzTab_m_swagger.yml" modelVersion="2.0.0">
 
   <CvReferenceList>
     <CvReference cvName="PSI-MS" cvIdentifier="MS"/>

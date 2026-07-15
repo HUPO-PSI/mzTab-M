@@ -2,10 +2,20 @@
 
 This document provides a reference for all fields defined in the mzTab-M format, organised by section and ordered by mzTab-M section hierarchy. Each field entry includes a description, type, mandatory status, and example usage.
 
+To read this reference quickly, keep the following conventions in mind:
+
+* `[1-n]` indicates a repeatable field with an index that should be replaced with a concrete number such as `[1]`.
+* `Parameter` values follow the mzTab syntax `[CV label, accession, name, value]` and empty fields stay empty.
+* Mandatory means the field MUST be present in a conforming mzTab file; optional fields MAY be omitted.
+* In the table-based sections, missing values SHOULD be represented as `null`.
+
 [[sections]]
 === Sections
 
-The mzTab-M format consists of four cross-referenced data tables: metadata (MTD), Small Molecule (SML), Small Molecule Feature (SMF), and Small Molecule Evidence (SME). The MTD and SML tables are mandatory. SMF and SME sections SHOULD also be included to capture full identification evidence.
+The mzTab-M format consists of four cross-referenced data tables: metadata (MTD), Small Molecule (SML), Small Molecule Feature (SMF), and Small Molecule Evidence (SME).
+The MTD and SML tables are mandatory.
+SMF and SME sections SHOULD also be included to capture full identification evidence.
+Each table section is introduced by a header line and each row is tab-separated.
 
 [[metadata-section]]
 === Metadata Section
@@ -127,6 +137,10 @@ The name, source, analyzer and detector of the instruments used in the experimen
 |*Description* |The instrument's name.
 |*Type* |Parameter
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	instrument[1]-name	[MS, MS:1000121, Q Exactive, ]
+----
 |============================================================
 
 [[instrument1-n-source]]
@@ -137,6 +151,10 @@ The name, source, analyzer and detector of the instruments used in the experimen
 |*Description* |The instrument's ion source.
 |*Type* |Parameter
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	instrument[1]-source	[MS, MS:1000073, electrospray ionization, ]
+----
 |============================================================
 
 [[instrument1-n-analyzer1-n]]
@@ -147,6 +165,10 @@ The name, source, analyzer and detector of the instruments used in the experimen
 |*Description* |The instrument's mass analyzer, as defined by the parameter.
 |*Type* |Parameter List
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	instrument[1]-analyzer[1]	[MS, MS:1000285, Orbitrap, ]
+----
 |============================================================
 
 [[instrument1-n-detector]]
@@ -157,6 +179,10 @@ The name, source, analyzer and detector of the instruments used in the experimen
 |*Description* |The instrument's mass analyzer, as defined by the parameter.
 |*Type* |Parameter
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	instrument[1]-detector	[MS, MS:1000253, electron multiplier, ]
+----
 |============================================================
 
 [[software1-n]]
@@ -184,6 +210,10 @@ MTD	software[2]-setting	Parent tolerance = 0.5 Da
 |*Description* |A software setting used. This field MAY occur multiple times for a single software. The value of this field is deliberately set as a String, since there currently do not exist cvParams for every possible setting.
 |*Type* |String List
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	software[1]-setting[1]	Mass tolerance = 5 ppm
+----
 |============================================================
 
 [[publication1-n]]
@@ -211,6 +241,10 @@ The contact’s name, affiliation and e-mail. Several contacts can be given by i
 |*Description* |The contact's name.
 |*Type* |String
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	contact[1]-name	Jane D. Doe
+----
 |============================================================
 
 [[contact1-n-affiliation]]
@@ -221,6 +255,10 @@ The contact’s name, affiliation and e-mail. Several contacts can be given by i
 |*Description* |The contact's affiliation.
 |*Type* |String
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	contact[1]-affiliation	University of Example
+----
 |============================================================
 
 [[contact1-n-email]]
@@ -231,6 +269,10 @@ The contact’s name, affiliation and e-mail. Several contacts can be given by i
 |*Description* |The contact's e-mail address.
 |*Type* |String
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	contact[1]-email	jane.doe@example.org
+----
 |============================================================
 
 [[contact1-n-orcid]]
@@ -244,6 +286,10 @@ The contact’s name, affiliation and e-mail. Several contacts can be given by i
 ^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]{1}$
 ----
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	contact[1]-orcid	0000-0002-1825-0097
+----
 |============================================================
 
 [[uri1-n]]
@@ -286,6 +332,10 @@ MTD	external_study_uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_In
 |*Description* |The quantification method used in the experiment reported in the file.
 |*Type* |Parameter
 |*Mandatory* |True
+|*Example* a|
+----
+MTD	quantification_method	[MS, MS:1001838, label-free quantification, ]
+----
 |============================================================
 
 [[sample1-n]]
@@ -324,6 +374,10 @@ MTD	sample[2]-description	Healthy control samples.
 |*Description* |Biological species information on the sample.
 |*Type* |Parameter List
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	sample[1]-species[1]	[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]
+----
 |============================================================
 
 [[sample1-n-tissue1-n]]
@@ -334,6 +388,10 @@ MTD	sample[2]-description	Healthy control samples.
 |*Description* |Biological tissue information on the sample.
 |*Type* |Parameter List
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	sample[1]-tissue[1]	[BTO, BTO:0000141, blood plasma, ]
+----
 |============================================================
 
 [[sample1-n-cell_type1-n]]
@@ -344,6 +402,10 @@ MTD	sample[2]-description	Healthy control samples.
 |*Description* |Biological cell type information on the sample.
 |*Type* |Parameter List
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	sample[1]-cell_type[1]	[CL, CL:0000084, T cell, ]
+----
 |============================================================
 
 [[sample1-n-disease1-n]]
@@ -354,6 +416,10 @@ MTD	sample[2]-description	Healthy control samples.
 |*Description* |Disease information on the sample.
 |*Type* |Parameter List
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	sample[1]-disease[1]	[DOID, DOID:9351, diabetes mellitus type 2, ]
+----
 |============================================================
 
 [[sample1-n-description]]
@@ -364,6 +430,10 @@ MTD	sample[2]-description	Healthy control samples.
 |*Description* |A free form description of the sample.
 |*Type* |String
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	sample[1]-description	Human plasma sample from a healthy control donor
+----
 |============================================================
 
 [[sample1-n-custom1-n]]
@@ -374,6 +444,10 @@ MTD	sample[2]-description	Healthy control samples.
 |*Description* |Additional user or cv parameters.
 |*Type* |Parameter List
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	sample[1]-custom[1]	Sample preparation batch A
+----
 |============================================================
 
 Specification of ms_run.
@@ -394,6 +468,10 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |*Description* |The msRun's location URI.
 |*Type* |URI
 |*Mandatory* |True
+|*Example* a|
+----
+MTD	ms_run[1]-location	file:///data/run01.mzML
+----
 |============================================================
 
 [[ms_run1-n-instrument_ref]]
@@ -404,6 +482,10 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |*Description* |Sample reference.
 |*Type* |Integer
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	ms_run[1]-instrument_ref	instrument[1]
+----
 |============================================================
 
 [[ms_run1-n-format]]
@@ -414,6 +496,10 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |*Description* |The format of the MS run file.
 |*Type* |Parameter
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	ms_run[1]-format	[MS, MS:1000584, mzML file, ]
+----
 |============================================================
 
 [[ms_run1-n-id_format]]
@@ -424,6 +510,10 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |*Description* |The format of the IDs in the MS run file.
 |*Type* |Parameter
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	ms_run[1]-id_format	[MS, MS:1001530, mzML unique identifier, ]
+----
 |============================================================
 
 [[ms_run1-n-fragmentation_method1-n]]
@@ -434,6 +524,10 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |*Description* |The fragmentation methods applied during this msRun.
 |*Type* |Parameter List
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	ms_run[1]-fragmentation_method[1]	[MS, MS:1000133, CID, ]
+----
 |============================================================
 
 [[ms_run1-n-scan_polarity1-n]]
@@ -444,6 +538,10 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |*Description* |The scan polarity/polarities used during this msRun.
 |*Type* |Parameter List
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	ms_run[1]-scan_polarity[1]	[MS, MS:1000130, positive scan, ]
+----
 |============================================================
 
 [[ms_run1-n-hash]]
@@ -454,6 +552,10 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |*Description* |The file hash value of this msRun's data file.
 |*Type* |String
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	ms_run[1]-hash	sha256:34f2d1f2f0e7c5d8a3b6c4d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7
+----
 |============================================================
 
 [[ms_run1-n-hash_method]]
@@ -464,6 +566,10 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |*Description* |The method used to calculate the hash.
 |*Type* |Parameter
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	ms_run[1]-hash_method	[MS, MS:1000569, SHA-256, ]
+----
 |============================================================
 
 [[ms_run1-n-parameters]]
@@ -506,6 +612,10 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |*Description* |Additional user or cv parameters.
 |*Type* |Parameter List
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	assay[1]-custom[1]	technical replicate 1
+----
 |============================================================
 
 [[assay1-n-external_uri]]
@@ -516,6 +626,10 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |*Description* |An external URI to further information about this assay.
 |*Type* |URI
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	assay[1]-external_uri	https://example.org/assays/001
+----
 |============================================================
 
 [[assay1-n-sample_ref]]
@@ -526,6 +640,10 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |*Description* |Sample reference.
 |*Type* |Integer
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	assay[1]-sample_ref	sample[1]
+----
 |============================================================
 
 [[assay1-n-ms_run_ref]]
@@ -536,6 +654,10 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |*Description* |The ms run(s) referenced by this assay.
 |*Type* |Integer List
 |*Mandatory* |True
+|*Example* a|
+----
+MTD	assay[1]-ms_run_ref[1]	ms_run[1]
+----
 |============================================================
 
 [[assay1-n-protocol_refs]]
@@ -593,6 +715,10 @@ MTD	study_variable[2]	1 minute 0.5mg rapamycin
 |*Description* |The assays referenced by this study variable.
 |*Type* |Integer List
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	study_variable[1]-assay_refs	assay[1]|assay[2]
+----
 |============================================================
 
 [[study_variable1-n-ms_run_refs]]
@@ -617,6 +743,10 @@ MTD	study_variable[1]-ms_run_ref	ms_run[1]\| ms_run[2]
 |*Description* |A free-form description of this study variable.
 |*Type* |String
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	study_variable[1]-description	Female subjects at day 0
+----
 |============================================================
 
 [[study_variable1-n-average_function]]
@@ -627,6 +757,10 @@ MTD	study_variable[1]-ms_run_ref	ms_run[1]\| ms_run[2]
 |*Description* |The function used to calculate the study variable quantification value and the operation used is not arithmetic mean (default). e.g. geometric mean, median.
 |*Type* |Parameter
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	study_variable[1]-average_function	[STATO, STATO:0000467, arithmetic mean, ]
+----
 |============================================================
 
 [[study_variable1-n-variation_function]]
@@ -637,6 +771,10 @@ MTD	study_variable[1]-ms_run_ref	ms_run[1]\| ms_run[2]
 |*Description* |The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default). e.g. standard error.
 |*Type* |Parameter
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	study_variable[1]-variation_function	[STATO, STATO:0000256, standard deviation, ]
+----
 |============================================================
 
 [[study_variable_group1-n]]
@@ -675,6 +813,10 @@ MTD	study_variable[2]-assay_refs	assay[4]\| assay[5]\| assay[6]
 |*Description* |Description of the study variable group.
 |*Type* |String
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	study_variable_group[1]-description	Biological sex of the donor
+----
 |============================================================
 
 [[study_variable_group1-n-type]]
@@ -685,6 +827,10 @@ MTD	study_variable[2]-assay_refs	assay[4]\| assay[5]\| assay[6]
 |*Description* |The study variable group type, as defined by the parameter.
 |*Type* |Parameter
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	study_variable_group[1]-type	[STATO, STATO:0000252, categorical variable, ]
+----
 |============================================================
 
 [[study_variable_group1-n-datatype]]
@@ -744,6 +890,10 @@ MTD	study_variable[3]	[NCIT, NCIT:C20197, Male, ]
 |*Description* |The study variable group unit, as defined by the parameter.
 |*Type* |Parameter
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	study_variable_group[1]-unit	[UO, UO:0000033, day, ]
+----
 |============================================================
 
 [[study_variable_group1-n-study_variable_refs]]
@@ -770,6 +920,10 @@ A protocol describing one or more steps of an experimental procedure, such as sa
 |*Description* |The protocol name.
 |*Type* |String
 |*Mandatory* |True
+|*Example* a|
+----
+MTD	protocol[1]-name	Sample preparation
+----
 |============================================================
 
 [[protocol1-n-type]]
@@ -780,6 +934,10 @@ A protocol describing one or more steps of an experimental procedure, such as sa
 |*Description* |The protocol type, as defined by the parameter.
 |*Type* |Parameter
 |*Mandatory* |True
+|*Example* a|
+----
+MTD	protocol[1]-type	[MSIO, MSIO:0000141, metabolite extraction, ]
+----
 |============================================================
 
 [[protocol1-n-description]]
@@ -790,6 +948,10 @@ A protocol describing one or more steps of an experimental procedure, such as sa
 |*Description* |Description of the protocol.
 |*Type* |String
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	protocol[1]-description	Proteins were precipitated with cold methanol and the supernatant was collected.
+----
 |============================================================
 
 [[protocol1-n-parameters]]
@@ -800,6 +962,10 @@ A protocol describing one or more steps of an experimental procedure, such as sa
 |*Description* |The protocol parameters.
 |*Type* |Parameter List
 |*Mandatory* |False
+|*Example* a|
+----
+MTD	protocol[1]-parameters[1]	[MSIO, MSIO:0000442, solvent composition, methanol:water 8:2]
+----
 |============================================================
 
 [[custom1-n]]
@@ -830,6 +996,10 @@ uri: A string containing the URIs of the controlled vocabularies/ontologies used
 |*Description* |The abbreviated CV label.
 |*Type* |String
 |*Mandatory* |True
+|*Example* a|
+----
+MTD	cv[1]-label	MS
+----
 |============================================================
 
 [[cv1-n-full_name]]
@@ -840,6 +1010,10 @@ uri: A string containing the URIs of the controlled vocabularies/ontologies used
 |*Description* |The full name of this CV, for humans.
 |*Type* |String
 |*Mandatory* |True
+|*Example* a|
+----
+MTD	cv[1]-full_name	PSI-MS controlled vocabulary
+----
 |============================================================
 
 [[cv1-n-version]]
@@ -850,6 +1024,10 @@ uri: A string containing the URIs of the controlled vocabularies/ontologies used
 |*Description* |The CV version used when the file was generated.
 |*Type* |String
 |*Mandatory* |True
+|*Example* a|
+----
+MTD	cv[1]-version	4.1.195
+----
 |============================================================
 
 [[cv1-n-uri]]
@@ -860,6 +1038,10 @@ uri: A string containing the URIs of the controlled vocabularies/ontologies used
 |*Description* |A URI to the CV definition.
 |*Type* |URI
 |*Mandatory* |True
+|*Example* a|
+----
+MTD	cv[1]-uri	https://github.com/HUPO-PSI/psi-ms-CV
+----
 |============================================================
 
 [[database1-n]]
@@ -895,6 +1077,10 @@ MTD	database[3]-uri	null
 |*Description* |The prefix used in the “identifier” column of data tables. For the 'no database' case 'null' must be used.
 |*Type* |String
 |*Mandatory* |True
+|*Example* a|
+----
+MTD	database[1]-prefix	CHEBI
+----
 |============================================================
 
 [[database1-n-version]]
@@ -905,6 +1091,10 @@ MTD	database[3]-uri	null
 |*Description* |The database version is mandatory where identification has been performed. This may be a formal version number e.g. “1.4.1”, a date of access “2016-10-27” (ISO-8601 format) or “Unknown” if there is no suitable version that can be annotated.
 |*Type* |String
 |*Mandatory* |True
+|*Example* a|
+----
+MTD	database[1]-version	2025-04-17
+----
 |============================================================
 
 [[database1-n-uri]]
@@ -915,6 +1105,10 @@ MTD	database[3]-uri	null
 |*Description* |The URI to the database. For the “no database” case, 'null' must be reported.
 |*Type* |String
 |*Mandatory* |True
+|*Example* a|
+----
+MTD	database[1]-uri	https://www.ebi.ac.uk/chebi/
+----
 |============================================================
 
 [[derivatization_agent1-n]]
@@ -1051,6 +1245,13 @@ MTD	colunit-small_molecule_evidence	retention_time=[UO, UO:0000031, minute, ]
 
 The small molecule section is table-based. It MUST always come after the metadata section. Each row reports one final quantified molecule result. All columns are MANDATORY except for "opt_" columns.
 
+A minimal example row looks like this:
+
+----
+SMH	SML_ID	database_identifier	chemical_name	reliability	abundance_assay[1]
+SML	1	CHEBI:15377	Proline	[,,high,]	123.4
+----
+
 The order of columns MUST follow the order specified below. All table columns MUST be Tab separated. There MUST NOT be any empty cells. Missing values MUST be reported using "null".
 
 [[sml-sml_id]]
@@ -1186,8 +1387,8 @@ SML	...	N-(2-phenylethyl)-3-[2-(pyridine-4-carbonyl)hydrazinyl]propanamide	...
 |*Example* a|
 ----
 SMH	...	uri	...
-SML	...	http://www.genome.jp/dbget-bin/www_bget?cpd:C00031	...
-SML	...	http://www.hmdb.ca/metabolites/HMDB0001847	...
+SML	...	https://www.genome.jp/dbget-bin/www_bget?cpd:C00031	...
+SML	...	https://www.hmdb.ca/metabolites/HMDB0001847	...
 ----
 |============================================================
 
@@ -1376,6 +1577,13 @@ SML	...	opt_global_cv_MS:1002217_decoy_peptide=null	...
 === Small Molecule Feature (SMF) Section
 
 The small molecule feature section is table-based, representing individual MS regions (generally the elution profile for all isotopomers from a single charge state). It MUST always come after the Small Molecule Section. All columns are MANDATORY except for "opt_" columns.
+
+A minimal example row looks like this:
+
+----
+SFH	SMF_ID	SME_ID_REFS	exp_mass_to_charge	charge	retention_time_in_seconds
+SMF	1	1	123.45	1	420
+----
 
 The order of columns MUST follow the order specified below. All table columns MUST be Tab separated. There MUST NOT be any empty cells. Missing values MUST be reported using "null".
 
@@ -1582,6 +1790,13 @@ SMF	...	opt_global_another_value=some other value	...
 
 The small molecule evidence section is table-based, representing identification evidence for small molecules or features (e.g., database search results). It MUST always come after the Small Molecule Feature Section. All columns are MANDATORY except for "opt_" columns.
 
+A minimal example row looks like this:
+
+----
+SEH	SME_ID	evidence_input_id	chemical_name	exp_mass_to_charge	charge
+SME	1	Scan=12345	Proline	123.45	1
+----
+
 The order of columns MUST follow the order specified below. All table columns MUST be Tab separated. There MUST NOT be any empty cells. Missing values MUST be reported using "null".
 
 [[sme-sme_id]]
@@ -1721,7 +1936,7 @@ SME	...	N-(2-phenylethyl)-3-[2-(pyridine-4-carbonyl)hydrazinyl]propanamide	...
 |*Example* a|
 ----
 SEH	...	uri	...
-SME	...	http://www.hmdb.ca/metabolites/HMDB00054	...
+SME	...	https://www.hmdb.ca/metabolites/HMDB00054	...
 ----
 |============================================================
 
