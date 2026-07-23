@@ -262,7 +262,7 @@ Additional annotation software would typically be required to add the sample-lev
 
 
 [#figurerrr-1]
-image::img/media/figure1.png[image, title="Simple experimental designs in mzTab-M can be represented using a combination of the elements study_variable (SV), assay, ms_run and sample. Quantitative values can be reported in files for SVs and assays. A) SV is intended to capture different groups of replicates, which might have resulted from different levels of a given variable e.g. control versus treated (represented as 2 SVs), n time points over a treatment course (as n SVs). B) assay captures a measurement made about a molecule (small molecule/lipid) where multiple assays within the same group are taken to be replicates of some kind (biological or technical). C) ms_run captures a single run on an MS instrument. D) samples are optional in mzTab since the quantitative software may often be unaware of the biological samples that have been analyzed. If that information is available, references from assay to the same (technical, upper half) or different (biological, bottom half) samples are used to describe the type of replication performed.",width=100%,pdfwidth=100%,scaledwidth=100%]
+image::img/media/figure1.svg[image, title="Simple experimental designs in mzTab-M can be represented using a combination of the elements study_variable (SV), sample, assay, ms_run and study_variable_group. Quantitative values can be reported in files for SVs and assays. A) SV is intended to capture different groups of replicates, which might have resulted from different levels of a given variable e.g. control versus treated (represented as 2 SVs), n time points over a treatment course (as n SVs). B) samples are optional in mzTab since the quantitative software may often be unaware of the biological samples that have been analyzed. If that information is available, references from assay to the same (technical, upper half) or different (biological, bottom half) samples are used to describe the type of replication performed. C) assay captures a measurement made about a molecule (small molecule/lipid) where multiple assays within the same group are taken to be replicates of some kind (biological or technical). D) ms_run captures a single run on an MS instrument. E) study_variable_group describe grouping of multiple SVs in multifactorial experimental designs.",width=100%,pdfwidth=100%,scaledwidth=100%]
 
 Starting with mzTab-M 2.1, more complex experimental designs involving multiple factors (e.g. different treatments at different time points) can be represented by grouping multiple study variables. Such a group of study variable instances can be considered a column in a wide-layout experimental design matrix.
 
@@ -270,6 +270,9 @@ Starting with mzTab-M 2.1, more complex experimental designs involving multiple 
 === Recommendations for reporting multifactorial experimental designs
 
 Some explanation is needed about the reporting of multifactorial experimental designs, which are common in metabolomics. In mzTab-M 2.1, the `study_variable_group` element has been introduced to support the grouping of multiple study variables (SVs) that together represent a column in a wide-layout experimental design matrix. For example, if there are two factors (e.g. treatment and time point), each factor is one `study_variable_group`. Each study_variable is one level of a single factor and references the relevant assay(s); each `study_variable_group` in turn lists its member study variables via `study_variable_group[1-n]-study_variable_refs`. At least one `study_variable_group` MUST be defined.
+
+[[figure-2]]
+image::img/media/figure2.svg[image, title="The `study_variable_group` allows to include different types of multiple SVs, supporting multifactoral experimental designs. For example, if the experiment includes SVs that can either describe the treatment type or the time point as shown in the figure, the `study_variable_group` helps distinguishing the groups while keeping the desired structure.",width=100%,pdfwidth=100%,scaledwidth=100%]
 
 [[reporting-derivatization-approaches]]
 === Reporting derivatization approaches
@@ -308,8 +311,8 @@ SMF elements should reference down to all evidence elements (SME rows) that supp
 
 If features (SMF elements) have been grouped prior to evidence collation, then different groups SMF elements SHOULD reference the same SME elements redundantly.
 
-[[figure-2]]
-image::img/media/figure2.png[image,width=100%,pdfwidth=100%,scaledwidth=100%, title=" A) The summary level (SML) reports the final assumed identification, allowing for ambiguity by “|” separated results in the relevant columns. B) The feature level (SMF) does not explicitly report identifications but references down to the SME level. Ambiguity is propagated via referencing multiple SME elements (rows) with different identification results. C) One SME element (one row) represents a single possible identification from some input evidence. Multiple identifications from the same input data share the same value for evidence_input_id. Ambiguity is captured by different rows for the same input data."]
+[[figure-3]]
+image::img/media/figure3.png[image,width=100%,pdfwidth=100%,scaledwidth=100%, title=" A) The summary level (SML) reports the final assumed identification, allowing for ambiguity by “|” separated results in the relevant columns. B) The feature level (SMF) does not explicitly report identifications but references down to the SME level. Ambiguity is propagated via referencing multiple SME elements (rows) with different identification results. C) One SME element (one row) represents a single possible identification from some input evidence. Multiple identifications from the same input data share the same value for evidence_input_id. Ambiguity is captured by different rows for the same input data."]
 
 [[ambiguity_in_identification]]
 === Ambiguity in identification
