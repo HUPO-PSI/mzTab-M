@@ -271,6 +271,9 @@ Starting with mzTab-M 2.1, more complex experimental designs involving multiple 
 
 Some explanation is needed about the reporting of multifactorial experimental designs, which are common in metabolomics. In mzTab-M 2.1, the `study_variable_group` element has been introduced to support the grouping of multiple study variables (SVs) that together represent a column in a wide-layout experimental design matrix. For example, if there are two factors (e.g. treatment and time point), each factor is one `study_variable_group`. Each study_variable is one level of a single factor and references the relevant assay(s); each `study_variable_group` in turn lists its member study variables via `study_variable_group[1-n]-study_variable_refs`. At least one `study_variable_group` MUST be defined.
 
+[[figure-2]]
+image::img/media/figure2.svg[image, title="The `study_variable_group` allows to include different types of multiple SVs, supporting multifactoral experimental designs. For example, if the experiment includes SVs that can either describe the treatment type or the time point as shown in the figure, the `study_variable_group` helps distinguishing the groups while keeping the desired structure.",width=100%,pdfwidth=100%,scaledwidth=100%]
+
 [[reporting-derivatization-approaches]]
 === Reporting derivatization approaches
 
@@ -308,8 +311,8 @@ SMF elements should reference down to all evidence elements (SME rows) that supp
 
 If features (SMF elements) have been grouped prior to evidence collation, then different groups SMF elements SHOULD reference the same SME elements redundantly.
 
-[[figure-2]]
-image::img/media/figure2.png[image,width=100%,pdfwidth=100%,scaledwidth=100%, title=" A) The summary level (SML) reports the final assumed identification, allowing for ambiguity by “|” separated results in the relevant columns. B) The feature level (SMF) does not explicitly report identifications but references down to the SME level. Ambiguity is propagated via referencing multiple SME elements (rows) with different identification results. C) One SME element (one row) represents a single possible identification from some input evidence. Multiple identifications from the same input data share the same value for evidence_input_id. Ambiguity is captured by different rows for the same input data."]
+[[figure-3]]
+image::img/media/figure3.png[image,width=100%,pdfwidth=100%,scaledwidth=100%, title=" A) The summary level (SML) reports the final assumed identification, allowing for ambiguity by “|” separated results in the relevant columns. B) The feature level (SMF) does not explicitly report identifications but references down to the SME level. Ambiguity is propagated via referencing multiple SME elements (rows) with different identification results. C) One SME element (one row) represents a single possible identification from some input evidence. Multiple identifications from the same input data share the same value for evidence_input_id. Ambiguity is captured by different rows for the same input data."]
 
 [[ambiguity_in_identification]]
 === Ambiguity in identification
