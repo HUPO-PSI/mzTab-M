@@ -19,3 +19,6 @@
 *.json.mztab
 
 .DS_Store
+
+*.pyc
+__pycache__/

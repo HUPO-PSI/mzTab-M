@@ -1,0 +1,26 @@
+{
+  "skill_name": "rikenlipidomics2mztabm",
+  "evals": [
+    {
+      "id": 0,
+      "name": "minimal-conversion",
+      "prompt": "I have a pair of MSDIAL alignment TSVs from the RIKEN lipidomics handson dataset:\n  /tmp/riken_lipidomics/1_Mouse_Adrenal_gland_1_forMTD.tsv\n  /tmp/riken_lipidomics/1_Mouse_Adrenal_gland_1_forSMLSMF.tsv\nConvert them into a valid mzTab-M file at /tmp/eval_runs/eval-0/output/result.mztab. The pymzTab-m in-memory validator must report ZERO ERROR-level messages. I don't have any extra study metadata to add — just use the defaults.",
+      "expected_output": "An mzTab-M file at /tmp/eval_runs/eval-0/output/result.mztab that, when validated via MzTabM.validate, produces 0 ERROR messages.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "with-study-metadata",
+      "prompt": "Convert these RIKEN lipidomics TSVs into mzTab-M:\n  MTD:    /tmp/riken_lipidomics/1_Mouse_Adrenal_gland_1_forMTD.tsv\n  SMLSMF: /tmp/riken_lipidomics/1_Mouse_Adrenal_gland_1_forSMLSMF.tsv\nWrite the result to /tmp/eval_runs/eval-1/output/study.mztab.\n\nStudy metadata:\n- mzTab-ID: RIKEN-LIPIDOMICS-MOUSE-ADRENAL\n- Title: Mouse adrenal gland lipidomics (fads2 vs WT)\n- Description: Comparative lipidomics of fads2-knockout and wild-type C57BL/6J mouse adrenal glands using MSDIAL alignment\n- Contact: Kozo Nishida, RIKEN, knishida@riken.jp\n- Instrument: Q Exactive HF (MS:1002416), ESI source, orbitrap analyzer, inductive detector\n- Software: MS-DIAL version 4.90\n- ms_run files at file:///riken/{name}.mzML\n- Polarity: positive\n\nMust pass mzTab-M validation (0 ERROR messages from the in-memory validator).",
+      "expected_output": "Validated mzTab-M at /tmp/eval_runs/eval-1/output/study.mztab carrying the supplied study metadata in the MTD section.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "include-blank-with-publication",
+      "prompt": "Build an mzTab-M from /tmp/riken_lipidomics/1_Mouse_Adrenal_gland_1_forMTD.tsv and /tmp/riken_lipidomics/1_Mouse_Adrenal_gland_1_forSMLSMF.tsv. Save it to /tmp/eval_runs/eval-2/output/with_blank.mztab.\n\nKeep the Blank-category sample columns (do NOT drop them). Add a publication entry with PubMed ID 29039908 and DOI 10.1021/acs.analchem.7b03576. Validation must succeed (0 ERROR messages from the pymzTab-m in-memory validator).",
+      "expected_output": "mzTab-M with the Blank columns retained as samples and a publication entry referencing pubmed:29039908 / doi:10.1021/acs.analchem.7b03576.",
+      "files": []
+    }
+  ]
+}

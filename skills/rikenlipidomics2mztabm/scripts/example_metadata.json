@@ -1,0 +1,77 @@
+{
+  "mztab_id": "RIKEN-LIPIDOMICS-001",
+  "title": "RIKEN lipidomics — Mouse Adrenal gland (positive mode)",
+  "description": "MSDIAL alignment results from the RIKEN lipidomics handson dataset, positive-mode acquisition.",
+
+  "contact": [
+    {"name": "Kozo Nishida", "affiliation": "RIKEN", "email": "knishida@riken.jp"}
+  ],
+
+  "publication": [
+    ["pubmed:29039908", "doi:10.1021/acs.analchem.7b03576"]
+  ],
+
+  "instrument": [
+    {
+      "name": {"cv_label": "MS", "cv_accession": "MS:1002416", "name": "Q Exactive HF"},
+      "source": {"cv_label": "MS", "cv_accession": "MS:1000073", "name": "electrospray ionization"},
+      "analyzer": [{"cv_label": "MS", "cv_accession": "MS:1000484", "name": "orbitrap"}],
+      "detector": {"cv_label": "MS", "cv_accession": "MS:1000624", "name": "inductive detector"}
+    }
+  ],
+
+  "software": [
+    {"cv_label": "MS", "cv_accession": "MS:1003082", "name": "MS-DIAL", "value": "4.90"}
+  ],
+
+  "ms_run_format": {"cv_label": "MS", "cv_accession": "MS:1000584", "name": "mzML file"},
+  "ms_run_id_format": {"cv_label": "MS", "cv_accession": "MS:1001530", "name": "mzML unique identifier"},
+  "ms_run_scan_polarity": [
+    {"cv_label": "MS", "cv_accession": "MS:1000130", "name": "positive scan"}
+  ],
+  "ms_run_location_template": "file:///data/riken_lipidomics/{name}.mzML",
+
+  "database": [
+    {
+      "param": {"cv_label": "MS", "cv_accession": "MS:1002012", "name": "LIPID MAPS"},
+      "prefix": "LM",
+      "version": "Unknown",
+      "uri": "https://www.lipidmaps.org/"
+    }
+  ],
+
+  "cv": [
+    {
+      "label": "MS",
+      "full_name": "PSI-MS controlled vocabulary",
+      "version": "4.1.138",
+      "uri": "https://raw.githubusercontent.com/HUPO-PSI/psi-ms-CV/master/psi-ms.obo"
+    },
+    {
+      "label": "EFO",
+      "full_name": "Experimental Factor Ontology",
+      "version": "3.71.0",
+      "uri": "https://github.com/EBISPOT/efo/releases/download/v3.71.0/efo.obo"
+    }
+  ],
+
+  "id_confidence_measure": [
+    {"cv_label": "MS", "cv_accession": "MS:1002890", "name": "fragmentation score"}
+  ],
+
+  "quantification_method": {
+    "cv_label": "MS",
+    "cv_accession": "MS:1001834",
+    "name": "LC-MS label-free quantitation analysis"
+  },
+
+  "small_molecule_quantification_unit": {
+    "cv_label": "MS", "cv_accession": "MS:1002857", "name": "isotopologue peak intensity"
+  },
+  "small_molecule_feature_quantification_unit": {
+    "cv_label": "MS", "cv_accession": "MS:1002857", "name": "isotopologue peak intensity"
+  },
+  "small_molecule_identification_reliability": {
+    "cv_label": "MS", "cv_accession": "MS:1002896", "name": "compound identification confidence level"
+  }
+}

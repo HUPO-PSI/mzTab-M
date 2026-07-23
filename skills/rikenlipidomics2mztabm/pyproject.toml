@@ -1,0 +1,11 @@
+[project]
+name = "rikenlipidomics2mztabm-skill"
+version = "0.0.2"
+description = "Environment for the rikenlipidomics2mztabm skill"
+requires-python = ">=3.10"
+dependencies = [
+    "pymztabm",
+]
+
+[tool.uv.sources]
+pymztabm = { git = "https://github.com/lifs-tools/pymzTab-m", branch = "development_2026_04_26" }
