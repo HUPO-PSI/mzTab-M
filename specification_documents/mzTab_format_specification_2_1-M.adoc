@@ -132,6 +132,9 @@ The specification described in this document has not been developed in isolation
 
 1.  _mzML_ (http://www.psidev.info/mzml). mzML is the PSI standard for capturing mass spectra / peak lists resulting from mass spectrometry in proteomics <<martens-2011, (Martens _et al._ 2011)>>. mzTab files MAY be used in conjunction with mzML, although it will be possible to use mzTab with other formats of mass spectra. This document does not assume familiarity with mzML.
 2.  __ISA-TAB (__http://isa-tools.org/_)._ The ISA framework allows for reporting experimental metadata and study designs in considerable detail, and is already used for describing metabolomics experiments. It is expected that mzTab files may be linked to ISA-TAB formatted files, for cases where a rich experimental design is to be captured. The linkage between mzTab-M and ISA-TAB is further exemplified in section <<referencing-external-resources>>.
+3. _mzQC_ (https://www.psidev.info/mzqc). 
+4. _mzSpecLib_ (https://www.psidev.info/mzspeclib).
+5. _Universal Spectrum Identifier (USI)_ (https://www.psidev.info/usi).
 
 [[relationship-to-mztab-previous]]
 === Relationship to previous mzTab versions
