@@ -65,6 +65,9 @@ def _identify_section(header: str) -> Optional[str]:
 # ---------------------------------------------------------------------------
 @dataclass
 class Element:
+    def __init__(self):
+        pass
+
     name: str           # raw header text, e.g. "mzTab-version"
     description: str = ""
     type_: str = ""
@@ -80,7 +83,7 @@ def _canon(name: str) -> str:
     """
     Normalise an element name for cross-version matching:
       - lower-case
-      - remove AsciiDoc escapes (backslash before {)
+      - remove AsciiDoc escapes (backslash before "{")
       - strip trailing [n] / [1-n] that represent column-set cardinality in
         SML/SMF/SME section headers (e.g. abundance_assay[1-n] -> abundance_assay)
       - normalise interior [1-n] to [n] for MTD parameter cardinality
@@ -262,7 +265,7 @@ def _adoc_cell(text: str) -> str:
     text = text.replace("|", "{vbar}")
     # Soft line-break: AsciiDoc ' +\n' continues within a cell
     lines = [l.rstrip() for l in text.splitlines()]
-    return (" +\n").join(lines).strip() or "—"
+    return " +\n".join(lines).strip() or "—"
 
 
 def _adoc_example_block(text: str) -> str:
@@ -382,7 +385,7 @@ def _render_section(
                 out.append("")
 
         # Detail table: Field | v2.0 | v2.1
-        # Use 'a|' cells for Description, Type, and Example (may be multi-line).
+        # Use 'a|' cells for Description, Type, and Example (can be multi-line).
         # Use plain '|' cells for Mandatory and Nullable (always short).
         out.append('[cols="15,~,~",options="header"]')
         out.append("|===")
