@@ -8,6 +8,9 @@ against the matching jmzTab-m validator in CI:
 - **`2.0/`** — files that conform to mzTab-M **2.0.0**. Validated by
   [`validate-mztab-stable.yml`](../.github/workflows/validate-mztab-stable.yml)
   with the released jmzTab-m CLI **1.0.6**. These must validate cleanly.
+  `validate-mztab-snapshot.yml` additionally validates them with the 2.1
+  validator, to check backward compatibility. Failures there are reported but
+  do not fail the workflow.
 - **`2.1/`** — files that use mzTab-M **2.1** features (e.g. nullable SMF
   `charge`, `study_variable_group`, `mzTab-profile`). Validated by
   [`validate-mztab-snapshot.yml`](../.github/workflows/validate-mztab-snapshot.yml)

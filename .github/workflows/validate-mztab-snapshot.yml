@@ -74,6 +74,8 @@ jobs:
         # Only example files that require mzTab-M 2.1 features live under
         # examples/2.1/. They are validated with the jmzTab-m dev-latest
         # (2.1.0-SNAPSHOT) native validator.
+        # The 2.0 examples are validated as well, to check that the 2.1
+        # validator still accepts mzTab-M 2.0 files (backward compatibility).
         include:
           - name: xcms
             pattern: "examples/2.1/xcms*"
@@ -81,6 +83,12 @@ jobs:
           - name: allMZTAB
             pattern: "examples/2.1/*.mztab"
             extra_args: ""
+          - name: 2.0 mzTab (compatibility)
+            pattern: "examples/2.0/*.mz[Tt]ab"
+            extra_args: ""
+          - name: 2.0 JSON (compatibility)
+            pattern: "examples/2.0/*.json"
+            extra_args: "--fromJson"
 
     name: Validate ${{ matrix.name }} files
     steps:
