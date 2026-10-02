@@ -73,8 +73,9 @@ list](https://lists.cebitec.uni-bielefeld.de/mailman3/postorius/lists/mztabm.ceb
     [jmzTab-m BioConda Package (and Docker container)](https://bioconda.github.io/recipes/jmztab-m/README.html)
 
 -   **CI Validation Workflow**:\
-    [GitHub Actions YAML](.github/workflows/validate-mztab.yml), using the
-    aforementioned validator.
+    GitHub Actions workflows validating the [mzTab-M 2.0](.github/workflows/validate-mztab-stable.yml)
+    and [mzTab-M 2.1](.github/workflows/validate-mztab-snapshot.yml) example files,
+    using the aforementioned validator.
 
 -   **R Ecosystem Validator**:\
     [reading-mzTab-into-R](https://github.com/michbur/reading-mzTab-into-R/)

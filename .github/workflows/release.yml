@@ -15,14 +15,27 @@ permissions:
   contents: write
 
 jobs:
+  # Local references run the reusable workflows from the released commit,
+  # not from whatever is on main at release time.
   build-spec-workflow:
-    uses: HUPO-PSI/mzTab-M/.github/workflows/ci.yml@main
+    uses: ./.github/workflows/ci.yml
+    # ci.yml's deploy-docs job (skipped for releases) declares pages/id-token
+    # permissions; a called workflow may not request more than the caller grants.
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
 
   test-examples-workflow:
-    uses: HUPO-PSI/mzTab-M/.github/workflows/validate-mztab-stable.yml@main
+    uses: ./.github/workflows/validate-mztab-stable.yml
+    permissions:
+      contents: read
 
   create-doc-branch:
     name: Create documentation version branch
+    # Do not publish documentation for a release whose spec build or example
+    # validation failed.
+    needs: [build-spec-workflow, test-examples-workflow]
     runs-on: ubuntu-24.04
     outputs:
       doc_branch: ${{ steps.branch.outputs.doc_branch }}
@@ -71,6 +84,10 @@ jobs:
     name: Build and publish Antora site
     needs: [build-spec-workflow, create-doc-branch]
     runs-on: ubuntu-24.04
+    # Shared with ci.yml's deploy-docs so Pages deployments never overlap.
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
     permissions:
       pages: write
       id-token: write
