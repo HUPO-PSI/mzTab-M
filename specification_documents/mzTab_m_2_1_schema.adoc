@@ -1,6 +1,6 @@
 == [[field-reference]]Field Reference
 
-This document provides a reference for all fields defined in the mzTab-M format, organised by section and ordered by mzTab-M section hierarchy. Each field entry includes a description, type, mandatory status, occurrence (for metadata fields), and example usage.
+This document provides a reference for all fields defined in the mzTab-M format, organised by section and ordered by mzTab-M section hierarchy. Each field entry includes a description, type, mandatory status, and example usage.
 
 [[sections]]
 === Sections
@@ -24,7 +24,7 @@ Sections that ARE present MUST follow the table order MTD -> SML -> SMF -> SME, 
 [[metadata-section]]
 === Metadata Section
 
-The metadata section provides additional information about the dataset(s) reported in the mzTab file. All fields in the metadata section are optional apart from those noted as mandatory; fields marked as conditional are mandatory only in some profiles. The Occurrence entry states how many times a field may be reported. The fields in the metadata section MUST be reported in the order listed below. The field name and value MUST be separated by a tab character.
+The metadata section provides additional information about the dataset(s) reported in the mzTab file. All fields in the metadata section are optional apart from those noted as mandatory; fields marked as conditional are mandatory only in some profiles. The fields in the metadata section MUST be reported in the order listed below. The field name and value MUST be separated by a tab character.
 
 [[mztab-version]]
 ==== mzTab-version
@@ -43,7 +43,6 @@ Used to ensure compatibility and processing correctness.
 ^\d{1}\.\d{1}\.\d{1}-[A-Z]{1}$
 ----
 |*Mandatory* |True
-|*Occurrence* |Exactly once
 |*Example* a|
 ----
 MTD	mzTab-version	2.0.0-M
@@ -66,7 +65,6 @@ NOT intended as a globally unique identifier,
 but SHOULD have local meaning within its context.
 |*Type* |String
 |*Mandatory* |True
-|*Occurrence* |Exactly once
 |*Example* a|
 ----
 MTD	mzTab-ID	MTBLS214
@@ -85,7 +83,6 @@ MUST be one of: M (MTD only), M+S (MTD + SML), M+F (MTD + SMF), M+F+E (MTD + SMF
 OPTIONAL; if absent (e.g. legacy mzTab-M 2.0 files, or files written before profiles were introduced), validators MUST infer the profile from the tables present and report it in the validation log. New files SHOULD set this field explicitly.
 |*Type* |String
 |*Mandatory* |False
-|*Occurrence* |At most once
 |*Example* a|
 ----
 MTD	mzTab-profile	M+F
@@ -106,7 +103,6 @@ OPTIONAL. SHOULD be:
 - Unique within a collection of related studies
 |*Type* |String
 |*Mandatory* |False
-|*Occurrence* |At most once
 |*Example* a|
 ----
 MTD	title	Metabolomic Analysis of Human Plasma in Diabetes Type 2
@@ -129,7 +125,6 @@ OPTIONAL. SHOULD include:
 Provides context for understanding the data and its significance.
 |*Type* |String
 |*Mandatory* |False
-|*Occurrence* |At most once
 |*Example* a|
 ----
 MTD	description	Investigation of metabolic changes in human plasma samples from type 2 diabetes patients compared to healthy controls. Study includes both fasting and post-prandial measurements.
@@ -145,7 +140,6 @@ MTD	description	Analysis of lipid profiles in brain tissue samples examining the
 |*Description* |Parameters specifying sample processing that was applied within one step.
 |*Type* |Parameter List
 |*Mandatory* |False
-|*Occurrence* |Zero or more (`sample_processing[1]`, `sample_processing[2]`, ...)
 |*Example* a|
 ----
 MTD	sample_processing[1]	[MSIO, MSIO:0000107, metabolism quenching using precooled 60 percent methanol ammonium bicarbonate buffer,]
@@ -167,7 +161,6 @@ The name, source, analyzer and detector of the instruments used in the experimen
 |*Description* |The instrument's name.
 |*Type* |Parameter
 |*Mandatory* |False
-|*Occurrence* |At most once per `instrument[n]`
 |============================================================
 
 [[instrument1-n-source]]
@@ -178,7 +171,6 @@ The name, source, analyzer and detector of the instruments used in the experimen
 |*Description* |The instrument's ion source.
 |*Type* |Parameter
 |*Mandatory* |False
-|*Occurrence* |At most once per `instrument[n]`
 |============================================================
 
 [[instrument1-n-analyzer1-n]]
@@ -189,7 +181,6 @@ The name, source, analyzer and detector of the instruments used in the experimen
 |*Description* |The instrument's mass analyzer, as defined by the parameter.
 |*Type* |Parameter List
 |*Mandatory* |False
-|*Occurrence* |Zero or more per `instrument[n]` (`analyzer[1]`, `analyzer[2]`, ...)
 |============================================================
 
 [[instrument1-n-detector]]
@@ -200,7 +191,6 @@ The name, source, analyzer and detector of the instruments used in the experimen
 |*Description* |The instrument's mass analyzer, as defined by the parameter.
 |*Type* |Parameter
 |*Mandatory* |False
-|*Occurrence* |At most once per `instrument[n]`
 |============================================================
 
 [[software1-n]]
@@ -211,7 +201,6 @@ The name, source, analyzer and detector of the instruments used in the experimen
 |*Description* |The software utilized.
 |*Type* |Parameter
 |*Mandatory* |True
-|*Occurrence* |One or more (`software[1]`, `software[2]`, ...)
 |*Example* a|
 ----
 MTD	software[1]	[MS, MS:1002879, Progenesis QI, 3.0]
@@ -229,7 +218,6 @@ MTD	software[2]-setting	Parent tolerance = 0.5 Da
 |*Description* |A software setting used. This field MAY occur multiple times for a single software. The value of this field is deliberately set as a String, since there currently do not exist cvParams for every possible setting.
 |*Type* |String List
 |*Mandatory* |False
-|*Occurrence* |Zero or more per `software[n]` (`setting[1]`, `setting[2]`, ...)
 |============================================================
 
 [[publication1-n]]
@@ -240,7 +228,6 @@ MTD	software[2]-setting	Parent tolerance = 0.5 Da
 |*Description* |The publication item ids referenced by this publication.
 |*Type* |String List
 |*Mandatory* |False
-|*Occurrence* |Zero or more (`publication[1]`, `publication[2]`, ...)
 |*Example* a|
 ----
 MTD	publication[1]	pubmed:21063943\|doi:10.1007/978-1-60761-987-1_6
@@ -260,7 +247,6 @@ The contact’s name, affiliation and e-mail. Several contacts can be given by i
 |*Description* |The contact's name.
 |*Type* |String
 |*Mandatory* |False
-|*Occurrence* |At most once per `contact[n]`
 |============================================================
 
 [[contact1-n-affiliation]]
@@ -271,7 +257,6 @@ The contact’s name, affiliation and e-mail. Several contacts can be given by i
 |*Description* |The contact's affiliation.
 |*Type* |String
 |*Mandatory* |False
-|*Occurrence* |At most once per `contact[n]`
 |============================================================
 
 [[contact1-n-email]]
@@ -282,7 +267,6 @@ The contact’s name, affiliation and e-mail. Several contacts can be given by i
 |*Description* |The contact's e-mail address.
 |*Type* |String
 |*Mandatory* |False
-|*Occurrence* |At most once per `contact[n]`
 |============================================================
 
 [[contact1-n-orcid]]
@@ -296,7 +280,6 @@ The contact’s name, affiliation and e-mail. Several contacts can be given by i
 ^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]{1}$
 ----
 |*Mandatory* |False
-|*Occurrence* |At most once per `contact[n]`
 |============================================================
 
 [[uri1-n]]
@@ -307,7 +290,6 @@ The contact’s name, affiliation and e-mail. Several contacts can be given by i
 |*Description* |The URI pointing to the external resource.
 |*Type* |URI
 |*Mandatory* |False
-|*Occurrence* |Zero or more (`uri[1]`, `uri[2]`, ...)
 |*Example* a|
 ----
 MTD	uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517
@@ -324,7 +306,6 @@ MTD	external_study_uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_In
 |*Description* |The URI pointing to the external resource.
 |*Type* |URI
 |*Mandatory* |False
-|*Occurrence* |Zero or more (`external_study_uri[1]`, `external_study_uri[2]`, ...)
 |*Example* a|
 ----
 MTD	uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517
@@ -341,7 +322,6 @@ MTD	external_study_uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_In
 |*Description* |Mandatory when the file contains quantified molecules (an SML or SMF section is present); optional otherwise. The quantification method used in the experiment reported in the file.
 |*Type* |Parameter
 |*Mandatory* |Conditional, depends on the profile (see Profiles)
-|*Occurrence* |At most once
 |============================================================
 
 [[sample1-n]]
@@ -352,7 +332,6 @@ MTD	external_study_uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_In
 |*Description* |The sample's name.
 |*Type* |String
 |*Mandatory* |False
-|*Occurrence* |Zero or more (`sample[1]`, `sample[2]`, ...)
 |*Example* a|
 ----
 COM	Experiment where all samples consisted of the same two species
@@ -381,7 +360,6 @@ MTD	sample[2]-description	Healthy control samples.
 |*Description* |Biological species information on the sample.
 |*Type* |Parameter List
 |*Mandatory* |False
-|*Occurrence* |Zero or more per `sample[n]` (`species[1]`, `species[2]`, ...)
 |============================================================
 
 [[sample1-n-tissue1-n]]
@@ -392,7 +370,6 @@ MTD	sample[2]-description	Healthy control samples.
 |*Description* |Biological tissue information on the sample.
 |*Type* |Parameter List
 |*Mandatory* |False
-|*Occurrence* |Zero or more per `sample[n]` (`tissue[1]`, `tissue[2]`, ...)
 |============================================================
 
 [[sample1-n-cell_type1-n]]
@@ -403,7 +380,6 @@ MTD	sample[2]-description	Healthy control samples.
 |*Description* |Biological cell type information on the sample.
 |*Type* |Parameter List
 |*Mandatory* |False
-|*Occurrence* |Zero or more per `sample[n]` (`cell_type[1]`, `cell_type[2]`, ...)
 |============================================================
 
 [[sample1-n-disease1-n]]
@@ -414,7 +390,6 @@ MTD	sample[2]-description	Healthy control samples.
 |*Description* |Disease information on the sample.
 |*Type* |Parameter List
 |*Mandatory* |False
-|*Occurrence* |Zero or more per `sample[n]` (`disease[1]`, `disease[2]`, ...)
 |============================================================
 
 [[sample1-n-description]]
@@ -425,7 +400,6 @@ MTD	sample[2]-description	Healthy control samples.
 |*Description* |A free form description of the sample.
 |*Type* |String
 |*Mandatory* |False
-|*Occurrence* |At most once per `sample[n]`
 |============================================================
 
 [[sample1-n-custom1-n]]
@@ -436,7 +410,6 @@ MTD	sample[2]-description	Healthy control samples.
 |*Description* |Additional user or cv parameters.
 |*Type* |Parameter List
 |*Mandatory* |False
-|*Occurrence* |Zero or more per `sample[n]` (`custom[1]`, `custom[2]`, ...)
 |============================================================
 
 Specification of ms_run.
@@ -459,7 +432,6 @@ At least one `ms_run[n]` MUST be reported.
 |*Description* |The msRun's location URI.
 |*Type* |URI
 |*Mandatory* |True
-|*Occurrence* |Exactly once per `ms_run[n]`
 |============================================================
 
 [[ms_run1-n-instrument_ref]]
@@ -470,7 +442,6 @@ At least one `ms_run[n]` MUST be reported.
 |*Description* |Sample reference.
 |*Type* |Integer
 |*Mandatory* |False
-|*Occurrence* |At most once per `ms_run[n]`
 |============================================================
 
 [[ms_run1-n-format]]
@@ -481,7 +452,6 @@ At least one `ms_run[n]` MUST be reported.
 |*Description* |The format of the MS run file.
 |*Type* |Parameter
 |*Mandatory* |False
-|*Occurrence* |At most once per `ms_run[n]`
 |============================================================
 
 [[ms_run1-n-id_format]]
@@ -492,7 +462,6 @@ At least one `ms_run[n]` MUST be reported.
 |*Description* |The format of the IDs in the MS run file.
 |*Type* |Parameter
 |*Mandatory* |False
-|*Occurrence* |At most once per `ms_run[n]`
 |============================================================
 
 [[ms_run1-n-fragmentation_method1-n]]
@@ -503,7 +472,6 @@ At least one `ms_run[n]` MUST be reported.
 |*Description* |The fragmentation methods applied during this msRun.
 |*Type* |Parameter List
 |*Mandatory* |False
-|*Occurrence* |Zero or more per `ms_run[n]` (`fragmentation_method[1]`, `fragmentation_method[2]`, ...)
 |============================================================
 
 [[ms_run1-n-scan_polarity1-n]]
@@ -514,7 +482,6 @@ At least one `ms_run[n]` MUST be reported.
 |*Description* |The scan polarity/polarities used during this msRun.
 |*Type* |Parameter List
 |*Mandatory* |False
-|*Occurrence* |Zero or more per `ms_run[n]` (`scan_polarity[1]`, `scan_polarity[2]`, ...)
 |============================================================
 
 [[ms_run1-n-hash]]
@@ -525,7 +492,6 @@ At least one `ms_run[n]` MUST be reported.
 |*Description* |The file hash value of this msRun's data file.
 |*Type* |String
 |*Mandatory* |False
-|*Occurrence* |At most once per `ms_run[n]`
 |============================================================
 
 [[ms_run1-n-hash_method]]
@@ -536,7 +502,6 @@ At least one `ms_run[n]` MUST be reported.
 |*Description* |The method used to calculate the hash.
 |*Type* |Parameter
 |*Mandatory* |False
-|*Occurrence* |At most once per `ms_run[n]`
 |============================================================
 
 [[ms_run1-n-parameters]]
@@ -547,7 +512,6 @@ At least one `ms_run[n]` MUST be reported.
 |*Description* |Additional parameters of the assay, separated by bars.
 |*Type* |Parameter List
 |*Mandatory* |False
-|*Occurrence* |At most once per `ms_run[n]`
 |*Example* a|
 ----
 MTD	ms_run[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, LTQ Orbitrap,]]
@@ -562,7 +526,6 @@ MTD	ms_run[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, L
 |*Description* |The assay name.
 |*Type* |String
 |*Mandatory* |True
-|*Occurrence* |One or more (`assay[1]`, `assay[2]`, ...)
 |*Example* a|
 ----
 MTD	assay[1]	first assay
@@ -581,7 +544,6 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |*Description* |Additional user or cv parameters.
 |*Type* |Parameter List
 |*Mandatory* |False
-|*Occurrence* |Zero or more per `assay[n]` (`custom[1]`, `custom[2]`, ...)
 |============================================================
 
 [[assay1-n-external_uri]]
@@ -592,7 +554,6 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |*Description* |An external URI to further information about this assay.
 |*Type* |URI
 |*Mandatory* |False
-|*Occurrence* |At most once per `assay[n]`
 |============================================================
 
 [[assay1-n-sample_ref]]
@@ -603,7 +564,6 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |*Description* |Sample reference.
 |*Type* |Integer
 |*Mandatory* |False
-|*Occurrence* |At most once per `assay[n]`
 |============================================================
 
 [[assay1-n-ms_run_ref]]
@@ -614,7 +574,6 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |*Description* |The ms run(s) referenced by this assay.
 |*Type* |Integer List
 |*Mandatory* |True
-|*Occurrence* |Exactly once per `assay[n]`
 |============================================================
 
 [[assay1-n-protocol_refs]]
@@ -625,7 +584,6 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |*Description* |The protocol(s) referenced by this assay.
 |*Type* |Integer List
 |*Mandatory* |False
-|*Occurrence* |At most once per `assay[n]`
 |*Example* a|
 ----
 MTD	assay[1]-protocol_ref	protocol[1]\| protocol[2]
@@ -640,7 +598,6 @@ MTD	assay[1]-protocol_ref	protocol[1]\| protocol[2]
 |*Description* |Additional parameters of the assay, separated by bars.
 |*Type* |Parameter List
 |*Mandatory* |False
-|*Occurrence* |At most once per `assay[n]`
 |*Example* a|
 ----
 MTD	assay[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, LTQ Orbitrap,]]
@@ -655,7 +612,6 @@ MTD	assay[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, LT
 |*Description* |The study variable value. Encoded according to the datatype declared on the referenced study_variable_group: either a literal value (for xsd:* datatypes) or a Parameter (for the Parameter datatype, e.g. `[NO, NO:12345, Male,]` or `[,,Male,]`).
 |*Type* |Study Variable List
 |*Mandatory* |True
-|*Occurrence* |One or more (`study_variable[1]`, `study_variable[2]`, ...)
 |*Example* a|
 ----
 MTD	study_variable[1]	control
@@ -675,7 +631,6 @@ MTD	study_variable[2]	1 minute 0.5mg rapamycin
 |*Description* |The assays referenced by this study variable.
 |*Type* |Integer List
 |*Mandatory* |False
-|*Occurrence* |At most once per `study_variable[n]`
 |============================================================
 
 [[study_variable1-n-ms_run_refs]]
@@ -686,7 +641,6 @@ MTD	study_variable[2]	1 minute 0.5mg rapamycin
 |*Description* |The ms run(s) referenced by this study variable.
 |*Type* |Integer List
 |*Mandatory* |False
-|*Occurrence* |At most once per `study_variable[n]`
 |*Example* a|
 ----
 MTD	study_variable[1]-ms_run_ref	ms_run[1]\| ms_run[2]
@@ -701,7 +655,6 @@ MTD	study_variable[1]-ms_run_ref	ms_run[1]\| ms_run[2]
 |*Description* |A free-form description of this study variable.
 |*Type* |String
 |*Mandatory* |False
-|*Occurrence* |At most once per `study_variable[n]`
 |============================================================
 
 [[study_variable1-n-average_function]]
@@ -712,7 +665,6 @@ MTD	study_variable[1]-ms_run_ref	ms_run[1]\| ms_run[2]
 |*Description* |The function used to calculate the study variable quantification value and the operation used is not arithmetic mean (default). e.g. geometric mean, median.
 |*Type* |Parameter
 |*Mandatory* |False
-|*Occurrence* |At most once per `study_variable[n]`
 |============================================================
 
 [[study_variable1-n-variation_function]]
@@ -723,7 +675,6 @@ MTD	study_variable[1]-ms_run_ref	ms_run[1]\| ms_run[2]
 |*Description* |The function used to calculate the study variable quantification variation value if it is reported and the operation used is not coefficient of variation (default). e.g. standard error.
 |*Type* |Parameter
 |*Mandatory* |False
-|*Occurrence* |At most once per `study_variable[n]`
 |============================================================
 
 [[study_variable_group1-n]]
@@ -734,7 +685,6 @@ MTD	study_variable[1]-ms_run_ref	ms_run[1]\| ms_run[2]
 |*Description* |The study variable group name.
 |*Type* |Parameter
 |*Mandatory* |True
-|*Occurrence* |One or more (`study_variable_group[1]`, `study_variable_group[2]`, ...)
 |*Example* a|
 ----
 MTD	study_variable_group[1]	[PATO, PATO:0000383, sex, ]
@@ -763,7 +713,6 @@ MTD	study_variable[2]-assay_refs	assay[4]\| assay[5]\| assay[6]
 |*Description* |Description of the study variable group.
 |*Type* |String
 |*Mandatory* |False
-|*Occurrence* |At most once per `study_variable_group[n]`
 |============================================================
 
 [[study_variable_group1-n-type]]
@@ -774,7 +723,6 @@ MTD	study_variable[2]-assay_refs	assay[4]\| assay[5]\| assay[6]
 |*Description* |The study variable group type, as defined by the parameter.
 |*Type* |Parameter
 |*Mandatory* |False
-|*Occurrence* |At most once per `study_variable_group[n]`
 |============================================================
 
 [[study_variable_group1-n-datatype]]
@@ -804,7 +752,6 @@ Writers MUST ensure that the values of the `study_variable` entries belonging to
 Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).
 |*Type* |Parameter
 |*Mandatory* |False
-|*Occurrence* |At most once per `study_variable_group[n]`
 |*Example* a|
 ----
 MTD	study_variable_group[1]-datatype	....
@@ -835,7 +782,6 @@ MTD	study_variable[3]	[NCIT, NCIT:C20197, Male, ]
 |*Description* |The study variable group unit, as defined by the parameter.
 |*Type* |Parameter
 |*Mandatory* |False
-|*Occurrence* |At most once per `study_variable_group[n]`
 |============================================================
 
 [[study_variable_group1-n-study_variable_refs]]
@@ -846,7 +792,6 @@ MTD	study_variable[3]	[NCIT, NCIT:C20197, Male, ]
 |*Description* |Bar-separated references to the study variables that belong to this study variable group. This is the sole link between study variables and their group: each study variable MUST be referenced by exactly one study variable group.
 |*Type* |Integer List
 |*Mandatory* |False
-|*Occurrence* |At most once per `study_variable_group[n]`
 |*Example* a|
 ----
 MTD	study_variable_group[1]-study_variable_refs	study_variable[1]\| study_variable[2]
@@ -865,7 +810,6 @@ A protocol describing one or more steps of an experimental procedure, such as sa
 |*Description* |The protocol name.
 |*Type* |String
 |*Mandatory* |True
-|*Occurrence* |Exactly once per `protocol[n]`
 |============================================================
 
 [[protocol1-n-type]]
@@ -876,7 +820,6 @@ A protocol describing one or more steps of an experimental procedure, such as sa
 |*Description* |The protocol type, as defined by the parameter.
 |*Type* |Parameter
 |*Mandatory* |True
-|*Occurrence* |Exactly once per `protocol[n]`
 |============================================================
 
 [[protocol1-n-description]]
@@ -887,7 +830,6 @@ A protocol describing one or more steps of an experimental procedure, such as sa
 |*Description* |Description of the protocol.
 |*Type* |String
 |*Mandatory* |False
-|*Occurrence* |At most once per `protocol[n]`
 |============================================================
 
 [[protocol1-n-parameters]]
@@ -898,7 +840,6 @@ A protocol describing one or more steps of an experimental procedure, such as sa
 |*Description* |The protocol parameters.
 |*Type* |Parameter List
 |*Mandatory* |False
-|*Occurrence* |At most once per `protocol[n]`
 |============================================================
 
 [[custom1-n]]
@@ -909,7 +850,6 @@ A protocol describing one or more steps of an experimental procedure, such as sa
 |*Description* |Any additional parameters describing the analysis reported.
 |*Type* |Parameter List
 |*Mandatory* |False
-|*Occurrence* |Zero or more (`custom[1]`, `custom[2]`, ...)
 |*Example* a|
 ----
 MTD	custom	[MS, MS:1000001, custom param, value]
@@ -932,7 +872,6 @@ At least one `cv[n]` MUST be reported.
 |*Description* |The abbreviated CV label.
 |*Type* |String
 |*Mandatory* |True
-|*Occurrence* |Exactly once per `cv[n]`
 |============================================================
 
 [[cv1-n-full_name]]
@@ -943,7 +882,6 @@ At least one `cv[n]` MUST be reported.
 |*Description* |The full name of this CV, for humans.
 |*Type* |String
 |*Mandatory* |True
-|*Occurrence* |Exactly once per `cv[n]`
 |============================================================
 
 [[cv1-n-version]]
@@ -954,7 +892,6 @@ At least one `cv[n]` MUST be reported.
 |*Description* |The CV version used when the file was generated.
 |*Type* |String
 |*Mandatory* |True
-|*Occurrence* |Exactly once per `cv[n]`
 |============================================================
 
 [[cv1-n-uri]]
@@ -965,7 +902,6 @@ At least one `cv[n]` MUST be reported.
 |*Description* |A URI to the CV definition.
 |*Type* |URI
 |*Mandatory* |True
-|*Occurrence* |Exactly once per `cv[n]`
 |============================================================
 
 [[database1-n]]
@@ -976,7 +912,6 @@ At least one `cv[n]` MUST be reported.
 |*Description* |The database name.
 |*Type* |Database List
 |*Mandatory* |Conditional, depends on the profile (see Profiles)
-|*Occurrence* |Zero or more (`database[1]`, `database[2]`, ...)
 |*Example* a|
 ----
 MTD	database[1]	[MIRIAM, MIR:00100079, HMDB, ]
@@ -1002,7 +937,6 @@ MTD	database[3]-uri	null
 |*Description* |The prefix used in the “identifier” column of data tables. For the 'no database' case 'null' must be used.
 |*Type* |String
 |*Mandatory* |True
-|*Occurrence* |Exactly once per `database[n]`
 |============================================================
 
 [[database1-n-version]]
@@ -1013,7 +947,6 @@ MTD	database[3]-uri	null
 |*Description* |The database version is mandatory where identification has been performed. This may be a formal version number e.g. “1.4.1”, a date of access “2016-10-27” (ISO-8601 format) or “Unknown” if there is no suitable version that can be annotated.
 |*Type* |String
 |*Mandatory* |True
-|*Occurrence* |Exactly once per `database[n]`
 |============================================================
 
 [[database1-n-uri]]
@@ -1024,7 +957,6 @@ MTD	database[3]-uri	null
 |*Description* |The URI to the database. For the “no database” case, 'null' must be reported.
 |*Type* |String
 |*Mandatory* |True
-|*Occurrence* |Exactly once per `database[n]`
 |============================================================
 
 [[derivatization_agent1-n]]
@@ -1035,7 +967,6 @@ MTD	database[3]-uri	null
 |*Description* |A description of derivatization agents applied to small molecules, using userParams or CV terms where possible.
 |*Type* |Parameter List
 |*Mandatory* |False
-|*Occurrence* |Zero or more (`derivatization_agent[1]`, `derivatization_agent[2]`, ...)
 |*Example* a|
 ----
 MTD	derivatization_agent[1]	[XLMOD, XLMOD:07014, N-methyl-N-t-butyldimethylsilyltrifluoroacetamide, ]
@@ -1050,7 +981,6 @@ MTD	derivatization_agent[1]	[XLMOD, XLMOD:07014, N-methyl-N-t-butyldimethylsilyl
 |*Description* |Mandatory when the Small Molecule (SML) section is present; optional otherwise. Defines what type of units are reported in the small molecule summary quantification / abundance fields
 |*Type* |Parameter
 |*Mandatory* |Conditional, depends on the profile (see Profiles)
-|*Occurrence* |At most once
 |*Example* a|
 ----
 MTD	small_molecule-quantification_unit	[MS, MS:1001113, peak area, ]
@@ -1065,7 +995,6 @@ MTD	small_molecule-quantification_unit	[MS, MS:1001113, peak area, ]
 |*Description* |Mandatory when the Small Molecule Feature (SMF) section is present; optional otherwise. Defines what type of units are reported in the small molecule feature quantification / abundance fields.
 |*Type* |Parameter
 |*Mandatory* |Conditional, depends on the profile (see Profiles)
-|*Occurrence* |At most once
 |*Example* a|
 ----
 MTD	small_molecule_feature-quantification_unit	[MS, MS:1001113, peak area, ]
@@ -1080,7 +1009,6 @@ MTD	small_molecule_feature-quantification_unit	[MS, MS:1001113, peak area, ]
 |*Description* |The system used for giving reliability / confidence codes to small molecule identifications MUST be specified if not using the default codes.
 |*Type* |Parameter
 |*Mandatory* |False
-|*Occurrence* |At most once
 |*Example* a|
 ----
 MTD	small_molecule-identification_reliability	[MS, MS:1000932, identification reliability, ]
@@ -1101,7 +1029,6 @@ Mandatory when the Small Molecule Evidence (SME) section is present; optional ot
 Scores determine confidence in molecular identifications
 |*Type* |Parameter List
 |*Mandatory* |Conditional, depends on the profile (see Profiles)
-|*Occurrence* |Zero or more (`id_confidence_measure[1]`, `id_confidence_measure[2]`, ...)
 |*Example* a|
 ----
 MTD	id_confidence_measure[1]	[MS,MS:1002890,fragmentation score,]
@@ -1126,7 +1053,6 @@ Important Notes
 - Use `small_molecule-quantification_unit` for quantification values
 |*Type* |Column Parameter Mapping List
 |*Mandatory* |False
-|*Occurrence* |Zero or more lines, at most one per column
 |*Example* a|
 ----
 MTD	colunit-small_molecule	retention_time=[UO,UO:0000031,minute,]
@@ -1142,7 +1068,6 @@ MTD	colunit-small_molecule	mass=[UO,UO:0000221,dalton,]
 |*Description* |Defines the used unit for a column in the small molecule feature section. The format of the value has to be {column name}={Parameter defining the unit}. This field MUST NOT be used to define a unit for quantification columns. The unit used for small molecule quantification values MUST be set in small_molecule_feature-quantification_unit.
 |*Type* |Column Parameter Mapping List
 |*Mandatory* |False
-|*Occurrence* |Zero or more lines, at most one per column
 |*Example* a|
 ----
 MTD	colunit-small_molecule_feature	retention_time=[UO, UO:0000031, minute, ]
@@ -1157,7 +1082,6 @@ MTD	colunit-small_molecule_feature	retention_time=[UO, UO:0000031, minute, ]
 |*Description* |Defines the used unit for a column in the small molecule evidence section. The format of the value has to be {column name}={Parameter defining the unit}.
 |*Type* |Column Parameter Mapping List
 |*Mandatory* |False
-|*Occurrence* |Zero or more lines, at most one per column
 |*Example* a|
 ----
 MTD	colunit-small_molecule_evidence	retention_time=[UO, UO:0000031, minute, ]
