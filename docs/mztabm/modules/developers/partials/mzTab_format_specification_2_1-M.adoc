@@ -117,7 +117,7 @@ The first stable version of mzTab (version 1.0) was developed primarily by the P
 ==== Relationship to mzTab-M 2.0.0
 
 The first stable version of mzTab-M for Metabolomics (version 2.0.0) was developed to support the reporting of results from MS-based metabolomics experiments.
-mzTab-M 2.1.0 clarifies several aspects, and introduces the `study_variable_group` element to support multi-factorial experimental designs. As a consequence, the `study_variable[1-n]-factors` field has been removed: the experimental factors it was intended to capture are now represented explicitly through `study_variable_group[1-n]` and its sub-fields (`-description`, `-type`, `-datatype`, `-unit`), together with the `study_variable_group[1-n]-study_variable_refs` field by which each group lists the study variables that belong to it. The `-datatype` sub-field supports the standard XSD primitive types as well as `Parameter`, allowing study variable values to be reported as user-defined or CV Parameters when categorical factors are best expressed by ontology terms.
+mzTab-M 2.1.0 clarifies several aspects, and introduces the `study_variable_group` element to support multi-factorial experimental designs. As a consequence, the `study_variable[n]-factors` field has been removed: the experimental factors it was intended to capture are now represented explicitly through `study_variable_group[n]` and its sub-fields (`-description`, `-type`, `-datatype`, `-unit`), together with the `study_variable_group[n]-study_variable_refs` field by which each group lists the study variables that belong to it. The `-datatype` sub-field supports the standard XSD primitive types as well as `Parameter`, allowing study variable values to be reported as user-defined or CV Parameters when categorical factors are best expressed by ontology terms.
 mzTab-M 2.1.0 also introduces _profiles_ (see <<profiles>>): an optional `mzTab-profile` metadata field that declares which of the four tables a file contains. This allows intermediate analysis outputs — for example feature-only files from preprocessing, or files carrying identification evidence but no aggregated summary — to be valid mzTab-M. Files that do not declare a profile remain valid: their profile is inferred from the tables present, preserving backwards compatibility with mzTab-M 2.0.0.
 
 WARNING: Some elements have been altered, some have been removed.
@@ -215,7 +215,7 @@ Modeling the correct reporting of technical/biological replicates within experim
 * _study_variable_ – The variables about which the final results of a study are reported, which may have been derived following averaging across a group of replicate measurements (assays). The same concept has been defined by others as “experimental factor”.
 * _ms_run_ – An MS run is effectively one run on an MS instrument, and is referenced from assay in different contexts. In the case of pre-fractionation into _n_ fractions, an assay SHOULD reference _n_ ms_runs.
 * _assay_ – The application of a measurement about the sample (in this case through MS) – producing values about small molecules or lipids. One assay is typically mapped to one MS run in the case of label-free MS analysis (with no pre-fractionation). At the present time, multiplexing within an ms_run is not supported in mzTab-M, thus there would typically be a one:one relationship between assay and ms_run.
-* _sample_ – a biological material that has been analyzed, to which descriptors of species, cell/tissue type etc. can be attached. In all of types of mzTab file, these MAY be reported in the metadata section as sample[1-n]-description. Samples are NOT MANDATORY in mzTab, since many software packages cannot determine what type of sample was analyzed (e.g. whether biological or technical replication was performed). If the file producer wishes to describe whether biological or technical replication has been performed, then sample elements SHOULD be provided.
+* _sample_ – a biological material that has been analyzed, to which descriptors of species, cell/tissue type etc. can be attached. In all of types of mzTab file, these MAY be reported in the metadata section as sample[n]-description. Samples are NOT MANDATORY in mzTab, since many software packages cannot determine what type of sample was analyzed (e.g. whether biological or technical replication was performed). If the file producer wishes to describe whether biological or technical replication has been performed, then sample elements SHOULD be provided.
 
 
 Clear definitions of biological and technical replicates are difficult to provide as these are somewhat dependent upon the biological domain. However, we use the following general definitions in mzTab.
@@ -227,10 +227,10 @@ NOTE: There is deliberately no attempt to define the boundary of the term “sam
 
 If sample level information is provided optimally, it is expected that:
 
-* _n_ biological replicates can be mapped to sample[1-n]
+* _n_ biological replicates can be mapped to `sample[1]` ... `sample[n]`
 * _m_ technical replicate measurements of sample 1 SHOULD be mapped to assay[1-m] referencing sample[1] (for example).
 
-However, an open challenge remains since some analysis software is often not aware of whether replicates (multiple MS runs) are originally biological or technical in nature. As such, the default behavior for mzTab exporters from quantitative software is to exclude sample level information and report quantitative data for assay[1-n] and study_variable[1-n].
+However, an open challenge remains since some analysis software is often not aware of whether replicates (multiple MS runs) are originally biological or technical in nature. As such, the default behavior for mzTab exporters from quantitative software is to exclude sample level information and report quantitative data for assay[n] and study_variable[n].
 
 Additional annotation software would typically be required to add the sample-level information, as provided (often manually) by the user.
 
@@ -241,7 +241,7 @@ image::img/media/figure1.svg[image, title="Simple experimental designs in mzTab-
 [[reporting-factorial-experimental-designs]]
 === Recommendations for reporting multifactorial experimental designs
 
-Some explanation is needed about the reporting of multifactorial experimental designs, which are common in metabolomics. In mzTab-M 2.1, the `study_variable_group` element has been introduced to support the grouping of multiple study variables (SVs) that together represent a column in a wide-layout experimental design matrix. For example, if there are two factors (e.g. treatment and time point), each factor is one `study_variable_group`. Each study_variable is one level of a single factor and references the relevant assay(s); each `study_variable_group` in turn lists its member study variables via `study_variable_group[1-n]-study_variable_refs`. At least one `study_variable_group` MUST be defined.
+Some explanation is needed about the reporting of multifactorial experimental designs, which are common in metabolomics. In mzTab-M 2.1, the `study_variable_group` element has been introduced to support the grouping of multiple study variables (SVs) that together represent a column in a wide-layout experimental design matrix. For example, if there are two factors (e.g. treatment and time point), each factor is one `study_variable_group`. Each study_variable is one level of a single factor and references the relevant assay(s); each `study_variable_group` in turn lists its member study variables via `study_variable_group[n]-study_variable_refs`. At least one `study_variable_group` MUST be defined.
 
 [[figure-2]]
 image::img/media/figure2.svg[image, title="The `study_variable_group` allows to include different types of multiple SVs, supporting multifactoral experimental designs. For instance, if the experiment includes SVs that can either describe the treatment type or the time point as shown in the figure, the `study_variable_group` helps distinguishing the groups while keeping the desired structure.",width=100%,pdfwidth=100%,scaledwidth=100%]
@@ -255,7 +255,7 @@ For GC and HPLC, derivatization is often applied in order to specifically target
 * alkylation and esterification
 * silylation
 
-In mzTab-M, any derivatization agents used should be reported in the metadata section under derivatization_agent[1-n]. It is expected that in the small molecule evidence table where matches are made to database entries including the derivatized form, then that form SHOULD be reported in evidence row. In the small molecule (summary) table, it MAY be appropriate to reference a database entry for the actual molecule inferred without the derivatization addition, although this is context dependent and in some cases it may be more appropriate to reference a database entry for the derivatized form.
+In mzTab-M, any derivatization agents used should be reported in the metadata section under derivatization_agent[n]. It is expected that in the small molecule evidence table where matches are made to database entries including the derivatized form, then that form SHOULD be reported in evidence row. In the small molecule (summary) table, it MAY be appropriate to reference a database entry for the actual molecule inferred without the derivatization addition, although this is context dependent and in some cases it may be more appropriate to reference a database entry for the derivatized form.
 
 
 
@@ -416,18 +416,20 @@ Should the name of the param contain commas, quotes MUST be added to avoid probl
 
 A CV parameter mapping file for mzTab following the mzML mapping file XML Schema is available at https://github.com/HUPO-PSI/mzTab/blob/master/specification_document-developments/2_0-Metabolomics-Draft/mzTab_2_0-M_mapping.xml[GitHub] as part of the specification for semantic validation. The mapping file defines recommended controlled vocabularies and defines restrictions for the use of CV terms on particular elements of the mzTab document. Unlike other PSI standards, the model description of mzTab-M 2.0 is not based on an XML schema, but instead on a Swagger / OpenAPI 2.0 compatible specification that is used to generate a corresponding object structure that can be represented in XML, JSON or as an object hierarchy in arbitrary programming languages.
 
+* *Indexed elements and the `[n]` notation* +
+Elements that can be reported more than once are numbered with an index in square brackets, e.g. `sample[1]`, `sample[2]`. In this document, `[n]` is a placeholder for that index: `sample[n]` stands for any of `sample[1]`, `sample[2]`, and so on. It does NOT state how many times an element must or may be reported. The same notation is used for sub-elements, e.g. `sample[n]-species[n]` stands for `sample[1]-species[1]`, `sample[1]-species[2]`, `sample[2]-species[1]`, and so on. Whether a field is required is given by the _Mandatory_ entry of the field reference in <<field-reference>>: `True` (MUST be reported), `False` (MAY be reported) or `Conditional` (required only in some profiles, see <<profile-metadata-requirements>>). For metadata fields, the _Occurrence_ entry states how many times the field may be reported, e.g. "One or more" for `assay[n]` or "At most once per `sample[n]`" for `sample[n]-description`. Earlier versions of this specification wrote the placeholder as `[1-n]`.
 * *Sample IDs* +
-To be able to supply metadata specific to each sample, ids in the format `sample[1-n]` are used.
+To be able to supply metadata specific to each sample, ids in the format `sample[n]` are used.
 ....
 MTD sample[1]-species[1] [NCBITaxon, NCBITaxon:9606, Homo sapiens, ]
 ....
 * *Assay IDs* +
-To be able to supply metadata specific to each assay, ids in the format `assay[1-n]` are used.
+To be able to supply metadata specific to each assay, ids in the format `assay[n]` are used.
 ....
 MTD assay[1] first assay description
 ....
 * *Study variable IDs* +
-To be able to supply metadata specific to each study variable (grouping of assays), ids in the format `study_variable[1-n]` are used.
+To be able to supply metadata specific to each study variable (grouping of assays), ids in the format `study_variable[n]` are used.
 ....
 MTD study_variable[1] Group B (spike-in 0.74 fmol/uL)
 ....
@@ -456,8 +458,8 @@ Some metadata (MTD) fields are only meaningful when a particular table is presen
 |`quantification_method` |the file reports quantified molecules — an SML or SMF section is present (`M+S`, `M+F`, `M+F+E`, `M+S+F+E`)
 |`small_molecule-quantification_unit` |the SML section is present (`M+S`, `M+S+F+E`)
 |`small_molecule_feature-quantification_unit` |the SMF section is present (`M+F`, `M+F+E`, `M+S+F+E`)
-|`id_confidence_measure[1-n]` |the SME section is present (`M+F+E`, `M+S+F+E`)
-|`database[1-n]` |identification has been performed — an SME section is present, or SML rows carry identifiers
+|`id_confidence_measure[n]` |the SME section is present (`M+F+E`, `M+S+F+E`)
+|`database[n]` |identification has been performed — an SME section is present, or SML rows carry identifiers
 |===============================================================================
 
 In profiles that do not include the relevant table these fields are OPTIONAL. If such a field is nevertheless present in a file whose profile does not include the corresponding table, a validator SHOULD accept the file but emit an informational message noting the profile/content mismatch (for example, a `small_molecule-quantification_unit` in an `M+F` file, which has no SML section for it to describe).

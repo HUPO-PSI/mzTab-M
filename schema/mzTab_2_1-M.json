@@ -1151,7 +1151,7 @@
       },
       "title": "Instrument",
       "type": "object",
-      "description": "The name, source, analyzer and detector of the instruments used in the experiment. Multiple instruments are numbered [1-n].",
+      "description": "The name, source, analyzer and detector of the instruments used in the experiment. Multiple instruments are numbered [1], [2], ....",
       "examples": [
         "MTD\tinstrument[1]-name\t[MS, MS:1000449, LTQ Orbitrap,]\nMTD\tinstrument[1]-source\t[MS, MS:1000073, ESI,]\n…\nMTD\tinstrument[2]-source\t[MS, MS:1000598, ETD,]\nMTD\tinstrument[1]-analyzer[1]\t[MS, MS:1000291, linear ion trap,]\n…\nMTD\tinstrument[2]-analyzer[1]\t[MS, MS:1000484, orbitrap,]\nMTD\tinstrument[1]-detector\t[MS, MS:1000253, electron multiplier,]\n…\nMTD\tinstrument[2]-detector\t[MS, MS:1000348, focal plane collector,]"
       ]
@@ -1371,7 +1371,7 @@
             }
           ],
           "default": null,
-          "description": "Contact information for study personnel.\n\nFormat\n- Name: `[first name] [initials] [last name]`\n- Multiple contacts numbered `[1-n]`\n\nFields\n- Name of the contact person\n- Institutional affiliation\n- Email address",
+          "description": "Contact information for study personnel.\n\nFormat\n- Name: `[first name] [initials] [last name]`\n- Multiple contacts numbered `[1]`, `[2]`, ...\n\nFields\n- Name of the contact person\n- Institutional affiliation\n- Email address",
           "examples": [
             "MTD\tcontact[1]\t[MS,MS:1000586,contact name,John X Smith]",
             "MTD\tcontact[1]-affiliation\tUniversity of Somewhere",
@@ -1407,7 +1407,7 @@
             }
           ],
           "default": null,
-          "description": "Associated research publications.\n\nReference Format\n- PubMed IDs: prefix with `pubmed:`\n- DOIs: prefix with `doi:`\n- Multiple IDs: separate with `|`\n\nMultiple publications numbered `[1-n]`",
+          "description": "Associated research publications.\n\nReference Format\n- PubMed IDs: prefix with `pubmed:`\n- DOIs: prefix with `doi:`\n- Multiple IDs: separate with `|`\n\nMultiple publications numbered `[1]`, `[2]`, ...",
           "examples": [
             "MTD\tpublication[1]\tdoi:10.1021/example.2023",
             "MTD\tpublication[2]\tpubmed:12345678|doi:10.1021/another.2023"
@@ -1510,7 +1510,7 @@
             }
           ],
           "default": null,
-          "description": "Mass spectrometry instrument specifications.\n\nEach instrument includes:\n- `name`: Full instrument name and model\n- `source`: Ion source type (e.g., ESI, MALDI)\n- `analyzer`: Mass analyzer(s) used (e.g., quadrupole, TOF)\n- `detector`: Detector type\n\nMultiple instruments are numbered `[1-n]`. Referenced by `instrument_ref` in `ms_run` entries.",
+          "description": "Mass spectrometry instrument specifications.\n\nEach instrument includes:\n- `name`: Full instrument name and model\n- `source`: Ion source type (e.g., ESI, MALDI)\n- `analyzer`: Mass analyzer(s) used (e.g., quadrupole, TOF)\n- `detector`: Detector type\n\nMultiple instruments are numbered `[1]`, `[2]`, .... Referenced by `instrument_ref` in `ms_run` entries.",
           "examples": [
             "MTD\tinstrument[1]-name\tThermo Fisher Q Exactive HF",
             "MTD\tinstrument[1]-source\t[MS,MS:1000073,ESI,]",
@@ -1645,7 +1645,7 @@
             }
           ],
           "default": null,
-          "description": "Sample preparation and processing steps.\n\nProcessing Documentation\n- Sequential steps numbered `[1-n]` in order of execution\n- Multiple parameters per step separated by `|`\n\nSpecial Cases\n- Derivatization:\n  - Report general step (e.g., 'silylation')\n  - Specify agents in derivatization_agent field\n\nFollows biological/analytical methods report format",
+          "description": "Sample preparation and processing steps.\n\nProcessing Documentation\n- Sequential steps numbered `[1]`, `[2]`, ... in order of execution\n- Multiple parameters per step separated by `|`\n\nSpecial Cases\n- Derivatization:\n  - Report general step (e.g., 'silylation')\n  - Specify agents in derivatization_agent field\n\nFollows biological/analytical methods report format",
           "examples": [
             "MTD\tsample_processing[1]\t[SEP,SEP:00142,extraction,]",
             "MTD\tsample_processing[2]\t[SEP,SEP:00210,centrifugation,]|[SEP,SEP:00211,13000g]",
@@ -1681,7 +1681,7 @@
             }
           ],
           "default": null,
-          "description": "Analysis software specifications.\n\nFor each software entry:\n- Include version information\n- Number entries (`[1-n]`) to reflect usage order\n- Settings can be specified multiple times per software\n- Use string values for settings without CV terms",
+          "description": "Analysis software specifications.\n\nFor each software entry:\n- Include version information\n- Number entries (`[1]`, `[2]`, ...) to reflect usage order\n- Settings can be specified multiple times per software\n- Use string values for settings without CV terms",
           "examples": [
             "MTD\tsoftware[1]\t[MS,MS:1000532,Xcalibur,3.1]",
             "MTD\tsoftware[2]\t[MS,MS:1002342,MetaboScape,2022b]"
@@ -1750,7 +1750,7 @@
             }
           ],
           "default": null,
-          "description": "Specification of ms_run. location: Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the [1-n] cardinality is referenced elsewhere. If pre-fractionation has been performed, then [1-n] ms_runs SHOULD be created per assay.instrument_ref: If different instruments are used in different runs, instrument_ref can be used to link a specific instrument to a specific run. format: Parameter specifying the data format of the external MS data file. If ms_run[1-n]-format is present, ms_run[1-n]-id_format SHOULD also be present, following the parameters specified in Table 1. id_format: Parameter specifying the id format used in the external data file. If ms_run[1-n]-id_format is present, ms_run[1-n]-format SHOULD also be present.fragmentation_method: The type(s) of fragmentation used in a given ms run.scan_polarity: The polarity mode of a given run. Usually only one value SHOULD be given here except for the case of mixed polarity runs.hash: Hash value of the corresponding external MS data file defined in ms_run[1-n]-location. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.hash_method: A parameter specifying the hash methods used to generate the String in ms_run[1-n]-hash. Specifics of the hash method used MAY follow the definitions of the mzML format. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.",
+          "description": "Specification of ms_run. location: Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the ms_run index is referenced elsewhere. If pre-fractionation has been performed, then one or more ms_runs SHOULD be created per assay.instrument_ref: If different instruments are used in different runs, instrument_ref can be used to link a specific instrument to a specific run. format: Parameter specifying the data format of the external MS data file. If ms_run[n]-format is present, ms_run[n]-id_format SHOULD also be present, following the parameters specified in Table 1. id_format: Parameter specifying the id format used in the external data file. If ms_run[n]-id_format is present, ms_run[n]-format SHOULD also be present.fragmentation_method: The type(s) of fragmentation used in a given ms run.scan_polarity: The polarity mode of a given run. Usually only one value SHOULD be given here except for the case of mixed polarity runs.hash: Hash value of the corresponding external MS data file defined in ms_run[n]-location. If ms_run[n]-hash is present, ms_run[n]-hash_method SHOULD also be present.hash_method: A parameter specifying the hash methods used to generate the String in ms_run[n]-hash. Specifics of the hash method used MAY follow the definitions of the mzML format. If ms_run[n]-hash is present, ms_run[n]-hash_method SHOULD also be present.",
           "ignore": false,
           "list_concatenation_str": null,
           "mztab_example": null,
@@ -1831,7 +1831,7 @@
             "maximum": null,
             "minimum": null,
             "pattern": null,
-            "required": null,
+            "required": true,
             "value_constraint": null
           },
           "examples": [
@@ -2085,7 +2085,7 @@
             }
           ],
           "default": null,
-          "description": "Mandatory when the Small Molecule Evidence (SME) section is present; optional otherwise. Small molecule identification confidence metrics.<br/>Scoring System\n- Use CV parameters numbered `[1-n]`\n- Define score direction (high-to-low or low-to-high)\n- Order by importance for identification ranking\n\nScores determine confidence in molecular identifications",
+          "description": "Mandatory when the Small Molecule Evidence (SME) section is present; optional otherwise. Small molecule identification confidence metrics.<br/>Scoring System\n- Use CV parameters numbered `[1]`, `[2]`, ...\n- Define score direction (high-to-low or low-to-high)\n- Order by importance for identification ranking\n\nScores determine confidence in molecular identifications",
           "examples": [
             "MTD\tid_confidence_measure[1]\t[MS,MS:1002890,fragmentation score,]",
             "MTD\tid_confidence_measure[2]\t[MS,MS:1002891,retention time score,]"
@@ -2545,7 +2545,7 @@
       },
       "title": "MsRun",
       "type": "object",
-      "description": "Specification of ms_run.\nlocation: Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the [1-n] cardinality is referenced elsewhere. If pre-fractionation has been performed, then [1-n] ms_runs SHOULD be created per assay.\ninstrument_ref: If different instruments are used in different runs, instrument_ref can be used to link a specific instrument to a specific run.\nformat: Parameter specifying the data format of the external MS data file. If ms_run[1-n]-format is present, ms_run[1-n]-id_format SHOULD also be present, following the parameters specified in Table 1.\nid_format: Parameter specifying the id format used in the external data file. If ms_run[1-n]-id_format is present, ms_run[1-n]-format SHOULD also be present.\nfragmentation_method: The type(s) of fragmentation used in a given ms run.\nscan_polarity: The polarity mode of a given run. Usually only one value SHOULD be given here except for the case of mixed polarity runs.\nhash: Hash value of the corresponding external MS data file defined in ms_run[1-n]-location. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.\nhash_method: A parameter specifying the hash methods used to generate the String in ms_run[1-n]-hash. Specifics of the hash method used MAY follow the definitions of the mzML format. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.",
+      "description": "Specification of ms_run.\nlocation: Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the ms_run index is referenced elsewhere. If pre-fractionation has been performed, then one or more ms_runs SHOULD be created per assay.\ninstrument_ref: If different instruments are used in different runs, instrument_ref can be used to link a specific instrument to a specific run.\nformat: Parameter specifying the data format of the external MS data file. If ms_run[n]-format is present, ms_run[n]-id_format SHOULD also be present, following the parameters specified in Table 1.\nid_format: Parameter specifying the id format used in the external data file. If ms_run[n]-id_format is present, ms_run[n]-format SHOULD also be present.\nfragmentation_method: The type(s) of fragmentation used in a given ms run.\nscan_polarity: The polarity mode of a given run. Usually only one value SHOULD be given here except for the case of mixed polarity runs.\nhash: Hash value of the corresponding external MS data file defined in ms_run[n]-location. If ms_run[n]-hash is present, ms_run[n]-hash_method SHOULD also be present.\nhash_method: A parameter specifying the hash methods used to generate the String in ms_run[n]-hash. Specifics of the hash method used MAY follow the definitions of the mzML format. If ms_run[n]-hash is present, ms_run[n]-hash_method SHOULD also be present.",
       "examples": [
         "COM\tlocation can be a local or remote URI\nMTD\tms_run[1]-location\tfile:///C:/path/to/my/file.mzML\nMTD\tms_run[1]-instrument_ref\tinstrument[1]\nMTD\tms_run[1]-format\t[MS, MS:1000584, mzML file, ]\nMTD\tms_run[1]-id_format\t[MS, MS:1000530, mzML unique identifier, ]\nMTD\tms_run[1]-fragmentation_method[1]\t[MS, MS:1000133, CID, ]\nCOM\tfor mixed polarity scan scenarios\nMTD\tms_run[1]-scan_polarity[1]\t[MS, MS:1000130, positive scan, ]\nMTD\tms_run[1]-scan_polarity[2]\t[MS, MS:1000129, negative scan, ]\nMTD\tms_run[1]-hash_method\t[MS, MS:1000569, SHA-1, ]\nMTD\tms_run[1]-hash\tde9f2c7fd25e1b3afad3e85a0bd17d9b100db4b3"
       ]
@@ -3555,7 +3555,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The putative identification for the small molecule sourced from an external database, using the same prefix specified in database[1-n]-prefix.\n\nThis could include additionally a chemical class or an identifier to a spectral library entity, even if its actual identity is unknown.\n\nFor the “no database” case, 'null' must be used. The unprefixed use of 'null' is prohibited for any other case.\nIf no putative identification can be reported for a particular database, it MUST be reported as the database prefix followed by null.",
+          "description": "The putative identification for the small molecule sourced from an external database, using the same prefix specified in database[n]-prefix.\n\nThis could include additionally a chemical class or an identifier to a spectral library entity, even if its actual identity is unknown.\n\nFor the “no database” case, 'null' must be used. The unprefixed use of 'null' is prohibited for any other case.\nIf no putative identification can be reported for a particular database, it MUST be reported as the database prefix followed by null.",
           "examples": [
             "CID:00027395",
             "HMDB:HMDB12345",
@@ -3904,7 +3904,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a \\| delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.\n\nIf a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”. ",
+          "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a \\| delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.\n\nIf a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”. ",
           "examples": [
               "ms_run[1]:index=5"
           ],
@@ -4007,7 +4007,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "Any statistical value or score for the identification. The metadata section reports the type of score used, as id_confidence_measure[1-n] of type Param.",
+          "description": "Any statistical value or score for the identification. The metadata section reports the type of score used, as id_confidence_measure[n] of type Param.",
           "examples": [
             [
               0.7
@@ -5217,7 +5217,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "The small molecule’s abundance in all the study variables described in the metadata section (study_variable[1-n]_average_function), calculated using the method as described in the Metadata section (default = arithmetic mean across assays). Null or zero values may be reported as appropriate. \"null\" SHOULD be used to report missing quantities, while zero SHOULD be used to indicate a present but not reliably quantifiable value (e.g. below a minimum noise threshold).",
+          "description": "The small molecule’s abundance in all the study variables described in the metadata section (study_variable[n]_average_function), calculated using the method as described in the Metadata section (default = arithmetic mean across assays). Null or zero values may be reported as appropriate. \"null\" SHOULD be used to report missing quantities, while zero SHOULD be used to indicate a present but not reliably quantifiable value (e.g. below a minimum noise threshold).",
           "examples": [
             [
               0.3
@@ -5260,7 +5260,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "TA measure of the variability of the study variable abundance measurement, calculated using the method as described in the metadata section (study_variable[1-n]_average_function), with a default = arithmethic co-efficient of variation of the small molecule’s abundance in the given study variable.",
+          "description": "TA measure of the variability of the study variable abundance measurement, calculated using the method as described in the metadata section (study_variable[n]_average_function), with a default = arithmethic co-efficient of variation of the small molecule’s abundance in the given study variable.",
           "examples": [
             [
               0.3,
@@ -5480,7 +5480,7 @@
       },
       "title": "SpectraReference",
       "type": "object",
-      "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a \\| delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.\n\nIf a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.",
+      "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a \\| delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.\n\nIf a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.",
       "examples": [
         "SEH\tSME_ID\t…\tspectra_ref\t…\nSME\t1\t\t\tms_run[1]:index=5\t…"
       ]

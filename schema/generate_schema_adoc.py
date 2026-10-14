@@ -47,6 +47,17 @@ DISPLAY_NAME_OVERRIDES = {
     'opt': 'opt_{identifier}_*',
 }
 
+# MTD fields whose requirement depends on the file's profile (see the
+# "Metadata fields whose requirement depends on the profile" section of the
+# specification). Their Mandatory entry is "Conditional" instead of True/False.
+PROFILE_CONDITIONAL_FIELDS = {
+    'quantification_method',
+    'small_molecule-quantification_unit',
+    'small_molecule_feature-quantification_unit',
+    'id_confidence_measure',
+    'database',
+}
+
 # Fields in SML/SMF/SME that are NOT nullable despite having anyOf with null
 NON_NULLABLE_FIELDS = {
     'sml_id', 'smf_id', 'sme_id',
@@ -63,7 +74,8 @@ def load_schema(schema_file: Path) -> dict:
 
 def make_anchor(name: str) -> str:
     """Convert a field name to an AsciiDoc anchor (lowercase, no brackets)."""
-    anchor = name.replace('[1-n]', '1-n')
+    # [n] is mapped to the pre-#129 '1-n' anchor so existing links keep working.
+    anchor = name.replace('[n]', '1-n')
     anchor = anchor.replace('[', '').replace(']', '')
     anchor = anchor.replace('{', '').replace('}', '')
     anchor = anchor.replace('*', '')
@@ -179,6 +191,29 @@ def is_mandatory(prop: dict) -> bool:
     return prop.get('validation_policy', {}).get('required') is True
 
 
+def mandatory_label(prop: dict, conditional: bool = False) -> str:
+    """Return the value of the Mandatory row: True, False or Conditional."""
+    if conditional:
+        return 'Conditional, depends on the profile (see Profiles)'
+    return 'True' if is_mandatory(prop) else 'False'
+
+
+def occurrence(field_name: str, mandatory: bool, parent: str = '') -> str:
+    """Describe how often a field may occur.
+
+    The [n] in a field name is an index placeholder, not a multiplicity, so
+    the number of allowed occurrences is stated explicitly here.  *parent* is
+    the indexed element a sub-field belongs to (e.g. ``sample``).
+    """
+    indexed = field_name.endswith('[n]')
+    base = field_name[:-len('[n]')] if indexed else field_name
+    per = f' per `{parent}[n]`' if parent else ''
+    if indexed:
+        amount = 'One or more' if mandatory else 'Zero or more'
+        return f'{amount}{per} (`{base}[1]`, `{base}[2]`, ...)'
+    return f'Exactly once{per}' if mandatory else f'At most once{per}'
+
+
 def field_is_nullable(prop: dict, prop_name: str) -> bool:
     """Determine nullability for SML/SMF/SME fields."""
     if prop_name in NON_NULLABLE_FIELDS:
@@ -277,12 +312,18 @@ def write_field_entry(
     show_nullable: bool = False,
     prop_key: str = '',
     anchor_prefix: str = '',
+    conditional: bool = False,
+    occurs: str = '',
 ):
-    """Append the AsciiDoc block for a single field to *lines*."""
+    """Append the AsciiDoc block for a single field to *lines*.
+
+    *occurs* is the text of the Occurrence row; the row is omitted when empty
+    (table columns).
+    """
     anchor = (anchor_prefix + '-' if anchor_prefix else '') + make_anchor(field_name)
     desc = get_description(prop)
     type_str = get_type_string(prop, schema_defs)
-    mandatory = is_mandatory(prop)
+    mandatory = mandatory_label(prop, conditional)
     pattern = get_regex_pattern(prop)
     examples = get_examples(prop)
     nullable = field_is_nullable(prop, prop_key or field_name)
@@ -313,7 +354,11 @@ def write_field_entry(
         lines.append(f'|*Type* |{type_str}')
 
     # Mandatory
-    lines.append(f'|*Mandatory* |{"True" if mandatory else "False"}')
+    lines.append(f'|*Mandatory* |{mandatory}')
+
+    # Occurrence (MTD only)
+    if occurs:
+        lines.append(f'|*Occurrence* |{occurs}')
 
     # Nullable (SML/SMF/SME sections only)
     if show_nullable:
@@ -321,7 +366,7 @@ def write_field_entry(
 
     # Example
     if examples:
-        key = field_name.replace('[1-n]', '[1]').replace('{identifier}', 'global').replace('*', 'cv_value')
+        key = field_name.replace('[n]', '[1]').replace('{identifier}', 'global').replace('*', 'cv_value')
         lines.append('|*Example* a|')
         # Use ---- (listing block) rather than .... (literal block): Asciidoctor.js
         # correctly protects pipe characters from being interpreted as table cell
@@ -361,7 +406,7 @@ def process_nested_object(
     """Process a metadata field that expands to a complex indexed object.
 
     When the object has an ``object_level_value`` property, that property becomes
-    the top-level entry (e.g., ``sample[1-n]`` for the sample name).  When no
+    the top-level entry (e.g., ``sample[n]`` for the sample name).  When no
     such property exists (e.g., Instrument, MsRun), no top-level entry is written
     and only sub-fields are emitted.
     """
@@ -389,17 +434,31 @@ def process_nested_object(
             merged['examples'] = ref_def['examples']
         elif sub_prop.get('examples'):
             merged['examples'] = sub_prop['examples']
-        merged['validation_policy'] = sub_prop.get(
-            'validation_policy', meta_prop.get('validation_policy', {})
-        )
+        # Pattern etc. come from the value sub-field, but whether the element
+        # must be reported at all is defined on the Metadata property: the
+        # sub-field's requirement only applies once the element is present.
+        merged['validation_policy'] = {
+            **sub_prop.get('validation_policy', meta_prop.get('validation_policy', {})),
+            'required': meta_prop.get('validation_policy', {}).get('required'),
+        }
+        conditional = meta_field_name in PROFILE_CONDITIONAL_FIELDS
+        top_name = f'{meta_field_name}[n]'
         write_field_entry(
-            lines, f'{meta_field_name}[1-n]', merged, 'MTD', schema_defs,
-            prop_key=meta_field_name,
+            lines, top_name, merged, 'MTD', schema_defs,
+            prop_key=meta_field_name, conditional=conditional,
+            occurs=occurrence(top_name, is_mandatory(merged) and not conditional),
         )
-    elif ref_def.get('description'):
+    else:
         # No indexed top-level value (e.g. Instrument, MsRun): emit the object description
-        # as a section preamble so readers know what the sub-fields belong to.
-        lines.append(ref_def['description'])
+        # as a section preamble so readers know what the sub-fields belong to, and
+        # state whether the element itself must be reported.
+        if ref_def.get('description'):
+            lines.append(ref_def['description'])
+            lines.append('')
+        if is_mandatory(meta_prop):
+            lines.append(f'At least one `{meta_field_name}[n]` MUST be reported.')
+        else:
+            lines.append(f'`{meta_field_name}[n]` is optional and MAY be reported any number of times.')
         lines.append('')
 
     # Determine sub-field iteration order: use explicit spec order if defined,
@@ -423,21 +482,23 @@ def process_nested_object(
             continue
 
         # If the sub-field is a genuinely indexed list (e.g. species[1],
-        # scan_polarity[1], custom[1]), add a [1-n] suffix. Bar-separated value
+        # scan_polarity[1], custom[1]), add a [n] suffix. Bar-separated value
         # lists (list_concatenation_str set, e.g. assay_refs, ms_run_refs,
         # study_variable_refs) are a single field whose value is the "|"-joined
-        # list, so they must NOT get a trailing [1-n].
+        # list, so they must NOT get a trailing [n].
         is_sub_list = any(
             a.get('type') == 'array' for a in sub_prop.get('anyOf', [])
         )
         if is_sub_list and not sub_prop.get('list_concatenation_str'):
-            sub_field_name = f'{meta_field_name}[1-n]-{sub_name}[1-n]'
+            sub_field_name = f'{meta_field_name}[n]-{sub_name}[n]'
         else:
-            sub_field_name = f'{meta_field_name}[1-n]-{sub_name}'
+            sub_field_name = f'{meta_field_name}[n]-{sub_name}'
 
         write_field_entry(
             lines, sub_field_name, sub_prop, 'MTD', schema_defs,
             prop_key=sub_name,
+            occurs=occurrence(sub_field_name[len(f'{meta_field_name}[n]-'):],
+                              is_mandatory(sub_prop), parent=meta_field_name),
         )
 
 
@@ -456,7 +517,9 @@ def write_mtd_section(lines: list, schema: dict):
     lines.append(
         'The metadata section provides additional information about the dataset(s) '
         'reported in the mzTab file. All fields in the metadata section are optional '
-        'apart from those noted as mandatory. The fields in the metadata section MUST '
+        'apart from those noted as mandatory; fields marked as conditional are '
+        'mandatory only in some profiles. The Occurrence entry states how many times '
+        'a field may be reported. The fields in the metadata section MUST '
         'be reported in the order listed below. The field name and value MUST be '
         'separated by a tab character.'
     )
@@ -465,7 +528,7 @@ def write_mtd_section(lines: list, schema: dict):
     # Explicit ordering to match the specification document section order.
     # Each entry is either:
     #   ('direct', field_name)              – a plain scalar/parameter field
-    #   ('direct_list', field_name)         – a plain repeatable field using [1-n]
+    #   ('direct_list', field_name)         – a plain repeatable field using [n]
     #   ('nested', field_name, def_name)    – expands to indexed sub-fields
     #   ('noindex', field_name)             – repeatable but NOT indexed (colunit-*)
     mtd_order = [
@@ -532,16 +595,29 @@ def write_mtd_section(lines: list, schema: dict):
         if prop.get('ignore', False):
             continue
 
+        conditional = field_name in PROFILE_CONDITIONAL_FIELDS
+        required = is_mandatory(prop) and not conditional
+
         if kind == 'direct':
-            write_field_entry(lines, field_name, prop, 'MTD', defs, prop_key=field_name)
+            write_field_entry(
+                lines, field_name, prop, 'MTD', defs, prop_key=field_name,
+                conditional=conditional, occurs=occurrence(field_name, required),
+            )
 
         elif kind == 'direct_list':
             write_field_entry(
-                lines, f'{field_name}[1-n]', prop, 'MTD', defs, prop_key=field_name
+                lines, f'{field_name}[n]', prop, 'MTD', defs, prop_key=field_name,
+                conditional=conditional,
+                occurs=occurrence(f'{field_name}[n]', required),
             )
 
         elif kind == 'noindex':
-            write_field_entry(lines, field_name, prop, 'MTD', defs, prop_key=field_name)
+            write_field_entry(
+                lines, field_name, prop, 'MTD', defs, prop_key=field_name,
+                conditional=conditional,
+                occurs=('One or more lines' if required else 'Zero or more lines')
+                       + ', at most one per column',
+            )
 
         elif kind == 'nested':
             def_name = entry[2]
@@ -549,7 +625,9 @@ def write_mtd_section(lines: list, schema: dict):
                 process_nested_object(lines, field_name, prop, defs[def_name], defs)
             else:
                 write_field_entry(
-                    lines, f'{field_name}[1-n]', prop, 'MTD', defs, prop_key=field_name
+                    lines, f'{field_name}[n]', prop, 'MTD', defs, prop_key=field_name,
+                    conditional=conditional,
+                    occurs=occurrence(f'{field_name}[n]', required),
                 )
 
 
@@ -628,11 +706,14 @@ def main():
         ':toclevels: 3',
         ':numbered:',
         '',
-        '== Field Reference',
+        # Inline anchor: gen-docs.sh strips everything before the first '== '
+        # line, so a block anchor on the line above would be lost.
+        '== [[field-reference]]Field Reference',
         '',
         'This document provides a reference for all fields defined in the mzTab-M format, '
         'organised by section and ordered by mzTab-M section hierarchy. '
-        'Each field entry includes a description, type, mandatory status, and example usage.',
+        'Each field entry includes a description, type, mandatory status, '
+        'occurrence (for metadata fields), and example usage.',
         '',
         '[[sections]]',
         '=== Sections',
