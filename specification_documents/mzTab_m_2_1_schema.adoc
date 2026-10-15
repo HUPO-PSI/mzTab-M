@@ -168,7 +168,7 @@ The name, source, analyzer and detector of the instruments used in the experimen
 |*Mandatory* |False
 |*Example* a|
 ----
-MTD	instrument[1]-name	[MS, MS:1000121, Q Exactive, ]
+MTD	instrument[1]-name	[MS, MS:1001911, Q Exactive, ]
 ----
 |============================================================
 
@@ -196,7 +196,7 @@ MTD	instrument[1]-source	[MS, MS:1000073, electrospray ionization, ]
 |*Mandatory* |False
 |*Example* a|
 ----
-MTD	instrument[1]-analyzer[1]	[MS, MS:1000285, Orbitrap, ]
+MTD	instrument[1]-analyzer[1]	[MS, MS:1000484, orbitrap, ]
 ----
 |============================================================
 
@@ -363,7 +363,7 @@ MTD	external_study_uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_In
 |*Mandatory* |False
 |*Example* a|
 ----
-MTD	quantification_method	[MS, MS:1001838, label-free quantification, ]
+MTD	quantification_method	[MS, MS:1001834, LC-MS label-free quantitation analysis, ]
 ----
 |============================================================
 
@@ -419,7 +419,7 @@ MTD	sample[1]-species[1]	[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]
 |*Mandatory* |False
 |*Example* a|
 ----
-MTD	sample[1]-tissue[1]	[BTO, BTO:0000141, blood plasma, ]
+MTD	sample[1]-tissue[1]	[BTO, BTO:0000131, blood plasma, ]
 ----
 |============================================================
 
@@ -447,7 +447,7 @@ MTD	sample[1]-cell_type[1]	[CL, CL:0000084, T cell, ]
 |*Mandatory* |False
 |*Example* a|
 ----
-MTD	sample[1]-disease[1]	[DOID, DOID:9351, diabetes mellitus type 2, ]
+MTD	sample[1]-disease[1]	[DOID, DOID:9352, type 2 diabetes mellitus, ]
 ----
 |============================================================
 
@@ -527,7 +527,7 @@ MTD	ms_run[1]-instrument_ref	instrument[1]
 |*Mandatory* |False
 |*Example* a|
 ----
-MTD	ms_run[1]-format	[MS, MS:1000584, mzML file, ]
+MTD	ms_run[1]-format	[MS, MS:1000584, mzML format, ]
 ----
 |============================================================
 
@@ -555,7 +555,7 @@ MTD	ms_run[1]-id_format	[MS, MS:1001530, mzML unique identifier, ]
 |*Mandatory* |False
 |*Example* a|
 ----
-MTD	ms_run[1]-fragmentation_method[1]	[MS, MS:1000133, CID, ]
+MTD	ms_run[1]-fragmentation_method[1]	[MS, MS:1000133, collision-induced dissociation, ]
 ----
 |============================================================
 
@@ -597,7 +597,7 @@ MTD	ms_run[1]-hash	sha256:34f2d1f2f0e7c5d8a3b6c4d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2
 |*Mandatory* |False
 |*Example* a|
 ----
-MTD	ms_run[1]-hash_method	[MS, MS:1000569, SHA-256, ]
+MTD	ms_run[1]-hash_method	[MS, MS:1003151, SHA-256, ]
 ----
 |============================================================
 
@@ -788,7 +788,7 @@ MTD	study_variable[1]-description	Female subjects at day 0
 |*Mandatory* |False
 |*Example* a|
 ----
-MTD	study_variable[1]-average_function	[STATO, STATO:0000467, arithmetic mean, ]
+MTD	study_variable[1]-average_function	[MS, MS:1002962, mean, ]
 ----
 |============================================================
 
@@ -802,7 +802,7 @@ MTD	study_variable[1]-average_function	[STATO, STATO:0000467, arithmetic mean, ]
 |*Mandatory* |False
 |*Example* a|
 ----
-MTD	study_variable[1]-variation_function	[STATO, STATO:0000256, standard deviation, ]
+MTD	study_variable[1]-variation_function	[STATO, STATO:0000237, standard deviation, ]
 ----
 |============================================================
 
@@ -993,7 +993,7 @@ MTD	protocol[1]-description	Proteins were precipitated with cold methanol and th
 |*Mandatory* |False
 |*Example* a|
 ----
-MTD	protocol[1]-parameters	[MSIO, MSIO:0000442, solvent composition, methanol:water 8:2]
+MTD	protocol[1]-parameters	[, , solvent composition, methanol:water 8:2]
 ----
 |============================================================
 

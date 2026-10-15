@@ -65,9 +65,6 @@ def _identify_section(header: str) -> Optional[str]:
 # ---------------------------------------------------------------------------
 @dataclass
 class Element:
-    def __init__(self):
-        pass
-
     name: str           # raw header text, e.g. "mzTab-version"
     description: str = ""
     type_: str = ""
