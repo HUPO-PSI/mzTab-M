@@ -20,10 +20,6 @@ against the matching jmzTab-m validator in CI:
   warnings (e.g. `Warn-2056` for the tolerated `M+S+F` profile) are reported as
   annotations only.
 
-- **`2.1/pending-validator/`** — valid mzTab-M 2.1 files that use features the
-  jmzTab-m validator does not support yet. They are not validated in CI and move
-  to `2.1/` once the validator supports them.
-
 A file belongs in `2.1/` only if it genuinely requires 2.1 features; anything
 that still validates under 2.0.0 stays in `2.0/`.
 
