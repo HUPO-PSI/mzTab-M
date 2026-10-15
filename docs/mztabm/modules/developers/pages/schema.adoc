@@ -13,15 +13,15 @@ The schemas are located in the `schema/` directory of the repository:
 
 == Field Reference
 
-The field reference below is generated from `schema/mzTab_2_1-M.json` via `schema/generate_schema_adoc.py`.
+The field reference below is generated from `schema/mzTab_2_1-M.json` via `schema/generate_schema_adoc.py` and kept up to date by `gen-docs.sh`.
 
-include::partial$mzTab_m_schema.adoc[]
+include::partial$mzTab_m_2_1_schema.adoc[]
 
-Refer to `mzTab_m_schema.adoc` in the repository root for the current generated field reference, or run the generator:
+To regenerate this field reference after editing the JSON schema, run:
 
 [source,bash]
 ----
-python3 schema/generate_schema_adoc.py schema/mzTab_2_1-M.json > mzTab_m_schema.adoc
+./gen-docs.sh --schema
 ----
 
 == Using the Schema

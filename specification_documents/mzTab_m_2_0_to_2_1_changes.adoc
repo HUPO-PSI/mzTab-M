@@ -18,7 +18,7 @@ Element-by-element comparison of all four mzTab-M sections (MTD, SML, SMF, SME) 
 |===
 | Section | v2.0 elements | v2.1 elements | Added | Removed | Changed
 
-| Metadata (MTD) Section | 62 | 75 | 15 | 2 | 60
+| Metadata (MTD) Section | 62 | 76 | 16 | 2 | 60
 
 | Small Molecule (SML) Section | 17 | 17 | 0 | 0 | 17
 
@@ -35,6 +35,14 @@ Element-by-element comparison of all four mzTab-M sections (MTD, SML, SMF, SME) 
 [cols="20,~,10,10,10",options="header"]
 |===
 | Column/Field | Description | Type | Mandatory | Nullable
+
+| `mzTab-profile`
+a| The profile of the mzTab-M file, declaring which tables are present and which validation rule set applies. +
+MUST be one of: M (MTD only), M+S (MTD + SML), M+F (MTD + SMF), M+F+E (MTD + SMF + SME) or M+S+F+E (all four tables; the richest profile, corresponding to the structure recommended in mzTab-M 2.0/2.1). +
+OPTIONAL; if absent (e.g. legacy mzTab-M 2.0 files, or files written before profiles were introduced), validators MUST infer the profile from the tables present and report it in the validation log. New files SHOULD set this field explicitly.
+| String
+| False
+| —
 
 | `contact[1-n]-orcid`
 a| The contact's orcid id, without https prefix.
@@ -747,21 +755,21 @@ MTD	external_study_uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_In
 
 ==== `quantification_method`
 
-NOTE: ⚠️ Changed fields: Example
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
 
 [cols="15,~,~",options="header"]
 |===
 | Field | v2.0 | v2.1
 
 | Description
-a| The quantification method used in the experiment reported in the file.
-a| The quantification method used in the experiment reported in the file.
+a| *The quantification method used in the experiment reported in the file.*
+a| *Mandatory when the file contains quantified molecules (an SML or SMF section is present); optional otherwise. The quantification method used in the experiment reported in the file.*
 
 | Type
 a| Parameter
 a| Parameter
 
-| Mandatory | True | True
+| Mandatory | *True* | *False*
 
 | Nullable | — | —
 
@@ -1923,7 +1931,7 @@ MTD	derivatization_agent[1]	[XLMOD, XLMOD:07014, N-methyl-N-t-butyldimethylsilyl
 
 ==== `small_molecule-quantification_unit`
 
-NOTE: ⚠️ Changed fields: Description, Example
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
 
 [cols="15,~,~",options="header"]
 |===
@@ -1931,13 +1939,13 @@ NOTE: ⚠️ Changed fields: Description, Example
 
 | Description
 a| *Defines what type of units are reported in the small molecule summary quantification / abundance fields.*
-a| *Defines what type of units are reported in the small molecule summary quantification / abundance fields*
+a| *Mandatory when the Small Molecule (SML) section is present; optional otherwise. Defines what type of units are reported in the small molecule summary quantification / abundance fields*
 
 | Type
 a| Parameter
 a| Parameter
 
-| Mandatory | True | True
+| Mandatory | *True* | *False*
 
 | Nullable | — | —
 
@@ -1955,15 +1963,15 @@ MTD	small_molecule-quantification_unit	[MS, MS:1001113, peak area, ]
 
 ==== `small_molecule_feature-quantification_unit`
 
-NOTE: ⚠️ Changed fields: Mandatory, Example
+NOTE: ⚠️ Changed fields: Description, Mandatory, Example
 
 [cols="15,~,~",options="header"]
 |===
 | Field | v2.0 | v2.1
 
 | Description
-a| Defines what type of units are reported in the small molecule feature quantification / abundance fields.
-a| Defines what type of units are reported in the small molecule feature quantification / abundance fields.
+a| *Defines what type of units are reported in the small molecule feature quantification / abundance fields.*
+a| *Mandatory when the Small Molecule Feature (SMF) section is present; optional otherwise. Defines what type of units are reported in the small molecule feature quantification / abundance fields.*
 
 | Type
 a| Parameter
@@ -2021,7 +2029,7 @@ MTD	small_molecule-identification_reliability	[MS, MS:1000932, identification re
 
 ==== `id_confidence_measure[1-n]`
 
-NOTE: ⚠️ Changed fields: Description, Type, Example
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
 
 [cols="15,~,~",options="header"]
 |===
@@ -2029,7 +2037,7 @@ NOTE: ⚠️ Changed fields: Description, Type, Example
 
 | Description
 a| *The type of small molecule confidence measures or scores MUST be reported as a CV parameter [1-n]. The CV parameter definition should formally state whether the ordering is high to low or vice versa. The order of the scores SHOULD reflect their importance for the identification and be used to determine the identification’s rank.*
-a| *Small molecule identification confidence metrics.<br/>Scoring System +
+a| *Mandatory when the Small Molecule Evidence (SME) section is present; optional otherwise. Small molecule identification confidence metrics.<br/>Scoring System +
 - Use CV parameters numbered `[1-n]` +
 - Define score direction (high-to-low or low-to-high) +
 - Order by importance for identification ranking +
@@ -2040,7 +2048,7 @@ Scores determine confidence in molecular identifications*
 a| *Parameter*
 a| *Parameter List*
 
-| Mandatory | True | True
+| Mandatory | *True* | *False*
 
 | Nullable | — | —
 
@@ -2163,6 +2171,37 @@ MTD colunit-small_molecule_evidence opt_global_mass_error=[UO, UO:0000169, parts
 a| ....
 ----
 MTD	colunit-small_molecule_evidence	retention_time=[UO, UO:0000031, minute, ]
+----
+....
+
+|===
+
+==== `mzTab-profile` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| The profile of the mzTab-M file, declaring which tables are present and which validation rule set applies. +
+MUST be one of: M (MTD only), M+S (MTD + SML), M+F (MTD + SMF), M+F+E (MTD + SMF + SME) or M+S+F+E (all four tables; the richest profile, corresponding to the structure recommended in mzTab-M 2.0/2.1). +
+OPTIONAL; if absent (e.g. legacy mzTab-M 2.0 files, or files written before profiles were introduced), validators MUST infer the profile from the tables present and report it in the validation log. New files SHOULD set this field explicitly.
+
+| Type
+a| _(not present)_
+a| String
+
+| Mandatory | _(not present)_ | False
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| ....
+----
+MTD	mzTab-profile	M+F
+MTD	mzTab-profile	M+S+F+E
 ----
 ....
 

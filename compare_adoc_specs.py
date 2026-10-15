@@ -7,7 +7,7 @@ Compares ALL section elements (MTD, SML, SMF, SME) between:
       ../mzTab/specification_document-releases/2_0-Metabolomics-Release/
           mzTab_format_specification_2_0-M_release.adoc
   - mzTab-M v2.1 schema reference:
-      mzTab_m_schema.adoc  (in the mzTab-M repo root)
+      docs/mztabm/modules/developers/partials/mzTab_m_2_1_schema.adoc
 
 Output: metadata_comparison.md
 

@@ -845,7 +845,7 @@
       },
       "title": "Database",
       "type": "object",
-      "description": "Specification of databases.\n(empty): The description of databases used. For cases, where a known database has not been used for identification, a userParam SHOULD be inserted to describe any identification performed e.g. de novo. If no identification has been performed at all then \"no database\" should be inserted followed by null.\nprefix: The prefix used in the “identifier” column of data tables. For the “no database” case \"null\" must be used.\nversion: The database version is mandatory where identification has been performed. This may be a formal version number e.g. “1.4.1”, a date of access “2016-10-27” (ISO-8601 format) or “Unknown” if there is no suitable version that can be annotated.\nuri: The URI to the database. For the “no database” case, \"null\" must be reported.",
+      "description": "Mandatory when identification has been performed (an SME section is present, or summary rows carry identifiers); optional otherwise. Specification of databases.\n(empty): The description of databases used. For cases, where a known database has not been used for identification, a userParam SHOULD be inserted to describe any identification performed e.g. de novo. If no identification has been performed at all then \"no database\" should be inserted followed by null.\nprefix: The prefix used in the “identifier” column of data tables. For the “no database” case \"null\" must be used.\nversion: The database version is mandatory where identification has been performed. This may be a formal version number e.g. “1.4.1”, a date of access “2016-10-27” (ISO-8601 format) or “Unknown” if there is no suitable version that can be annotated.\nuri: The URI to the database. For the “no database” case, \"null\" must be reported.",
       "examples": [
         "MTD\tdatabase[1]\t[MIRIAM, MIR:00100079, HMDB, ]\nMTD\tdatabase[1]-prefix\thmdb\nMTD\tdatabase[1]-version\t3.6\nMTD\tdatabase[1]-uri\thttps://www.hmdb.ca\nMTD\tdatabase[2]\t[,, \"de novo\", ]\nMTD\tdatabase[2]-prefix\tdn\nMTD\tdatabase[2]-version\tUnknown\nMTD\tdatabase[2]-uri\tnull\nMTD\tdatabase[3]\t[,, \"no database\", null ]\nMTD\tdatabase[3]-prefix\tnull\nMTD\tdatabase[3]-version\tUnknown\nMTD\tdatabase[3]-uri\tnull"
       ]
@@ -1254,6 +1254,45 @@
             "value_constraint": null
           }
         },
+        "mzTab-profile": {
+          "allow_multiple": false,
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "M",
+                "M+S",
+                "M+F",
+                "M+F+E",
+                "M+S+F+E"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The profile of the mzTab-M file, declaring which tables are present and which validation rule set applies.\nMUST be one of: M (MTD only), M+S (MTD + SML), M+F (MTD + SMF), M+F+E (MTD + SMF + SME) or M+S+F+E (all four tables; the richest profile, corresponding to the structure recommended in mzTab-M 2.0/2.1).\nOPTIONAL; if absent (e.g. legacy mzTab-M 2.0 files, or files written before profiles were introduced), validators MUST infer the profile from the tables present and report it in the validation log. New files SHOULD set this field explicitly.",
+          "examples": [
+            "M+F",
+            "M+S+F+E"
+          ],
+          "ignore": false,
+          "list_concatenation_str": null,
+          "mztab_example": null,
+          "non_indexed_list_value": false,
+          "object_level_value": false,
+          "referenced_field_name": null,
+          "title": "Mztab Profile",
+          "validation_policy": {
+            "enforcement_level": "recommended",
+            "maximum": null,
+            "minimum": null,
+            "pattern": null,
+            "required": null,
+            "value_constraint": null
+          }
+        },
         "title": {
           "allow_multiple": false,
           "anyOf": [
@@ -1504,7 +1543,7 @@
             }
           ],
           "default": null,
-          "description": "The quantification method used in the experiment reported in the file.",
+          "description": "Mandatory when the file contains quantified molecules (an SML or SMF section is present); optional otherwise. The quantification method used in the experiment reported in the file.",
           "ignore": false,
           "list_concatenation_str": null,
           "mztab_example": null,
@@ -1517,7 +1556,7 @@
             "maximum": null,
             "minimum": null,
             "pattern": null,
-            "required": true,
+            "required": null,
             "value_constraint": null
           }
         },
@@ -1914,7 +1953,7 @@
             }
           ],
           "default": null,
-          "description": "Defines what type of units are reported in the small molecule summary quantification / abundance fields",
+          "description": "Mandatory when the Small Molecule (SML) section is present; optional otherwise. Defines what type of units are reported in the small molecule summary quantification / abundance fields",
           "examples": [
             "MTD\tsmall_molecule-quantification_unit\t[MS, MS:1001113, peak area, ]"
           ],
@@ -1930,7 +1969,7 @@
             "maximum": null,
             "minimum": null,
             "pattern": null,
-            "required": true,
+            "required": null,
             "value_constraint": null
           }
         },
@@ -1945,7 +1984,7 @@
             }
           ],
           "default": null,
-          "description": "Defines what type of units are reported in the small molecule feature quantification / abundance fields.",
+          "description": "Mandatory when the Small Molecule Feature (SMF) section is present; optional otherwise. Defines what type of units are reported in the small molecule feature quantification / abundance fields.",
           "examples": [
             "MTD\tsmall_molecule_feature-quantification_unit\t[MS, MS:1001113, peak area, ]"
           ],
@@ -2010,7 +2049,7 @@
             }
           ],
           "default": null,
-          "description": "Specification of databases. (empty): The description of databases used. For cases, where a known database has not been used for identification, a userParam SHOULD be inserted to describe any identification performed. e.g. de novo. If no identification has been performed at all then 'no database' should be inserted followed by null. prefix: The prefix used in the “identifier” column of data tables. For the 'no database' case 'null' must be used. version: The database version is mandatory where identification has been performed. This may be a formal version number e.g. “1.4.1”, a date of access “2016-10-27” (ISO-8601 format) or “Unknown” if there is no suitable version that can be annotated. uri: The URI to the database. For the 'no database' case, 'null' must be reported. ",
+          "description": "Mandatory when identification has been performed (an SME section is present, or summary rows carry identifiers); optional otherwise. Specification of databases. (empty): The description of databases used. For cases, where a known database has not been used for identification, a userParam SHOULD be inserted to describe any identification performed. e.g. de novo. If no identification has been performed at all then 'no database' should be inserted followed by null. prefix: The prefix used in the “identifier” column of data tables. For the 'no database' case 'null' must be used. version: The database version is mandatory where identification has been performed. This may be a formal version number e.g. “1.4.1”, a date of access “2016-10-27” (ISO-8601 format) or “Unknown” if there is no suitable version that can be annotated. uri: The URI to the database. For the 'no database' case, 'null' must be reported. ",
           "examples": [
             "MTD\tdatabase[1]\t[MS, MS:1002992, HMDB, 4.0]",
             "MTD\tdatabase[1]-prefix\tHMDB",
@@ -2028,7 +2067,7 @@
             "maximum": null,
             "minimum": 1,
             "pattern": null,
-            "required": true,
+            "required": null,
             "value_constraint": null
           }
         },
@@ -2046,7 +2085,7 @@
             }
           ],
           "default": null,
-          "description": "Small molecule identification confidence metrics.<br/>Scoring System\n- Use CV parameters numbered `[1-n]`\n- Define score direction (high-to-low or low-to-high)\n- Order by importance for identification ranking\n\nScores determine confidence in molecular identifications",
+          "description": "Mandatory when the Small Molecule Evidence (SME) section is present; optional otherwise. Small molecule identification confidence metrics.<br/>Scoring System\n- Use CV parameters numbered `[1-n]`\n- Define score direction (high-to-low or low-to-high)\n- Order by importance for identification ranking\n\nScores determine confidence in molecular identifications",
           "examples": [
             "MTD\tid_confidence_measure[1]\t[MS,MS:1002890,fragmentation score,]",
             "MTD\tid_confidence_measure[2]\t[MS,MS:1002891,retention time score,]"
@@ -2063,7 +2102,7 @@
             "maximum": null,
             "minimum": 1,
             "pattern": null,
-            "required": true,
+            "required": null,
             "value_constraint": null
           }
         },

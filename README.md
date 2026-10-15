@@ -21,6 +21,8 @@ reporting for metabolomics workflows. With version 2.1, we intend to expand the
 format, to modularize it and support **FAIR** data use cases and integrate
 better with tools.
 
+📖 **Documentation website**: <https://hupo-psi.github.io/mzTab-M/>
+
 > The **mzTab-M 2.1+** development now takes place in this repository (split
 > from the [original mzTab repository](https://github.com/HUPO-PSI/mzTab)).
 
@@ -62,6 +64,8 @@ list](https://lists.cebitec.uni-bielefeld.de/mailman3/postorius/lists/mztabm.ceb
 ### 🔧 Current Version 2.1.0 (in development, 2026):
 
 -   **Specification**:\
+    [HTML](https://hupo-psi.github.io/mzTab-M/mztabm/2.1/developers/specification.html)
+    \|\
     [AsciiDoc](https://github.com/HUPO-PSI/mzTab-M/blob/main/specification_documents/mzTab_format_specification_2_1-M.adoc)
 
 -   **Example files**:\
@@ -73,8 +77,9 @@ list](https://lists.cebitec.uni-bielefeld.de/mailman3/postorius/lists/mztabm.ceb
     [jmzTab-m BioConda Package (and Docker container)](https://bioconda.github.io/recipes/jmztab-m/README.html)
 
 -   **CI Validation Workflow**:\
-    [GitHub Actions YAML](.github/workflows/validate-mztab.yml), using the
-    aforementioned validator.
+    GitHub Actions workflows validating the [mzTab-M 2.0](.github/workflows/validate-mztab-stable.yml)
+    and [mzTab-M 2.1](.github/workflows/validate-mztab-snapshot.yml) example files,
+    using the aforementioned validator.
 
 -   **R Ecosystem Validator**:\
     [reading-mzTab-into-R](https://github.com/michbur/reading-mzTab-into-R/)
@@ -171,9 +176,10 @@ If you use **jmzTab-m**, please cite:
 
 ### JSON Schema - OpenAPI definition
 
-The main specification for mzTab-M is maintained in the form of an OpenAPI 3.1.1
-compatible YAML file `schema/mzTab_m_openapi.yml` You can edit, view and
-validate this file using either the swagger web editor at
+The main specification for mzTab-M is maintained as a JSON Schema (draft 2020-12)
+in `schema/mzTab_2_1-M.json`, with an OpenAPI 3.1.1 wrapper in
+`schema/mzTab_2_1-M_openapi.json` that references it. You can edit, view and
+validate the OpenAPI file using either the swagger web editor at
 <https://editor-next.swagger.io/> or using the docker container (instructions at
 <https://swagger.io/docs/open-source-tools/swagger-editor-next/#docker>):
 
@@ -231,8 +237,8 @@ change:
 
 | Partial | Source |
 |---|---|
-| `docs/mztabm/modules/developers/partials/mzTab_m_schema.adoc` | `schema/mzTab_2_1-M.json` |
-| `docs/mztabm/modules/developers/partials/mzTab_format_specification.adoc` | `specification_documents/mzTab_format_specification_2_1-M.adoc` |
+| `docs/mztabm/modules/developers/partials/mzTab_m_2_1_schema.adoc` | `schema/mzTab_2_1-M.json` |
+| `docs/mztabm/modules/developers/partials/mzTab_format_specification_2_1-M.adoc` | `specification_documents/mzTab_format_specification_2_1-M.adoc` |
 
 The helper script `gen-docs.sh` (repository root) automates both steps.
 
@@ -260,8 +266,8 @@ To regenerate both at once:
 Then stage and commit the updated partials:
 
 ``` bash
-git add docs/mztabm/modules/developers/partials/mzTab_m_schema.adoc \
-        docs/mztabm/modules/developers/partials/mzTab_format_specification.adoc
+git add docs/mztabm/modules/developers/partials/mzTab_m_2_1_schema.adoc \
+        docs/mztabm/modules/developers/partials/mzTab_format_specification_2_1-M.adoc
 git commit -m "docs: regenerate Antora partials"
 git push
 ```
