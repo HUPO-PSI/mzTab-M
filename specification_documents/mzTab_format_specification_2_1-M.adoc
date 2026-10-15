@@ -132,6 +132,9 @@ The specification described in this document has not been developed in isolation
 
 1.  _mzML_ (http://www.psidev.info/mzml). mzML is the PSI standard for capturing mass spectra / peak lists resulting from mass spectrometry in proteomics <<martens-2011, (Martens _et al._ 2011)>>. mzTab files MAY be used in conjunction with mzML, although it will be possible to use mzTab with other formats of mass spectra. This document does not assume familiarity with mzML.
 2.  __ISA-TAB (__http://isa-tools.org/_)._ The ISA framework allows for reporting experimental metadata and study designs in considerable detail, and is already used for describing metabolomics experiments. It is expected that mzTab files may be linked to ISA-TAB formatted files, for cases where a rich experimental design is to be captured. The linkage between mzTab-M and ISA-TAB is further exemplified in section <<referencing-external-resources>>.
+3. _mzQC_ (https://www.psidev.info/mzqc). 
+4. _mzSpecLib_ (https://www.psidev.info/mzspeclib).
+5. _Universal Spectrum Identifier (USI)_ (https://www.psidev.info/usi).
 
 [[relationship-to-mztab-previous]]
 === Relationship to previous mzTab versions
@@ -344,6 +347,73 @@ When referencing from the features (SMF) elements to evidence (SME) elements, it
 [[ambiguity_in_lipidomics]]
 === Ambiguity in lipidomics identification
 The mzTab-M 2.0.0 release is intended to be used for capturing profiling studies from both metabolomics and lipidomics. However, it is acknowledged that representing ambiguity in the identification of lipid molecules, based on the available evidence from MS is potentially more complicated than for small molecules. As such, mzTab-M 2.0.0 SHOULD be used on release for representing lipid-based data, but a working group will continue to improve on the mechanism for representing lipid identification data, for example defining particular CV terms to be used in the appropriate places of the standard. These artefacts will be reported in due course and should plug-in to this version in a backwards-compatible manner.
+
+[[protocol_specific_reporting]]
+=== Protocol specific reporting
+
+In the previous mzTab-M release, only the `sample_processing` element permitted the reporting of sample-specific processing. However, this was insufficient for reporting more structured, protocol-related information, e.g. details about sample collection and chromatography/separation (e.g. column types, solvents and gradient details), as well as data transformation and identification that occur after mass spectrometry acquisition. This approach provides a flexible representation that is compatible with the necessary protocol elements in ISA-Tab, facilitating submission to MetaboLights.
+
+Each `protocol` is represented as a metadata object consisting of a required `name` and `type`, and optional `description` and `parameters` fields. The protocol `type` MUST be represented as a controlled vocabulary parameter whenever an appropriate ontology term exists. If no suitable ontology term is available, the CV term name MAY be provided without an accession. The `parameters` field allows protocol-specific attributes to be reported as a list of CV parameters or user parameters. Protocol parameter values MAY be represented either as plain values or as nested CV parameters. This generic representation avoids defining protocol-specific metadata fields for individual protocol categories (e.g. sample collection, extraction, chromatography, or mass spectrometry), allowing new protocol types to be introduced without requiring changes to the mzTab-M format.
+
+- type [required]: Protocol type represented as a CV term, e.g. `[EFO, EFO:0005518, sample collection protocol, ], [CHMO, CHMO:0000470, mass spectrometry, ]`. The CV term name (e.g. `mass spectrometry`) is required. If the CV term for the protocol does not exist, the CV Term name field MUST be defined, e.g. `[, , data transformation, ]`.
+- name [required]: Protocol name. Multiple instances of protocols can be defined for the same protocol type, therefore names can differ between protocol instances of the same type. For instance, two protocols can exist with the names `Collection 1` and  `Collection 2` for the term `[EFO, EFO:0005518, sample collection protocol, ]`.
+- description [optional]: Free text description.
+- parameters [optional]: Protocol level parameters that will list optional CV terms with values. The value MAY also be a CV term. E.g. `[,,Post Extraction, 400 µL water], [OBI, OBI:0000485, chromatography instrument, [MS, MS:1001763, ACQUITY UPLC H-Class Bio]]`.
+
+Protocols are referenced from assays using a `assay[*]-protocol_refs` metadata field. Multiple assays MAY reference the same protocol definitions, and one assay MAY reference multiple protocol definitions, e.g. `MTD assay[1]-protocol_refs protocol[1] | protocol[2] | protocol[3] | protocol[4] | protocol[5] | protocol[6]`.
+
+In some cases, ms_run level parameters are needed to add additional metadata or override protocol level parameters, which is why the parameters subfield is added to ms_run. Its format and structure is equal to the protocol-parameters., e.g. `MTD ms_run[1]-parameters [, , Scan m/z range, 100-2000]`.
+
+The existing `sample_processing` `metadata` field is superseded by the protocol model. Sample preparation steps that were previously reported as an ordered list in `sample_processing` can instead be represented as parameters of a protocol with an appropriate protocol type (e.g. sample collection protocol or extraction protocol).
+
+Previous `sample_processing` representation:
+
+----
+MTD sample_processing[1] [MSIO, MSIO:0000107, metabolism quenching using precooled 60 percent methanol ammonium bicarbonate buffer,]
+MTD sample_processing[2] [MSIO, MSIO:0000146, centrifugation,]
+MTD sample_processing[3] [MSIO, MSIO:0000141, metabolite extraction,]
+MTD sample_processing[4] [MSIO, MSIO:0000141, silylation,]
+----
+
+Equivalent `protocol` representation:
+
+----
+MTD protocol[1]-name Extraction
+MTD protocol[1]-type [EFO, EFO_0000490, extraction protocol, ]
+MTD protocol[1]-description Samples were quenched, centrifuged, extracted and derivatized prior to LC-MS analysis.
+MTD protocol[1]-parameters [MSIO, MSIO:0000107, metabolism quenching using precooled 60 percent methanol ammonium bicarbonate buffer,] | [MSIO, MSIO:0000146, centrifugation,] | [MSIO, MSIO:0000141, metabolite extraction,] | [MSIO, MSIO:0000141, silylation,]
+----
+
+Full `protocol` example:
+
+----
+MTD protocol[1]-name Extraction
+MTD protocol[1]-type [EFO, EFO_0000490, extraction protocol, ]
+MTD protocol[1]-description Samples were quenched, centrifuged, extracted and derivatized prior to LC-MS analysis.
+MTD protocol[1]-parameters [MSIO, MSIO:0000107, metabolism quenching using precooled 60 percent methanol ammonium bicarbonate buffer,] | [MSIO, MSIO:0000146, centrifugation,] | [MSIO, MSIO:0000141, metabolite extraction,] | [MSIO, MSIO:0000141, silylation,]
+
+MTD protocol[2]-name Chromatography
+MTD protocol[2]-type [CHMO, CHMO:0001000, chromatography, ]
+MTD protocol[2]-description Metabolites were separated by reversed-phase LC prior to mass spectrometry.
+MTD protocol[2]-parameters [OBI, OBI:0000485, chromatography instrument, [MS, MS:1001763, ACQUITY UPLC H-Class Bio]] | [OBI, OBI:0000038, chromatography column, HSS T3 C18 (1.8 μm, 1.0 × 100 mm; Waters)] | [MS, MS:1002270, chromatography separation, [MS, MS:1003582, reversed phase chromatography]]
+
+MTD protocol[3]-name Mass spectrometry
+MTD protocol[3]-type [CHMO, CHMO:0000470, mass spectrometry, ]
+MTD protocol[3]-description Eluting metabolites were analysed by electrospray ionization time-of-flight mass spectrometry.
+MTD protocol[3]-parameters [MS, MS:1000008, ionization type, [MS, MS:1000073, electrospray ionization]] | [MS, MS:1003761, instrument class, [MS, MS:1003951, time-of-flight instrument]]
+
+MTD protocol[4]-name Data transformation
+MTD protocol[4]-type [, , data transformation, ]
+MTD protocol[4]-description Raw vendor files were converted to mzML and centroided prior to data analysis.
+
+MTD protocol[5]-name Metabolite identification
+MTD protocol[5]-type [, , metabolite identification, ]
+MTD protocol[5]-description Metabolites were identified using accurate mass, retention time and reference libraries.
+
+MTD assay[1]-protocol_refs protocol[1] | protocol[2] | protocol[3] | protocol[4] | protocol[5]
+MTD ms_run[1]-parameters [, , Scan m/z range, 100-1000]
+----
+
 
 [[guidelines-for-reporting-results-prior-to-or-with-no-alignment-step-across-features]]
 === Guidelines for reporting results prior to or with no alignment step across features
