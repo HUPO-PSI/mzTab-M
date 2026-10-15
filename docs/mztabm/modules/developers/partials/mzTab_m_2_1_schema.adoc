@@ -601,6 +601,23 @@ MTD	ms_run[1]-hash_method	[MS, MS:1003151, SHA-256, ]
 ----
 |============================================================
 
+[[ms_run1-n-usi_identifier]]
+==== ms_run[1-n]-usi_identifier
+
+[cols="20,80",]
+|============================================================
+|*Description* a|
+An identifier for the MS run based on the Universal Spectrum Identifier (USI) specification. Implied within the USI is an MS run identifier. Every deposited MS run can be referenced with a shortened form: `mzspec:<collection>:<msRun>`. More info on the standard can be found: https://www.psidev.info/usi.
+Since an MS run may be represented in several formats (with potentially slightly different data associated with the spectrum), a format suffix MAY be specified (e.g. `mzspec:<collection>:<msRun>.RAW`) to signify that a specific file type is meant.
+If specified, the format suffix should align with the ms_run[1-n]-format parameter and the ms_run[1-n]-location suffix defined in the metadata section.
+|*Type* |String
+|*Mandatory* |False
+|*Example* a|
+----
+MTD	ms_run[1]-usi_identifier	mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09
+----
+|============================================================
+
 [[ms_run1-n-parameters]]
 ==== ms_run[1-n]-parameters
 
