@@ -302,6 +302,23 @@ The `SME_ID_REF_ambiguity_code` on an SMF row MUST be null whenever that row's `
 [[figure-3]]
 image::img/media/figure3.png[image,width=100%,pdfwidth=100%,scaledwidth=100%, title=" A) The summary level (SML) reports the final assumed identification, allowing for ambiguity by “|” separated results in the relevant columns. B) The feature level (SMF) does not explicitly report identifications but references down to the SME level. Ambiguity is propagated via referencing multiple SME elements (rows) with different identification results. C) One SME element (one row) represents a single possible identification from some input evidence. Multiple identifications from the same input data share the same value for evidence_input_id. Ambiguity is captured by different rows for the same input data."]
 
+[[referencing-query-and-library-spectra]]
+=== Referencing query and library spectra
+
+The spectrum that was used to identify a small molecule (the query spectrum) is reported in the `spectra_ref` column of the SME table, in the format `ms_run[n]:{SPECTRA_REF}` (see <<table-1>>). No additional column is needed for it.
+
+If the identification was obtained by matching against a spectral library, the matched library spectrum MAY be referenced by its https://www.psidev.info/usi[Universal Spectrum Identifier] (USI). The USI SHOULD be reported in an optional column of the SME table (see <<adding-optional-columns>>) named after the PSI-MS term "related spectrum USI" (MS:1003260). The value MUST be a valid USI, or "null" for rows without a library match.
+
+----
+COM Example showing an SME row identified by a spectral library match, with the query spectrum in spectra_ref
+COM and the matched GNPS library spectrum referenced by its USI
+
+…
+SEH SME_ID … spectra_ref … opt_global_cv_MS:1003260_related_spectrum_USI
+SME 1 … ms_run[1]:scan=123 … mzspec:GNPS:GNPS-LIBRARY:accession:CCMSLIB00012558659
+SME 2 … ms_run[1]:scan=456 … null
+----
+
 [[ambiguity_in_identification]]
 === Ambiguity in identification
 It is common in metabolomics and lipidomics for significant ambiguity to remain after data processing in the identification of molecules. In the top level (SML) table, multiple identifiers MAY be provided in several columns: database_identifier, chemical_formula, smiles, inchi, chemical_name and uri. If there is ambiguity in the actual identity of the molecule, multiple identifiers SHOULD be reported separated by the "|" character. The number of elements separated by | characters MUST be identical in all columns where data is reported to emphasize the correspondence across columns.
@@ -348,7 +365,7 @@ COM Example showing how drift time values are reported in an additional column f
 COM MS CV parameter “ion mobility drift time” (MS:1002476)
 
 …
-SFH SMF_ID … opt_ms_run[1]_cv_MS:MS:1002476_ion_mobility_drift_time
+SFH SMF_ID … opt_ms_run[1]_cv_MS:1002476_ion_mobility_drift_time
 SMF 1 … 24.55
 ----
 
