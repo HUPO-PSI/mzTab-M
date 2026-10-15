@@ -389,7 +389,11 @@ a| Parameter
 a| ....
 MTD instrument[1]-name [MS, MS:1000449, LTQ Orbitrap,]
 ....
-a| —
+a| ....
+----
+MTD	instrument[1]-name	[MS, MS:1001911, Q Exactive, ]
+----
+....
 
 |===
 
@@ -419,7 +423,11 @@ MTD instrument[1]-source [MS, MS:1000073, ESI,]
 …
 MTD instrument[2]-source [MS, MS:1000598, ETD,]
 ....
-a| —
+a| ....
+----
+MTD	instrument[1]-source	[MS, MS:1000073, electrospray ionization, ]
+----
+....
 
 |===
 
@@ -449,7 +457,11 @@ MTD instrument[1]-analyzer[1] [MS, MS:1000291, linear ion trap,]
 …
 MTD instrument[2]-analyzer[1] [MS, MS:1000484, orbitrap,]
 ....
-a| —
+a| ....
+----
+MTD	instrument[1]-analyzer[1]	[MS, MS:1000484, orbitrap, ]
+----
+....
 
 |===
 
@@ -479,7 +491,11 @@ MTD instrument[1]-detector [MS, MS:1000253, electron multiplier,]
 …
 MTD instrument[2]-detector [MS, MS:1000348, focal plane collector,]
 ....
-a| —
+a| ....
+----
+MTD	instrument[1]-detector	[MS, MS:1000253, electron multiplier, ]
+----
+....
 
 |===
 
@@ -544,7 +560,11 @@ MTD software[1]-setting Fragment tolerance = 0.1 Da
 …
 MTD software[2]-setting Parent tolerance = 0.5 Da
 ....
-a| —
+a| ....
+----
+MTD	software[1]-setting[1]	Mass tolerance = 5 ppm
+----
+....
 
 |===
 
@@ -608,7 +628,11 @@ MTD contact[1]-name James D. Watson
 …
 MTD contact[2]-name Francis Crick
 ....
-a| —
+a| ....
+----
+MTD	contact[1]-name	Jane D. Doe
+----
+....
 
 |===
 
@@ -637,7 +661,11 @@ a| ....
 MTD contact[1]-affiliation Cambridge University, UK
 MTD contact[2]-affiliation Cambridge University, UK
 ....
-a| —
+a| ....
+----
+MTD	contact[1]-affiliation	University of Example
+----
+....
 
 |===
 
@@ -667,7 +695,11 @@ MTD contact[1]-email watson@cam.ac.uk
 …
 MTD contact[2]-email crick@cam.ac.uk
 ....
-a| —
+a| ....
+----
+MTD	contact[1]-email	jane.doe@example.org
+----
+....
 
 |===
 
@@ -764,7 +796,11 @@ a| ....
 MTD quantification_method [MS, MS:1001834, LC-MS label-free quantitation analysis, ]
 MTD quantification_method [MS, MS:1001838, SRM quantitation analysis, ]
 ....
-a| —
+a| ....
+----
+MTD	quantification_method	[MS, MS:1001834, LC-MS label-free quantitation analysis, ]
+----
+....
 
 |===
 
@@ -847,7 +883,11 @@ MTD sample[1]-species[2] [NCBITaxon, NCBITaxon:39767, Human rhinovirus 11, ]
 MTD sample[2]-species[1] [NCBITaxon, NCBITaxon:9606, Homo sapiens, ]
 MTD sample[2]-species[2] [NCBITaxon, NCBITaxon:12130, Human rhinovirus 2, ]
 ....
-a| —
+a| ....
+----
+MTD	sample[1]-species[1]	[NCBITaxon, NCBITaxon:9606, Homo sapiens, ]
+----
+....
 
 |===
 
@@ -875,7 +915,11 @@ a| *Parameter List*
 a| ....
 MTD sample[1]-tissue[1] [BTO, BTO:0000759, liver, ]
 ....
-a| —
+a| ....
+----
+MTD	sample[1]-tissue[1]	[BTO, BTO:0000131, blood plasma, ]
+----
+....
 
 |===
 
@@ -903,7 +947,11 @@ a| *Parameter List*
 a| ....
 MTD sample[1]-cell_type[1] [CL, CL:0000182, hepatocyte, ]
 ....
-a| —
+a| ....
+----
+MTD	sample[1]-cell_type[1]	[CL, CL:0000084, T cell, ]
+----
+....
 
 |===
 
@@ -932,7 +980,11 @@ a| ....
 MTD sample[1]-disease[1] [DOID, DOID:684, hepatocellular carcinoma, ]
 MTD sample[1]-disease[2] [DOID, DOID:9451, alcoholic fatty liver, ]
 ....
-a| —
+a| ....
+----
+MTD	sample[1]-disease[1]	[DOID, DOID:9352, type 2 diabetes mellitus, ]
+----
+....
 
 |===
 
@@ -961,7 +1013,11 @@ a| ....
 MTD sample[1]-description Hepatocellular carcinoma samples.
 MTD sample[2]-description Healthy control samples.
 ....
-a| —
+a| ....
+----
+MTD	sample[1]-description	Human plasma sample from a healthy control donor
+----
+....
 
 |===
 
@@ -990,7 +1046,11 @@ a| ....
 MTD sample[1]-custom[1] [,,Extraction date, 2011-12-21]
 MTD sample[1]-custom[2] [,,Extraction reason, liver biopsy]
 ....
-a| —
+a| ....
+----
+MTD	sample[1]-custom[1]	Sample preparation batch A
+----
+....
 
 |===
 
@@ -1020,7 +1080,11 @@ MTD ms_run[1]-location file:///C:/path/to/my/file
 …
 MTD ms_run[1]-location ftp://ftp.ebi.ac.uk/path/to/file
 ....
-a| —
+a| ....
+----
+MTD	ms_run[1]-location	file:///data/run01.mzML
+----
+....
 
 |===
 
@@ -1048,7 +1112,11 @@ a| Integer
 a| ....
 MTD ms_run[1]-instrument_ref instrument[1]
 ....
-a| —
+a| ....
+----
+MTD	ms_run[1]-instrument_ref	instrument[1]
+----
+....
 
 |===
 
@@ -1080,7 +1148,11 @@ MTD ms_run[1]-id_format [MS, MS:1000530, mzML unique identifier, ]
 MTD ms_run[2]-format [MS, MS:1001062, Mascot MGF file, ]
 MTD ms_run[2]-id_format [MS, MS:1000774, multiple peak list nativeID format, ]
 ....
-a| —
+a| ....
+----
+MTD	ms_run[1]-format	[MS, MS:1000584, mzML format, ]
+----
+....
 
 |===
 
@@ -1112,7 +1184,11 @@ MTD ms_run[1]-id_format [MS, MS:1000530, mzML unique identifier, ]
 MTD ms_run[2]-format [MS, MS:1001062, Mascot MGF file, ]
 MTD ms_run[2]-id_format [MS, MS:1000774, multiple peak list nativeID format, ]
 ....
-a| —
+a| ....
+----
+MTD	ms_run[1]-id_format	[MS, MS:1001530, mzML unique identifier, ]
+----
+....
 
 |===
 
@@ -1171,7 +1247,11 @@ MTD ms_run[1]-fragmentation_method[1] [MS, MS:1000133, CID, ]
 …
 MTD ms_run[1]-fragmentation_method[2] [MS, MS:1000422, HCD, ]
 ....
-a| —
+a| ....
+----
+MTD	ms_run[1]-fragmentation_method[1]	[MS, MS:1000133, collision-induced dissociation, ]
+----
+....
 
 |===
 
@@ -1204,7 +1284,11 @@ OR (For mixed polarity in one run)
 MTD ms_run[1]-scan_polarity[1] [MS, MS:1000130, positive scan, ]
 MTD ms_run[1]-scan_polarity[2] [MS, MS:1000129, negative scan, ]
 ....
-a| —
+a| ....
+----
+MTD	ms_run[1]-scan_polarity[1]	[MS, MS:1000130, positive scan, ]
+----
+....
 
 |===
 
@@ -1233,7 +1317,11 @@ a| ....
 MTD ms_run[1]-hash_method [MS, MS:1000569, SHA-1, ]
 MTD ms_run[1]-hash de9f2c7fd25e1b3afad3e85a0bd17d9b100db4b3
 ....
-a| —
+a| ....
+----
+MTD	ms_run[1]-hash	sha256:34f2d1f2f0e7c5d8a3b6c4d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7
+----
+....
 
 |===
 
@@ -1262,7 +1350,11 @@ a| ....
 MTD ms_run[1]-hash_method [MS, MS:1000569, SHA-1, ]
 MTD ms_run[1]-hash de9f2c7fd25e1b3afad3e85a0bd17d9b100db4b3
 ....
-a| —
+a| ....
+----
+MTD	ms_run[1]-hash_method	[MS, MS:1003151, SHA-256, ]
+----
+....
 
 |===
 
@@ -1327,7 +1419,11 @@ a| *Parameter List*
 a| ....
 MTD assay[1]-custom[1] [MS, , Assay operator, Fred Blogs]
 ....
-a| —
+a| ....
+----
+MTD	assay[1]-custom[1]	technical replicate 1
+----
+....
 
 |===
 
@@ -1355,7 +1451,11 @@ a| URI
 a| ....
 MTD assay[1]-external_uri https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_Investigation.txt?STUDYASSAY=a_e04_c18pos.txt
 ....
-a| —
+a| ....
+----
+MTD	assay[1]-external_uri	https://example.org/assays/001
+----
+....
 
 |===
 
@@ -1384,7 +1484,11 @@ a| ....
 MTD assay[1]-sample_ref sample[1]
 MTD assay[2]-sample_ref sample[2]
 ....
-a| —
+a| ....
+----
+MTD	assay[1]-sample_ref	sample[1]
+----
+....
 
 |===
 
@@ -1415,7 +1519,11 @@ a| ....
 MTD assay[1]-ms_run_ref ms_run[1]
 MTD assay[1]-ms_run_ref ms_run[2]
 ....
-a| —
+a| ....
+----
+MTD	assay[1]-ms_run_ref	ms_run[1]
+----
+....
 
 |===
 
@@ -1482,7 +1590,11 @@ a| *Integer List*
 a| ....
 MTD study_variable[1]-assay_refs assay[1]\{vbar} assay[2]\{vbar} assay[3]
 ....
-a| —
+a| ....
+----
+MTD	study_variable[1]-assay_refs	assay[1]\{vbar}assay[2]
+----
+....
 
 |===
 
@@ -1510,7 +1622,11 @@ a| String
 a| ....
 MTD study_variable[1]-description Group B (spike-in 0.74 fmol/uL)
 ....
-a| —
+a| ....
+----
+MTD	study_variable[1]-description	Female subjects at day 0
+----
+....
 
 |===
 
@@ -1538,7 +1654,11 @@ a| Parameter
 a| ....
 MTD study_variable-average_function [MS, MS:1002883, median, ]
 ....
-a| —
+a| ....
+----
+MTD	study_variable[1]-average_function	[MS, MS:1002962, mean, ]
+----
+....
 
 |===
 
@@ -1566,7 +1686,11 @@ a| Parameter
 a| ....
 MTD study_variable-variation_function [MS, MS:1002885, standard error, ]
 ....
-a| —
+a| ....
+----
+MTD	study_variable[1]-variation_function	[STATO, STATO:0000237, standard deviation, ]
+----
+....
 
 |===
 
@@ -1652,7 +1776,11 @@ a| String
 a| ....
 MTD cv[1]-label MS
 ....
-a| —
+a| ....
+----
+MTD	cv[1]-label	MS
+----
+....
 
 |===
 
@@ -1680,7 +1808,11 @@ a| String
 a| ....
 MTD cv[1]-full_name PSI-MS controlled vocabulary
 ....
-a| —
+a| ....
+----
+MTD	cv[1]-full_name	PSI-MS controlled vocabulary
+----
+....
 
 |===
 
@@ -1708,7 +1840,11 @@ a| String
 a| ....
 MTD cv[1]-version 4.1.11
 ....
-a| —
+a| ....
+----
+MTD	cv[1]-version	4.1.195
+----
+....
 
 |===
 
@@ -1736,7 +1872,11 @@ a| *URI*
 a| ....
 MTD cv[1]-uri https://purl.obolibrary.org/obo/ms.obo
 ....
-a| —
+a| ....
+----
+MTD	cv[1]-uri	https://github.com/HUPO-PSI/psi-ms-CV
+----
+....
 
 |===
 
@@ -1819,7 +1959,11 @@ MTD database[4]-prefix cust
 OR
 MTD database[5]-prefix null
 ....
-a| —
+a| ....
+----
+MTD	database[1]-prefix	CHEBI
+----
+....
 
 |===
 
@@ -1849,7 +1993,11 @@ MTD database[1]-version 3.6
 OR
 MTD database[2]-version Unknown
 ....
-a| —
+a| ....
+----
+MTD	database[1]-version	2025-04-17
+----
+....
 
 |===
 
@@ -1879,7 +2027,11 @@ MTD database[1]-uri http://www.hmdb.ca/
 OR
 MTD database[5]-uri null
 ....
-a| —
+a| ....
+----
+MTD	database[1]-uri	https://www.ebi.ac.uk/chebi/
+----
+....
 
 |===
 
@@ -2216,7 +2368,11 @@ a| Regex +
 
 | Example
 a| _(not present)_
-a| —
+a| ....
+----
+MTD	contact[1]-orcid	0000-0002-1825-0097
+----
+....
 
 |===
 
@@ -2394,7 +2550,11 @@ a| String
 
 | Example
 a| _(not present)_
-a| —
+a| ....
+----
+MTD	study_variable_group[1]-description	Biological sex of the donor
+----
+....
 
 |===
 
@@ -2418,7 +2578,11 @@ a| Parameter
 
 | Example
 a| _(not present)_
-a| —
+a| ....
+----
+MTD	study_variable_group[1]-type	[STATO, STATO:0000252, categorical variable, ]
+----
+....
 
 |===
 
@@ -2499,7 +2663,11 @@ a| Parameter
 
 | Example
 a| _(not present)_
-a| —
+a| ....
+----
+MTD	study_variable_group[1]-unit	[UO, UO:0000033, day, ]
+----
+....
 
 |===
 
@@ -2551,7 +2719,11 @@ a| String
 
 | Example
 a| _(not present)_
-a| —
+a| ....
+----
+MTD	protocol[1]-name	Sample preparation
+----
+....
 
 |===
 
@@ -2575,7 +2747,11 @@ a| Parameter
 
 | Example
 a| _(not present)_
-a| —
+a| ....
+----
+MTD	protocol[1]-type	[MSIO, MSIO:0000141, metabolite extraction, ]
+----
+....
 
 |===
 
@@ -2599,7 +2775,11 @@ a| String
 
 | Example
 a| _(not present)_
-a| —
+a| ....
+----
+MTD	protocol[1]-description	Proteins were precipitated with cold methanol and the supernatant was collected.
+----
+....
 
 |===
 
@@ -2623,7 +2803,11 @@ a| Parameter List
 
 | Example
 a| _(not present)_
-a| —
+a| ....
+----
+MTD	protocol[1]-parameters	[, , solvent composition, methanol:water 8:2]
+----
+....
 
 |===
 
@@ -2918,8 +3102,8 @@ SML 3 … http://identifiers.org/hmdb/HMDB0001847 …
 a| ....
 ----
 SMH	...	uri	...
-SML	...	http://www.genome.jp/dbget-bin/www_bget?cpd:C00031	...
-SML	...	http://www.hmdb.ca/metabolites/HMDB0001847	...
+SML	...	https://www.genome.jp/dbget-bin/www_bget?cpd:C00031	...
+SML	...	https://www.hmdb.ca/metabolites/HMDB0001847	...
 ----
 ....
 
@@ -4031,7 +4215,7 @@ SME 1 … http://www.hmdb.ca/metabolites/HMDB00054
 a| ....
 ----
 SEH	...	uri	...
-SME	...	http://www.hmdb.ca/metabolites/HMDB00054	...
+SME	...	https://www.hmdb.ca/metabolites/HMDB00054	...
 ----
 ....
 
