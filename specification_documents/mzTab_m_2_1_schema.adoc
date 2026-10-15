@@ -1,4 +1,4 @@
-== Field Reference
+== [[field-reference]]Field Reference
 
 This document provides a reference for all fields defined in the mzTab-M format, organised by section and ordered by mzTab-M section hierarchy. Each field entry includes a description, type, mandatory status, and example usage.
 
@@ -24,7 +24,7 @@ Sections that ARE present MUST follow the table order MTD -> SML -> SMF -> SME, 
 [[metadata-section]]
 === Metadata Section
 
-The metadata section provides additional information about the dataset(s) reported in the mzTab file. All fields in the metadata section are optional apart from those noted as mandatory. The fields in the metadata section MUST be reported in the order listed below. The field name and value MUST be separated by a tab character.
+The metadata section provides additional information about the dataset(s) reported in the mzTab file. All fields in the metadata section are optional apart from those noted as mandatory; fields marked as conditional are mandatory only in some profiles. The fields in the metadata section MUST be reported in the order listed below. The field name and value MUST be separated by a tab character.
 
 [[mztab-version]]
 ==== mzTab-version
@@ -133,7 +133,7 @@ MTD	description	Analysis of lipid profiles in brain tissue samples examining the
 |============================================================
 
 [[sample_processing1-n]]
-==== sample_processing[1-n]
+==== sample_processing[n]
 
 [cols="20,80",]
 |============================================================
@@ -149,10 +149,12 @@ MTD	sample_processing[4]	[MSIO, MSIO:0000141, silylation,]
 ----
 |============================================================
 
-The name, source, analyzer and detector of the instruments used in the experiment. Multiple instruments are numbered [1-n].
+The name, source, analyzer and detector of the instruments used in the experiment. Multiple instruments are numbered [1], [2], ....
+
+`instrument[n]` is optional and MAY be reported any number of times.
 
 [[instrument1-n-name]]
-==== instrument[1-n]-name
+==== instrument[n]-name
 
 [cols="20,80",]
 |============================================================
@@ -162,7 +164,7 @@ The name, source, analyzer and detector of the instruments used in the experimen
 |============================================================
 
 [[instrument1-n-source]]
-==== instrument[1-n]-source
+==== instrument[n]-source
 
 [cols="20,80",]
 |============================================================
@@ -172,7 +174,7 @@ The name, source, analyzer and detector of the instruments used in the experimen
 |============================================================
 
 [[instrument1-n-analyzer1-n]]
-==== instrument[1-n]-analyzer[1-n]
+==== instrument[n]-analyzer[n]
 
 [cols="20,80",]
 |============================================================
@@ -182,7 +184,7 @@ The name, source, analyzer and detector of the instruments used in the experimen
 |============================================================
 
 [[instrument1-n-detector]]
-==== instrument[1-n]-detector
+==== instrument[n]-detector
 
 [cols="20,80",]
 |============================================================
@@ -192,13 +194,13 @@ The name, source, analyzer and detector of the instruments used in the experimen
 |============================================================
 
 [[software1-n]]
-==== software[1-n]
+==== software[n]
 
 [cols="20,80",]
 |============================================================
 |*Description* |The software utilized.
 |*Type* |Parameter
-|*Mandatory* |False
+|*Mandatory* |True
 |*Example* a|
 ----
 MTD	software[1]	[MS, MS:1002879, Progenesis QI, 3.0]
@@ -209,7 +211,7 @@ MTD	software[2]-setting	Parent tolerance = 0.5 Da
 |============================================================
 
 [[software1-n-setting1-n]]
-==== software[1-n]-setting[1-n]
+==== software[n]-setting[n]
 
 [cols="20,80",]
 |============================================================
@@ -219,13 +221,13 @@ MTD	software[2]-setting	Parent tolerance = 0.5 Da
 |============================================================
 
 [[publication1-n]]
-==== publication[1-n]
+==== publication[n]
 
 [cols="20,80",]
 |============================================================
 |*Description* |The publication item ids referenced by this publication.
 |*Type* |String List
-|*Mandatory* |True
+|*Mandatory* |False
 |*Example* a|
 ----
 MTD	publication[1]	pubmed:21063943\|doi:10.1007/978-1-60761-987-1_6
@@ -235,8 +237,10 @@ MTD	publication[2]	pubmed:20615486\|doi:10.1016/j.jprot.2010.06.008
 
 The contact’s name, affiliation and e-mail. Several contacts can be given by indicating the number in the square brackets after "contact". A contact has to be supplied in the format [first name] [initials] [last name].
 
+`contact[n]` is optional and MAY be reported any number of times.
+
 [[contact1-n-name]]
-==== contact[1-n]-name
+==== contact[n]-name
 
 [cols="20,80",]
 |============================================================
@@ -246,7 +250,7 @@ The contact’s name, affiliation and e-mail. Several contacts can be given by i
 |============================================================
 
 [[contact1-n-affiliation]]
-==== contact[1-n]-affiliation
+==== contact[n]-affiliation
 
 [cols="20,80",]
 |============================================================
@@ -256,7 +260,7 @@ The contact’s name, affiliation and e-mail. Several contacts can be given by i
 |============================================================
 
 [[contact1-n-email]]
-==== contact[1-n]-email
+==== contact[n]-email
 
 [cols="20,80",]
 |============================================================
@@ -266,7 +270,7 @@ The contact’s name, affiliation and e-mail. Several contacts can be given by i
 |============================================================
 
 [[contact1-n-orcid]]
-==== contact[1-n]-orcid
+==== contact[n]-orcid
 
 [cols="20,80",]
 |============================================================
@@ -279,7 +283,7 @@ The contact’s name, affiliation and e-mail. Several contacts can be given by i
 |============================================================
 
 [[uri1-n]]
-==== uri[1-n]
+==== uri[n]
 
 [cols="20,80",]
 |============================================================
@@ -295,7 +299,7 @@ MTD	external_study_uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_In
 |============================================================
 
 [[external_study_uri1-n]]
-==== external_study_uri[1-n]
+==== external_study_uri[n]
 
 [cols="20,80",]
 |============================================================
@@ -317,11 +321,11 @@ MTD	external_study_uri[1]	https://www.ebi.ac.uk/metabolights/MTBLS517/files/i_In
 |============================================================
 |*Description* |Mandatory when the file contains quantified molecules (an SML or SMF section is present); optional otherwise. The quantification method used in the experiment reported in the file.
 |*Type* |Parameter
-|*Mandatory* |False
+|*Mandatory* |Conditional, depends on the profile (see Profiles)
 |============================================================
 
 [[sample1-n]]
-==== sample[1-n]
+==== sample[n]
 
 [cols="20,80",]
 |============================================================
@@ -349,7 +353,7 @@ MTD	sample[2]-description	Healthy control samples.
 |============================================================
 
 [[sample1-n-species1-n]]
-==== sample[1-n]-species[1-n]
+==== sample[n]-species[n]
 
 [cols="20,80",]
 |============================================================
@@ -359,7 +363,7 @@ MTD	sample[2]-description	Healthy control samples.
 |============================================================
 
 [[sample1-n-tissue1-n]]
-==== sample[1-n]-tissue[1-n]
+==== sample[n]-tissue[n]
 
 [cols="20,80",]
 |============================================================
@@ -369,7 +373,7 @@ MTD	sample[2]-description	Healthy control samples.
 |============================================================
 
 [[sample1-n-cell_type1-n]]
-==== sample[1-n]-cell_type[1-n]
+==== sample[n]-cell_type[n]
 
 [cols="20,80",]
 |============================================================
@@ -379,7 +383,7 @@ MTD	sample[2]-description	Healthy control samples.
 |============================================================
 
 [[sample1-n-disease1-n]]
-==== sample[1-n]-disease[1-n]
+==== sample[n]-disease[n]
 
 [cols="20,80",]
 |============================================================
@@ -389,7 +393,7 @@ MTD	sample[2]-description	Healthy control samples.
 |============================================================
 
 [[sample1-n-description]]
-==== sample[1-n]-description
+==== sample[n]-description
 
 [cols="20,80",]
 |============================================================
@@ -399,7 +403,7 @@ MTD	sample[2]-description	Healthy control samples.
 |============================================================
 
 [[sample1-n-custom1-n]]
-==== sample[1-n]-custom[1-n]
+==== sample[n]-custom[n]
 
 [cols="20,80",]
 |============================================================
@@ -409,17 +413,19 @@ MTD	sample[2]-description	Healthy control samples.
 |============================================================
 
 Specification of ms_run.
-location: Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the [1-n] cardinality is referenced elsewhere. If pre-fractionation has been performed, then [1-n] ms_runs SHOULD be created per assay.
+location: Location of the external data file e.g. raw files on which analysis has been performed. If the actual location of the MS run is unknown, a “null” MUST be used as a place holder value, since the ms_run index is referenced elsewhere. If pre-fractionation has been performed, then one or more ms_runs SHOULD be created per assay.
 instrument_ref: If different instruments are used in different runs, instrument_ref can be used to link a specific instrument to a specific run.
-format: Parameter specifying the data format of the external MS data file. If ms_run[1-n]-format is present, ms_run[1-n]-id_format SHOULD also be present, following the parameters specified in Table 1.
-id_format: Parameter specifying the id format used in the external data file. If ms_run[1-n]-id_format is present, ms_run[1-n]-format SHOULD also be present.
+format: Parameter specifying the data format of the external MS data file. If ms_run[n]-format is present, ms_run[n]-id_format SHOULD also be present, following the parameters specified in Table 1.
+id_format: Parameter specifying the id format used in the external data file. If ms_run[n]-id_format is present, ms_run[n]-format SHOULD also be present.
 fragmentation_method: The type(s) of fragmentation used in a given ms run.
 scan_polarity: The polarity mode of a given run. Usually only one value SHOULD be given here except for the case of mixed polarity runs.
-hash: Hash value of the corresponding external MS data file defined in ms_run[1-n]-location. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.
-hash_method: A parameter specifying the hash methods used to generate the String in ms_run[1-n]-hash. Specifics of the hash method used MAY follow the definitions of the mzML format. If ms_run[1-n]-hash is present, ms_run[1-n]-hash_method SHOULD also be present.
+hash: Hash value of the corresponding external MS data file defined in ms_run[n]-location. If ms_run[n]-hash is present, ms_run[n]-hash_method SHOULD also be present.
+hash_method: A parameter specifying the hash methods used to generate the String in ms_run[n]-hash. Specifics of the hash method used MAY follow the definitions of the mzML format. If ms_run[n]-hash is present, ms_run[n]-hash_method SHOULD also be present.
+
+At least one `ms_run[n]` MUST be reported.
 
 [[ms_run1-n-location]]
-==== ms_run[1-n]-location
+==== ms_run[n]-location
 
 [cols="20,80",]
 |============================================================
@@ -429,7 +435,7 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |============================================================
 
 [[ms_run1-n-instrument_ref]]
-==== ms_run[1-n]-instrument_ref
+==== ms_run[n]-instrument_ref
 
 [cols="20,80",]
 |============================================================
@@ -439,7 +445,7 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |============================================================
 
 [[ms_run1-n-format]]
-==== ms_run[1-n]-format
+==== ms_run[n]-format
 
 [cols="20,80",]
 |============================================================
@@ -449,7 +455,7 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |============================================================
 
 [[ms_run1-n-id_format]]
-==== ms_run[1-n]-id_format
+==== ms_run[n]-id_format
 
 [cols="20,80",]
 |============================================================
@@ -459,7 +465,7 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |============================================================
 
 [[ms_run1-n-fragmentation_method1-n]]
-==== ms_run[1-n]-fragmentation_method[1-n]
+==== ms_run[n]-fragmentation_method[n]
 
 [cols="20,80",]
 |============================================================
@@ -469,7 +475,7 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |============================================================
 
 [[ms_run1-n-scan_polarity1-n]]
-==== ms_run[1-n]-scan_polarity[1-n]
+==== ms_run[n]-scan_polarity[n]
 
 [cols="20,80",]
 |============================================================
@@ -479,7 +485,7 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |============================================================
 
 [[ms_run1-n-hash]]
-==== ms_run[1-n]-hash
+==== ms_run[n]-hash
 
 [cols="20,80",]
 |============================================================
@@ -489,7 +495,7 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |============================================================
 
 [[ms_run1-n-hash_method]]
-==== ms_run[1-n]-hash_method
+==== ms_run[n]-hash_method
 
 [cols="20,80",]
 |============================================================
@@ -499,7 +505,7 @@ hash_method: A parameter specifying the hash methods used to generate the String
 |============================================================
 
 [[ms_run1-n-parameters]]
-==== ms_run[1-n]-parameters
+==== ms_run[n]-parameters
 
 [cols="20,80",]
 |============================================================
@@ -513,7 +519,7 @@ MTD	ms_run[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, L
 |============================================================
 
 [[assay1-n]]
-==== assay[1-n]
+==== assay[n]
 
 [cols="20,80",]
 |============================================================
@@ -531,7 +537,7 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |============================================================
 
 [[assay1-n-custom1-n]]
-==== assay[1-n]-custom[1-n]
+==== assay[n]-custom[n]
 
 [cols="20,80",]
 |============================================================
@@ -541,7 +547,7 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |============================================================
 
 [[assay1-n-external_uri]]
-==== assay[1-n]-external_uri
+==== assay[n]-external_uri
 
 [cols="20,80",]
 |============================================================
@@ -551,7 +557,7 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |============================================================
 
 [[assay1-n-sample_ref]]
-==== assay[1-n]-sample_ref
+==== assay[n]-sample_ref
 
 [cols="20,80",]
 |============================================================
@@ -561,7 +567,7 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |============================================================
 
 [[assay1-n-ms_run_ref]]
-==== assay[1-n]-ms_run_ref
+==== assay[n]-ms_run_ref
 
 [cols="20,80",]
 |============================================================
@@ -571,7 +577,7 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |============================================================
 
 [[assay1-n-protocol_refs]]
-==== assay[1-n]-protocol_refs
+==== assay[n]-protocol_refs
 
 [cols="20,80",]
 |============================================================
@@ -585,7 +591,7 @@ MTD	assay[1]-protocol_ref	protocol[1]\| protocol[2]
 |============================================================
 
 [[assay1-n-parameters]]
-==== assay[1-n]-parameters
+==== assay[n]-parameters
 
 [cols="20,80",]
 |============================================================
@@ -599,7 +605,7 @@ MTD	assay[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, LT
 |============================================================
 
 [[study_variable1-n]]
-==== study_variable[1-n]
+==== study_variable[n]
 
 [cols="20,80",]
 |============================================================
@@ -618,7 +624,7 @@ MTD	study_variable[2]	1 minute 0.5mg rapamycin
 |============================================================
 
 [[study_variable1-n-assay_refs]]
-==== study_variable[1-n]-assay_refs
+==== study_variable[n]-assay_refs
 
 [cols="20,80",]
 |============================================================
@@ -628,7 +634,7 @@ MTD	study_variable[2]	1 minute 0.5mg rapamycin
 |============================================================
 
 [[study_variable1-n-ms_run_refs]]
-==== study_variable[1-n]-ms_run_refs
+==== study_variable[n]-ms_run_refs
 
 [cols="20,80",]
 |============================================================
@@ -642,7 +648,7 @@ MTD	study_variable[1]-ms_run_ref	ms_run[1]\| ms_run[2]
 |============================================================
 
 [[study_variable1-n-description]]
-==== study_variable[1-n]-description
+==== study_variable[n]-description
 
 [cols="20,80",]
 |============================================================
@@ -652,7 +658,7 @@ MTD	study_variable[1]-ms_run_ref	ms_run[1]\| ms_run[2]
 |============================================================
 
 [[study_variable1-n-average_function]]
-==== study_variable[1-n]-average_function
+==== study_variable[n]-average_function
 
 [cols="20,80",]
 |============================================================
@@ -662,7 +668,7 @@ MTD	study_variable[1]-ms_run_ref	ms_run[1]\| ms_run[2]
 |============================================================
 
 [[study_variable1-n-variation_function]]
-==== study_variable[1-n]-variation_function
+==== study_variable[n]-variation_function
 
 [cols="20,80",]
 |============================================================
@@ -672,7 +678,7 @@ MTD	study_variable[1]-ms_run_ref	ms_run[1]\| ms_run[2]
 |============================================================
 
 [[study_variable_group1-n]]
-==== study_variable_group[1-n]
+==== study_variable_group[n]
 
 [cols="20,80",]
 |============================================================
@@ -700,7 +706,7 @@ MTD	study_variable[2]-assay_refs	assay[4]\| assay[5]\| assay[6]
 |============================================================
 
 [[study_variable_group1-n-description]]
-==== study_variable_group[1-n]-description
+==== study_variable_group[n]-description
 
 [cols="20,80",]
 |============================================================
@@ -710,7 +716,7 @@ MTD	study_variable[2]-assay_refs	assay[4]\| assay[5]\| assay[6]
 |============================================================
 
 [[study_variable_group1-n-type]]
-==== study_variable_group[1-n]-type
+==== study_variable_group[n]-type
 
 [cols="20,80",]
 |============================================================
@@ -720,7 +726,7 @@ MTD	study_variable[2]-assay_refs	assay[4]\| assay[5]\| assay[6]
 |============================================================
 
 [[study_variable_group1-n-datatype]]
-==== study_variable_group[1-n]-datatype
+==== study_variable_group[n]-datatype
 
 [cols="20,80",]
 |============================================================
@@ -769,7 +775,7 @@ MTD	study_variable[3]	[NCIT, NCIT:C20197, Male, ]
 |============================================================
 
 [[study_variable_group1-n-unit]]
-==== study_variable_group[1-n]-unit
+==== study_variable_group[n]-unit
 
 [cols="20,80",]
 |============================================================
@@ -779,7 +785,7 @@ MTD	study_variable[3]	[NCIT, NCIT:C20197, Male, ]
 |============================================================
 
 [[study_variable_group1-n-study_variable_refs]]
-==== study_variable_group[1-n]-study_variable_refs
+==== study_variable_group[n]-study_variable_refs
 
 [cols="20,80",]
 |============================================================
@@ -794,8 +800,10 @@ MTD	study_variable_group[1]-study_variable_refs	study_variable[1]\| study_variab
 
 A protocol describing one or more steps of an experimental procedure, such as sample preparation, data acquisition or data processing. Protocols are referenced from Assay objects. Added in mzTab-M 2.1.
 
+`protocol[n]` is optional and MAY be reported any number of times.
+
 [[protocol1-n-name]]
-==== protocol[1-n]-name
+==== protocol[n]-name
 
 [cols="20,80",]
 |============================================================
@@ -805,7 +813,7 @@ A protocol describing one or more steps of an experimental procedure, such as sa
 |============================================================
 
 [[protocol1-n-type]]
-==== protocol[1-n]-type
+==== protocol[n]-type
 
 [cols="20,80",]
 |============================================================
@@ -815,7 +823,7 @@ A protocol describing one or more steps of an experimental procedure, such as sa
 |============================================================
 
 [[protocol1-n-description]]
-==== protocol[1-n]-description
+==== protocol[n]-description
 
 [cols="20,80",]
 |============================================================
@@ -825,7 +833,7 @@ A protocol describing one or more steps of an experimental procedure, such as sa
 |============================================================
 
 [[protocol1-n-parameters]]
-==== protocol[1-n]-parameters
+==== protocol[n]-parameters
 
 [cols="20,80",]
 |============================================================
@@ -835,7 +843,7 @@ A protocol describing one or more steps of an experimental procedure, such as sa
 |============================================================
 
 [[custom1-n]]
-==== custom[1-n]
+==== custom[n]
 
 [cols="20,80",]
 |============================================================
@@ -854,8 +862,10 @@ full_name: A string describing the full names of the controlled vocabularies/ont
 version: A string describing the version of the controlled vocabularies/ontologies used in the mzTab file.
 uri: A string containing the URIs of the controlled vocabularies/ontologies used in the mzTab file.
 
+At least one `cv[n]` MUST be reported.
+
 [[cv1-n-label]]
-==== cv[1-n]-label
+==== cv[n]-label
 
 [cols="20,80",]
 |============================================================
@@ -865,7 +875,7 @@ uri: A string containing the URIs of the controlled vocabularies/ontologies used
 |============================================================
 
 [[cv1-n-full_name]]
-==== cv[1-n]-full_name
+==== cv[n]-full_name
 
 [cols="20,80",]
 |============================================================
@@ -875,7 +885,7 @@ uri: A string containing the URIs of the controlled vocabularies/ontologies used
 |============================================================
 
 [[cv1-n-version]]
-==== cv[1-n]-version
+==== cv[n]-version
 
 [cols="20,80",]
 |============================================================
@@ -885,7 +895,7 @@ uri: A string containing the URIs of the controlled vocabularies/ontologies used
 |============================================================
 
 [[cv1-n-uri]]
-==== cv[1-n]-uri
+==== cv[n]-uri
 
 [cols="20,80",]
 |============================================================
@@ -895,13 +905,13 @@ uri: A string containing the URIs of the controlled vocabularies/ontologies used
 |============================================================
 
 [[database1-n]]
-==== database[1-n]
+==== database[n]
 
 [cols="20,80",]
 |============================================================
 |*Description* |The database name.
 |*Type* |Database List
-|*Mandatory* |True
+|*Mandatory* |Conditional, depends on the profile (see Profiles)
 |*Example* a|
 ----
 MTD	database[1]	[MIRIAM, MIR:00100079, HMDB, ]
@@ -920,7 +930,7 @@ MTD	database[3]-uri	null
 |============================================================
 
 [[database1-n-prefix]]
-==== database[1-n]-prefix
+==== database[n]-prefix
 
 [cols="20,80",]
 |============================================================
@@ -930,7 +940,7 @@ MTD	database[3]-uri	null
 |============================================================
 
 [[database1-n-version]]
-==== database[1-n]-version
+==== database[n]-version
 
 [cols="20,80",]
 |============================================================
@@ -940,7 +950,7 @@ MTD	database[3]-uri	null
 |============================================================
 
 [[database1-n-uri]]
-==== database[1-n]-uri
+==== database[n]-uri
 
 [cols="20,80",]
 |============================================================
@@ -950,7 +960,7 @@ MTD	database[3]-uri	null
 |============================================================
 
 [[derivatization_agent1-n]]
-==== derivatization_agent[1-n]
+==== derivatization_agent[n]
 
 [cols="20,80",]
 |============================================================
@@ -970,7 +980,7 @@ MTD	derivatization_agent[1]	[XLMOD, XLMOD:07014, N-methyl-N-t-butyldimethylsilyl
 |============================================================
 |*Description* |Mandatory when the Small Molecule (SML) section is present; optional otherwise. Defines what type of units are reported in the small molecule summary quantification / abundance fields
 |*Type* |Parameter
-|*Mandatory* |False
+|*Mandatory* |Conditional, depends on the profile (see Profiles)
 |*Example* a|
 ----
 MTD	small_molecule-quantification_unit	[MS, MS:1001113, peak area, ]
@@ -984,7 +994,7 @@ MTD	small_molecule-quantification_unit	[MS, MS:1001113, peak area, ]
 |============================================================
 |*Description* |Mandatory when the Small Molecule Feature (SMF) section is present; optional otherwise. Defines what type of units are reported in the small molecule feature quantification / abundance fields.
 |*Type* |Parameter
-|*Mandatory* |False
+|*Mandatory* |Conditional, depends on the profile (see Profiles)
 |*Example* a|
 ----
 MTD	small_molecule_feature-quantification_unit	[MS, MS:1001113, peak area, ]
@@ -1006,19 +1016,19 @@ MTD	small_molecule-identification_reliability	[MS, MS:1000932, identification re
 |============================================================
 
 [[id_confidence_measure1-n]]
-==== id_confidence_measure[1-n]
+==== id_confidence_measure[n]
 
 [cols="20,80",]
 |============================================================
 |*Description* a|
 Mandatory when the Small Molecule Evidence (SME) section is present; optional otherwise. Small molecule identification confidence metrics.<br/>Scoring System
-- Use CV parameters numbered `[1-n]`
+- Use CV parameters numbered `[1]`, `[2]`, ...
 - Define score direction (high-to-low or low-to-high)
 - Order by importance for identification ranking
 
 Scores determine confidence in molecular identifications
 |*Type* |Parameter List
-|*Mandatory* |False
+|*Mandatory* |Conditional, depends on the profile (see Profiles)
 |*Example* a|
 ----
 MTD	id_confidence_measure[1]	[MS,MS:1002890,fragmentation score,]
@@ -1361,7 +1371,7 @@ SML	...	0.3	...
 
 [cols="20,80",]
 |============================================================
-|*Description* |The small molecule’s abundance in all the study variables described in the metadata section (study_variable[1-n]_average_function), calculated using the method as described in the Metadata section (default = arithmetic mean across assays). Null or zero values may be reported as appropriate. "null" SHOULD be used to report missing quantities, while zero SHOULD be used to indicate a present but not reliably quantifiable value (e.g. below a minimum noise threshold).
+|*Description* |The small molecule’s abundance in all the study variables described in the metadata section (study_variable[n]_average_function), calculated using the method as described in the Metadata section (default = arithmetic mean across assays). Null or zero values may be reported as appropriate. "null" SHOULD be used to report missing quantities, while zero SHOULD be used to indicate a present but not reliably quantifiable value (e.g. below a minimum noise threshold).
 |*Type* |Double List
 |*Mandatory* |False
 |*Is Nullable:* |*TRUE*
@@ -1377,7 +1387,7 @@ SML	...	0.3	...
 
 [cols="20,80",]
 |============================================================
-|*Description* |TA measure of the variability of the study variable abundance measurement, calculated using the method as described in the metadata section (study_variable[1-n]_average_function), with a default = arithmethic co-efficient of variation of the small molecule’s abundance in the given study variable.
+|*Description* |TA measure of the variability of the study variable abundance measurement, calculated using the method as described in the metadata section (study_variable[n]_average_function), with a default = arithmethic co-efficient of variation of the small molecule’s abundance in the given study variable.
 |*Type* |Double List
 |*Mandatory* |False
 |*Is Nullable:* |*TRUE*
@@ -1655,7 +1665,7 @@ SME	...	ms_run[1]:mass=278.65;rt=376.5	...
 [cols="20,80",]
 |============================================================
 |*Description* a|
-The putative identification for the small molecule sourced from an external database, using the same prefix specified in database[1-n]-prefix.
+The putative identification for the small molecule sourced from an external database, using the same prefix specified in database[n]-prefix.
 
 This could include additionally a chemical class or an identifier to a spectral library entity, even if its actual identity is unknown.
 
@@ -1847,7 +1857,7 @@ SME	...	1234.71	...
 [cols="20,80",]
 |============================================================
 |*Description* a|
-Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a \| delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.
+Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a \| delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.
 
 If a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.
 |*Type* |String List
@@ -1897,7 +1907,7 @@ SME	...	[MS, MS:1000511, ms level, 2]	...
 
 [cols="20,80",]
 |============================================================
-|*Description* |Any statistical value or score for the identification. The metadata section reports the type of score used, as id_confidence_measure[1-n] of type Param.
+|*Description* |Any statistical value or score for the identification. The metadata section reports the type of score used, as id_confidence_measure[n] of type Param.
 |*Type* |Double List
 |*Mandatory* |False
 |*Is Nullable:* |*TRUE*

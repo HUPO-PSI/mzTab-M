@@ -44,7 +44,7 @@ OPTIONAL; if absent (e.g. legacy mzTab-M 2.0 files, or files written before prof
 | False
 | —
 
-| `contact[1-n]-orcid`
+| `contact[n]-orcid`
 a| The contact's orcid id, without https prefix.
 | Regex +
 ---- +
@@ -53,49 +53,49 @@ a| The contact's orcid id, without https prefix.
 | False
 | —
 
-| `ms_run[1-n]-parameters`
+| `ms_run[n]-parameters`
 a| Additional parameters of the assay, separated by bars.
 | Parameter List
 | False
 | —
 
-| `assay[1-n]-protocol_refs`
+| `assay[n]-protocol_refs`
 a| The protocol(s) referenced by this assay.
 | Integer List
 | False
 | —
 
-| `assay[1-n]-parameters`
+| `assay[n]-parameters`
 a| Additional parameters of the assay, separated by bars.
 | Parameter List
 | False
 | —
 
-| `study_variable[1-n]-ms_run_refs`
+| `study_variable[n]-ms_run_refs`
 a| The ms run(s) referenced by this study variable.
 | Integer List
 | False
 | —
 
-| `study_variable_group[1-n]`
+| `study_variable_group[n]`
 a| The study variable group name.
 | Parameter
 | *True*
 | —
 
-| `study_variable_group[1-n]-description`
+| `study_variable_group[n]-description`
 a| Description of the study variable group.
 | String
 | False
 | —
 
-| `study_variable_group[1-n]-type`
+| `study_variable_group[n]-type`
 a| The study variable group type, as defined by the parameter.
 | Parameter
 | False
 | —
 
-| `study_variable_group[1-n]-datatype`
+| `study_variable_group[n]-datatype`
 a| The datatype of the group variable, which determines how they can be encoded and parsed in mzTab-M files, and how the values could be handled in programming languages. +
  +
 Producers of mzTab-M 2.1.0 SHOULD provide a `datatype` for each `study_variable_group` to simplify interpretation by downstream consumers of the format. The field is not mandatory, but its presence removes ambiguity about how the associated values are encoded and should be parsed. +
@@ -119,37 +119,37 @@ Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type in
 | False
 | —
 
-| `study_variable_group[1-n]-unit`
+| `study_variable_group[n]-unit`
 a| The study variable group unit, as defined by the parameter.
 | Parameter
 | False
 | —
 
-| `study_variable_group[1-n]-study_variable_refs`
+| `study_variable_group[n]-study_variable_refs`
 a| Bar-separated references to the study variables that belong to this study variable group. This is the sole link between study variables and their group: each study variable MUST be referenced by exactly one study variable group.
 | Integer List
 | False
 | —
 
-| `protocol[1-n]-name`
+| `protocol[n]-name`
 a| The protocol name.
 | String
 | *True*
 | —
 
-| `protocol[1-n]-type`
+| `protocol[n]-type`
 a| The protocol type, as defined by the parameter.
 | Parameter
 | *True*
 | —
 
-| `protocol[1-n]-description`
+| `protocol[n]-description`
 a| Description of the protocol.
 | String
 | False
 | —
 
-| `protocol[1-n]-parameters`
+| `protocol[n]-parameters`
 a| The protocol parameters.
 | Parameter List
 | False
@@ -499,7 +499,7 @@ a| —
 
 ==== `software[1-n]`
 
-NOTE: ⚠️ Changed fields: Description, Mandatory, Example
+NOTE: ⚠️ Changed fields: Description, Example
 
 [cols="15,~,~",options="header"]
 |===
@@ -513,7 +513,7 @@ a| *The software utilized.*
 a| Parameter
 a| Parameter
 
-| Mandatory | *True* | *False*
+| Mandatory | True | True
 
 | Nullable | — | —
 
@@ -564,7 +564,7 @@ a| —
 
 ==== `publication[1-n]`
 
-NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
+NOTE: ⚠️ Changed fields: Description, Type, Example
 
 [cols="15,~,~",options="header"]
 |===
@@ -578,7 +578,7 @@ a| *The publication item ids referenced by this publication.*
 a| *String*
 a| *String List*
 
-| Mandatory | *False* | *True*
+| Mandatory | False | False
 
 | Nullable | — | —
 
@@ -769,7 +769,7 @@ a| *Mandatory when the file contains quantified molecules (an SML or SMF section
 a| Parameter
 a| Parameter
 
-| Mandatory | *True* | *False*
+| Mandatory | *True* | *Conditional, depends on the profile (see Profiles)*
 
 | Nullable | — | —
 
@@ -1756,7 +1756,7 @@ a| —
 
 ==== `database[1-n]`
 
-NOTE: ⚠️ Changed fields: Description, Type, Example
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
 
 [cols="15,~,~",options="header"]
 |===
@@ -1772,7 +1772,7 @@ a| *The database name.*
 a| *Param*
 a| *Database List*
 
-| Mandatory | True | True
+| Mandatory | *True* | *Conditional, depends on the profile (see Profiles)*
 
 | Nullable | — | —
 
@@ -1945,7 +1945,7 @@ a| *Mandatory when the Small Molecule (SML) section is present; optional otherwi
 a| Parameter
 a| Parameter
 
-| Mandatory | *True* | *False*
+| Mandatory | *True* | *Conditional, depends on the profile (see Profiles)*
 
 | Nullable | — | —
 
@@ -1977,7 +1977,7 @@ a| *Mandatory when the Small Molecule Feature (SMF) section is present; optional
 a| Parameter
 a| Parameter
 
-| Mandatory | *True (if SMF section is being reported)* | *False*
+| Mandatory | *True (if SMF section is being reported)* | *Conditional, depends on the profile (see Profiles)*
 
 | Nullable | — | —
 
@@ -2038,7 +2038,7 @@ NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
 | Description
 a| *The type of small molecule confidence measures or scores MUST be reported as a CV parameter [1-n]. The CV parameter definition should formally state whether the ordering is high to low or vice versa. The order of the scores SHOULD reflect their importance for the identification and be used to determine the identification’s rank.*
 a| *Mandatory when the Small Molecule Evidence (SME) section is present; optional otherwise. Small molecule identification confidence metrics.<br/>Scoring System +
-- Use CV parameters numbered `[1-n]` +
+- Use CV parameters numbered `[1]`, `[2]`, ... +
 - Define score direction (high-to-low or low-to-high) +
 - Order by importance for identification ranking +
  +
@@ -2048,7 +2048,7 @@ Scores determine confidence in molecular identifications*
 a| *Parameter*
 a| *Parameter List*
 
-| Mandatory | *True* | *False*
+| Mandatory | *True* | *Conditional, depends on the profile (see Profiles)*
 
 | Nullable | — | —
 
@@ -2207,7 +2207,7 @@ MTD	mzTab-profile	M+S+F+E
 
 |===
 
-==== `contact[1-n]-orcid` 🟢 _(Added in v2.1)_
+==== `contact[n]-orcid` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2234,7 +2234,7 @@ a| —
 
 |===
 
-==== `ms_run[1-n]-parameters` 🟢 _(Added in v2.1)_
+==== `ms_run[n]-parameters` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2262,7 +2262,7 @@ MTD	ms_run[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, L
 
 |===
 
-==== `assay[1-n]-protocol_refs` 🟢 _(Added in v2.1)_
+==== `assay[n]-protocol_refs` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2290,7 +2290,7 @@ MTD	assay[1]-protocol_ref	protocol[1]\{vbar} protocol[2]
 
 |===
 
-==== `assay[1-n]-parameters` 🟢 _(Added in v2.1)_
+==== `assay[n]-parameters` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2318,7 +2318,7 @@ MTD	assay[1]-parameter[1]	[MS, MS:1000031, instrument model, [MS, MS:1000449, LT
 
 |===
 
-==== `study_variable[1-n]-ms_run_refs` 🟢 _(Added in v2.1)_
+==== `study_variable[n]-ms_run_refs` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2346,7 +2346,7 @@ MTD	study_variable[1]-ms_run_ref	ms_run[1]\{vbar} ms_run[2]
 
 |===
 
-==== `study_variable_group[1-n]` 🟢 _(Added in v2.1)_
+==== `study_variable_group[n]` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2388,7 +2388,7 @@ MTD	study_variable[2]-assay_refs	assay[4]\{vbar} assay[5]\{vbar} assay[6]
 
 |===
 
-==== `study_variable_group[1-n]-description` 🟢 _(Added in v2.1)_
+==== `study_variable_group[n]-description` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2412,7 +2412,7 @@ a| —
 
 |===
 
-==== `study_variable_group[1-n]-type` 🟢 _(Added in v2.1)_
+==== `study_variable_group[n]-type` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2436,7 +2436,7 @@ a| —
 
 |===
 
-==== `study_variable_group[1-n]-datatype` 🟢 _(Added in v2.1)_
+==== `study_variable_group[n]-datatype` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2493,7 +2493,7 @@ MTD	study_variable[3]	[NCIT, NCIT:C20197, Male, ]
 
 |===
 
-==== `study_variable_group[1-n]-unit` 🟢 _(Added in v2.1)_
+==== `study_variable_group[n]-unit` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2517,7 +2517,7 @@ a| —
 
 |===
 
-==== `study_variable_group[1-n]-study_variable_refs` 🟢 _(Added in v2.1)_
+==== `study_variable_group[n]-study_variable_refs` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2545,7 +2545,7 @@ MTD	study_variable_group[1]-study_variable_refs	study_variable[1]\{vbar} study_v
 
 |===
 
-==== `protocol[1-n]-name` 🟢 _(Added in v2.1)_
+==== `protocol[n]-name` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2569,7 +2569,7 @@ a| —
 
 |===
 
-==== `protocol[1-n]-type` 🟢 _(Added in v2.1)_
+==== `protocol[n]-type` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2593,7 +2593,7 @@ a| —
 
 |===
 
-==== `protocol[1-n]-description` 🟢 _(Added in v2.1)_
+==== `protocol[n]-description` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -2617,7 +2617,7 @@ a| —
 
 |===
 
-==== `protocol[1-n]-parameters` 🟢 _(Added in v2.1)_
+==== `protocol[n]-parameters` 🟢 _(Added in v2.1)_
 
 [cols="15,~,~",options="header"]
 |===
@@ -3227,15 +3227,15 @@ SML	...	0.3	...
 
 ==== `abundance_study_variable[1-n]`
 
-NOTE: ⚠️ Changed fields: Type, Mandatory, Example
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
 
 [cols="15,~,~",options="header"]
 |===
 | Field | v2.0 | v2.1
 
 | Description
-a| The small molecule’s abundance in all the study variables described in the metadata section (study_variable[1-n]_average_function), calculated using the method as described in the Metadata section (default = arithmetic mean across assays). Null or zero values may be reported as appropriate. "null" SHOULD be used to report missing quantities, while zero SHOULD be used to indicate a present but not reliably quantifiable value (e.g. below a minimum noise threshold).
-a| The small molecule’s abundance in all the study variables described in the metadata section (study_variable[1-n]_average_function), calculated using the method as described in the Metadata section (default = arithmetic mean across assays). Null or zero values may be reported as appropriate. "null" SHOULD be used to report missing quantities, while zero SHOULD be used to indicate a present but not reliably quantifiable value (e.g. below a minimum noise threshold).
+a| *The small molecule’s abundance in all the study variables described in the metadata section (study_variable[1-n]_average_function), calculated using the method as described in the Metadata section (default = arithmetic mean across assays). Null or zero values may be reported as appropriate. "null" SHOULD be used to report missing quantities, while zero SHOULD be used to indicate a present but not reliably quantifiable value (e.g. below a minimum noise threshold).*
+a| *The small molecule’s abundance in all the study variables described in the metadata section (study_variable[n]_average_function), calculated using the method as described in the Metadata section (default = arithmetic mean across assays). Null or zero values may be reported as appropriate. "null" SHOULD be used to report missing quantities, while zero SHOULD be used to indicate a present but not reliably quantifiable value (e.g. below a minimum noise threshold).*
 
 | Type
 a| *Double*
@@ -3269,7 +3269,7 @@ NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
 
 | Description
 a| *A measure of the variability of the study variable abundance measurement, calculated using the method as described in the metadata section (study_variable[1-n]_average_function), with a  default = arithmethic co-efficient of variation of the small molecule’s abundance in the given study variable.*
-a| *TA measure of the variability of the study variable abundance measurement, calculated using the method as described in the metadata section (study_variable[1-n]_average_function), with a default = arithmethic co-efficient of variation of the small molecule’s abundance in the given study variable.*
+a| *TA measure of the variability of the study variable abundance measurement, calculated using the method as described in the metadata section (study_variable[n]_average_function), with a default = arithmethic co-efficient of variation of the small molecule’s abundance in the given study variable.*
 
 | Type
 a| *Double*
@@ -3841,7 +3841,7 @@ This could include additionally a chemical class or an identifier to a spectral 
  +
 For the “no database” case, "null" must be used. The unprefixed use of "null" is prohibited for any other case. +
 If no putative identification can be reported for a particular database, it MUST be reported as the database prefix followed by null.*
-a| *The putative identification for the small molecule sourced from an external database, using the same prefix specified in database[1-n]-prefix. +
+a| *The putative identification for the small molecule sourced from an external database, using the same prefix specified in database[n]-prefix. +
  +
 This could include additionally a chemical class or an identifier to a spectral library entity, even if its actual identity is unknown. +
  +
@@ -4245,7 +4245,7 @@ NOTE: ⚠️ Changed fields: Description, Mandatory, Example
 a| *Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:\{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a “\{vbar}” delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra  in advance of the search to make identifications. +
  +
 If a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.*
-a| *Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a \{vbar} delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications. +
+a| *Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a \{vbar} delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications. +
  +
 If a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.*
 
@@ -4341,15 +4341,15 @@ SME	...	[MS, MS:1000511, ms level, 2]	...
 
 ==== `id_confidence_measure[1-n]`
 
-NOTE: ⚠️ Changed fields: Type, Mandatory, Example
+NOTE: ⚠️ Changed fields: Description, Type, Mandatory, Example
 
 [cols="15,~,~",options="header"]
 |===
 | Field | v2.0 | v2.1
 
 | Description
-a| Any statistical value or score for the identification. The metadata section reports the type of score used, as id_confidence_measure[1-n] of type Param.
-a| Any statistical value or score for the identification. The metadata section reports the type of score used, as id_confidence_measure[1-n] of type Param.
+a| *Any statistical value or score for the identification. The metadata section reports the type of score used, as id_confidence_measure[1-n] of type Param.*
+a| *Any statistical value or score for the identification. The metadata section reports the type of score used, as id_confidence_measure[n] of type Param.*
 
 | Type
 a| *Double*
