@@ -21,6 +21,8 @@ reporting for metabolomics workflows. With version 2.1, we intend to expand the
 format, to modularize it and support **FAIR** data use cases and integrate
 better with tools.
 
+📖 **Documentation website**: <https://hupo-psi.github.io/mzTab-M/>
+
 > The **mzTab-M 2.1+** development now takes place in this repository (split
 > from the [original mzTab repository](https://github.com/HUPO-PSI/mzTab)).
 
@@ -62,6 +64,8 @@ list](https://lists.cebitec.uni-bielefeld.de/mailman3/postorius/lists/mztabm.ceb
 ### 🔧 Current Version 2.1.0 (in development, 2026):
 
 -   **Specification**:\
+    [HTML](https://hupo-psi.github.io/mzTab-M/mztabm/2.1/developers/specification.html)
+    \|\
     [AsciiDoc](https://github.com/HUPO-PSI/mzTab-M/blob/main/specification_documents/mzTab_format_specification_2_1-M.adoc)
 
 -   **Example files**:\
