@@ -145,7 +145,7 @@ MTD	assay[12]-sample_ref	sample[6]
 MTD	assay[12]-ms_run_ref	ms_run[12]																															
 MTD	study_variable[1]	1																															
 MTD	study_variable[1]-description	Preparation replicate																															
-MTD	study_variable[1]-assay_refs	assay[1] | assay[2] | assay[3] | assay[7] | assay[8] | assay[9] | 																															
+MTD	study_variable[1]-assay_refs	assay[1] | assay[2] | assay[3] | assay[7] | assay[8] | assay[9]																															
 MTD	study_variable[2]	2																															
 MTD	study_variable[2]-description	Preparation replicate																															
 MTD	study_variable[2]-assay_refs	assay[4] | assay[10] 																															
