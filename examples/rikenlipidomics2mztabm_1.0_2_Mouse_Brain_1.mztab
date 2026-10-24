@@ -80,6 +80,10 @@ MTD	cv[1]-label	MS
 MTD	cv[1]-full_name	PSI-MS controlled vocabulary
 MTD	cv[1]-version	4.1.138
 MTD	cv[1]-uri	https://raw.githubusercontent.com/HUPO-PSI/psi-ms-CV/master/psi-ms.obo
+MTD	cv[2]-label	EFO
+MTD	cv[2]-full_name	Experimental Factor Ontology
+MTD	cv[2]-version	3.95.0
+MTD	cv[2]-uri	http://www.ebi.ac.uk/efo/efo.owl
 MTD	small_molecule-quantification_unit	[, , isotopologue peak intensity, ]
 MTD	small_molecule_feature-quantification_unit	[, , isotopologue peak intensity, ]
 MTD	small_molecule-identification_reliability	[MS, MS:1002896, compound identification confidence level, ]
