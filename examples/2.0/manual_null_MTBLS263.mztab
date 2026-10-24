@@ -51,50 +51,62 @@ MTD	ms_run[1]-location	https://ftp.ebi.ac.uk/pub/databases/metabolights/studies/
 MTD	ms_run[1]-scan_polarity[1]	[MS,MS:1000130,positive scan,]																															
 MTD	ms_run[1]-format	[MS, MS:1000584, mzML file, ]																															
 MTD	ms_run[1]-id_format	[MS, MS:1000768, Thermo nativeID format, ]																															
+MTD	ms_run[1]-instrument_ref	instrument[1]
 MTD	ms_run[2]-location	https://ftp.ebi.ac.uk/pub/databases/metabolights/studies/public/MTBLS263/FILES/3injections_inj2_POS.mzML																															
 MTD	ms_run[2]-scan_polarity[1]	[MS,MS:1000130,positive scan,]																															
 MTD	ms_run[2]-format	[MS, MS:1000584, mzML file, ]																															
 MTD	ms_run[2]-id_format	[MS, MS:1000768, Thermo nativeID format, ]																															
+MTD	ms_run[2]-instrument_ref	instrument[1]
 MTD	ms_run[3]-location	https://ftp.ebi.ac.uk/pub/databases/metabolights/studies/public/MTBLS263/FILES/3injections_inj3_POS.mzML																															
 MTD	ms_run[3]-scan_polarity[1]	[MS,MS:1000130,positive scan,]																															
 MTD	ms_run[3]-format	[MS, MS:1000584, mzML file, ]																															
 MTD	ms_run[3]-id_format	[MS, MS:1000768, Thermo nativeID format, ]																															
+MTD	ms_run[3]-instrument_ref	instrument[1]
 MTD	ms_run[4]-location	https://ftp.ebi.ac.uk/pub/databases/metabolights/studies/public/MTBLS263/FILES/3samples_sampl1_POS.mzML																															
 MTD	ms_run[4]-scan_polarity[1]	[MS,MS:1000130,positive scan,]																															
 MTD	ms_run[4]-format	[MS, MS:1000584, mzML file, ]																															
 MTD	ms_run[4]-id_format	[MS, MS:1000768, Thermo nativeID format, ]																															
+MTD	ms_run[4]-instrument_ref	instrument[1]
 MTD	ms_run[5]-location	https://ftp.ebi.ac.uk/pub/databases/metabolights/studies/public/MTBLS263/FILES/3samples_sampl2_POS.mzML																															
 MTD	ms_run[5]-scan_polarity[1]	[MS,MS:1000130,positive scan,]																															
 MTD	ms_run[5]-format	[MS, MS:1000584, mzML file, ]																															
 MTD	ms_run[5]-id_format	[MS, MS:1000768, Thermo nativeID format, ]																															
+MTD	ms_run[5]-instrument_ref	instrument[1]
 MTD	ms_run[6]-location	https://ftp.ebi.ac.uk/pub/databases/metabolights/studies/public/MTBLS263/FILES/3samples_sampl3_POS.mzML																															
 MTD	ms_run[6]-scan_polarity[1]	[MS,MS:1000130,positive scan,]																															
 MTD	ms_run[6]-format	[MS, MS:1000584, mzML file, ]																															
 MTD	ms_run[6]-id_format	[MS, MS:1000768, Thermo nativeID format, ]																															
+MTD	ms_run[6]-instrument_ref	instrument[1]
 MTD	ms_run[7]-location	https://ftp.ebi.ac.uk/pub/databases/metabolights/studies/public/MTBLS263/FILES/3injections_inj1_NEG.mzML																															
 MTD	ms_run[7]-scan_polarity[1]	[MS,MS:1000129,negative scan,]																															
 MTD	ms_run[7]-format	[MS, MS:1000584, mzML file, ]																															
 MTD	ms_run[7]-id_format	[MS, MS:1000768, Thermo nativeID format, ]																															
+MTD	ms_run[7]-instrument_ref	instrument[1]
 MTD	ms_run[8]-location	https://ftp.ebi.ac.uk/pub/databases/metabolights/studies/public/MTBLS263/FILES/3injections_inj2_NEG.mzML																															
 MTD	ms_run[8]-scan_polarity[1]	[MS,MS:1000129,negative scan,]																															
 MTD	ms_run[8]-format	[MS, MS:1000584, mzML file, ]																															
 MTD	ms_run[8]-id_format	[MS, MS:1000768, Thermo nativeID format, ]																															
+MTD	ms_run[8]-instrument_ref	instrument[1]
 MTD	ms_run[9]-location	https://ftp.ebi.ac.uk/pub/databases/metabolights/studies/public/MTBLS263/FILES/3injections_inj3_NEG.mzML																															
 MTD	ms_run[9]-scan_polarity[1]	[MS,MS:1000129,negative scan,]																															
 MTD	ms_run[9]-format	[MS, MS:1000584, mzML file, ]																															
 MTD	ms_run[9]-id_format	[MS, MS:1000768, Thermo nativeID format, ]																															
+MTD	ms_run[9]-instrument_ref	instrument[1]
 MTD	ms_run[10]-location	https://ftp.ebi.ac.uk/pub/databases/metabolights/studies/public/MTBLS263/FILES/3samples_sampl1_NEG.mzML																															
 MTD	ms_run[10]-scan_polarity[1]	[MS,MS:1000129,negative scan,]																															
 MTD	ms_run[10]-format	[MS, MS:1000584, mzML file, ]																															
 MTD	ms_run[10]-id_format	[MS, MS:1000768, Thermo nativeID format, ]																															
+MTD	ms_run[10]-instrument_ref	instrument[1]
 MTD	ms_run[11]-location	https://ftp.ebi.ac.uk/pub/databases/metabolights/studies/public/MTBLS263/FILES/3samples_sampl2_NEG.mzML																															
 MTD	ms_run[11]-scan_polarity[1]	[MS,MS:1000129,negative scan,]																															
 MTD	ms_run[11]-format	[MS, MS:1000584, mzML file, ]																															
 MTD	ms_run[11]-id_format	[MS, MS:1000768, Thermo nativeID format, ]																															
+MTD	ms_run[11]-instrument_ref	instrument[1]
 MTD	ms_run[12]-location	https://ftp.ebi.ac.uk/pub/databases/metabolights/studies/public/MTBLS263/FILES/3samples_sampl3_NEG.mzML																															
 MTD	ms_run[12]-scan_polarity[1]	[MS,MS:1000129,negative scan,]																															
 MTD	ms_run[12]-format	[MS, MS:1000584, mzML file, ]																															
 MTD	ms_run[12]-id_format	[MS, MS:1000768, Thermo nativeID format, ]																															
+MTD	ms_run[12]-instrument_ref	instrument[1]
 MTD	assay[1]	3injections_inj1_POS																															
 MTD	assay[1]-sample_ref	sample[1]																															
 MTD	assay[1]-ms_run_ref	ms_run[1]																															
