@@ -812,7 +812,7 @@ def main():
         'sample[1-n]-disease[1-n]': 'MTD\tsample[1]-disease[1]\t[DOID, DOID:9352, type 2 diabetes mellitus, ]',
         'sample[1-n]-description': 'MTD\tsample[1]-description\tHuman plasma sample from a healthy control donor',
         'sample[1-n]-custom[1-n]': 'MTD\tsample[1]-custom[1]\tSample preparation batch A',
-        'ms_run[1-n]-location': 'MTD\tms_run[1]-location\tfile:///data/run01.mzML',
+        'ms_run[1-n]-location': 'MTD\tms_run[1]-location\tfile:///data/run01.mzML\nMTD\tms_run[2]-location\tnull',
         'ms_run[1-n]-instrument_ref': 'MTD\tms_run[1]-instrument_ref\tinstrument[1]',
         'ms_run[1-n]-format': 'MTD\tms_run[1]-format\t[MS, MS:1000584, mzML format, ]',
         'ms_run[1-n]-id_format': 'MTD\tms_run[1]-id_format\t[MS, MS:1001530, mzML unique identifier, ]',
