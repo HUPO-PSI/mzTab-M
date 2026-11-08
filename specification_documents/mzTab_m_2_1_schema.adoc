@@ -699,7 +699,7 @@ MTD	assay[1]-ms_run_ref	ms_run[1]
 |*Mandatory* |False
 |*Example* a|
 ----
-MTD	assay[1]-protocol_ref	protocol[1]\| protocol[2]
+MTD	assay[1]-protocol_refs	protocol[1]\| protocol[2]
 ----
 |============================================================
 
