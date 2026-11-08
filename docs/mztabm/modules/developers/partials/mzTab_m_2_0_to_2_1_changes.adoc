@@ -2276,7 +2276,7 @@ a| Integer List
 | Example
 a| _(not present)_
 a| ....
-MTD	assay[1]-protocol_ref	protocol[1]\| protocol[2]
+MTD	assay[1]-protocol_refs	protocol[1]\| protocol[2]
 ....
 
 |===
