@@ -1407,7 +1407,7 @@
             }
           ],
           "default": null,
-          "description": "Associated research publications.\n\nReference Format\n- PubMed IDs: prefix with `pubmed:`\n- DOIs: prefix with `doi:`\n- Multiple IDs: separate with `|`\n\nMultiple publications numbered `[1-n]`",
+          "description": "Associated research publications.\n\nReference Format\n- PubMed IDs: prefix with `pubmed:`\n- DOIs: prefix with `doi:`\n- Multiple IDs: separate with `\\|`\n\nMultiple publications numbered `[1-n]`",
           "examples": [
             "MTD\tpublication[1]\tdoi:10.1021/example.2023",
             "MTD\tpublication[2]\tpubmed:12345678|doi:10.1021/another.2023"
@@ -1645,7 +1645,7 @@
             }
           ],
           "default": null,
-          "description": "Sample preparation and processing steps.\n\nProcessing Documentation\n- Sequential steps numbered `[1-n]` in order of execution\n- Multiple parameters per step separated by `|`\n\nSpecial Cases\n- Derivatization:\n  - Report general step (e.g., 'silylation')\n  - Specify agents in derivatization_agent field\n\nFollows biological/analytical methods report format",
+          "description": "Sample preparation and processing steps.\n\nProcessing Documentation\n- Sequential steps numbered `[1-n]` in order of execution\n- Multiple parameters per step separated by `\\|`\n\nSpecial Cases\n- Derivatization:\n  - Report general step (e.g., 'silylation')\n  - Specify agents in derivatization_agent field\n\nFollows biological/analytical methods report format",
           "examples": [
             "MTD\tsample_processing[1]\t[SEP,SEP:00142,extraction,]",
             "MTD\tsample_processing[2]\t[SEP,SEP:00210,centrifugation,]|[SEP,SEP:00211,13000g]",
@@ -2289,7 +2289,7 @@
             }
           ],
           "default": null,
-          "description": "The msRun's location URI.",
+          "description": "The location of the MS run's data file, as a URI. It SHOULD be an absolute URI including its scheme, e.g. `file:///data/run01.mzML`, `https://…` or `ftp://…`. If the location is unknown, `null` MUST be used: the field cannot be left out, since `ms_run[1-n]` is referenced elsewhere in the file.",
           "ignore": false,
           "list_concatenation_str": null,
           "mztab_example": null,
@@ -2988,7 +2988,7 @@
             }
           ],
           "default": null,
-          "description": "The publication item ids referenced by this publication.",
+          "description": "The identifiers of this publication, as a `\\|` delimited list. Each identifier has the form `<type>:<accession>`:\n\n* `<type>` MUST be one of `pubmed`, `doi` or `uri`, in lower case.\n* `<accession>` is everything after the first `:`, so an accession can itself contain `:`.\n* A `pubmed` accession MUST be a PubMed identifier (PMID, digits only), e.g. `pubmed:21063943`.\n* A `doi` accession MUST be the DOI name, which begins with `10.`, without a `doi:` or resolver prefix such as `https://doi.org/`, e.g. `doi:10.1007/978-1-60761-987-1_6` or `doi:10.1002/(SICI)1097-0258(19980815/30)17:15/16<1661::AID-SIM968>3.0.CO;2-2`.\n* A `uri` accession MUST be an absolute URI.\n\nThere MUST NOT be whitespace around the `\\|` and `:` separators. Placeholders such as `doi:xxxx` MUST NOT be used; a publication without an identifier yet is left out.",
           "ignore": false,
           "list_concatenation_str": "|",
           "mztab_example": null,
@@ -3008,7 +3008,7 @@
       },
       "title": "Publication",
       "type": "object",
-      "description": "A publication associated with this file. Several publications can be given by indicating the number in the square brackets after “publication”. PubMed ids must be prefixed by “pubmed:”, DOIs by “doi:”. Multiple identifiers MUST be separated by “|”.",
+      "description": "A publication associated with this file. Several publications can be given by indicating the number in the square brackets after “publication”. Each identifier is `<type>:<accession>` (`pubmed:`, `doi:` or `uri:`), split at the first `:`. Multiple identifiers MUST be separated by “|”.",
       "examples": [
         "MTD\tpublication[1]\tpubmed:21063943|doi:10.1007/978-1-60761-987-1_6\nMTD\tpublication[2]\tpubmed:20615486|doi:10.1016/j.jprot.2010.06.008"
       ]
@@ -3026,7 +3026,7 @@
             }
           ],
           "default": null,
-          "description": "The type qualifier of this publication item.",
+          "description": "The type qualifier of this publication item: `pubmed`, `doi` or `uri`, in lower case. It is the part of the identifier before its first `:`.",
           "examples": [
             "doi",
             "pubmed",
@@ -3043,7 +3043,7 @@
             "enforcement_level": "required",
             "maximum": null,
             "minimum": null,
-            "pattern": "doi|pubmed|uri",
+            "pattern": "^(doi|pubmed|uri)$",
             "required": null,
             "value_constraint": null
           }
@@ -3059,7 +3059,7 @@
             }
           ],
           "default": null,
-          "description": "The native accession id for this publication item.",
+          "description": "The native accession of this publication item: everything after the first `:` of the identifier. A PMID for `pubmed`, a DOI name beginning with `10.` for `doi`, an absolute URI for `uri`.",
           "ignore": false,
           "list_concatenation_str": null,
           "mztab_example": null,
@@ -3904,7 +3904,7 @@
           ],
           "column_value_field": null,
           "default": null,
-          "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a \\| delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.\n\nIf a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”. ",
+          "description": "Reference to the spectrum in a spectrum file that supports the identification, for example a fragmentation spectrum. Each reference MUST have one of two forms:\n\n* `ms_run[n]:{SPECTRA_REF}`, where `{SPECTRA_REF}` is a spectrum identifier in the format declared by `ms_run[n]-id_format` (see <<use-of-identifiers-for-input-spectra-to-a-search>>), including references to chromatograms where these are used to inform identification. The whole of `{SPECTRA_REF}` MUST conform to that format; there MUST NOT be other characters before or after it.\n* `ms_run[n]` alone, when no spectrum was used for the identification. It names the ms_run to which the identification is mapped, e.g. `ms_run[1]`.\n\nIn both forms, `ms_run[n]` MUST be defined in the metadata section. If a separate spectrum file has been used for the fragmentation spectrum, it MUST be reported in the metadata section as an additional ms_run. Multiple references MUST be given as a `\\|` delimited list, for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications. There MUST NOT be whitespace around the `\\|` and `:` separators; whitespace inside `{SPECTRA_REF}` is allowed only where its format defines it (e.g. `controllerType=0 controllerNumber=1 scan=5`).",
           "examples": [
               "ms_run[1]:index=5"
           ],
@@ -5480,7 +5480,7 @@
       },
       "title": "SpectraReference",
       "type": "object",
-      "description": "Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a \\| delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.\n\nIf a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.",
+      "description": "Reference to the spectrum in a spectrum file that supports the identification, for example a fragmentation spectrum. Each reference MUST have one of two forms:\n\n* `ms_run[n]:{SPECTRA_REF}`, where `{SPECTRA_REF}` is a spectrum identifier in the format declared by `ms_run[n]-id_format` (see <<use-of-identifiers-for-input-spectra-to-a-search>>), including references to chromatograms where these are used to inform identification. The whole of `{SPECTRA_REF}` MUST conform to that format; there MUST NOT be other characters before or after it.\n* `ms_run[n]` alone, when no spectrum was used for the identification. It names the ms_run to which the identification is mapped, e.g. `ms_run[1]`.\n\nIn both forms, `ms_run[n]` MUST be defined in the metadata section. If a separate spectrum file has been used for the fragmentation spectrum, it MUST be reported in the metadata section as an additional ms_run. Multiple references MUST be given as a `\\|` delimited list, for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications. There MUST NOT be whitespace around the `\\|` and `:` separators; whitespace inside `{SPECTRA_REF}` is allowed only where its format defines it (e.g. `controllerType=0 controllerNumber=1 scan=5`).",
       "examples": [
         "SEH\tSME_ID\t…\tspectra_ref\t…\nSME\t1\t\t\tms_run[1]:index=5\t…"
       ]
@@ -5827,19 +5827,17 @@
                 "xsd:date",
                 "xsd:time",
                 "xsd:dateTime",
-                "xsd:anyURI"
+                "xsd:anyURI",
+                "Parameter"
               ],
               "type": "string"
-            },
-            {
-              "$ref": "#/$defs/Parameter"
             },
             {
               "type": "null"
             }
           ],
           "default": null,
-          "description": "The datatype of the group variable, which determines how they can be encoded and parsed in mzTab-M files, and how the values could be handled in programming languages.\n\nProducers of mzTab-M 2.1.0 SHOULD provide a `datatype` for each `study_variable_group` to simplify interpretation by downstream consumers of the format. The field is not mandatory, but its presence removes ambiguity about how the associated values are encoded and should be parsed.\n\nThe following datatypes are supported:\n\n* xsd:string – Character string.\n* xsd:integer – Arbitrary‑size integer.\n* xsd:decimal – Arbitrary‑precision decimal number.\n* xsd:boolean – Boolean value (`true` / `false`).\n* xsd:date – Calendar date, encoded in ISO 8601 format (`YYYY-MM-DD`).\n* xsd:time – Time of day, encoded in ISO 8601 format (`hh:mm:ss`, optional fractional seconds and timezone).\n* xsd:dateTime – Combined date and time, encoded in ISO 8601 format (`YYYY-MM-DDThh:mm:ss`, with optional fractional seconds and timezone, e.g. `YYYY-MM-DDThh:mm:ssZ`).\n* xsd:anyURI – A Uniform Resource Identifier reference.\n* Parameter – The values of the linked study_variables are reported as a Parameter (user-defined or CV Parameter), using the standard mzTab-M Parameter syntax `[CV, accession, name, value]`.\n\nWriters MUST ensure that the values of the `study_variable` entries belonging to the same `study_variable_group` all have the same type (e.g. string, number, ...) and use the same convention of reporting the value directly or as a Parameter, consistent with the `datatype` declared on the group. If the `study_variable_group` defines the `datatype` as `Parameter`, the CVParam qualifying the `study_variable_group` itself can be of a different CV origin than the CVParams used in the linked `study_variable` values.\n\nTools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).",
+          "description": "The datatype of the group variable, which determines how they can be encoded and parsed in mzTab-M files, and how the values could be handled in programming languages.\n\nProducers of mzTab-M 2.1.0 SHOULD provide a `datatype` for each `study_variable_group` to simplify interpretation by downstream consumers of the format. The field is not mandatory, but its presence removes ambiguity about how the associated values are encoded and should be parsed.\n\nThe value MUST be exactly one of the following names (case-sensitive):\n\n* xsd:string – Character string.\n* xsd:integer – Arbitrary‑size integer.\n* xsd:decimal – Arbitrary‑precision decimal number.\n* xsd:boolean – Boolean value (`true` / `false`).\n* xsd:date – Calendar date, encoded in ISO 8601 format (`YYYY-MM-DD`).\n* xsd:time – Time of day, encoded in ISO 8601 format (`hh:mm:ss`, optional fractional seconds and timezone).\n* xsd:dateTime – Combined date and time, encoded in ISO 8601 format (`YYYY-MM-DDThh:mm:ss`, with optional fractional seconds and timezone, e.g. `YYYY-MM-DDThh:mm:ssZ`).\n* xsd:anyURI – A Uniform Resource Identifier reference.\n* Parameter – The values of the linked study_variables are reported as a Parameter (user-defined or CV Parameter), using the standard mzTab-M Parameter syntax `[CV, accession, name, value]`.\n\nWriters MUST ensure that the values of the `study_variable` entries belonging to the same `study_variable_group` all have the same type (e.g. string, number, ...) and use the same convention of reporting the value directly or as a Parameter, consistent with the `datatype` declared on the group. If the `study_variable_group` defines the `datatype` as `Parameter`, the CVParam qualifying the `study_variable_group` itself can be of a different CV origin than the CVParams used in the linked `study_variable` values.\n\nTools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).",
           "ignore": false,
           "list_concatenation_str": null,
           "mztab_example": null,
@@ -5924,7 +5922,7 @@
       },
       "title": "StudyVariableGroup",
       "type": "object",
-      "description": "Specification of study_variable_group.\n(empty) name/parameter: A parameter defining the group to which study variables belong. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter (e.g., [OBI, OBI:0001667, organism development stage, ]) or a user-defined parameter (e.g., [,,sex,]). For software that does not capture study variables, a single study_variable_group MUST be reported, linking to the single study variable, and MUST have the identifier \"undefined\". Added in mzTab-M 2.1.\ndescription: A textual description of the study variable group.\ntype: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO:0000252, categorical variable], [STATO, STATO:0000228, ordinal variable], or [STATO, STATO:0000251, continuous variable].\ndatatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. Supported values are xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, xsd:anyURI, and Parameter (for values reported as user-defined or CV Parameters). Date, time and dateTime values MUST be encoded in ISO 8601 format. Writers MUST ensure that all study_variable values linked to the same study_variable_group share the declared datatype and reporting convention.\nunit: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).",
+      "description": "Specification of study_variable_group.\n(empty) name/parameter: A parameter defining the group to which study variables belong. This allows grouping of related study variables that belong to the same experimental design factor in multi-factorial designs. The parameter can be either a CV Parameter (e.g., [OBI, OBI:0001667, organism development stage, ]) or a user-defined parameter (e.g., [,,sex,]). For software that does not capture study variables, a single study_variable_group MUST be reported, linking to the single study variable, and MUST have the identifier \"undefined\". Added in mzTab-M 2.1.\ndescription: A textual description of the study variable group.\ntype: The statistical type of the group variable, which determines how the values should be interpreted in a statistical analysis context. The type MUST be a term from the STATO ontology, and SHOULD be one of [STATO, STATO:0000252, categorical variable], [STATO, STATO:0000228, ordinal variable], or [STATO, STATO:0000251, continuous variable].\ndatatype: The datatype of the group variable, used to disambiguate how the associated values are encoded and parsed. Optional, but producers SHOULD provide it to simplify interpretation by downstream consumers. The value MUST be exactly one of the case-sensitive names xsd:string, xsd:integer, xsd:decimal, xsd:boolean, xsd:date, xsd:time, xsd:dateTime, xsd:anyURI, and Parameter (the literal name, for values reported as user-defined or CV Parameters). Date, time and dateTime values MUST be encoded in ISO 8601 format. Writers MUST ensure that all study_variable values linked to the same study_variable_group share the declared datatype and reporting convention.\nunit: An optional parameter specifying the unit of the study variable group (e.g., day, hour, concentration, etc.).",
       "examples": [
         "MTD\tstudy_variable_group[1]\t[PATO, PATO:0000383, sex, ]\nMTD\tstudy_variable_group[1]-description\tSex of the individual\nMTD\tstudy_variable_group[1]-type\t[STATO, STATO:0000252, categorical variable, ]\nMTD\tstudy_variable_group[1]-datatype\txsd:string\nMTD\tstudy_variable_group[1]-study_variable_refs\tstudy_variable[1]\nMTD\tstudy_variable_group[2]\t[PATO, PATO:0000384, timepoint, ]\nMTD\tstudy_variable_group[2]-description\tTime after treatment\nMTD\tstudy_variable_group[2]-type\t[STATO, STATO:0000228, ordinal variable, ]\nMTD\tstudy_variable_group[2]-datatype\txsd:integer\nMTD\tstudy_variable_group[2]-unit\t[UO, UO:0000033, day, ]\nMTD\tstudy_variable_group[2]-study_variable_refs\tstudy_variable[2]\nMTD\tstudy_variable[1]\tFemale_0day\nMTD\tstudy_variable[1]-assay_refs\tassay[1]| assay[2]| assay[3]\nMTD\tstudy_variable[2]\tFemale_1day\nMTD\tstudy_variable[2]-assay_refs\tassay[4]| assay[5]| assay[6]"
       ]

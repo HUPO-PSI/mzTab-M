@@ -250,7 +250,16 @@ MTD	software[1]-setting[1]	Mass tolerance = 5 ppm
 
 [cols="20,80",]
 |============================================================
-|*Description* |The publication item ids referenced by this publication.
+|*Description* a|
+The identifiers of this publication, as a `\|` delimited list. Each identifier has the form `<type>:<accession>`:
+
+* `<type>` MUST be one of `pubmed`, `doi` or `uri`, in lower case.
+* `<accession>` is everything after the first `:`, so an accession can itself contain `:`.
+* A `pubmed` accession MUST be a PubMed identifier (PMID, digits only), e.g. `pubmed:21063943`.
+* A `doi` accession MUST be the DOI name, which begins with `10.`, without a `doi:` or resolver prefix such as `https://doi.org/`, e.g. `doi:10.1007/978-1-60761-987-1_6` or `doi:10.1002/(SICI)1097-0258(19980815/30)17:15/16<1661::AID-SIM968>3.0.CO;2-2`.
+* A `uri` accession MUST be an absolute URI.
+
+There MUST NOT be whitespace around the `\|` and `:` separators. Placeholders such as `doi:xxxx` MUST NOT be used; a publication without an identifier yet is left out.
 |*Type* |String List
 |*Mandatory* |True
 |*Example* a|
@@ -494,12 +503,13 @@ hash_method: A parameter specifying the hash methods used to generate the String
 
 [cols="20,80",]
 |============================================================
-|*Description* |The msRun's location URI.
+|*Description* |The location of the MS run's data file, as a URI. It SHOULD be an absolute URI including its scheme, e.g. `file:///data/run01.mzML`, `https://…` or `ftp://…`. If the location is unknown, `null` MUST be used: the field cannot be left out, since `ms_run[1-n]` is referenced elsewhere in the file.
 |*Type* |URI
 |*Mandatory* |True
 |*Example* a|
 ----
 MTD	ms_run[1]-location	file:///data/run01.mzML
+MTD	ms_run[2]-location	null
 ----
 |============================================================
 
@@ -872,7 +882,7 @@ The datatype of the group variable, which determines how they can be encoded and
 
 Producers of mzTab-M 2.1.0 SHOULD provide a `datatype` for each `study_variable_group` to simplify interpretation by downstream consumers of the format. The field is not mandatory, but its presence removes ambiguity about how the associated values are encoded and should be parsed.
 
-The following datatypes are supported:
+The value MUST be exactly one of the following names (case-sensitive):
 
 * xsd:string – Character string.
 * xsd:integer – Arbitrary‑size integer.
@@ -887,7 +897,7 @@ The following datatypes are supported:
 Writers MUST ensure that the values of the `study_variable` entries belonging to the same `study_variable_group` all have the same type (e.g. string, number, ...) and use the same convention of reporting the value directly or as a Parameter, consistent with the `datatype` declared on the group. If the `study_variable_group` defines the `datatype` as `Parameter`, the CVParam qualifying the `study_variable_group` itself can be of a different CV origin than the CVParams used in the linked `study_variable` values.
 
 Tools and parsers implementing mzTab-M SHOULD apply the appropriate data type interpretation when reading study_variable_group data and constructing analysis data structures (e.g., data frames, matrices, or tables).
-|*Type* |Parameter
+|*Type* |String
 |*Mandatory* |False
 |*Example* a|
 ----
@@ -2059,9 +2069,12 @@ SME	...	1234.71	...
 [cols="20,80",]
 |============================================================
 |*Description* a|
-Reference to a spectrum in a spectrum file, for example a fragmentation spectrum has been used to support the identification. If a separate spectrum file has been used for fragmentation spectrum, this MUST be reported in the metadata section as additional ms_runs. The reference must be in the format ms_run[1-n]:{SPECTRA_REF} where SPECTRA_REF MUST follow the format defined in 5.2 (including references to chromatograms where these are used to inform identification). Multiple spectra MUST be referenced using a \| delimited list for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications.
+Reference to the spectrum in a spectrum file that supports the identification, for example a fragmentation spectrum. Each reference MUST have one of two forms:
 
-If a fragmentation spectrum has not been used, the value should indicate the ms_run to which is identification is mapped e.g. “ms_run[1]”.
+* `ms_run[n]:{SPECTRA_REF}`, where `{SPECTRA_REF}` is a spectrum identifier in the format declared by `ms_run[n]-id_format` (see <<use-of-identifiers-for-input-spectra-to-a-search>>), including references to chromatograms where these are used to inform identification. The whole of `{SPECTRA_REF}` MUST conform to that format; there MUST NOT be other characters before or after it.
+* `ms_run[n]` alone, when no spectrum was used for the identification. It names the ms_run to which the identification is mapped, e.g. `ms_run[1]`.
+
+In both forms, `ms_run[n]` MUST be defined in the metadata section. If a separate spectrum file has been used for the fragmentation spectrum, it MUST be reported in the metadata section as an additional ms_run. Multiple references MUST be given as a `\|` delimited list, for the (rare) cases in which search engines have combined or aggregated multiple spectra in advance of the search to make identifications. There MUST NOT be whitespace around the `\|` and `:` separators; whitespace inside `{SPECTRA_REF}` is allowed only where its format defines it (e.g. `controllerType=0 controllerNumber=1 scan=5`).
 |*Type* |String List
 |*Mandatory* |False
 |*Is Nullable:* |*FALSE*
