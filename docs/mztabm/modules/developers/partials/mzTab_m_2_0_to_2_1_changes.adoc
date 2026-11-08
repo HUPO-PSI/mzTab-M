@@ -2426,7 +2426,7 @@ a| Integer List
 a| _(not present)_
 a| ....
 ----
-MTD	assay[1]-protocol_ref	protocol[1]\{vbar} protocol[2]
+MTD	assay[1]-protocol_refs	protocol[1]\{vbar} protocol[2]
 ----
 ....
 
