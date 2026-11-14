@@ -18,7 +18,7 @@ Element-by-element comparison of all four mzTab-M sections (MTD, SML, SMF, SME) 
 |===
 | Section | v2.0 elements | v2.1 elements | Added | Removed | Changed
 
-| Metadata (MTD) Section | 62 | 76 | 16 | 2 | 60
+| Metadata (MTD) Section | 61 | 77 | 17 | 1 | 60
 
 | Small Molecule (SML) Section | 17 | 17 | 0 | 0 | 17
 
@@ -50,6 +50,14 @@ a| The contact's orcid id, without https prefix.
 ---- +
 ^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]{1}$ +
 ----
+| False
+| —
+
+| `ms_run[1-n]-usi_identifier`
+a| An identifier for the MS run based on the Universal Spectrum Identifier (USI) specification. Implied within the USI is an MS run identifier. Every deposited MS run can be referenced with a shortened form: `mzspec:<collection>:<msRun>`. More info on the standard can be found: https://www.psidev.info/usi. +
+Since an MS run may be represented in several formats (with potentially slightly different data associated with the spectrum), a format suffix MAY be specified (e.g. `mzspec:<collection>:<msRun>.RAW`) to signify that a specific file type is meant. +
+If specified, the format suffix should align with the ms_run[1-n]-format parameter and the ms_run[1-n]-location suffix defined in the metadata section.
+| String
 | False
 | —
 
@@ -162,15 +170,6 @@ a| The protocol parameters.
 [cols="20,~,10,10,10",options="header"]
 |===
 | Column/Field | Description | Type | Mandatory | Nullable
-
-| `ms_run[1-n]-usi_identifier`
-a| An identifier for the MS run based on the Universal Spectrum Identifier (USI) specification. +
-Implied within the USI is an MS run identifier. Every deposited MS run can be referenced with a shortened form: `mzspec:<collection>:<msRun>`. More info on the standard can be found: https://www.psidev.info/usi. +
-Since an MS run may be represented in several formats (with potentially slightly different data associated with the spectrum), a format suffix MAY be specified (e.g. `mzspec:<collection>:<msRun>.RAW`) to signify that a specific file type is meant. +
-If specified, the format suffix should align with the ms_run[1-n]-format parameter and the ms_run[1-n]-location suffix defined in the metadata section.
-| String
-| False
-| —
 
 | `study_variable[1-n]-factors`
 a| Additional parameters or factors, separated by bars, that are known about study variables allowing the capture of more complex, such as nested designs.
@@ -1203,35 +1202,6 @@ a| ....
 MTD	ms_run[1]-id_format	[MS, MS:1001530, mzML unique identifier, ]
 ----
 ....
-
-|===
-
-==== `ms_run[1-n]-usi_identifier` 🔴 _(Removed in v2.1)_
-
-[cols="15,~,~",options="header"]
-|===
-| Field | v2.0 | v2.1
-
-| Description
-a| An identifier for the MS run based on the Universal Spectrum Identifier (USI) specification. +
-Implied within the USI is an MS run identifier. Every deposited MS run can be referenced with a shortened form: `mzspec:<collection>:<msRun>`. More info on the standard can be found: https://www.psidev.info/usi. +
-Since an MS run may be represented in several formats (with potentially slightly different data associated with the spectrum), a format suffix MAY be specified (e.g. `mzspec:<collection>:<msRun>.RAW`) to signify that a specific file type is meant. +
-If specified, the format suffix should align with the ms_run[1-n]-format parameter and the ms_run[1-n]-location suffix defined in the metadata section.
-a| _(not present)_
-
-| Type
-a| String
-a| _(not present)_
-
-| Mandatory | False | _(not present)_
-
-| Nullable | — | _(not present)_
-
-| Example
-a| ....
-MTD ms_run[1]-usi_identifier mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09
-....
-a| _(not present)_
 
 |===
 
@@ -2385,6 +2355,36 @@ a| _(not present)_
 a| ....
 ----
 MTD	contact[1]-orcid	0000-0002-1825-0097
+----
+....
+
+|===
+
+==== `ms_run[1-n]-usi_identifier` 🟢 _(Added in v2.1)_
+
+[cols="15,~,~",options="header"]
+|===
+| Field | v2.0 | v2.1
+
+| Description
+a| _(not present)_
+a| An identifier for the MS run based on the Universal Spectrum Identifier (USI) specification. Implied within the USI is an MS run identifier. Every deposited MS run can be referenced with a shortened form: `mzspec:<collection>:<msRun>`. More info on the standard can be found: https://www.psidev.info/usi. +
+Since an MS run may be represented in several formats (with potentially slightly different data associated with the spectrum), a format suffix MAY be specified (e.g. `mzspec:<collection>:<msRun>.RAW`) to signify that a specific file type is meant. +
+If specified, the format suffix should align with the ms_run[1-n]-format parameter and the ms_run[1-n]-location suffix defined in the metadata section.
+
+| Type
+a| _(not present)_
+a| String
+
+| Mandatory | _(not present)_ | False
+
+| Nullable | _(not present)_ | —
+
+| Example
+a| _(not present)_
+a| ....
+----
+MTD	ms_run[1]-usi_identifier	mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09
 ----
 ....
 

@@ -27,7 +27,8 @@ SUB_FIELD_ORDER = {
     'StudyVariableGroup': ['name', 'description', 'type', 'datatype', 'unit',
                            'study_variable_refs'],
     'MsRun': ['location', 'instrument_ref', 'format', 'id_format',
-              'fragmentation_method', 'scan_polarity', 'hash', 'hash_method', 'parameters'],
+              'fragmentation_method', 'scan_polarity', 'hash', 'hash_method', 'usi_identifier',
+              'parameters'],
     'Assay': ['name', 'custom', 'external_uri', 'sample_ref', 'ms_run_ref',
               'protocol_refs', 'parameters'],
 }

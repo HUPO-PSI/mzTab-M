@@ -2508,6 +2508,37 @@
             "value_constraint": null
           }
         },
+        "usi_identifier": {
+          "allow_multiple": false,
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "An identifier for the MS run based on the Universal Spectrum Identifier (USI) specification. Implied within the USI is an MS run identifier. Every deposited MS run can be referenced with a shortened form: `mzspec:<collection>:<msRun>`. More info on the standard can be found: https://www.psidev.info/usi.\nSince an MS run may be represented in several formats (with potentially slightly different data associated with the spectrum), a format suffix MAY be specified (e.g. `mzspec:<collection>:<msRun>.RAW`) to signify that a specific file type is meant.\nIf specified, the format suffix should align with the ms_run[1-n]-format parameter and the ms_run[1-n]-location suffix defined in the metadata section.",
+          "ignore": false,
+          "list_concatenation_str": null,
+          "mztab_example": null,
+          "non_indexed_list_value": false,
+          "object_level_value": false,
+          "referenced_field_name": null,
+          "title": "USI Identifier",
+          "validation_policy": {
+            "enforcement_level": "required",
+            "maximum": null,
+            "minimum": null,
+            "pattern": null,
+            "required": null,
+            "value_constraint": null
+          },
+          "examples": [
+            "MTD\tms_run[1]-usi_identifier\tmzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09"
+          ]
+        },
         "parameters": {
           "allow_multiple": false,
           "anyOf": [
