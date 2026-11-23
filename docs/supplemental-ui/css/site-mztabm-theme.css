@@ -1,0 +1,434 @@
+/* mzTab-M site theme: logo colors on top of antora-ui-default + antora-dark-theme.
+   Loaded after site-extra.css and site-doc-layout.css (see partials/head-meta.hbs).
+
+   The logo uses one hue per mzTab-M file section:
+     MTD (metadata)            #4d657f / tint #9eb5d0
+     SML (small molecule)      #517e4e / tint #a2c79e
+     SMF (feature)             #a57b27 / tint #e5c380
+     SME (evidence)            #a44a28 / tint #e39c82
+
+   Variants are selected with <html data-mztab-theme="accent|sections|branded">:
+     accent   – neutral UI, logo blue for links, four-color stripe under the header
+     sections – accent + the four section colors used systematically (headings,
+                admonitions, MTD/SML/SMF/SME chips in code)
+     branded  – accent + deep-blue header/footer bar + MTD/SML/SMF/SME chips
+                (site default)
+   The Quick access box is styled in every variant. */
+
+/* ---------------------------------------------------------------- tokens */
+:root {
+  --mz-mtd: #4d657f;
+  --mz-sml: #517e4e;
+  --mz-smf: #a57b27;
+  --mz-sme: #a44a28;
+  --mz-mtd-tint: #9eb5d0;
+  --mz-sml-tint: #a2c79e;
+  --mz-smf-tint: #e5c380;
+  --mz-sme-tint: #e39c82;
+  /* Text-safe variants (>= 4.5:1 on the page background) */
+  --mz-mtd-text: #3d5f86;
+  --mz-sml-text: #44703f;
+  --mz-smf-text: #85621c;
+  --mz-sme-text: #9a4322;
+  /* Soft fills */
+  --mz-mtd-wash: #eef2f7;
+  --mz-sml-wash: #eef5ed;
+  --mz-smf-wash: #fbf5e7;
+  --mz-sme-wash: #fbeee9;
+  --mz-ink: #2f4256;
+  --mz-deep: #2b3b4d;
+  --mz-surface: #ffffff;
+  --mz-border: #d5dde6;
+  --mz-stripe: linear-gradient(90deg,
+      var(--mz-mtd) 0 25%, var(--mz-sml) 25% 50%,
+      var(--mz-smf) 50% 75%, var(--mz-sme) 75% 100%);
+}
+
+html.dark-theme {
+  --mz-mtd-text: #a9c1dc;
+  --mz-sml-text: #a9cfa5;
+  --mz-smf-text: #e8c98a;
+  --mz-sme-text: #eaa78e;
+  --mz-mtd-wash: rgba(77, 101, 127, 0.22);
+  --mz-sml-wash: rgba(81, 126, 78, 0.22);
+  --mz-smf-wash: rgba(165, 123, 39, 0.20);
+  --mz-sme-wash: rgba(164, 74, 40, 0.22);
+  --mz-ink: #e7edf4;
+  --mz-deep: #1c2633;
+  --mz-surface: #1f2125;
+  --mz-border: #3a3f47;
+}
+
+/* --------------------------------------------------------- Quick access */
+.doc .openblock.quick-access {
+  margin: 1.5rem 0 2rem;
+}
+
+.doc .openblock.quick-access > .content,
+html.dark-theme .doc .openblock.quick-access > .content {
+  position: relative;
+  padding: 1rem 1.1rem 1.1rem !important;
+  border: 1px solid var(--mz-border) !important;
+  border-radius: 0.6rem;
+  background: var(--mz-surface) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 6px 18px rgba(43, 59, 77, 0.07);
+  overflow: hidden;
+}
+
+/* Four-color top edge, echoing the logo */
+.doc .openblock.quick-access > .content::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--mz-stripe);
+}
+
+.doc .quick-access .quick-access-title {
+  margin: 0.15rem 0 0.75rem;
+}
+
+.doc .quick-access .quick-access-title p {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mz-ink);
+}
+
+.doc .quick-access .ulist.quick-access-grid ul {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media screen and (max-width: 1200px) {
+  .doc .quick-access .ulist.quick-access-grid ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .doc .quick-access .ulist.quick-access-grid ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+.doc .quick-access .quick-access-grid li {
+  --qa: var(--mz-mtd);
+  --qa-text: var(--mz-mtd-text);
+  --qa-wash: var(--mz-mtd-wash);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--mz-border);
+  border-left: 4px solid var(--qa);
+  border-radius: 0.4rem;
+  background: var(--qa-wash);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.doc .quick-access .quick-access-grid li::before {
+  content: none; /* default UI list bullets */
+}
+
+.doc .quick-access .quick-access-grid li > p {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  min-width: 0;
+}
+
+/* Column colors follow the logo order: MTD, SML, SMF, SME */
+.doc .quick-access .quick-access-grid li:nth-child(4n + 2) {
+  --qa: var(--mz-sml);
+  --qa-text: var(--mz-sml-text);
+  --qa-wash: var(--mz-sml-wash);
+}
+
+.doc .quick-access .quick-access-grid li:nth-child(4n + 3) {
+  --qa: var(--mz-smf);
+  --qa-text: var(--mz-smf-text);
+  --qa-wash: var(--mz-smf-wash);
+}
+
+.doc .quick-access .quick-access-grid li:nth-child(4n + 4) {
+  --qa: var(--mz-sme);
+  --qa-text: var(--mz-sme-text);
+  --qa-wash: var(--mz-sme-wash);
+}
+
+.doc .quick-access .qa-badge {
+  flex: 0 0 auto;
+  min-width: 3.1rem;
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+  background: var(--qa);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.doc .quick-access .quick-access-grid a,
+html[data-mztab-theme] .doc .quick-access .quick-access-grid a {
+  color: var(--mz-ink);
+  -webkit-hyphens: manual;
+  hyphens: manual;
+  overflow-wrap: normal;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 1.3;
+}
+
+/* Whole tile is clickable */
+.doc .quick-access .quick-access-grid a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.doc .quick-access .quick-access-grid li:hover {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.doc .quick-access .quick-access-grid li:hover a,
+html[data-mztab-theme] .doc .quick-access .quick-access-grid li:hover a {
+  color: var(--qa-text);
+}
+
+.doc .quick-access .quick-access-grid li:focus-within {
+  outline: 2px solid var(--qa);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .doc .quick-access .quick-access-grid li:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@media print {
+  .doc .openblock.quick-access {
+    display: none;
+  }
+}
+
+/* Narrow screens: keep the site title on one line and let the search box shrink
+   (otherwise the title wraps one letter per line behind the doc mast). */
+.navbar-item.adt-header-title {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.header.adt-header .navbar-menu.adt-topbar,
+.header.adt-header .adt-topbar .search,
+.header.adt-header .adt-topbar #search-field {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.header.adt-header .adt-topbar #search-input {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Header logo is the full-color mzTab-M logo: no monochrome invert in dark mode */
+html.dark-theme .adt-header-logo {
+  filter: none;
+}
+
+/* ------------------------------------------- shared accent (all variants) */
+html[data-mztab-theme] {
+  --link-font-color: var(--mz-mtd-text);
+  --link_hover-font-color: var(--mz-ink);
+  --adt-bc-kicker-fg: var(--mz-mtd-text);
+}
+
+html[data-mztab-theme] .doc a,
+html[data-mztab-theme].dark-theme .doc a,
+html[data-mztab-theme] .adt-breadcrumb-home-link,
+html[data-mztab-theme] .adt-breadcrumb-trail .adt-breadcrumb-trail-link {
+  color: var(--mz-mtd-text);
+}
+
+html[data-mztab-theme] .doc a:hover,
+html[data-mztab-theme].dark-theme .doc a:hover {
+  color: var(--mz-ink);
+}
+
+/* Four-color stripe under the sticky top bar */
+html[data-mztab-theme] .adt-site-navbar {
+  border-bottom: 0;
+  box-shadow: none;
+}
+
+html[data-mztab-theme] .adt-site-navbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--mz-stripe);
+}
+
+html[data-mztab-theme] .adt-header-title {
+  color: var(--mz-ink);
+}
+
+html[data-mztab-theme] .doc h1,
+html[data-mztab-theme] .adt-page-title {
+  color: var(--mz-ink);
+}
+
+html[data-mztab-theme] .nav-menu .nav-item.is-current-page > .nav-link,
+html[data-mztab-theme].dark-theme .nav .nav-item.is-current-page > .nav-link {
+  color: var(--mz-mtd-text);
+  font-weight: 600;
+}
+
+html[data-mztab-theme] .toc .toc-menu a.is-active {
+  color: var(--mz-mtd-text);
+  border-left-color: var(--mz-mtd);
+}
+
+html[data-mztab-theme] .doc table.tableblock > thead > tr > th {
+  background: var(--mz-mtd-wash);
+}
+
+/* ------------------------------------------------------ sections variant */
+html[data-mztab-theme="sections"] .doc .sect1 > h2 {
+  padding-bottom: 0.2rem;
+  border-bottom: 3px solid var(--mz-mtd);
+}
+
+html[data-mztab-theme="sections"] .doc .sect1:nth-child(4n + 2 of .sect1) > h2 { border-bottom-color: var(--mz-sml); }
+html[data-mztab-theme="sections"] .doc .sect1:nth-child(4n + 3 of .sect1) > h2 { border-bottom-color: var(--mz-smf); }
+html[data-mztab-theme="sections"] .doc .sect1:nth-child(4n + 4 of .sect1) > h2 { border-bottom-color: var(--mz-sme); }
+
+html[data-mztab-theme="sections"] .doc h3 {
+  color: var(--mz-mtd-text);
+}
+
+/* Admonitions: note=MTD, tip=SML, warning=SMF, caution/important=SME */
+html[data-mztab-theme="sections"] .doc .admonitionblock > table {
+  border-left: 4px solid var(--adm, var(--mz-mtd));
+  background: var(--adm-wash, var(--mz-mtd-wash)) !important;
+}
+
+html[data-mztab-theme="sections"] .doc .admonitionblock.tip { --adm: var(--mz-sml); --adm-wash: var(--mz-sml-wash); }
+html[data-mztab-theme="sections"] .doc .admonitionblock.warning { --adm: var(--mz-smf); --adm-wash: var(--mz-smf-wash); }
+html[data-mztab-theme="sections"] .doc .admonitionblock.caution,
+html[data-mztab-theme="sections"] .doc .admonitionblock.important { --adm: var(--mz-sme); --adm-wash: var(--mz-sme-wash); }
+
+html[data-mztab-theme="sections"].dark-theme .doc .admonitionblock > table,
+html[data-mztab-theme="sections"].dark-theme .doc .admonitionblock > table > tbody > tr,
+html[data-mztab-theme="sections"].dark-theme .doc .admonitionblock > table > tbody > tr > td {
+  background: var(--adm-wash, var(--mz-mtd-wash)) !important;
+}
+
+html[data-mztab-theme="sections"] .doc .admonitionblock td.icon .title,
+html[data-mztab-theme="sections"] .doc .admonitionblock td.icon i::after {
+  color: var(--adm, var(--mz-mtd));
+}
+
+/* Section prefixes in inline code (tagged by site-mztabm-theme.js).
+   Shared by the sections and branded variants. */
+html[data-mztab-theme="sections"] .doc code.mz-sec,
+html[data-mztab-theme="branded"] .doc code.mz-sec {
+  padding: 0.05em 0.35em;
+  border-radius: 0.25em;
+  color: #fff !important;
+  font-weight: 600;
+  background: var(--mz-mtd) !important;
+}
+
+html[data-mztab-theme="sections"] .doc code.mz-sec-sml,
+html[data-mztab-theme="branded"] .doc code.mz-sec-sml { background: var(--mz-sml) !important; }
+html[data-mztab-theme="sections"] .doc code.mz-sec-smf,
+html[data-mztab-theme="branded"] .doc code.mz-sec-smf { background: var(--mz-smf) !important; }
+html[data-mztab-theme="sections"] .doc code.mz-sec-sme,
+html[data-mztab-theme="branded"] .doc code.mz-sec-sme { background: var(--mz-sme) !important; }
+
+/* Left nav: module groups get a thin section-colored rail */
+html[data-mztab-theme="sections"] .nav-menu > .nav-list > .nav-item {
+  border-left: 3px solid transparent;
+  padding-left: 0.25rem;
+}
+
+html[data-mztab-theme="sections"] .nav-menu > .nav-list > .nav-item:nth-child(4n + 1) { border-left-color: var(--mz-mtd-tint); }
+html[data-mztab-theme="sections"] .nav-menu > .nav-list > .nav-item:nth-child(4n + 2) { border-left-color: var(--mz-sml-tint); }
+html[data-mztab-theme="sections"] .nav-menu > .nav-list > .nav-item:nth-child(4n + 3) { border-left-color: var(--mz-smf-tint); }
+html[data-mztab-theme="sections"] .nav-menu > .nav-list > .nav-item:nth-child(4n + 4) { border-left-color: var(--mz-sme-tint); }
+
+/* ------------------------------------------------------- branded variant */
+html[data-mztab-theme="branded"] {
+  --adt-header-bar-bg: #2f4256;
+  --adt-header-bar-fg: #ffffff;
+  --adt-header-bar-border: #2f4256;
+  --adt-header-bar-hover: rgba(255, 255, 255, 0.12);
+  --adt-header-vcs-icon-filter: none;
+}
+
+html[data-mztab-theme="branded"].dark-theme {
+  --adt-header-bar-bg: #1c2633;
+  --adt-header-bar-border: #1c2633;
+}
+
+html[data-mztab-theme="branded"] .adt-header-title,
+html[data-mztab-theme="branded"] .adt-site-navbar .navbar-item {
+  color: #ffffff;
+}
+
+html[data-mztab-theme="branded"] .adt-doc-mast {
+  background: var(--mz-mtd-wash);
+  border-bottom-color: var(--mz-border);
+}
+
+html[data-mztab-theme="branded"].dark-theme .adt-doc-mast {
+  background: #161d26;
+}
+
+html[data-mztab-theme="branded"] #search-input {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+html[data-mztab-theme="branded"] #search-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+html[data-mztab-theme="branded"] footer.footer,
+html[data-mztab-theme="branded"].dark-theme footer.footer {
+  position: relative;
+  background: #2f4256;
+  color: #d9e2ec;
+}
+
+html[data-mztab-theme="branded"].dark-theme footer.footer {
+  background: #1c2633;
+}
+
+html[data-mztab-theme="branded"] footer.footer a {
+  color: #ffffff;
+}
+
+html[data-mztab-theme="branded"] footer.footer::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--mz-stripe);
+}

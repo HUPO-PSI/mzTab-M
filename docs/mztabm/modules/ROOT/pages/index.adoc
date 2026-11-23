@@ -4,6 +4,8 @@
 mzTab-M is the https://psidev.info[HUPO-PSI] community standard for reporting mass spectrometry-based small molecule metabolomics and lipidomics results.
 It is designed to be compact, human-readable, and machine-parseable, enabling straightforward integration with downstream analysis pipelines and data repositories.
 
+include::ROOT:partial$quick-access.adoc[]
+
 == Highlights
 
 [cols="1,3",frame=none,grid=none]
@@ -22,19 +24,6 @@ It is designed to be compact, human-readable, and machine-parseable, enabling st
 
 |*MetaboLights submission*
 |mzTab-M can be used to create full local submissions in ISA-Tab and MAF format for https://www.ebi.ac.uk/metabolights/[MetaboLights], the EMBL-EBI repository for metabolomics experiments, using the https://github.com/EBI-Metabolights/mztabm2mtbls[mztabm2mtbls] library.
-|===
-
-== Quick Links
-
-[cols="1,1,1",frame=none,grid=none]
-|===
-|xref:users:getting-started.adoc[Getting Started]
-|xref:developers:specification.adoc[Specification 2.1]
-|xref:validation:index.adoc[Validate a File]
-
-|xref:users:examples.adoc[Example Files]
-|xref:developers:schema.adoc[Schema Reference]
-|xref:about:cite.adoc[How to Cite]
 |===
 
 == Cite

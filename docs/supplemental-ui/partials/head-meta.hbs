@@ -3,6 +3,22 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
 <link rel="stylesheet" href="{{{uiRootPath}}}/css/site-extra.css">
 <link rel="stylesheet" href="{{{uiRootPath}}}/css/site-doc-layout.css">
+<link rel="stylesheet" href="{{{uiRootPath}}}/css/site-mztabm-theme.css">
+<script>
+/* mzTab-M color variant: accent | sections | branded (see site-mztabm-theme.css).
+   Preview another variant with ?mztab-theme=<name>; it is remembered per browser. */
+(function () {
+  var DEFAULT = 'branded', KEY = 'mztab-theme-variant', ok = /^(accent|sections|branded)$/
+  var v = DEFAULT
+  try {
+    var q = new URLSearchParams(location.search).get('mztab-theme')
+    if (q && ok.test(q)) localStorage.setItem(KEY, q)
+    var s = localStorage.getItem(KEY)
+    if (s && ok.test(s)) v = s
+  } catch (e) {}
+  document.documentElement.setAttribute('data-mztab-theme', v)
+})()
+</script>
 {{#if page.origin.webUrl}}
 <meta name="antora-repo-url" content="{{page.origin.webUrl}}">
 {{/if}}
