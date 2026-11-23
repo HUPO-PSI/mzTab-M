@@ -10,6 +10,7 @@ Usage:
 
 import json
 import argparse
+import re
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).parent
@@ -191,7 +192,16 @@ def field_is_nullable(prop: dict, prop_name: str) -> bool:
 def get_description(prop: dict) -> str:
     """Return the property description, cleaned up."""
     desc = prop.get('description', '').strip()
+    desc = _HTML_ANCHOR_RE.sub(r'\g<url>[\g<text>]', desc)
     return desc or '_No description available._'
+
+
+# Schema descriptions occasionally contain HTML links; AsciiDoc escapes them
+# and they would be rendered literally, so convert to URL[text] macros.
+_HTML_ANCHOR_RE = re.compile(
+    r"""<a\s+href\s*=\s*(['"])(?P<url>[^'"]+)\1\s*>(?P<text>.*?)</a>""",
+    re.IGNORECASE | re.DOTALL,
+)
 
 
 def get_regex_pattern(prop: dict) -> str:
@@ -339,6 +349,10 @@ def write_field_entry(
     # separators by Asciidoctor.js inside an "a"| table cell.
     if pattern and 'Regex' in type_str:
         lines.append(f'|*Type* a|{type_str}')
+        # Blank line required: "Regex" directly above "----" is parsed by
+        # Asciidoctor as a two-line section title (underline length ±1),
+        # which leaves the closing "----" as an unterminated listing block.
+        lines.append('')
         lines.append('----')
         lines.append(pattern)
         lines.append('----')

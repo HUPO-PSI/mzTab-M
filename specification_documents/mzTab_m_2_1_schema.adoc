@@ -46,6 +46,7 @@ Must end with "-M" suffix for metabolomics variant.
 
 Used to ensure compatibility and processing correctness.
 |*Type* a|Regex
+
 ----
 ^\d{1}\.\d{1}\.\d{1}-[A-Z]{1}$
 ----
@@ -311,6 +312,7 @@ MTD	contact[1]-email	jane.doe@example.org
 |============================================================
 |*Description* |The contact's orcid id, without https prefix.
 |*Type* a|Regex
+
 ----
 ^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]{1}$
 ----
@@ -1445,8 +1447,9 @@ SML	...	1234.5	...
 
 [cols="20,80",]
 |============================================================
-|*Description* |A \| separated list of detected adducts for this this molecule, following the general style in the 2013 IUPAC recommendations on <a href='http://dx.doi.org/10.1351/PAC-REC-06-04-06'>terms relating to MS</a> e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-, [M+H]1+. If the adduct classification is ambiguous with regards to identification evidence it MAY be null.
+|*Description* |A \| separated list of detected adducts for this this molecule, following the general style in the 2013 IUPAC recommendations on http://dx.doi.org/10.1351/PAC-REC-06-04-06[terms relating to MS] e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-, [M+H]1+. If the adduct classification is ambiguous with regards to identification evidence it MAY be null.
 |*Type* a|Regex List
+
 ----
 ^\[\d*M([+-][\w\d]+)*\]\d*[+-]$
 ----
@@ -1472,11 +1475,11 @@ The reliability of the given small molecule identification. This must be supplie
 - putatively characterized class (3)
 - unknown compound (4)
 
- These MAY be replaced using a suitable CV term in the metadata section e.g. to use MSI recommendation levels (see <a href='https://hupo-psi.github.io/mzTab-M/mztabm/2.1/developers/changes.html#small_molecule-identification_reliability'>small_molecule-identification_reliability</a> for details).
+ These MAY be replaced using a suitable CV term in the metadata section e.g. to use MSI recommendation levels (see https://hupo-psi.github.io/mzTab-M/mztabm/2.1/developers/changes.html#small_molecule-identification_reliability[small_molecule-identification_reliability] for details).
 
 The following CV terms are already available within the PSI MS CV. Future schemes may be implemented by extending the PSI MS CV with new terms and associated levels.
 
-The MSI has recently discussed an extension of the original four level scheme into a five level scheme <a href='https://pubmed.ncbi.nlm.nih.gov/29748461/'>MS:1002896</a> (compound identification confidence level) with levels
+The MSI has recently discussed an extension of the original four level scheme into a five level scheme https://pubmed.ncbi.nlm.nih.gov/29748461/[MS:1002896] (compound identification confidence level) with levels
 
 - isolated, pure compound, full stereochemistry (0)
 - reference standard match or full 2D structure (1) 
@@ -1484,7 +1487,7 @@ The MSI has recently discussed an extension of the original four level scheme in
 - most likely structure, including isomers, substance class or substructure match (3)
 - unknown compound (4)
 
- For high-resolution MS, the following term and its levels may be used: <a href='https://pubmed.ncbi.nlm.nih.gov/24476540/'>MS:1002955</a> (hrr-ms compound identification confidence level) with levels
+ For high-resolution MS, the following term and its levels may be used: https://pubmed.ncbi.nlm.nih.gov/24476540/[MS:1002955] (hrr-ms compound identification confidence level) with levels
 
 - confirmed structure (1)
 - probable structure (2)
@@ -1672,6 +1675,7 @@ SMF	...	1	...
 |============================================================
 |*Description* |The assumed classification of this molecule’s adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-. [M+H]1+.
 |*Type* a|Regex
+
 ----
 \[\d*M([-][\w\d])\]\d*[+-]
 ----
@@ -1992,6 +1996,7 @@ SME	...	[CHEBI, CHEBI:51088, trimethylsilyl group, 3]	...
 |============================================================
 |*Description* |The assumed classification of this molecule’s adduct ion after detection, following the general style in the 2013 IUPAC recommendations on terms relating to MS e.g. [M+H]1+, [M+Na]1+, [M+NH4]1+, [M-H]1-, [M+Cl]1-. If the adduct classification is ambiguous with regards to identification evidence it MAY be null.
 |*Type* a|Regex
+
 ----
 \[\d*M([+-][\w\d]+)*\]\d*[+-]
 ----

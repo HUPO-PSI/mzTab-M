@@ -26,6 +26,8 @@ SCHEMA_SPEC_COPY="${SCRIPT_DIR}/specification_documents/mzTab_m_2_1_schema.adoc"
 
 SPEC_SRC="${SCRIPT_DIR}/specification_documents/mzTab_format_specification_2_1-M.adoc"
 SPEC_PARTIAL="${PARTIALS_DIR}/mzTab_format_specification_2_1-M.adoc"
+SPEC_IMG_SRC="${SCRIPT_DIR}/specification_documents/img/media"
+SPEC_IMG_DST="${SCRIPT_DIR}/docs/mztabm/modules/developers/images/img/media"
 
 CHANGES_PY="${SCRIPT_DIR}/compare_adoc_specs.py"
 CHANGES_OLD="${SCRIPT_DIR}/specification_documents/mzTab_m_2_0_schema.adoc"
@@ -111,8 +113,14 @@ if [ "${DO_SPEC}" = true ]; then
   # The document body starts at the first [preface] block attribute.
   awk '/^\[preface\]/{found=1} found{print}' "${SPEC_SRC}" > "${SPEC_PARTIAL}"
 
+  # The spec references figures as image::img/media/<file>[]; Antora resolves
+  # these against the developers module's images/ family.
+  echo "    Syncing figures: ${SPEC_IMG_SRC} -> ${SPEC_IMG_DST}"
+  mkdir -p "${SPEC_IMG_DST}"
+  rsync -a --delete --exclude '.DS_Store' "${SPEC_IMG_SRC}/" "${SPEC_IMG_DST}/"
+
   echo "    Done."
-  CHANGED+=("${SPEC_PARTIAL}")
+  CHANGED+=("${SPEC_PARTIAL}" "${SPEC_IMG_DST}")
 fi
 
 # --- Changes document ---------------------------------------------------------

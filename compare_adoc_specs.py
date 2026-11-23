@@ -255,13 +255,29 @@ def match_elements(
 # AsciiDoc rendering helpers
 # ---------------------------------------------------------------------------
 
+_BLOCK_DELIMITER_RE = re.compile(r"^(-{4,}|\.{4,})\s*$")
+_ATTRIBUTE_REF_RE = re.compile(r"(?<!\\)\{(?!vbar\})([\w,-]*)\}")
+
+
+def _strip_block_delimiters(lines: list[str]) -> list[str]:
+    """Drop listing/literal delimiter lines carried over from the source spec."""
+    return [l for l in lines if not _BLOCK_DELIMITER_RE.match(l)]
+
+
+def _first_paragraph(text: str) -> str:
+    """Return the first blank-line separated paragraph of *text*."""
+    return re.split(r"\n\s*\n", text.strip(), maxsplit=1)[0]
+
+
 def _adoc_cell(text: str) -> str:
     """Escape text for use in a regular (non-asciidoc) AsciiDoc table cell."""
     if not text:
         return "—"
-    text = text.replace("|", "{vbar}")
+    # Escape {name} so regex quantifiers like {4} are not attribute references.
+    text = _ATTRIBUTE_REF_RE.sub(r"\\{\1}", text)
+    text = text.replace("\\|", "|").replace("|", "{vbar}")
     # Soft line-break: AsciiDoc ' +\n' continues within a cell
-    lines = [l.rstrip() for l in text.splitlines()]
+    lines = _strip_block_delimiters([l.rstrip() for l in text.splitlines()])
     return " +\n".join(lines).strip() or "—"
 
 
@@ -272,9 +288,13 @@ def _adoc_example_block(text: str) -> str:
     """
     if not text:
         return ""
-    lines = [l.rstrip() for l in text.splitlines() if l.rstrip()]
+    lines = _strip_block_delimiters([l.rstrip() for l in text.splitlines() if l.rstrip()])
+    if not lines:
+        return ""
     body = "\n".join(lines)
-    body = body.replace("|", "{vbar}")
+    # Literal blocks do not substitute attributes, so {vbar} would show up
+    # verbatim; "\|" is unescaped by the table parser instead.
+    body = body.replace("\\|", "|").replace("|", "\\|")
     return f"....\n{body}\n...."
 
 
@@ -327,7 +347,9 @@ def _render_section(
         out.append("| Column/Field | Description | Type | Mandatory | Nullable")
         out.append("")
         for el in items:
-            desc = _adoc_cell(el.description)
+            # Summary rows show only the first paragraph; the full text is in
+            # Element Details below. Long cells cannot be split across PDF pages.
+            desc = _adoc_cell(_first_paragraph(el.description))
             out.append(f"| `{el.name}`")
             out.append(f"a| {desc}")
             out.append(f"| {_adoc_cell(el.type_)}")
