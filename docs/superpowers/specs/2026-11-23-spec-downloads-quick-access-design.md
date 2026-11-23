@@ -58,6 +58,12 @@ of the vendored antora-dark-theme.
   sans-serif (PDF: Noto Sans, bundled with asciidoctor-pdf; DOCX: Calibri via
   `specification_documents/docx-theme/reference.docx`); only code, verbatim
   text and inline keywords use a monospace font (PDF: M+ 1mn; DOCX: Consolas).
+  **Decision (2026-11-23):** the DOCX matches the PDF: same title page (logo,
+  single header-blue band at top and bottom), A4, chapters on new pages,
+  section/figure/table numbers and cross-reference text taken from
+  Asciidoctor (`docx-theme/docbook-numbering.rb`), and a pre-filled table of
+  contents without the "dirty" field flag so Word opens it without asking to
+  update fields (`docx-theme/postprocess_docx.py`).
 
 ## Logo palette
 
