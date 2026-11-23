@@ -5,6 +5,9 @@
   and bottom of the page (first-page header/footer), as on the PDF title page.
 - Page setup: A4 with the PDF margins; footer "mzTab-M <version>" and the page
   number on all other pages.
+- Tables: cell paragraphs get the compact "Table Text" / "Table Heading" /
+  "Table Source Code" styles (pandoc uses the body text styles there, whose
+  size and spacing would override the table style), header cells are shaded.
 - Table of contents: pandoc writes an empty TOC field marked "dirty", which
   makes Word ask on opening whether to update fields that "may refer to other
   files". The field is filled with hyperlinked entries for the headings and
@@ -183,6 +186,40 @@ def fill_toc(document: str) -> str:
     return document[: field.start()] + "".join(paragraphs) + document[field.end():]
 
 
+HEAD_FILL = "E6EDF4"
+_TABLE_TAG_RE = re.compile(r"(<w:tbl>|</w:tbl>)")
+_BODY_STYLES_RE = re.compile(r'<w:pStyle w:val="(?:FirstParagraph|BodyText|Compact)"\s*/>')
+_HEADER_ROW_RE = re.compile(r"<w:tr>\s*<w:trPr>(?:(?!</w:trPr>).)*<w:tblHeader\b.*?</w:tr>", re.S)
+
+
+def _style_cells(xml: str) -> str:
+    xml = _BODY_STYLES_RE.sub('<w:pStyle w:val="TableText" />', xml)
+    xml = re.sub(r'<w:pStyle w:val="SourceCode"\s*/>', '<w:pStyle w:val="TableSourceCode" />', xml)
+    xml = re.sub(r'<w:rStyle w:val="VerbatimChar"\s*/>', '<w:rStyle w:val="TableVerbatimChar" />', xml)
+    # Paragraphs without properties (or without a style) get the table text style.
+    xml = re.sub(r"<w:p>(?!\s*<w:pPr>)", '<w:p><w:pPr><w:pStyle w:val="TableText" /></w:pPr>', xml)
+    xml = re.sub(r"<w:p>\s*<w:pPr>(?!\s*<w:pStyle)", '<w:p><w:pPr><w:pStyle w:val="TableText" />', xml)
+
+    def header_row(m):
+        row = m.group(0).replace('<w:pStyle w:val="TableText" />', '<w:pStyle w:val="TableHeading" />')
+        shd = f'<w:shd w:val="clear" w:color="auto" w:fill="{HEAD_FILL}" />'
+        return re.sub(r"<w:tcPr\s*/>", f"<w:tcPr>{shd}</w:tcPr>", row)
+    return _HEADER_ROW_RE.sub(header_row, xml)
+
+
+def style_tables(document: str) -> str:
+    """Apply the table styles to everything inside <w:tbl> (nesting-aware)."""
+    out, depth, start = [], 0, 0
+    for m in _TABLE_TAG_RE.finditer(document):
+        chunk = document[start:m.start()]
+        out.append(_style_cells(chunk) if depth > 0 else chunk)
+        out.append(m.group(0))
+        depth += 1 if m.group(0) == "<w:tbl>" else -1
+        start = m.end()
+    out.append(document[start:])
+    return "".join(out)
+
+
 def add_title_page(document: str, logo_size, doc_pr_id: int) -> str:
     title = _TITLE_RE.search(document)
     if not title:
@@ -247,6 +284,7 @@ def postprocess(src: str, dst: str, logo_path: str, version: str) -> None:
                 pr_id = next_doc_pr_id(xml)
                 xml = add_title_page(xml, logo_size, pr_id)
                 xml = fill_toc(xml)
+                xml = style_tables(xml)
                 xml = set_section(xml)
                 data = xml.encode("utf-8")
             elif info.filename == "word/_rels/document.xml.rels":

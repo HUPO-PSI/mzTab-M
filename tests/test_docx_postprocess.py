@@ -96,5 +96,35 @@ class PostprocessDocxTest(unittest.TestCase):
         self.assertEqual(pp.png_size(self.parts["word/media/mztabm-band.png"]), (8, 8))
 
 
+class StyleTablesTest(unittest.TestCase):
+    TABLE = ('<w:p><w:pPr><w:pStyle w:val="BodyText" /></w:pPr><w:r><w:t>outside</w:t></w:r></w:p>'
+             '<w:tbl><w:tblPr><w:tblStyle w:val="Table" /></w:tblPr>'
+             '<w:tr><w:trPr><w:tblHeader w:val="on" /></w:trPr><w:tc><w:tcPr />'
+             '<w:p><w:pPr><w:pStyle w:val="Compact" /></w:pPr><w:r><w:t>Head</w:t></w:r></w:p></w:tc></w:tr>'
+             '<w:tr><w:tc><w:tcPr /><w:p><w:pPr><w:pStyle w:val="FirstParagraph" /></w:pPr>'
+             '<w:r><w:rPr><w:rStyle w:val="VerbatimChar" /></w:rPr><w:t>code</w:t></w:r></w:p>'
+             '<w:p><w:pPr><w:pStyle w:val="SourceCode" /></w:pPr><w:r><w:t>MTD</w:t></w:r></w:p>'
+             '<w:p><w:r><w:t>bare</w:t></w:r></w:p></w:tc></w:tr></w:tbl>')
+
+    def setUp(self):
+        self.out = pp.style_tables(self.TABLE)
+
+    def test_text_outside_tables_is_untouched(self):
+        self.assertTrue(self.out.startswith('<w:p><w:pPr><w:pStyle w:val="BodyText" />'))
+
+    def test_header_row_is_shaded_heading(self):
+        header = re.search(r"<w:tr><w:trPr>.*?</w:tr>", self.out).group(0)
+        self.assertIn('w:val="TableHeading"', header)
+        self.assertIn('w:fill="E6EDF4"', header)
+
+    def test_body_cells_use_table_styles(self):
+        body = self.out.split("</w:tr>", 1)[1]
+        self.assertEqual(body.count('w:val="TableText"'), 2)
+        self.assertIn('w:val="TableSourceCode"', body)
+        self.assertIn('w:val="TableVerbatimChar"', body)
+        self.assertNotIn('"VerbatimChar"', body)
+        self.assertNotIn("<w:shd", body)
+
+
 if __name__ == "__main__":
     unittest.main()

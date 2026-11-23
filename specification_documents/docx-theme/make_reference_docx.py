@@ -9,7 +9,11 @@ Starts from pandoc's built-in reference.docx and
 - styles the title page like the PDF (centered title/subtitle in the logo
   blues) and starts every chapter (Heading 1) and the table of contents on a
   new page, as in the PDF;
-- defines the TOC 1-3 entry styles used by postprocess_docx.py.
+- defines the TOC 1-3 entry styles used by postprocess_docx.py;
+- styles tables like the PDF (light blue-grey grid, tinted header row in the
+  header blue, 8.5pt text, 8pt code) and code blocks (light background).
+  postprocess_docx.py assigns the Table* paragraph/character styles to the
+  content of table cells.
 
 Regenerate with:
     pandoc -o default.docx --print-default-data-file reference.docx
@@ -51,6 +55,50 @@ TITLE_PAGE_STYLES = {
   </w:style>""",
 }
 
+GRID = "C5D0DC"
+HEAD_FILL = "E6EDF4"
+CODE_FILL = "F4F6F9"
+CODE_RULE = "D6DEE7"
+
+_BORDERS = "".join(f'<w:{side} w:val="single" w:sz="4" w:space="0" w:color="{GRID}" />'
+                   for side in ("top", "left", "bottom", "right", "insideH", "insideV"))
+
+# Replacements / additions for tables and code (style id -> definition).
+TABLE_STYLES = {
+    "Table": f"""<w:style w:type="table" w:default="1" w:styleId="Table">
+    <w:name w:val="Table" /><w:basedOn w:val="TableNormal" /><w:uiPriority w:val="59" /><w:qFormat />
+    <w:tblPr><w:tblInd w:w="0" w:type="dxa" /><w:tblBorders>{_BORDERS}</w:tblBorders>
+      <w:tblCellMar><w:top w:w="40" w:type="dxa" /><w:left w:w="85" w:type="dxa" />
+        <w:bottom w:w="40" w:type="dxa" /><w:right w:w="85" w:type="dxa" /></w:tblCellMar></w:tblPr>
+    <w:tblStylePr w:type="firstRow"><w:rPr><w:b /><w:bCs /><w:color w:val="{HEADER_BLUE}" /></w:rPr>
+      <w:tcPr><w:shd w:val="clear" w:color="auto" w:fill="{HEAD_FILL}" /></w:tcPr></w:tblStylePr>
+  </w:style>""",
+    "TableText": """<w:style w:type="paragraph" w:customStyle="1" w:styleId="TableText">
+    <w:name w:val="Table Text" /><w:basedOn w:val="Normal" /><w:qFormat />
+    <w:pPr><w:spacing w:before="20" w:after="20" w:line="240" w:lineRule="auto" /></w:pPr>
+    <w:rPr><w:sz w:val="17" /><w:szCs w:val="17" /></w:rPr>
+  </w:style>""",
+    "TableHeading": f"""<w:style w:type="paragraph" w:customStyle="1" w:styleId="TableHeading">
+    <w:name w:val="Table Heading" /><w:basedOn w:val="TableText" /><w:qFormat />
+    <w:pPr><w:keepNext /></w:pPr>
+    <w:rPr><w:b /><w:bCs /><w:color w:val="{HEADER_BLUE}" /></w:rPr>
+  </w:style>""",
+    "SourceCode": f"""<w:style w:type="paragraph" w:customStyle="1" w:styleId="SourceCode">
+    <w:name w:val="Source Code" /><w:basedOn w:val="Normal" />
+    <w:pPr><w:pBdr>{"".join(f'<w:{side} w:val="single" w:sz="4" w:space="4" w:color="{CODE_RULE}" />' for side in ("top", "left", "bottom", "right"))}</w:pBdr>
+      <w:shd w:val="clear" w:color="auto" w:fill="{CODE_FILL}" />
+      <w:wordWrap w:val="off" /><w:spacing w:before="120" w:after="120" w:line="240" w:lineRule="auto" /></w:pPr>
+  </w:style>""",
+    "TableSourceCode": """<w:style w:type="paragraph" w:customStyle="1" w:styleId="TableSourceCode">
+    <w:name w:val="Table Source Code" /><w:basedOn w:val="SourceCode" />
+    <w:pPr><w:spacing w:before="40" w:after="40" /></w:pPr>
+  </w:style>""",
+    "TableVerbatimChar": """<w:style w:type="character" w:customStyle="1" w:styleId="TableVerbatimChar">
+    <w:name w:val="Table Verbatim Char" /><w:basedOn w:val="VerbatimChar" />
+    <w:rPr><w:sz w:val="16" /><w:szCs w:val="16" /></w:rPr>
+  </w:style>""",
+}
+
 # Table of contents entries (names must be "toc N" for Word to treat them as such).
 TOC_STYLES = "".join(
     f"""<w:style w:type="paragraph" w:styleId="TOC{n}">
@@ -77,7 +125,7 @@ def _style_re(style_id: str) -> "re.Pattern[str]":
 
 
 def patch_styles(xml: str) -> str:
-    for style_id, definition in TITLE_PAGE_STYLES.items():
+    for style_id, definition in {**TITLE_PAGE_STYLES, **TABLE_STYLES}.items():
         xml, n = _style_re(style_id).subn(lambda _m: definition, xml)
         if n == 0:
             xml = xml.replace("</w:styles>", definition + "</w:styles>")
