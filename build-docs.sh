@@ -14,7 +14,8 @@ HELP_STRING="Usage: $NAME -i <input_dir> -o <output_dir> -c <commit_hash> -d <bu
   -r  remove leftover docker containers from a previous run
 All options except -r and -h are mandatory.
 The PDF uses the theme in <input_dir>/pdf-theme/mztabm-theme.yml and the DOCX
-the template <input_dir>/docx-theme/reference.docx when present."
+the files in <input_dir>/docx-theme/ (reference.docx, docbook-numbering.rb,
+postprocess_docx.py, which needs python3) when present."
 
 INPUT_DIR=""; OUTPUT_DIR=""; COMMIT_HASH=""; BUILD_DATE=""; ADOC_FILE=""
 while getopts ":i:o:c:d:f:rh" opt; do
@@ -61,7 +62,7 @@ echo "==> Building PDF: $ADOC_FILE"
 # still exits 0, so fail the build explicitly when that happens.
 PDF_LOG="$(mktemp)"
 trap 'rm -f "$PDF_LOG"' EXIT
-run_asciidoctor asciidoctor-pdf -d book "${ADOC_ATTRS[@]}" "${PDF_ATTRS[@]}" \
+run_asciidoctor asciidoctor-pdf -d book "${ADOC_ATTRS[@]}" ${PDF_ATTRS[@]+"${PDF_ATTRS[@]}"} \
   -D /documents/output "$ADOC_FILE" 2>&1 | tee "$PDF_LOG"
 if grep -q "has been truncated" "$PDF_LOG"; then
   echo "ERROR: the PDF lost content (table cells taller than one page). Shorten or split those cells." >&2
@@ -69,15 +70,22 @@ if grep -q "has been truncated" "$PDF_LOG"; then
 fi
 
 echo "==> Building DocBook: $ADOC_FILE"
-run_asciidoctor asciidoctor -d book --backend docbook "${ADOC_ATTRS[@]}" -D /documents/output "$ADOC_FILE"
+DOCX_THEME="$INPUT_DIR/docx-theme"
+DOCBOOK_EXT=()
+if [ -f "$DOCX_THEME/docbook-numbering.rb" ]; then
+  # Section/caption numbers and xref text as in the PDF (pandoc ignores DocBook numbering).
+  DOCBOOK_EXT=(-r /documents/docx-theme/docbook-numbering.rb)
+fi
+run_asciidoctor asciidoctor -d book --backend docbook ${DOCBOOK_EXT[@]+"${DOCBOOK_EXT[@]}"} "${ADOC_ATTRS[@]}" -D /documents/output "$ADOC_FILE"
 
 echo "==> Converting DocBook to DOCX with pandoc"
 mkdir -p "$BUILD_DIR/img"
 cp -R "$INPUT_DIR/img/." "$BUILD_DIR/img/"
-PANDOC_ARGS=(--from docbook --to docx --toc --output "$BASENAME.docx")
-if [ -f "$INPUT_DIR/docx-theme/reference.docx" ]; then
+# Two TOC levels, as in the PDF.
+PANDOC_ARGS=(--from docbook --to docx --toc --toc-depth=2 --output "$BASENAME.docx")
+if [ -f "$DOCX_THEME/reference.docx" ]; then
   # Sans-serif body/headings, monospace code (see docx-theme/make_reference_docx.py).
-  cp "$INPUT_DIR/docx-theme/reference.docx" "$BUILD_DIR/mztabm-reference.docx"
+  cp "$DOCX_THEME/reference.docx" "$BUILD_DIR/mztabm-reference.docx"
   PANDOC_ARGS+=(--reference-doc mztabm-reference.docx)
 fi
 if command -v pandoc >/dev/null 2>&1; then
@@ -85,6 +93,16 @@ if command -v pandoc >/dev/null 2>&1; then
 else
   docker run --rm -u "$(id -u):$(id -g)" -v "$BUILD_DIR:/data" -w /data "$PANDOC_IMAGE" \
     "${PANDOC_ARGS[@]}" "$BASENAME.xml"
+fi
+# Do not leave the template next to the outputs (CI uploads output/*.docx).
+rm -f "$BUILD_DIR/mztabm-reference.docx"
+
+if [ -f "$DOCX_THEME/postprocess_docx.py" ]; then
+  echo "==> Adding title page, footer and table of contents to the DOCX"
+  DOC_VERSION="$(sed -n 's/^:document-version:[[:space:]]*//p' "$INPUT_DIR/$ADOC_FILE" | head -n 1)"
+  python3 "$DOCX_THEME/postprocess_docx.py" "$BUILD_DIR/$BASENAME.docx" "$BUILD_DIR/$BASENAME.docx.tmp" \
+    --logo "$INPUT_DIR/pdf-theme/mzTab-M-logo.png" --version "${DOC_VERSION:-}"
+  mv "$BUILD_DIR/$BASENAME.docx.tmp" "$BUILD_DIR/$BASENAME.docx"
 fi
 
 if [ "$BUILD_DIR" != "$OUTPUT_DIR" ]; then
