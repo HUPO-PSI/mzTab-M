@@ -24,8 +24,15 @@ ____
 When you use the jmzTab-m library or web validator in your work, please cite:
 
 ____
-Citation details TBD — see the https://github.com/lifs-tools/jmztab-m[jmzTab-m repository] for the current recommended citation.
+N. Hoffmann, J. Hartler, R. Ahrends.
+_jmzTab-M: A Reference Parser, Writer, and Validator for the Proteomics Standards Initiative mzTab 2.0 Metabolomics Standard._
+Analytical Chemistry 2019, 91, 12615–12618.
+https://pubs.acs.org/doi/10.1021/acs.analchem.9b01987[DOI: 10.1021/acs.analchem.9b01987] | https://www.ncbi.nlm.nih.gov/pubmed/31525911[PubMed: 31525911]
 ____
+
+The source code is available in the https://github.com/lifs-tools/jmzTab-m[jmzTab-m repository].
+
+The repository's link:https://github.com/HUPO-PSI/mzTab-M/blob/main/CITATION.cff[CITATION.cff] file contains both references in machine-readable form; GitHub offers it as "Cite this repository" on the repository page.
 
 == Citing mzTab 1.0 (Proteomics)
 
