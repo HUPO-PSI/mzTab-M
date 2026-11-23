@@ -35,6 +35,7 @@ jobs:
           sudo apt-get install -y pandoc
       
       - name: Pull Asciidoctor Docker image
+        # Keep in sync with ASCIIDOCTOR_IMAGE in build-docs.sh
         run: docker pull asciidoctor/docker-asciidoctor:1
       
       - name: Build specification documents
@@ -95,6 +96,20 @@ jobs:
 
       - name: Install Antora and extensions
         run: npm ci
+
+      # The spec PDF/DOCX from build-spec become Antora attachments of the ROOT
+      # module, linked from the Quick access box (xref:ROOT:attachment$...).
+      # Antora reads the checked-out worktree, so untracked files are included.
+      - name: Download specification documents
+        uses: actions/download-artifact@v4
+        with:
+          name: specification-documents
+          path: spec-artifact
+
+      - name: Add specification PDF/DOCX as Antora attachments
+        run: |
+          mkdir -p docs/mztabm/modules/ROOT/attachments
+          cp -v spec-artifact/*.pdf spec-artifact/*.docx docs/mztabm/modules/ROOT/attachments/
 
       - name: Build Antora site
         env:

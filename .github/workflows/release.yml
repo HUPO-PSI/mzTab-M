@@ -59,11 +59,17 @@ jobs:
           echo "doc_branch=${DOC_BRANCH}" >> "${GITHUB_OUTPUT}"
           echo "Creating documentation branch: ${DOC_BRANCH} from tag ${TAG}"
 
-      - name: Create and push documentation version branch
-        run: |
-          DOC_BRANCH="${{ steps.branch.outputs.doc_branch }}"
-          TAG="${{ github.ref_name }}"
+      - name: Download specification documents
+        uses: actions/download-artifact@v4
+        with:
+          name: specification-documents
+          path: spec-artifact
 
+      - name: Create and push documentation version branch
+        env:
+          DOC_BRANCH: ${{ steps.branch.outputs.doc_branch }}
+          TAG: ${{ github.ref_name }}
+        run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
 
@@ -74,7 +80,14 @@ jobs:
           # stable published version (e.g. "2.1" instead of "2.1-dev").
           sed -i '/^prerelease:/d' docs/mztabm/antora.yml
 
+          # Pin this version's specification PDF/DOCX into the branch so the
+          # Quick access downloads of released versions stay stable. They are
+          # git-ignored on main, hence --force.
+          mkdir -p docs/mztabm/modules/ROOT/attachments
+          cp -v spec-artifact/*.pdf spec-artifact/*.docx docs/mztabm/modules/ROOT/attachments/
+
           git add docs/mztabm/antora.yml
+          git add --force docs/mztabm/modules/ROOT/attachments/*.pdf docs/mztabm/modules/ROOT/attachments/*.docx
           git commit -m "release: mark ${TAG} as stable Antora documentation version"
 
           git push origin "${DOC_BRANCH}"
@@ -121,6 +134,19 @@ jobs:
 
       - name: Install Antora and extensions
         run: npm ci
+
+      # Attachments for the checked-out worktree (HEAD); the vX.Y branches
+      # carry their own committed copies.
+      - name: Download specification documents
+        uses: actions/download-artifact@v4
+        with:
+          name: specification-documents
+          path: spec-artifact
+
+      - name: Add specification PDF/DOCX as Antora attachments
+        run: |
+          mkdir -p docs/mztabm/modules/ROOT/attachments
+          cp -v spec-artifact/*.pdf spec-artifact/*.docx docs/mztabm/modules/ROOT/attachments/
 
       - name: Build Antora site
         env:

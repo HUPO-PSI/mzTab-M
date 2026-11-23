@@ -1,0 +1,125 @@
+# asciidoctor-pdf theme for the mzTab-M specification.
+#
+# Colors are taken from the mzTab-M logo, one hue per file section:
+#   MTD #4d657f / #9eb5d0   SML #517e4e / #a2c79e
+#   SMF #a57b27 / #e5c380   SME #a44a28 / #e39c82
+#
+# Used by build-docs.sh via: -a pdf-themesdir=<this dir> -a pdf-theme=mztabm
+extends: default-with-font-fallbacks
+
+# Body text and headings in sans-serif (Noto Sans, bundled with
+# asciidoctor-pdf); code, verbatim text and inline keywords keep the default
+# monospace font (M+ 1mn) via the code/codespan keys.
+font:
+  catalog:
+    merge: true
+    Noto Sans:
+      normal: GEM_FONTS_DIR/notosans-regular-subset.ttf
+      bold: GEM_FONTS_DIR/notosans-bold-subset.ttf
+      italic: GEM_FONTS_DIR/notosans-italic-subset.ttf
+      bold_italic: GEM_FONTS_DIR/notosans-bold_italic-subset.ttf
+
+page:
+  size: A4
+  margin: [2cm, 1.8cm, 2cm, 1.8cm]
+
+base:
+  font-family: Noto Sans
+  font-size: 10
+  font-color: '#1f2933'
+  border-color: '#c5d0dc'
+
+role:
+  mtd:
+    font-color: '#4d657f'
+  sml:
+    font-color: '#517e4e'
+  smf:
+    font-color: '#a57b27'
+  sme:
+    font-color: '#a44a28'
+
+title-page:
+  background-image: image:title-band.svg[]
+  text-align: center
+  logo:
+    image: image:mzTab-M-logo.png[pdfwidth=30%]
+    align: center
+    top: 18%
+  title:
+    top: 52%
+    font-size: 26
+    font-color: '#2f4256'
+    font-style: bold
+  subtitle:
+    font-size: 15
+    font-color: '#4d657f'
+  revision:
+    font-color: '#5a6b7d'
+
+heading:
+  font-color: '#2f4256'
+  h2-font-size: 20
+  h3-font-size: 15
+  h4-font-color: '#4d657f'
+  h5-font-color: '#4d657f'
+
+link:
+  font-color: '#3d5f86'
+
+toc:
+  dot-leader-color: '#9eb5d0'
+
+table:
+  font-size: 8.5
+  cell-padding: [2.5, 3, 2.5, 3]
+  border-color: '#c5d0dc'
+  grid-color: '#c5d0dc'
+  head:
+    background-color: '#e6edf4'
+    font-color: '#2f4256'
+    font-style: bold
+
+code:
+  font-size: 8
+  background-color: '#f4f6f9'
+  border-color: '#d6dee7'
+  border-radius: 3
+
+codespan:
+  font-color: '#8a3c20'
+
+admonition:
+  column-rule-color: '#c5d0dc'
+  icon:
+    note:
+      stroke-color: '#4d657f'
+    tip:
+      stroke-color: '#517e4e'
+    warning:
+      stroke-color: '#a57b27'
+    caution:
+      stroke-color: '#a44a28'
+    important:
+      stroke-color: '#a44a28'
+
+quote:
+  border-left-color: '#9eb5d0'
+
+sidebar:
+  background-color: '#f1f5f9'
+  border-color: '#c5d0dc'
+
+footer:
+  border-color: '#9eb5d0'
+  font-color: '#5a6b7d'
+  recto:
+    left:
+      content: 'mzTab-M {document-version}'
+    right:
+      content: '{page-number}'
+  verso:
+    left:
+      content: '{page-number}'
+    right:
+      content: 'mzTab-M {document-version}'

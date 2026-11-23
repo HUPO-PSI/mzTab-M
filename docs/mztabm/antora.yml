@@ -8,3 +8,7 @@ nav:
   - modules/developers/nav.adoc
   - modules/validation/nav.adoc
   - modules/about/nav.adoc
+asciidoc:
+  attributes:
+    # Base name of the generated specification PDF/DOCX attachments
+    spec-basename: mzTab_format_specification_2_1-M

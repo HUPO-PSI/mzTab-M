@@ -2,6 +2,8 @@
 
 This section provides the technical resources needed to implement mzTab-M support in software — the specification, schema, reference implementations, and contribution guidelines.
 
+include::ROOT:partial$quick-access.adoc[]
+
 == Resources
 
 * xref:specification.adoc[] — the normative specification document defining every field, controlled vocabulary requirement, and file structure rule.

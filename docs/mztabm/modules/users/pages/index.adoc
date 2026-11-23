@@ -2,6 +2,8 @@
 
 This section covers everything you need to know to work with mzTab-M files as a researcher or data analyst — from understanding the format structure to running validation and submitting data to repositories.
 
+include::ROOT:partial$quick-access.adoc[]
+
 == Where to Start
 
 * xref:getting-started.adoc[] — install the tools and create or validate your first mzTab-M file.
