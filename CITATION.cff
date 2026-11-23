@@ -1,0 +1,111 @@
+# Citation metadata for the mzTab-M specification repository.
+# GitHub shows this as "Cite this repository"; see https://citation-file-format.github.io/
+cff-version: 1.2.0
+message: >-
+  If you use the mzTab-M format, please cite the mzTab-M publication below.
+  If you use the jmzTab-M reference implementation (parser, writer, validator
+  or web validator), please also cite the jmzTab-M publication.
+title: "mzTab-M: exchange format for metabolomics results"
+abstract: >-
+  mzTab-M is a tab-delimited file format for reporting quantitative results
+  of mass spectrometry-based metabolomics and lipidomics experiments,
+  developed by the HUPO Proteomics Standards Initiative (PSI) in
+  collaboration with the Metabolomics Standards Initiative (MSI). This
+  repository holds the specification, the JSON schema, example files and
+  the documentation site.
+authors:
+  - name: "HUPO Proteomics Standards Initiative (PSI) Metabolomics Working Group"
+    website: "https://www.psidev.info/metabolomics"
+repository-code: "https://github.com/HUPO-PSI/mzTab-M"
+url: "https://hupo-psi.github.io/mzTab-M/"
+license: CC-BY-4.0
+keywords:
+  - mzTab-M
+  - metabolomics
+  - lipidomics
+  - mass spectrometry
+  - data standard
+  - HUPO-PSI
+preferred-citation:
+  type: article
+  title: "mzTab-M: A Data Standard for Sharing Quantitative Results in Mass Spectrometry Metabolomics"
+  authors:
+    - family-names: Hoffmann
+      given-names: Nils
+    - family-names: Rein
+      given-names: Joel
+    - family-names: Sachsenberg
+      given-names: Timo
+    - family-names: Hartler
+      given-names: Jürgen
+      orcid: "https://orcid.org/0000-0002-1095-6458"
+    - family-names: Haug
+      given-names: Kenneth
+    - family-names: Mayer
+      given-names: Gerhard
+    - family-names: Alka
+      given-names: Oliver
+    - family-names: Dayalan
+      given-names: Saravanan
+    - family-names: Pearce
+      given-names: Jake T. M.
+    - family-names: Rocca-Serra
+      given-names: Philippe
+    - family-names: Qi
+      given-names: Da
+    - family-names: Eisenacher
+      given-names: Martin
+    - family-names: Perez-Riverol
+      given-names: Yasset
+    - family-names: Vizcaíno
+      given-names: Juan Antonio
+    - family-names: Salek
+      given-names: Reza M.
+      orcid: "https://orcid.org/0000-0001-8604-1732"
+    - family-names: Neumann
+      given-names: Steffen
+    - family-names: Jones
+      given-names: Andrew R.
+      orcid: "https://orcid.org/0000-0001-6118-9327"
+  journal: "Analytical Chemistry"
+  volume: 91
+  issue: 5
+  start: 3302
+  end: 3310
+  year: 2019
+  month: 1
+  doi: "10.1021/acs.analchem.8b04310"
+  url: "https://pubs.acs.org/doi/10.1021/acs.analchem.8b04310"
+  issn: "0003-2700"
+  identifiers:
+    - type: other
+      value: "PMID:30688441"
+      description: PubMed ID
+references:
+  - type: article
+    title: "jmzTab-M: A Reference Parser, Writer, and Validator for the Proteomics Standards Initiative mzTab 2.0 Metabolomics Standard"
+    authors:
+      - family-names: Hoffmann
+        given-names: Nils
+        orcid: "https://orcid.org/0000-0002-6540-6875"
+      - family-names: Hartler
+        given-names: Jürgen
+        orcid: "https://orcid.org/0000-0002-1095-6458"
+      - family-names: Ahrends
+        given-names: Robert
+        orcid: "https://orcid.org/0000-0003-0232-3375"
+    journal: "Analytical Chemistry"
+    volume: 91
+    issue: 20
+    start: 12615
+    end: 12618
+    year: 2019
+    month: 9
+    doi: "10.1021/acs.analchem.9b01987"
+    url: "https://pubs.acs.org/doi/10.1021/acs.analchem.9b01987"
+    issn: "0003-2700"
+    repository-code: "https://github.com/lifs-tools/jmzTab-m"
+    identifiers:
+      - type: other
+        value: "PMID:31525911"
+        description: PubMed ID
