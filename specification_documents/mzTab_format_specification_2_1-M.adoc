@@ -22,6 +22,9 @@ endif::[]
 :commit-hash: UNDEFINED
 :build-date: UNDEFINED
 :document-version: 2.1.0-InDevelopment July 2025 (DEVELOPMENT)
+//shown on the PDF title page and in the HTML header
+:revnumber: {document-version}
+:revdate: {build-date}
 
 //disable section numbering
 :!sectnums:

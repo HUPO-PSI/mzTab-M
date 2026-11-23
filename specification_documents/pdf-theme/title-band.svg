@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- PDF title page background: a single band at top and bottom in the deep
+     blue of the website header (#2f4256). Sized to A4 (595.28 x 841.89 pt). -->
+<svg xmlns="http://www.w3.org/2000/svg" width="595.28" height="841.89" viewBox="0 0 595.28 841.89">
+  <rect x="0" y="0" width="595.28" height="24" fill="#2f4256"/>
+  <rect x="0" y="817.89" width="595.28" height="24" fill="#2f4256"/>
+</svg>
