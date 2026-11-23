@@ -32,13 +32,15 @@ endif::[]
 == Preface
 _Status of This Document_
 
-This document presents the specification of the mzTab data format for metabolomics developed by members of the Human Proteome Organisation (HUPO) Proteomics Standards Initiative (PSI) Proteomics Informatics (PI) Working Group, in collaboration with the Metabolomics Standards initiative (MSI). Distribution is unlimited.
+Document status: *Draft*
+
+This document presents the specification of the mzTab data format for metabolomics. It is maintained by the Human Proteome Organisation (HUPO) Proteomics Standards Initiative (PSI) https://www.psidev.info/metabolomics[Metabolomics Working Group]. mzTab-M was originally developed by members of the PSI Proteomics Informatics (PI) Working Group, in collaboration with the Metabolomics Standards initiative (MSI). Distribution is unlimited.
 
 _Version of This Document_
 
-Date created: June 1st, 2012
+Original date: June 1st, 2012
 
-Last updated: {build-date}
+Revised date: {build-date}
 
 Based on commit: https://github.com/HUPO-PSI/mzTab-M/commit/{commit-hash}[{commit-hash}] - https://github.com/HUPO-PSI/mzTab-M/commits/main/specification_documents/mzTab_format_specification_2_1-M_release.adoc[Commit History]
 
@@ -48,11 +50,13 @@ The latest (draft) version of this document may be found at https://github.com/H
 
 _Type of This Document_
 
+Document type: *Recommendation*
+
 This document is a _recommendation_ for a common, community-driven standard data exchange format in metabolomics.
 
 _Authors_
 
-Please see <<authors>> for details on the authors and editors of this document.
+Please see <<authors>> for the names, affiliations and email addresses of the authors and editors of this document.
 
 [abstract]
 [[abstract]]
@@ -567,7 +571,7 @@ It furthermore supports transcoding from a JSON representation of the object mod
 * Yasset Perez-Riverol, European Molecular Biology Laboratory, European Bioinformatics Institute (EMBL-EBI), Cambridge, United Kingdom. yperez@ebi.ac.uk
 * Juan Antonio Vizcaíno, European Molecular Biology Laboratory, European Bioinformatics Institute (EMBL-EBI), Cambridge, United Kingdom. juan@ebi.ac.uk
 * Reza M Salek, International Agency for Research on Cancer, Lyon, France. r7salek@gmail.com
-* Steffen Neumann, Leibniz Institute of Plant Biochemistry, Halle and German Centre for Integrative Biodiversity Researchm Halle-Jena-Leipzig, Germany. sneumann@ipb-halle.de
+* Steffen Neumann, Leibniz Institute of Plant Biochemistry, Halle and German Centre for Integrative Biodiversity Research, Halle-Jena-Leipzig, Germany. sneumann@ipb-halle.de
 * Andrew R Jones, Institute of Integrative Biology, University of Liverpool, United Kingdom. (Editor) Andrew.Jones@liverpool.ac.uk
 
 
@@ -588,9 +592,9 @@ Citing: <<KEY,LABEL>>, e.g. <<bradner-1997,(Bradner 1997)>> will render a link t
 [[intellectual-property-statement]]
 == Intellectual Property Statement
 
-The PSI/MSI takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this document or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any effort to identify any such rights. Copies of claims of rights made available for publication and any assurances of licenses to be made available, or the result of an attempt made to obtain a general license or permission for the use of such proprietary rights by implementers or users of this specification can be obtained from the PSI Chair.
+The PSI takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this document or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any effort to identify any such rights. Copies of claims of rights made available for publication and any assurances of licenses to be made available, or the result of an attempt made to obtain a general license or permission for the use of such proprietary rights by implementers or users of this specification can be obtained from the PSI Chair.
 
-The PSI/MSI invites any interested party to bring to its attention any copyrights, patents or patent applications, or other proprietary rights that may cover technology that may be required to practice this recommendation. Please address the information to the PSI Chair (see contacts information at PSI website).
+The PSI invites any interested party to bring to its attention any copyrights, patents or patent applications, or other proprietary rights which may cover technology that may be required to practice this recommendation. Please address the information to the PSI Chair (see contacts information at PSI website).
 
 :sectnums!:
 [[trademark-section]]
@@ -598,13 +602,26 @@ The PSI/MSI invites any interested party to bring to its attention any copyright
 
 Microsoft Excel^®^
 
-[[copyright-notice]]
-== Copyright Notice
+[[licensing]]
+== Licensing
 
-Copyright (C) Proteomics Standards Initiative (2018). All Rights Reserved.
+Copyright (C) 2026 by the Human Proteome Organization (HUPO) Proteomics Standards Initiative (PSI) under the Creative Commons Attribution 4.0 International (CC BY 4.0) license (https://creativecommons.org/licenses/by/4.0/).
 
-This document and translations of it may be copied and furnished to others, and derivative works that comment on or otherwise explain it or assist in its implementation may be prepared, copied, published and distributed, in whole or in part, without restriction of any kind, provided that the above copyright notice and this paragraph are included on all such copies and derivative works. However, this document itself may not be modified in any way, such as by removing the copyright notice or references to the PSI or other organizations, except as needed for the purpose of developing Proteomics Recommendations in which case the procedures for copyrights defined in the PSI Document process must be followed, or as required to translate it into languages other than English.
+*Disclaimer:*
 
-The limited permissions granted above are perpetual and will not be revoked by the PSI or its successors or assigns.
+You are free to:
 
-This document and the information contained herein is provided on an "AS IS" basis and THE PROTEOMICS STANDARDS INITIATIVE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE."
+* *Share* — copy and redistribute the material in any medium or format for any purpose, even commercially.
+* *Adapt* — remix, transform, and build upon the material for any purpose, even commercially.
+
+The licensor cannot revoke these freedoms as long as you follow the license terms.
+
+Under the following terms:
+
+* *Attribution* — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+* *No additional restrictions* — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+
+*Notices:*
+
+* You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.
+* No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.
