@@ -3,7 +3,7 @@ MTD	mzTab-version	2.1.0-M
 MTD	mzTab-ID	ISAS-2018-1234
 MTD	mzTab-profile	M+F+E
 MTD	description	Minimal proposed sample file for identification and quantification of lipids
-MTD	publication[1]	pubmed:29039908 | doi:10.1021/acs.analchem.7b03576
+MTD	publication[1]	pubmed:29039908|doi:10.1021/acs.analchem.7b03576
 MTD	cv[1]-label	MS
 MTD	cv[1]-full_name	PSI-MS controlled vocabulary
 MTD	cv[1]-version	4.0.18
