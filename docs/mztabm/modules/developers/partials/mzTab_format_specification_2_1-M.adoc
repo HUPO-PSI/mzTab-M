@@ -12,7 +12,7 @@ Original date: June 1st, 2012
 
 Revised date: {build-date}
 
-Based on commit: https://github.com/HUPO-PSI/mzTab-M/commit/{commit-hash}[{commit-hash}] - https://github.com/HUPO-PSI/mzTab-M/commits/main/specification_documents/mzTab_format_specification_2_1-M_release.adoc[Commit History]
+Based on commit: https://github.com/HUPO-PSI/mzTab-M/commit/{commit-hash}[{commit-hash}] - https://github.com/HUPO-PSI/mzTab-M/commits/main/specification_documents/mzTab_format_specification_2_1-M.adoc[Commit History]
 
 The current version of this document is: version {document-version}
 
