@@ -209,7 +209,7 @@
             "value_constraint": "non-negative-integer"
           },
           "examples": [
-            "MTD\tassay[1]-protocol_ref\tprotocol[1]| protocol[2]"
+            "MTD\tassay[1]-protocol_refs\tprotocol[1]| protocol[2]"
           ]
         },
         "parameters": {
@@ -2941,7 +2941,7 @@
       "type": "object",
       "description": "A protocol describing one or more steps of an experimental procedure, such as sample preparation, data acquisition or data processing. Protocols are referenced from Assay objects. Added in mzTab-M 2.1.",
       "examples": [
-        "MTD\tprotocol[1]\textraction\nMTD\tprotocol[1]-type\t[MSIO, MSIO:0000141, metabolite extraction,]\nMTD\tprotocol[1]-description\tExtraction using 80% methanol\nMTD\tprotocol[1]-parameter[1]\t[MSIO, MSIO:0000107, quenching, [MSIO, MSIO:0000109, liquid nitrogen,]]"
+        "MTD\tprotocol[1]-name\tExtraction\nMTD\tprotocol[1]-type\t[MSIO, MSIO:0000141, metabolite extraction,]\nMTD\tprotocol[1]-description\tExtraction using 80% methanol\nMTD\tprotocol[1]-parameters\t[MSIO, MSIO:0000107, quenching, [MSIO, MSIO:0000109, liquid nitrogen,]]"
       ]
     },
     "Publication": {
