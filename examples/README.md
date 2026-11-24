@@ -23,6 +23,22 @@ against the matching jmzTab-m validator in CI:
 A file belongs in `2.1/` only if it genuinely requires 2.1 features; anything
 that still validates under 2.0.0 stays in `2.0/`.
 
+### Validating locally
+
+[`validate.sh`](../validate.sh) in the repository root downloads the same
+validators as CI (cached in `build/validator/`) and applies the same rules:
+
+```bash
+./validate.sh                                 # all examples, stable + snapshot, like CI
+./validate.sh my_file.mztab other.json        # own files, snapshot validator
+./validate.sh -v stable examples/2.0/LDA*     # own files, stable validator
+./validate.sh --help                          # all options
+```
+
+The stable validator needs Java. The snapshot validator is a native binary on
+macOS (Apple silicon), Linux (x86_64) and Windows (x86_64), and falls back to the
+CLI jar (needs Java) elsewhere.
+
 ### `mzTab-profile` examples
 
 The following files demonstrate the `mzTab-profile` metadata field (one per
